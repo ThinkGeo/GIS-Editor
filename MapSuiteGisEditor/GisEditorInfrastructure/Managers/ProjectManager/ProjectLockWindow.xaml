@@ -1,0 +1,54 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.ProjectLockWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:ClassModifier="internal"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  WindowStartupLocation="CenterOwner"
+        Title="Project Password" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        >
+    <Grid Margin="0 7 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+        </Grid.Resources>
+        <TextBlock Text="" x:Name="descriptionTB" Grid.ColumnSpan="3" Margin="5 0 0 10"/>
+        <TextBlock Grid.Row="1"  Text="Password to open:"/>
+        <Grid Grid.Column="1" Grid.Row="1" Width="200" Margin="5">
+
+            <TextBox x:Name="tb1" Text="{Binding ElementName=passwordBox,Path=Password,Mode=TwoWay}"
+                     HorizontalAlignment="Stretch"  />
+            <PasswordBox x:Name="passwordBox" 
+                         HorizontalAlignment="Stretch" />
+        </Grid>
+        <TextBlock Text="Password to save:" Grid.Row="2"/>
+        <Grid Grid.Column="1"  Grid.Row="2" Width="200" Margin="5">
+            <TextBox x:Name="tb2" Text="{Binding ElementName=passwordBox,Path=Password,Mode=TwoWay}"
+                     HorizontalAlignment="Stretch"  />
+            <PasswordBox x:Name="passwordBox2" 
+                         HorizontalAlignment="Stretch"  />
+        </Grid>
+        <Grid Grid.Row="3"
+              Grid.ColumnSpan="3"
+              Height="40" Margin="0 5 0 0"  
+              Background="#FFF0F0F0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox Content="Show characters" Grid.Column="0" Checked="CheckBox_Checked_1" VerticalAlignment="Center" Margin="5 0 0 0"  Unchecked="CheckBox_Unchecked_1"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center"  HorizontalAlignment="Right">
+                <Button x:Name="okBtn"  Width="70" Height="22" Click ="OKButton_Click"  Content="OK" Margin="0 0 11 0" />
+                <Button Width="70" Height="22" Content="Cancel" Margin="0 0 5 0"  IsCancel="True"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

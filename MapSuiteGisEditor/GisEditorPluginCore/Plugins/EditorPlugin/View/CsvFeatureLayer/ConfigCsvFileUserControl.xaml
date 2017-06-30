@@ -1,0 +1,224 @@
+﻿<local:CreateFeatureLayerUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ConfigCsvFileUserControl"
+                                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                     xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins">
+    <local:CreateFeatureLayerUserControl.Resources>
+        <GridViewColumn x:Key="AliasColumn"
+                        Width="80"
+                        DisplayMemberBinding="{Binding AliasName}"
+                        Header="{DynamicResource ResourceKey=CommonUserControlAliasText}"
+                        x:Shared="False" />
+    </local:CreateFeatureLayerUserControl.Resources>
+    <Grid x:Name="mainGrid" Margin="{DynamicResource MainWindowMargin}">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="0 0 0 0" />
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="Btn" TargetType="Button">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="Width" Value="70" />
+            </Style>
+            <DataTemplate x:Key="EditCell">
+                <StackPanel Width="65"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Button Width="20"
+                            Height="20"
+                            Margin="10 0 0 0"
+                            Click="EditColumnClick"
+                            CommandParameter="{Binding .}">
+                        <Image Source="/GisEditorPluginCore;component/Images/edit.png" />
+                    </Button>
+                    <Button Width="20"
+                            Height="20"
+                            Margin="5 0 10 0"
+                            HorizontalAlignment="Center"
+                            Click="DeleteColumnClick"
+                            CommandParameter="{Binding .}">
+                        <Image Source="/GisEditorPluginCore;component/Images/Delete.png" />
+                    </Button>
+                </StackPanel>
+            </DataTemplate>
+            <local:DelimiterDictionary x:Key="DelimiterDic" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource ConfigCsvFileUserControlTypeLabel}" />
+        <ComboBox x:Name="ShapeFileTypes"
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  IsEnabled="{Binding IsShapeTypeEnabled}"
+                  ItemsSource="{Binding ShapeTypes}"
+                  SelectedItem="{Binding SelectedShapeType,
+                                         Mode=TwoWay}" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource ConfigCsvFileUserControlLayerNameLabel}" />
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 IsEnabled="{Binding IsLayerNameEnabled}"
+                 Text="{Binding FileName,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource ConfigCsvFileUserControlMappingTypeLabel}"
+                   Visibility="Collapsed" />
+        <StackPanel Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="0 5 0 0"
+                    Orientation="Horizontal"
+                    Visibility="Collapsed">
+            <RadioButton x:Name="lonLatRadioButton"
+                         Click="LonLatClick"
+                         Content="{DynamicResource ConfigCsvFileUserControlXYLabel}"
+                         IsChecked="True" />
+            <RadioButton x:Name="wktRadioButton"
+                         Margin="5 0 0 0"
+                         Click="WKTClick"
+                         Content="{DynamicResource ConfigCsvFileUserControlWKTLabel}" />
+        </StackPanel>
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource ResourceKey=CSVConfigUserControlDelimiterText}" />
+
+        <StackPanel Grid.Row="3"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+            <ComboBox Width="100"
+                      IsEnabled="{Binding IsDelimiterEnabled}"
+                      ItemsSource="{StaticResource DelimiterDic}"
+                      SelectedIndex="0"
+                      SelectedItem="{Binding SelectedDelimiter,
+                                             Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Key}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBox Width="60"
+                     Height="22"
+                     Margin="5 0 0 0"
+                     IsEnabled="{Binding IsCustomDelimiterEnabled}"
+                     Text="{Binding CustomDelimiter,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   VerticalAlignment="Top"
+                   Text="{DynamicResource ConfigCsvFileUserControlColumnsLabel}" />
+        <Button Grid.Row="4"
+                Grid.Column="0"
+                Width="70"
+                Margin="0 0 0 5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Command="{Binding AddNewCommand}"
+                Content="{DynamicResource ConfigCsvFileUserControlAddNewLabel}" />
+        <Grid Grid.Row="4" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <ListView Name="ColumnList"
+                      Grid.Column="0"
+                      Width="Auto"
+                      Height="200"
+                      Margin="0 5 0 5"
+                      ItemsSource="{Binding CsvColumns}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <!--  <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />  -->
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=ChangedStatus}" Value="Deleted">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView x:Name="GridView">
+                        <GridViewColumn Width="100"
+                                        DisplayMemberBinding="{Binding ColumnName}"
+                                        Header="{DynamicResource ConfigCsvFileUserControlNameLabel}" />
+                        <GridViewColumn Width="80"
+                                        DisplayMemberBinding="{Binding SelectedCsvColumnType}"
+                                        Header="{DynamicResource ConfigCsvFileUserControlType1Label}" />
+                        <GridViewColumn Width="70" CellTemplate="{StaticResource EditCell}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Column="1"
+                        VerticalAlignment="Top"
+                        IsEnabled="{Binding IsAliasEnabled}">
+                <Button Height="23"
+                        Margin="5 5 0 5"
+                        Click="MoveTopClick">
+                    <Image Source="/GisEditorPluginCore;component/Images/go_top.png" />
+                </Button>
+                <Button Height="23"
+                        Margin="5 5 0 5"
+                        Click="MoveUpClick">
+                    <Image Source="/GisEditorPluginCore;component/Images/go_up.png" />
+                </Button>
+                <Button Height="23"
+                        Margin="5 5 0 5"
+                        Click="MoveDownClick">
+                    <Image Source="/GisEditorPluginCore;component/Images/go_down.png" />
+                </Button>
+                <Button Height="23"
+                        Margin="5 5 0 5"
+                        Click="MoveBottomClick">
+                    <Image Source="/GisEditorPluginCore;component/Images/go_bottom.png" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        <TextBlock Grid.Row="5"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource ConfigCsvFileUserControlOutputLabel}" />
+        <Grid Grid.Row="5" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0"
+                     Margin="0 5 5 0"
+                     IsEnabled="{Binding IsOutputEnabled}"
+                     IsReadOnly="True"
+                     Text="{Binding OutputFolder}" />
+            <Button Grid.Column="1"
+                    Width="70"
+                    Margin="0 5 0 0"
+                    Click="BrowseClick"
+                    Content="{DynamicResource GeneralBrowserContent}"
+                    IsEnabled="{Binding IsEditEnabled}"
+                    Style="{StaticResource Btn}" />
+        </Grid>
+    </Grid>
+</local:CreateFeatureLayerUserControl>

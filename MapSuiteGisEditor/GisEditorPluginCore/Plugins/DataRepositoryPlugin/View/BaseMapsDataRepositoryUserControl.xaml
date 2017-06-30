@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.BaseMapsDataRepositoryUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:li="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Grid>
+        <ListBox 
+                 ItemsSource="{Binding Children}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItemMouseDoubleClick" />
+                    <EventSetter Event="GotFocus" Handler="ListBoxItem_GotFocus" />
+                    <Setter Property="ContextMenu" Value="{Binding ContextMenu}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="4 2 4 2"
+                                HorizontalAlignment="Center"
+                                Orientation="Vertical">
+                        <Image HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Source="{Binding Icon}"
+                               Stretch="None" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

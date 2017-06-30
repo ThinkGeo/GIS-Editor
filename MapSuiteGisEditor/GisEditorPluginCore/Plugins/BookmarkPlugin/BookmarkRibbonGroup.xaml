@@ -1,0 +1,60 @@
+<r:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.BookmarkRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+               xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+               xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+               xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               xmlns:tg="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop"
+               xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+               Header="{DynamicResource BookmarkRibbonGroupHeader}">
+    <r:RibbonGroup.GroupSizeDefinitions>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+        </r:RibbonGroupSizeDefinition>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+        </r:RibbonGroupSizeDefinition>
+    </r:RibbonGroup.GroupSizeDefinitions>
+
+    <r:RibbonMenuButton x:Name="bookmarkList"
+                        DropDownOpened="BookmarkList_DropDownOpened"
+                        Label="{DynamicResource BookmarkRibbonGroupJumpLabel}"
+                        LargeImageSource="/GisEditorPluginCore;component/Images/bookmarks.png"
+                        QuickAccessToolBarId="bookmarkList"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/bookmarks.png"
+                        ToolTip="{DynamicResource BookmarkRibbonGroupJumpToolTip}"
+                        x:FieldModifier="private">
+        <r:RibbonMenuButton.ItemContainerStyle>
+            <Style TargetType="{x:Type r:RibbonMenuItem}">
+                <Setter Property="Command" Value="{x:Static local:CommandHelper.ZoomToBookmarkCommand}" />
+                <Setter Property="CommandParameter" Value="{Binding}" />
+            </Style>
+        </r:RibbonMenuButton.ItemContainerStyle>
+        <r:RibbonMenuButton.ItemTemplate>
+            <DataTemplate DataType="{x:Type local:BookmarkViewModel}">
+                <TextBlock Text="{Binding Name}" />
+            </DataTemplate>
+        </r:RibbonMenuButton.ItemTemplate>
+    </r:RibbonMenuButton>
+
+    <r:RibbonButton x:Name="addBookmarkButton"
+                    Command="{Binding AddBookmarkCommand}"
+                    Label="{DynamicResource BookmarkRibbonGroupAddLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/addbookmark.png"
+                    QuickAccessToolBarId="addBookmarkButton"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/addbookmark.png"
+                    ToolTip="{DynamicResource AddNewBookmarkToTheMapTip}" />
+
+    <r:RibbonButton x:Name="manageBookmarkButton"
+                    Command="{Binding ShowBookmarkManagerCommand}"
+                    Label="{DynamicResource BookmarkRibbonGroupManageLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/managebookmarks.png"
+                    QuickAccessToolBarId="ManageBookmarks"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/managebookmarks.png"
+                    ToolTip="{DynamicResource ResourceKey=BookmarkRibbonGroupDscManageexistingbookmarksDscToolTip}" />
+</r:RibbonGroup>

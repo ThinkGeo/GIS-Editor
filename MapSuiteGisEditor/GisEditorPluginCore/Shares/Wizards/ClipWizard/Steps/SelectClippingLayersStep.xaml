@@ -1,0 +1,38 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SelectClippingLayersStep"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="431"
+             d:DesignWidth="500"
+             mc:Ignorable="d">
+    <StackPanel>
+        <TextBlock Text="{DynamicResource ToolsClipWizardStepTwoSelectAtLeastOne}" TextWrapping="Wrap" />
+        <StackPanel Margin="0 20 0 0" Orientation="Horizontal">
+            <TextBlock Style="{DynamicResource SubtitleStyle}" Text="{DynamicResource ToolsClipWizardStepTwoClippingLayers}" />
+            <TextBlock Margin="5 0 0 5" Text="{DynamicResource ToolsClipWizardStepTwoControlClickSelectMultipleLayers}" />
+        </StackPanel>
+        <ListBox Height="280"
+                 Margin="0 0 0 5"
+                 ItemsSource="{Binding Path=ClippingLayers}"
+                 SelectionMode="Extended">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <EventSetter Event="Selected" Handler="ListBoxItem_Selected" />
+                    <EventSetter Event="Unselected" Handler="ListBoxItem_Unselected" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=FeatureLayer.Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <CheckBox x:Name="cbUse"
+                  Content="{DynamicResource ToolsClipWizardStepTwoOnlyUseSelectedFeatures}"
+                  IsChecked="{Binding Path=IsUseSelectedFeatures,
+                                      Mode=TwoWay}"
+                  IsEnabled="{Binding Path=IsUseSelectedFeaturesEnable}" />
+    </StackPanel>
+</UserControl>

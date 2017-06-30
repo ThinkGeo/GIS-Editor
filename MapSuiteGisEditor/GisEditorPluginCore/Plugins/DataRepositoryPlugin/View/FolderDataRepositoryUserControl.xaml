@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FolderDataRepositoryUserControl "
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:FileDataRepositoryItemToTypeConverter x:Key="FileDataRepositoryItemToTypeConverter" />
+        <local:FileDataRepositoryItemToSizeConverter x:Key="FileDataRepositoryItemToSizeConverter" />
+    </UserControl.Resources>
+        <Grid>
+            <ListView x:Name="ChildrenList"
+                  GridViewColumnHeader.Click="GridViewColumnHeader_Click"
+                  ItemsSource="{Binding Children}"
+                  SelectionChanged="ListView_SelectionChanged"
+                  SelectionMode="Extended">
+                <ListView.Resources>
+                    <Style x:Key="headerStyle" TargetType="TextBlock">
+                        <Setter Property="Margin" Value="4 0 0 0" />
+                    </Style>
+                    <Style x:Key="columnHeaderStyle" TargetType="GridViewColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource columnHeaderStyle}">
+                        <GridView.Columns>
+                            <GridViewColumn Width="183">
+                                <GridViewColumn.Header>
+                                    <TextBlock Style="{StaticResource headerStyle}" Text="{DynamicResource ResourceKey=FolderDataRepositoryUserControlNameText}" />
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Width="20"
+                                               Height="16"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Source="{Binding Icon}"
+                                               Stretch="Uniform"
+                                               />
+                                            <gisToolKit:RenameTextBlock Grid.Column="1"
+                                                                    IsEdit="{Binding IsRenaming,
+                                                                                     Mode=TwoWay}"
+                                                                    IsFileName="true"    
+                                                                    Text="{Binding Name}"
+                                                                    TextRenamed="RenameControl_TextRenamed" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="77">
+                                <GridViewColumn.Header>
+                                    <TextBlock Style="{StaticResource headerStyle}" Text="{DynamicResource ResourceKey=FolderDataRepositoryUserControlTypeText}" />
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource FileDataRepositoryItemToTypeConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="100">
+                                <GridViewColumn.Header>
+                                <TextBlock Style="{StaticResource headerStyle}" Text="{DynamicResource ResourceKey=CommonSizeText}" />
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource FileDataRepositoryItemToSizeConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Converter={StaticResource FileDataRepositoryItemToTypeConverter}}" Value="Being used">
+                                <Setter Property="Foreground" Value="Gray" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="ToolTip" Value="{Binding Name}" />
+                        <Setter Property="ContextMenu" Value="{Binding ContextMenu}" />
+                        <EventSetter Event="GotFocus" Handler="ListBoxItemGotFocus" />
+                        <EventSetter Event="KeyDown" Handler="ListBoxItem_KeyDown" />
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItemMouseDoubleClick" />
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_PreviewMouseLeftButtonDown" />
+                        <EventSetter Event="MouseLeftButtonDown" Handler="ListBoxItem_MouseLeftButtonDown" />
+                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListBoxItemPreviewMouseRightButtonDown" />
+                        <EventSetter Event="ContextMenu.ContextMenuOpening" Handler="ListBoxItemContextMenuOpening" />
+                        <EventSetter Event="ContextMenu.ContextMenuClosing" Handler="ListBoxItemContextMenuClosing" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Grid>
+</UserControl>

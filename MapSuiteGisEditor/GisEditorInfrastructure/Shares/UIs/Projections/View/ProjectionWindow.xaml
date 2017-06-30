@@ -1,0 +1,79 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.ProjectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+        Title="{DynamicResource ProjectionConfigurationTitle}"
+        Width="531"
+        Height="531"
+        MinWidth="531"
+        MinHeight="531"
+        Loaded="Window_Loaded"
+        Style="{StaticResource WindowStyle}">
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.Resources>
+            <Style x:Key="MPaddingTop" TargetType="TextBlock">
+                <Setter Property="Margin" Value="0 5 0 5" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="200" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource MPaddingTop}"
+                       Text="{Binding TextContent}"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding TextVisibility}" />
+            <TabControl x:Name="tabControl"
+                        Grid.Row="1"
+                        SelectionChanged="TabControl_SelectionChanged">
+                <TabItem Header="{DynamicResource ProjectionConfigurationCommonProjectionsTitle}">
+                    <local:CommonProjection x:Name="commonProjection" />
+                </TabItem>
+                <TabItem Header="{DynamicResource ProjectionConfigurationOtherProjectionsTitle}">
+                    <local:OtherProjection x:Name="otherProjection" />
+                </TabItem>
+            </TabControl>
+            <TextBlock Grid.Row="2"
+                       Style="{StaticResource MPaddingTop}"
+                       Text="{DynamicResource ProjectionConfigurationProjectionString}" />
+            <TextBox x:Name="Proj4ParameterTextBox"
+                     Grid.Row="3"
+                     IsReadOnly="{Binding IsReadOnly}"
+                     Text="{Binding SelectedProj4Parameter,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
+        </Grid>
+        <CheckBox Grid.Row="1"
+                  Margin="0 5 0 0"
+                  HorizontalAlignment="Right"
+                  Content="{Binding CheckBoxContent}"
+                  IsChecked="{Binding ApplyForAll,
+                                      Mode=TwoWay}"
+                  Visibility="{Binding CheckBoxVisibility}" />
+        <StackPanel Grid.Row="2"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding OkCommand}"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Command="{Binding CancelCommand}"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <ContentPresenter x:Name="HelpContainer"
+                              Width="70"
+                              Margin="11 0 0 0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center" />
+        </StackPanel>
+    </Grid>
+</Window>

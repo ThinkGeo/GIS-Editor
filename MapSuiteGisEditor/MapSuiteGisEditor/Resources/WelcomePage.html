@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <title>Welcome to Map Suite Explorer</title>
+    <style type="text/css">
+        body
+        {
+            background: #fff;
+            margin: 0 15px 25px 15px;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #444;
+        }
+        h1
+        {
+            font-size: 22px;
+            font-weight: normal;
+            color: #236c95;
+            margin: 25px 0 18px 0;
+        }
+        h2
+        {
+            font-size: 18px;
+            font-weight: normal;
+            color: #000;
+            margin: 25px 0 18px 0;
+        }
+        p, ul, ol
+        {
+            font-size: 13px;
+        }
+        p
+        {
+            margin: 18px 0;
+        }
+        ul.padded li, ol.padded li
+        {
+            margin-bottom: 3px;
+        }
+        .note
+        {
+            width: 600px;
+            background-color: #f3f3f3;
+            border: 1px dotted #aaa;
+            padding: 12px;
+            margin: 25px 0;
+        }
+        .column200
+        {
+            width: 200px;
+            float: left;
+            margin-top: 0;
+            margin-right: 20px;
+        }
+    </style>
+    <style rel="stylesheet" id="" type="text/css" charset="utf-8">
+        @media screen
+        {
+            span.skype_pnh_print_container
+            {
+                display: none !important;
+            }
+            span.skype_pnh_container, span.skype_pnh_container *
+            {
+                background-attachment: scroll !important;
+                background-color: transparent !important;
+                background-image: none !important;
+                background-position: 0px 0px !important;
+                background-repeat: no-repeat !important;
+                border: 0px none !important;
+                border-style: none !important;
+                color: #49535A !important;
+                cursor: pointer !important;
+                direction: ltr !important;
+                display: inline !important;
+                float: none !important;
+                font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+                font-size: 11px !important;
+                font-style: normal !important;
+                font-weight: bold !important;
+                height: 14px !important;
+                letter-spacing: 0 !important;
+                line-height: 14px !important;
+                margin: 0px 0px 0px 0px !important;
+                padding: 0px 0px 0px 0px !important;
+                position: static !important;
+                text-decoration: none !important;
+                text-indent: 0px !important;
+                text-transform: none !important;
+                vertical-align: baseline !important;
+                white-space: nowrap !important;
+                word-spacing: normal !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_inactive_common *
+            {
+                background-image: url('chrome://skype_ff_extension/skin/numbers_common_inactive_icon_set.gif') !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_common *
+            {
+                background-image: url('chrome://skype_ff_extension/skin/numbers_common_active_icon_set.gif') !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_inactive_fax *
+            {
+                background-image: url('chrome://skype_ff_extension/skin/numbers_common_inactive_icon_set.gif') !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_fax *
+            {
+                background-image: url('chrome://skype_ff_extension/skin/numbers_common_active_icon_set.gif') !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_fax span.skype_pnh_right_span, span.skype_pnh_container span.skype_pnh_highlighting_inactive_fax span.skype_pnh_right_span
+            {
+                background-position: -71px 0px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_inactive_free *
+            {
+                background-image: url('chrome://skype_ff_extension/skin/numbers_free_icon_set.gif') !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_inactive_free span.skype_pnh_dropart_flag_span
+            {
+                background-position: 0px 1px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_inactive_free span.skype_pnh_textarea_span
+            {
+                background-position: -71px 0px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_inactive_free span.skype_pnh_text_span
+            {
+                background-image: none !important;
+                color: transparent !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_free *
+            {
+                background-image: url('chrome://skype_ff_extension/skin/numbers_free_icon_set.gif') !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_free span.skype_pnh_dropart_flag_span
+            {
+                background-position: 0px 1px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_free span.skype_pnh_textarea_span
+            {
+                background-position: -135px 0px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_highlighting_active_free span.skype_pnh_text_span
+            {
+                background-position: -135px 0px !important;
+                color: #FFFFFF !important;
+            }
+            span.skype_pnh_container span.skype_pnh_left_span
+            {
+                background-position: 0px 0px !important;
+                width: 6px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_dropart_span
+            {
+                background-position: -11px 0px !important;
+                width: 27px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_dropart_wo_arrow_span
+            {
+                background-position: -11px 0px !important;
+                width: 18px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_dropart_flag_span
+            {
+                background-image: url('chrome://skype_ff_extension/skin/flags.gif') !important;
+                background-position: 1px 1px !important;
+                width: 18px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_textarea_span
+            {
+                background-position: -90px 0px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_text_span
+            {
+                background-position: -90px 0px !important;
+            }
+            span.skype_pnh_container span.skype_pnh_right_span
+            {
+                background-position: -52px 0px !important;
+                width: 15px !important;
+            }
+        }
+        @media print
+        {
+            span.skype_pnh_print_container
+            {
+            }
+            span.skype_pnh_container
+            {
+                display: none !important;
+            }
+        }
+        span.skype_pnh_mark
+        {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        Welcome to Map Suite Explorer</h1>
+    <p>
+        Thank you for choosing Map Suite Explorer for your GIS needs!
+    </p>
+    <h2>
+        How to Use Map Suite Explorer</h2>
+    <ul class="padded">
+        <!--<li>Explore the <b>tree view</b> on the left to see all of the sample applications that
+            are available to you. Click on any sample application to display it in this window.</li>
+        <li>Select the "<b>Sample</b>" button above to display the visual output of the application.</li>
+        <li>Select the "<b>C# Source</b>" or "<b>VB Source</b>" button above to display the
+            source code in your choice of language. </li>-->
+        <li>Step 1: click "New Project" button on the upper left corner.</li>
+        <li>Step 2: add contents:
+            <ol>
+                by clicking the "Content" button</ol>
+            <ol>
+                by clicking the "Base Map" button</ol>
+            <ol>
+                by pressing Ctrl+O</ol>
+            <ol>
+                by dragging and dropping any supported files(shp, ecw, sid)</ol>
+        </li>
+        <li>Step 3: try other buttons freely by yourself.</li>
+        <li>Step 4: save project by clicking the "Save Project" button next to the "New Project"
+            button.</li>
+        <li>Step 5: close the application.</li>
+    </ul>
+    <h2>
+        Further Reading</h2>
+    <p>
+        You can get additional Map Suite documentation on ThinkGeo's website. Explore these
+        links to learn more:
+    </p>
+    <ul class="padded">
+        <li><a href="http://wiki.thinkgeo.com/wiki/ThinkGeo.MapSuite.Core" target="_blank">API Documentation
+            and Class Diagrams</a></li>
+        <li><a href="http://thinkgeo.com/map-suite-developer-gis/wpf-edition/#wpf-faq" target="_blank">Frequently
+            Asked Questions</a></li>
+        <li><a href="http://wiki.thinkgeo.com/wiki/Quick_Start_Guides" target="_blank">QuickStart
+            Guides</a></li>
+<!--        <li><a href="http://gis.thinkgeo.com/Default.aspx?tabid=515" target="_blank">White Papers</a></li>-->
+    </ul>
+    <h2>
+        How to Get Support</h2>
+    <p>
+        Web-based support is available at:
+    </p>
+    <ul class="padded">
+        <li><a href="http://helpdesk.thinkgeo.com/" target="_blank">ThinkGeo's Customer Portal</a></li>
+        <li><a href="http://thinkgeo.com/forums/mapsuite/tabid/143/default.aspx" target="_blank">Official
+            Discussion Forums</a></li>
+        <li><a href="mailto:support@thinkgeo.com">support@thinkgeo.com</a> (Email Support)</li>
+    </ul>
+    <h2>
+        Contacting ThinkGeo</h2>
+    <p class="column200">
+        <b>Mailing Address</b><br>
+        ThinkGeo LLC<br>
+        1617 St. Andrews Drive<br>
+        Lawrence, KS 66047
+    </p>
+    <p class="column200">
+        <b>Hours</b><br>
+        9:00 AM - 5:00 PM<br>
+        Central Time<br>
+        Monday - Friday
+    </p>
+    <p class="column200">
+        <b>Coordinates</b><br>
+        Long: -95.2806172074041 (X)<br>
+        Lat: 38.955466230591 (Y)<br>
+        <a href="http://onlinedemos.thinkgeo.com/geocodeusa/Default.aspx?message=38.9553176570563,-95.2808458627738,1617%20%20ST%20ANDREWS%20%20Drive"
+            target="_blank">Map It!</a>
+    </p>
+    <br style="clear: both;">
+    <p class="column200">
+        <b>Phone</b><br>
+        <span class="skype_pnh_print_container">1-866-847-7510</span><span dir="ltr" class="skype_pnh_container"><span
+            class="skype_pnh_mark"> begin_of_the_skype_highlighting</span>&nbsp;<span dir="ltr"
+                title="Call
+this phone number in United States of America with Skype: +18668477510" class="skype_pnh_highlighting_inactive_common"><span
+    skypeaction="skype_dropdown" class="skype_pnh_left_span">&nbsp;&nbsp;</span><span
+        skypeaction="skype_dropdown" title="Skype actions" class="skype_pnh_dropart_span"><span
+            skypeaction="skype_dropdown" style="background-position: -4499px 1px ! important;"
+            class="skype_pnh_dropart_flag_span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;</span><span
+                class="skype_pnh_textarea_span"><span class="skype_pnh_text_span">&nbsp;&nbsp;1-866-847-7510</span></span><span
+                    class="skype_pnh_right_span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>&nbsp;<span
+                        class="skype_pnh_mark">end_of_the_skype_highlighting</span></span>
+        (Toll-Free)<br>
+        <span class="skype_pnh_print_container">1-785-727-4133</span><span dir="ltr" class="skype_pnh_container"><span
+            class="skype_pnh_mark"> begin_of_the_skype_highlighting</span>&nbsp;<span dir="ltr"
+                title="Call
+this phone number in United States of America with Skype: +17857274133" class="skype_pnh_highlighting_inactive_common"><span
+    skypeaction="skype_dropdown" class="skype_pnh_left_span">&nbsp;&nbsp;</span><span
+        skypeaction="skype_dropdown" title="Skype actions" class="skype_pnh_dropart_span"><span
+            skypeaction="skype_dropdown" style="background-position: -4499px 1px ! important;"
+            class="skype_pnh_dropart_flag_span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;</span><span
+                class="skype_pnh_textarea_span"><span class="skype_pnh_text_span">&nbsp;&nbsp;1-785-727-4133</span></span><span
+                    class="skype_pnh_right_span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>&nbsp;<span
+                        class="skype_pnh_mark">end_of_the_skype_highlighting</span></span>
+        (International)
+    </p>
+    <p class="column200">
+        <b>Email</b><br>
+        <a href="mailto:sales@thinkgeo.com">sales@thinkgeo.com</a>
+    </p>
+    <p class="column200">
+        <b>Website</b><br>
+        <a href="http://thinkgeo.com/" target="_blank">http://thinkgeo.com/</a>
+    </p>
+</body>
+</html>

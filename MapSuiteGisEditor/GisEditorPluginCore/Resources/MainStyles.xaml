@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness Left="20" Right="20" Top="20" Bottom="20" x:Key="BorderMargin" />
+    <Thickness Left="0" Right="0" Top="15" Bottom="0" x:Key="DescriptionMargin" />
+    <Style TargetType="TextBlock">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="ContentTitle">
+        <Setter Property="FontFamily" Value="Arial" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <!--<sys:String x:Key="ChooseStyleCategory">Each layer you add to your project can be styled in different ways. Styles allow you to apply different fill colors and patterns, gradients, outlines, class breaks, labels, icons and much more.</sys:String>
+    <sys:String x:Key="SelectFollowingStyle">The layer you have selected can accept styles from the following categories. Please choose a category and click Next to continue.</sys:String>
+    <sys:String x:Key="AreaStyleDescription">Area styles govern the fill color, type and pattern of area features (polygons, rectangles, etc.).  In addition to common area styles, you can also apply class breaks, value styles, dot density styles and filters.</sys:String>
+    <sys:String x:Key="TextStyleDescription">Label styles allow you to label a feature.</sys:String>
+    <sys:String x:Key="ImportAStyleDescription">Import a saved style that was previously exported from the Map Suite GIS Editor.</sys:String>
+    <sys:String x:Key="PointStyleDescription">Point styles govern the point color, symbol and size of point features.  In addition to common point styles, you can also apply custom symbols, fonts, class breaks, value styles and filters.</sys:String>
+    <sys:String x:Key="LineStyleDescription">Line styles govern the color, thickness and dash style of line features.  In addition to common line styles, you can also apply class breaks, value styles and filters.</sys:String>
+    <sys:String x:Key="FinishDescription">When you click Apply Style, you will be taken to the Style Builder where you can configure the settings for the type of style that you selected above.</sys:String>-->
+</ResourceDictionary>

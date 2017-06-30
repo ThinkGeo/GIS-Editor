@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.OutputUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             
+             Loaded="UserControl_Loaded"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:OutputModeToBoolConverter x:Key="OutputModeToBoolConverter" />
+        <sys:String x:Key="TemporaryKey">ToTemporary</sys:String>
+        <sys:String x:Key="CustomKey">ToFile</sys:String>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <RadioButton Grid.Row="0"
+                     Margin="0 0 0 5"
+                     Content="{DynamicResource ToolsWizardLastStepAddMapLabel}"
+                     FontWeight="Bold"
+                     IsChecked="{Binding OutputMode,
+                                         Mode=TwoWay,
+                                         Converter={StaticResource OutputModeToBoolConverter},
+                                         ConverterParameter={StaticResource TemporaryKey}}" />
+
+        <TextBox Grid.Row="1"
+                 Margin="0 0 35 20"
+                 IsEnabled="{Binding OutputMode,
+                                     Converter={StaticResource OutputModeToBoolConverter},
+                                     ConverterParameter={StaticResource TemporaryKey}}"
+                 Text="{Binding TempFileName,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
+
+        <RadioButton Grid.Row="2"
+                     Margin="0 0 0 5"
+                     Content="{DynamicResource ToolsWizardOutputToFile}"
+                     FontWeight="Bold"
+                     IsChecked="{Binding OutputMode,
+                                         Mode=TwoWay,
+                                         Converter={StaticResource OutputModeToBoolConverter},
+                                         ConverterParameter={StaticResource CustomKey}}" />
+
+        <Grid Grid.Row="3" Margin="0 0 0 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <gisToolKit:AutoCompleteTextBox TextChanged="Text_TextChanged" x:Name="autoCompleteTextBox" Width="NaN"  Height="21" Text="{Binding OutputPathFileName,
+                                    Mode=TwoWay}" IsEnabled="{Binding OutputMode,
+                                         Converter={StaticResource OutputModeToBoolConverter},
+                                         ConverterParameter={StaticResource CustomKey}}"/>
+            <Button Grid.Column="1"
+                    Width="30"
+                    Margin="5 0 0 0" Click="BrowseClick"
+                    Content="..."
+                    IsEnabled="{Binding OutputMode,
+                                        Converter={StaticResource OutputModeToBoolConverter},
+                                        ConverterParameter={StaticResource CustomKey}}" />
+        </Grid>
+    </Grid>
+</UserControl>

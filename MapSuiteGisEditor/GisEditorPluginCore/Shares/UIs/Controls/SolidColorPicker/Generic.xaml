@@ -1,0 +1,573 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/Controls/SolidColorPicker/Resources.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ImageBrush x:Key="CheckerBoardBrush">
+        <ImageBrush.ImageSource>
+            <BitmapImage UriSource="pack://application:,,,/GisEditorPluginCore;component/Images/checkboard_swatch.png" />
+        </ImageBrush.ImageSource>
+    </ImageBrush>
+
+    <DrawingBrush x:Key="SmallCheckerBoardBrush"
+                  TileMode="Tile"
+                  Viewport="0,0,7,7"
+                  ViewportUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,1,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="Black">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="0,0,0.50,0.50" />
+                            <RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <!--  todo: reuse some system brush?  -->
+    <SolidColorBrush x:Key="ColorPickerBackgroundBrush" Color="White" />
+    <SolidColorBrush x:Key="ColorPickerBorderBrush" Color="#FF7F9DB9" />
+
+    <LinearGradientBrush x:Key="RedGradient">
+        <GradientStop Offset="0" Color="Transparent" />
+        <GradientStop Offset="1" Color="Red" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GreenGradient">
+        <GradientStop Offset="0" Color="Transparent" />
+        <GradientStop Offset="1" Color="Green" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BlueGradient">
+        <GradientStop Offset="0" Color="Transparent" />
+        <GradientStop Offset="1" Color="Blue" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="AlphaGradient">
+        <GradientStop Offset="0" Color="Transparent" />
+        <GradientStop Offset="1" Color="White" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HueGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Offset="0.00" Color="#FF0000" />
+        <GradientStop Offset="0.17" Color="#FFFF00" />
+        <GradientStop Offset="0.33" Color="#00FF00" />
+        <GradientStop Offset="0.50" Color="#00FFFF" />
+        <GradientStop Offset="0.67" Color="#0000FF" />
+        <GradientStop Offset="0.84" Color="#FF00FF" />
+        <GradientStop Offset="1.00" Color="#FF0000" />
+    </LinearGradientBrush>
+
+    <Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="IsTabStop" Value="false" />
+        <Setter Property="Focusable" Value="false" />
+        <Setter Property="ClickMode" Value="Press" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <theme:ButtonChrome Name="Chrome"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        RenderMouseOver="{TemplateBinding IsMouseOver}"
+                                        RenderPressed="{TemplateBinding IsPressed}"
+                                        SnapsToDevicePixels="true">
+                        <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" HorizontalAlignment="Right">
+                            <Path Name="Arrow"
+                                  Margin="3,1,0,0"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="{StaticResource DownArrowGeometry}"
+                                  Fill="Black" />
+                        </Grid>
+                    </theme:ButtonChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="Chrome" Property="RenderPressed" Value="true" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Arrow" Property="Fill" Value="#AFAFAF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+    <local:ColorToHexConverter x:Key="ColorToHexConverter" />
+
+    <Style TargetType="{x:Type local:SolidColorPicker}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Padding" Value="4,3" />
+        <!--
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+            <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+        -->
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SolidColorPicker}">
+                    <Grid SnapsToDevicePixels="true">
+                        <TabControl KeyboardNavigation.DirectionalNavigation="Contained"
+                                    SnapsToDevicePixels="True"
+                                    TabStripPlacement="Top">
+                            <TabControl.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Margin" Value="4" />
+                                </Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="Margin" Value="4" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="{x:Type Slider}">
+                                    <Setter Property="Margin" Value="4" />
+                                </Style>
+                                <Style x:Key="LabelAlign" TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="0 0 4 0" />
+                                </Style>
+                                <Style x:Key="PickColorStyleKey" TargetType="{x:Type CheckBox}">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Focusable" Value="False" />
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="Content" Value="{DynamicResource ResourceKey=HoldShiftToPickColorText}" />
+                                    <Setter Property="IsChecked" Value="{Binding IsPicking, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Style>
+                            </TabControl.Resources>
+                            <TabItem Header="{DynamicResource ResourceKey=GenericPickerText}">
+                                <Grid MinHeight="150">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Width="40"
+                                          Height="40"
+                                          Margin="6"
+                                          VerticalAlignment="Top"
+                                          Background="{StaticResource CheckerBoardBrush}">
+                                        <Rectangle HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Fill="{TemplateBinding SelectedColor,
+                                                                          Converter={StaticResource ColorToBrushConverter}}"
+                                                   SnapsToDevicePixels="True"
+                                                   Stroke="Black" />
+                                    </Grid>
+                                    <local:RandomPicker Grid.Column="1"
+                                                        x:Name="RandomPicker"
+                                                        Margin="5"
+                                                        SelectedColor="{Binding SelectedCustomColor,
+                                                                                Mode=TwoWay,
+                                                                                RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBlock Grid.Row="1"
+                                               HorizontalAlignment="Right"
+                                               Text="{DynamicResource ResourceKey=PresentationOpacityHeader}" />
+                                    <Grid Grid.Row="1" Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <TextBox Grid.Column="1"
+                                                 Width="45"
+                                                 IsReadOnly="False"
+                                                 MaxLength="3"
+                                                 Text="{Binding Alpha,
+                                                                RelativeSource={RelativeSource TemplatedParent},
+                                                                Mode=TwoWay,
+                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                 TextAlignment="Center" />
+                                    </Grid>
+                                    <CheckBox Grid.Row="2"
+                                              Grid.Column="1"
+                                              Margin="5 5 0 10"
+                                              Style="{StaticResource PickColorStyleKey}" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="{DynamicResource ResourceKey=PresentationPaletteHeader}">
+                                <Grid MinHeight="150">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Width="40"
+                                          Height="40"
+                                          Margin="6"
+                                          VerticalAlignment="Top"
+                                          Background="{StaticResource CheckerBoardBrush}">
+                                        <Rectangle HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Fill="{TemplateBinding SelectedColor,
+                                                                          Converter={StaticResource ColorToBrushConverter}}"
+                                                   SnapsToDevicePixels="True"
+                                                   Stroke="Black" />
+                                    </Grid>
+
+                                    <ListBox x:Name="SolidColorList"
+                                             Grid.Column="1"
+                                             Margin="1"
+                                             BorderThickness="0"
+                                             ItemsSource="{TemplateBinding Palette}"
+                                             SelectedValue="{Binding SelectedCustomColor,
+                                                                     Mode=TwoWay,
+                                                                     RelativeSource={RelativeSource TemplatedParent}}"
+                                             SnapsToDevicePixels="True">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="16"
+                                                      Height="16"
+                                                      Margin="0 2 2 2"
+                                                      HorizontalAlignment="Center"
+                                                      Background="{StaticResource SmallCheckerBoardBrush}">
+                                                    <Rectangle Fill="{Binding Converter={StaticResource ColorToBrushConverter}}"
+                                                               SnapsToDevicePixels="True"
+                                                               Stroke="Black" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+
+                                    <!--  Alpha slider with background...  -->
+                                    <!--
+                                        <Grid Grid.Row="1" Grid.Column="1" Margin="4">
+                                        <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Background="{StaticResource CheckerBoardBrush}">
+                                        <Slider Maximum="255" Margin="0"
+                                        Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Grid>
+                                        </Grid>
+                                    -->
+
+                                    <!--  But I prefer it simple...  -->
+                                    <TextBlock Grid.Row="1"
+                                               HorizontalAlignment="Right"
+                                               Text="{DynamicResource ResourceKey=PresentationOpacityHeader}" />
+                                    <Grid Grid.Row="1" Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <TextBox Grid.Column="1"
+                                                 Width="45"
+                                                 IsReadOnly="False"
+                                                 MaxLength="3"
+                                                 Text="{Binding Alpha,
+                                                                RelativeSource={RelativeSource TemplatedParent},
+                                                                Mode=TwoWay,
+                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                 TextAlignment="Center" />
+                                    </Grid>
+                                    <CheckBox Grid.Row="2"
+                                              Grid.Column="1"
+                                              Margin="5 10 0 0"
+                                              Style="{StaticResource PickColorStyleKey}" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="RGB">
+                                <Grid MinHeight="150">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.RowSpan="4"
+                                          Width="40"
+                                          Height="40"
+                                          Margin="6"
+                                          VerticalAlignment="Top"
+                                          Background="{StaticResource CheckerBoardBrush}">
+                                        <Rectangle HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Fill="{TemplateBinding SelectedColor,
+                                                                          Converter={StaticResource ColorToBrushConverter}}"
+                                                   SnapsToDevicePixels="True"
+                                                   Stroke="Black" />
+                                    </Grid>
+
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="R:" />
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="G:" />
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="B:" />
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="{DynamicResource ResourceKey=PresentationOpacityHeader}" />
+                                    <Slider Grid.Row="0"
+                                            Grid.Column="2"
+                                            Background="{StaticResource RedGradient}"
+                                            Maximum="255"
+                                            Value="{Binding Red,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Slider Grid.Row="1"
+                                            Grid.Column="2"
+                                            Background="{StaticResource GreenGradient}"
+                                            Maximum="255"
+                                            Value="{Binding Green,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Slider Grid.Row="2"
+                                            Grid.Column="2"
+                                            Background="{StaticResource BlueGradient}"
+                                            Maximum="255"
+                                            Value="{Binding Blue,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                    <Grid Grid.Row="3"
+                                          Grid.Column="2"
+                                          Margin="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Background="{StaticResource SmallCheckerBoardBrush}" />
+                                        <Slider Margin="0"
+                                                Background="{Binding AlphaGradient,
+                                                                     RelativeSource={RelativeSource TemplatedParent}}"
+                                                Maximum="255"
+                                                Value="{Binding Alpha,
+                                                                Mode=TwoWay,
+                                                                RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </Grid>
+                                    <TextBox Grid.Row="0"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Red,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBox Grid.Row="1"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Green,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBox Grid.Row="2"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Blue,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBox Grid.Row="3"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Alpha,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                    <TextBox Grid.Row="4"
+                                             Grid.Column="2"
+                                             Grid.ColumnSpan="2"
+                                             HorizontalAlignment="Right"
+                                             VerticalAlignment="Top"
+                                             FontFamily="Courier New"
+                                             MaxLength="9"
+                                             Text="{Binding SelectedColor,
+                                                            Converter={StaticResource ColorToHexConverter},
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <CheckBox Grid.Row="5"
+                                              Grid.Column="1"
+                                              Grid.ColumnSpan="3"
+                                              Margin="5 0 0 0"
+                                              Style="{StaticResource PickColorStyleKey}" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="HSV">
+                                <Grid MinHeight="150">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.RowSpan="4"
+                                          Width="40"
+                                          Height="40"
+                                          Margin="6"
+                                          VerticalAlignment="Top"
+                                          Background="{StaticResource CheckerBoardBrush}">
+                                        <Rectangle HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Fill="{TemplateBinding SelectedColor,
+                                                                          Converter={StaticResource ColorToBrushConverter}}"
+                                                   SnapsToDevicePixels="True"
+                                                   Stroke="Black" />
+                                    </Grid>
+
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="H:" />
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="S:" />
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="V:" />
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Style="{StaticResource LabelAlign}"
+                                               Text="{DynamicResource ResourceKey=PresentationOpacityHeader}" />
+                                    <Slider Grid.Row="0"
+                                            Grid.Column="2"
+                                            Background="{StaticResource HueGradient}"
+                                            Maximum="255"
+                                            Value="{Binding Hue,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Slider Grid.Row="1"
+                                            Grid.Column="2"
+                                            Background="{Binding SaturationGradient,
+                                                                 RelativeSource={RelativeSource TemplatedParent}}"
+                                            Maximum="255"
+                                            Value="{Binding Saturation,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Slider Grid.Row="2"
+                                            Grid.Column="2"
+                                            Background="{Binding BrightnessGradient,
+                                                                 RelativeSource={RelativeSource TemplatedParent}}"
+                                            Maximum="255"
+                                            Value="{Binding Brightness,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Grid Grid.Row="3"
+                                          Grid.Column="2"
+                                          Margin="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Background="{StaticResource SmallCheckerBoardBrush}">
+                                            <Slider Margin="0"
+                                                    Background="{Binding AlphaGradient,
+                                                                         RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Maximum="255"
+                                                    Value="{Binding Alpha,
+                                                                    Mode=TwoWay,
+                                                                    RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Grid>
+                                    </Grid>
+                                    <TextBox Grid.Row="0"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Hue,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBox Grid.Row="1"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Saturation,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBox Grid.Row="2"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Brightness,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <TextBox Grid.Row="3"
+                                             Grid.Column="3"
+                                             MaxLength="3"
+                                             Text="{Binding Alpha,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                    <CheckBox Grid.Row="4"
+                                              Grid.Column="1"
+                                              Grid.ColumnSpan="3"
+                                              Margin="5 10 0 0"
+                                              Style="{StaticResource PickColorStyleKey}" />
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <!--
+                        </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+                        <Setter Property="Opacity" TargetName="PART_ColorBox" Value="0.3" />
+                        </Trigger>
+                        </ControlTemplate.Triggers>
+                    -->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers />
+    </Style>
+</ResourceDictionary>

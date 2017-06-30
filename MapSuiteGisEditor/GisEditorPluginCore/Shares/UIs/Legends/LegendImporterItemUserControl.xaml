@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.LegendImporterItemUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:LevelToMarginConverter x:Key="levelToMargin" />
+        <local:LeftPaddingLevelToMarginConverter x:Key="leftPaddingLevelToMargin" />
+    </UserControl.Resources>
+    <UserControl.Margin>
+        <Binding Converter="{StaticResource ResourceKey=levelToMargin}" Path="Level" />
+    </UserControl.Margin>
+    <StackPanel Height="20" Orientation="Horizontal">
+        <StackPanel.Resources>
+            <Thickness x:Key="SmallMarginLeft" Left="5" />
+        </StackPanel.Resources>
+        <CheckBox x:Name="AllowToAddCheckBox"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding AllowToAdd}"
+                  Visibility="{Binding CheckBoxVisibility}" />
+        <Image x:Name="IconImage"
+               Width="12"
+               Height="12"
+               VerticalAlignment="Center"
+               Source="{Binding IconSource}" Margin="{StaticResource SmallMarginLeft}" />
+        <gisToolKit:RenameTextBlock Text="{Binding Text}" 
+                                    MouseLeftButtonUp="RenameTextBlock_MouseLeftButtonUp" 
+                                    TextRenamed="RenameTextBlock_TextRenamed"
+                                    VerticalAlignment="Center" Margin="{StaticResource SmallMarginLeft}">
+            <gisToolKit:RenameTextBlock.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Cursor" Value="IBeam" />
+                    <Setter Property="Focusable" Value="True" />
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="IsTabStop" Value="False" />
+                    <Setter Property="Focusable" Value="True" />
+                </Style>
+            </gisToolKit:RenameTextBlock.Resources>
+        </gisToolKit:RenameTextBlock>
+    </StackPanel>
+</UserControl>

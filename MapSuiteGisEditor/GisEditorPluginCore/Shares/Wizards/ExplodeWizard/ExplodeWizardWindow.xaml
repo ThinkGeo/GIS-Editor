@@ -1,0 +1,27 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ExplodeWizardWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:WizardBase="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="Uncombine Wizard"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Width="800"
+        Height="600"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/Wizards/WizardTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:ExplodeWizardViewModel x:Name="viewModel" />
+    </Window.DataContext>
+    <Grid>
+        <WizardBase:WizardView />
+    </Grid>
+</Window>

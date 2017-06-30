@@ -1,0 +1,104 @@
+<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SimpleAreaStyleUserControl"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:styleuc="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                          mc:Ignorable="d">
+    <styleuc:StyleUserControl.Resources>
+        <local:BooleanToggleConverter x:Key="ReverseBooleanConverter" />
+    </styleuc:StyleUserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="10 5 0 5" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="local:DropDownColorPicker">
+                <Setter Property="Height" Value="22" />
+                <Setter Property="MinWidth" Value="320" />
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="local:Numeric">
+                <Setter Property="Height" Value="20" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="88" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Text="{DynamicResource ResourceKey=SimpleAreaStyleUserControlNameText}" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="{DynamicResource ResourceKey=SimpleAreaStyleUserControlFillText}" />
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="{DynamicResource ResourceKey=SimpleAreaStyleUserControlOutlineText}" />
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   Text="{DynamicResource ResourceKey=SimpleAreaStyleUserControlOutlineThicknessText}" />
+
+        <TextBox x:Name="nameTextBox"
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 Grid.ColumnSpan="3"
+                 Text="{Binding Path=Name,
+                                Mode=TwoWay}" />
+        <local:DropDownColorPicker x:Name="fillColorPicker"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Grid.ColumnSpan="3"
+                                   PartialEnabled="{Binding RelativeSource={RelativeSource AncestorLevel=2,
+                                                                                           Mode=FindAncestor,
+                                                                                           AncestorType=UserControl},
+                                                            Path=DataContext.UseRandomColors,
+                                                            Converter={StaticResource ReverseBooleanConverter}}"
+                                   SelectedBrush="{Binding FillColor,
+                                                           Mode=TwoWay}" />
+        <local:DropDownColorPicker x:Name="outlineColorPicker"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Grid.ColumnSpan="3"
+                                   PartialEnabled="{Binding RelativeSource={RelativeSource AncestorLevel=2,
+                                                                                           Mode=FindAncestor,
+                                                                                           AncestorType=UserControl},
+                                                            Path=DataContext.UseRandomColors,
+                                                            Converter={StaticResource ReverseBooleanConverter}}"
+                                   SelectedBrush="{Binding OutLineColor,
+                                                           Mode=TwoWay}" />
+        <!--
+            <TextBox x:Name="outlineThicknessTextBox"
+            Grid.Row="3"
+            Grid.Column="1"
+            Style="{StaticResource ResourceKey=TextBoxStyle}"
+            Text="{Binding Path=OutlineThickness,
+            Mode=TwoWay}" />
+        -->
+        <local:Numeric Grid.Row="3"
+                       Grid.Column="1"
+                       Minimum="0"
+                       Value="{Binding OutlineThickness,
+                                       Mode=TwoWay,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+</styleuc:StyleUserControl>

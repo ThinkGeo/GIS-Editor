@@ -1,0 +1,79 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SelectStandardOrInverseClipStep"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converter="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources />
+    <Grid>
+        <Grid.Resources>
+            <converter:EnumToBoolConverter x:Key="boolConverter" />
+            <sys:String x:Key="standard">Standard</sys:String>
+            <sys:String x:Key="inverse">Inverse</sys:String>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{DynamicResource ToolsClipWizardStepThreeStandardClipRetains}" TextWrapping="Wrap" />
+        <Grid Grid.Row="1" Margin="0 20 0 0">
+            <Grid.Resources>
+                <Style x:Key="tbStyle" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="16 5 0 20" />
+                </Style>
+            </Grid.Resources>
+            <ListBox BorderBrush="Transparent"
+                     BorderThickness="0"
+                     ItemsSource="{Binding TargetObject.ClippingTypes}"
+                     SelectedItem="{Binding TargetObject.CurrentClippingType,
+                                            Mode=TwoWay}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="ItemPanel" Background="Transparent">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="240">
+                            <RadioButton GroupName="ClipGroup" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
+                                <RadioButton.Content>
+                                    <TextBlock Style="{DynamicResource SubtitleStyle}" Text="{Binding Name}" />
+                                </RadioButton.Content>
+                            </RadioButton>
+                            <TextBlock Style="{StaticResource tbStyle}"
+                                       Text="{Binding Description}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Text="{DynamicResource ToolsClipWizardStepThreeOriginal}" />
+                            <Image Width="122"
+                                   Height="176"
+                                   Source="{Binding ImageUri}" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Text="{DynamicResource ToolsClipWizardStepThreeClippedResult}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

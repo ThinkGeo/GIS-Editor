@@ -1,0 +1,18 @@
+<DockingManager version="1.3.0">
+  <ResizingPanel ResizeWidth="*" ResizeHeight="*" EffectiveSize="0,0" Orientation="Horizontal">
+    <DockablePane ResizeWidth="245" ResizeHeight="*" EffectiveSize="245,783" ID="9a711824-ab48-4bed-9c6e-d39f40e52ad6" Anchor="Left" SelectedIndex="0" IsAutoHidden="false">
+      <DockableContent Name="LayerList" FloatingWindowSize="250,400" />
+    </DockablePane>
+    <DocumentPane IsMain="true" ResizeWidth="*" ResizeHeight="*" EffectiveSize="629,783" />
+    <DockablePane ResizeWidth="378" ResizeHeight="*" EffectiveSize="378,783" ID="1aa54128-edb4-4bf8-9e36-3109172f42f3" Anchor="Right" SelectedIndex="0" IsAutoHidden="false">
+      <DockableContent Name="DataRepository" FloatingWindowSize="250,400" />
+      <DockableContent Name="Bookmarks" FloatingWindowSize="250,400" />
+      <DockableContent Name="DocumentsList" FloatingWindowSize="250,400" ChildIndex="0" Width="100" Height="100" Anchor="None" State="Docked" />
+      <DockableContent Name="PlaceSearch" FloatingWindowSize="250,400" ChildIndex="0" Width="100" Height="100" Anchor="None" State="Docked" />
+      <DockableContent Name="PluginSearch" FloatingWindowSize="250,400" ChildIndex="0" Width="200" Height="785" Anchor="None" State="Docked" />
+      <DockableContent Name="FeatureInformation" FloatingWindowSize="250,400" ChildIndex="0" Width="200" Height="809" Anchor="Right" State="Docked" />
+    </DockablePane>
+  </ResizingPanel>
+  <Hidden />
+  <Windows />
+</DockingManager>

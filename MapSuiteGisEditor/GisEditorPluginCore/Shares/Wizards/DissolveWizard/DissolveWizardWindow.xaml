@@ -1,0 +1,25 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DissolveWizardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:wizard="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ResourceKey=DissolveWizardWindowDissolveWizardTitle}"
+        Width="800"
+        Height="600"
+        Loaded="Window_Loaded"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/Wizards/WizardTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:DissolveWizardViewModel x:Name="BindingSource" />
+    </Window.DataContext>
+    <Grid>
+        <wizard:WizardView />
+    </Grid>
+</Window>

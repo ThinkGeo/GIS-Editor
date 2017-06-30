@@ -1,0 +1,149 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.NewLayoutFromTemplateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.PrinterLayers"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowDscNewLayoutFromDscTitle}"
+        Width="555"
+        Height="508"
+        MinWidth="555"
+        MinHeight="508"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="PageSizeProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:PrinterPageSize" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="OrientationProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:FilterPageOrientation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <local:FilterPageOrientationToStringConverter x:Key="filterPageOrientationToStringConverter" />
+        <local:PrinterPageSizeToStringConverter x:Key="printerPageSizeToStringConverter" />
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Row="0"
+                      Grid.Column="0"
+                      Header="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowAvailableTemplatesHeader}">
+                <Grid Margin="5">
+                    <Grid.Resources>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="Margin" Value="0 0 0 5" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Margin="0 0 0 5"
+                               Text="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowFilterListText}" />
+                    <ComboBox Grid.Row="1"
+                              ItemsSource="{Binding Source={StaticResource OrientationProvider}}"
+                              SelectedItem="{Binding SelectedOrientation,
+                                                     Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=., Converter={StaticResource filterPageOrientationToStringConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox Grid.Row="2"
+                              ItemsSource="{Binding Source={StaticResource PageSizeProvider}}"
+                              SelectedItem="{Binding SelectedPageSize,
+                                                     Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=., Converter={StaticResource printerPageSizeToStringConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ListBox Grid.Row="3"
+                             Width="180"
+                             VerticalAlignment="Top"
+                             HorizontalContentAlignment="Stretch"
+                             ItemsSource="{Binding ResultLayoutEntities}"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             SelectedItem="{Binding SelectedLayout,
+                                                    Mode=TwoWay}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Margin" Value="0 0 0 10" />
+                                <Setter Property="Width" Value="150" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Width="77"
+                                       Height="95"
+                                       Source="{Binding Image}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="0"
+                      Grid.Column="2"
+                      Header="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowPreviewHeader}">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Width="310"
+                           Height="251"
+                           HorizontalAlignment="Center"
+                           Source="{Binding SelectedLayout.Preview}" />
+                    <StackPanel Grid.Row="1">
+                        <StackPanel Margin="15 15 0 0" Orientation="Horizontal">
+                            <TextBlock FontWeight="Bold" Text="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowOrientationText}" />
+                            <TextBlock Text="{Binding SelectedLayout.Orientation}" />
+                        </StackPanel>
+                        <StackPanel Margin="15 0 0 0" Orientation="Horizontal">
+                            <TextBlock FontWeight="Bold" Text="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowSizeText}" />
+                            <TextBlock Text="{Binding SelectedLayout.PageSize, Converter={StaticResource printerPageSizeToStringConverter}}" />
+                        </StackPanel>
+                        <TextBlock Margin="15 10 0 0"
+                                   Text="{Binding SelectedLayout.Description}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <StackPanel Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Height="22"
+                        Margin="0 8 0 0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button Click="SelectClick"
+                        Content="{DynamicResource ResourceKey=NewLayoutFromTemplateWindowSelectContent}"
+                        Style="{DynamicResource ConfigurationButtonStyle}" />
+                <Button Click="CancelClick"
+                        Content="{DynamicResource ConfigurationCancelLable}"
+                        Style="{DynamicResource ConfigurationButtonStyle}" />
+                <ContentPresenter x:Name="HelpContainer"
+                                  Width="70"
+                                  Margin="11 0 0 0" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

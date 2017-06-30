@@ -1,0 +1,154 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins">
+
+    <DrawingBrush x:Key="SmallCheckerBoardBrush"
+                  Opacity=".4"
+                  TileMode="Tile"
+                  Viewport="0,0,7,7"
+                  ViewportUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,1,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="Black">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="0,0,0.50,0.50" />
+                            <RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+
+    <Style TargetType="{x:Type local:TabColorPicker}">
+        <Style.Resources>
+            <local:PercentageConverter x:Key="PercentageConverter" />
+        </Style.Resources>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TabColorPicker}">
+                    <Grid>
+                        <TabControl x:Name="ColorTabControl" TabStripPlacement="Bottom">
+                            <TabItem x:Name="SolidColorBrushTabItem" Header="{DynamicResource ResourceKey=TabColorPickerSolidColorHeader}">
+                                <Grid>
+                                    <local:SolidColorPicker x:Name="SolidColorPicker" SelectedColor="Red" />
+                                    <Grid Margin="55 0 10 10" VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <CheckBox Grid.Row="0"
+                                                  Margin="5 10 0 5"
+                                                  VerticalAlignment="Center"
+                                                  Content="{DynamicResource ResourceKey=HoldShiftToPickColorText}"
+                                                  Focusable="False"
+                                                  IsChecked="{Binding ElementName=SolidColorPicker,
+                                                                      Path=IsPicking,
+                                                                      Mode=TwoWay}" />
+                                        <ListBox x:Name="CustomColorList"
+                                                 Grid.Row="1"
+                                                 BorderThickness="0"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                                 SnapsToDevicePixels="True">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="16"
+                                                          Height="16"
+                                                          Margin="0 2 2 2"
+                                                          HorizontalAlignment="Center"
+                                                          Background="{StaticResource SmallCheckerBoardBrush}">
+                                                        <Rectangle Fill="{Binding}"
+                                                                   SnapsToDevicePixels="True"
+                                                                   Stroke="Black" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                        <Button x:Name="AddCustomColorButton"
+                                                Grid.Row="2"
+                                                Width="150"
+                                                Margin="0 5 0 0"
+                                                HorizontalAlignment="Left"
+                                                Content="{DynamicResource ResourceKey=TabColorPickerAddToCustomerCorsText}" />
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+                            <TabItem x:Name="GradientColorBrushTabItem"
+                                     Header="{DynamicResource ResourceKey=TabColorPickerGradientsHeader}"
+                                     IsEnabled="True">
+                                <local:DrawingLinearGradientBrushPicker x:Name="GradientPicker" />
+                            </TabItem>
+                            <TabItem x:Name="HatchBrushTabItem" Header="{DynamicResource ResourceKey=TabColorPickerHatchesHeader}">
+                                <local:HatchPicker x:Name="HatchColorPicker" />
+                            </TabItem>
+                            <TabItem x:Name="TextureTabItem" Header="{DynamicResource ResourceKey=TabColorPickerTexturesHeader}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="150" />
+                                        <RowDefinition Height="35" />
+                                    </Grid.RowDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="80" />
+                                        </Grid.ColumnDefinitions>
+                                        <local:TexturePicker x:Name="TextureColorPicker" />
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="10"
+                                                    VerticalAlignment="Top">
+                                            <Border BorderBrush="Black" BorderThickness="2">
+                                                <Rectangle Width="60"
+                                                           Height="60"
+                                                           Fill="{Binding ElementName=TextureColorPicker,
+                                                                          Path=DataContext.SelectedBrush}"
+                                                           Stroke="Black" />
+                                            </Border>
+                                            <TextBlock HorizontalAlignment="Center" Text="{DynamicResource ResourceKey=TabColorPickerPreviewText}" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Grid.Row="1" Margin="0 10 0 0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="80" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="0 0 10 0"
+                                                   VerticalAlignment="Center"
+                                                   Text="{DynamicResource ResourceKey=TabColorPickerCustomText}" />
+                                        <TextBox Grid.Column="1" IsReadOnly="True" />
+                                        <Button x:Name="PickTextureButton"
+                                                Grid.Column="2"
+                                                Margin="4 0 0 0"
+                                                Content="{DynamicResource ResourceKey=GeneralBrowserContent}" />
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                        <ContentPresenter x:Name="HelpContainer"
+                                          Grid.Row="1"
+                                          Grid.Column="1"
+                                          Margin="0,0,25,35"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Bottom" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

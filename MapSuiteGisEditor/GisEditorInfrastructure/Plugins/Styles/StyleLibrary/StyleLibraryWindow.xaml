@@ -1,0 +1,182 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.StyleLibraryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="{DynamicResource StyleLibraryWindowTitle}"
+        Width="725"
+        Height="630"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <Image x:Key="OpenExplorerImage"
+               Width="16"
+               Height="16"
+               Source="/GisEditorInfrastructure;component/Images/windowsexplorer.png"
+               x:Shared="False" />
+        <Style x:Key="OpenExplorerMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Icon" Value="{StaticResource OpenExplorerImage}" />
+            <Setter Property="Header" Value="{DynamicResource ShowInWindowsExplorerMenuItemLabel}" />
+            <Setter Property="Command" Value="{x:Static local:StyleLibraryViewModel.ShowInExplorerCommand}" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="0 0 5 0" />
+                    <Setter Property="Height" Value="27" />
+                    <Setter Property="Width" Value="27" />
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value=".6" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Command="{Binding AddFolderCommand}">
+                <Button.Content>
+                    <Image Source="/GisEditorInfrastructure;component/Images/add.png" />
+                </Button.Content>
+            </Button>
+            <Button Grid.Column="1" Command="{Binding RefreshCommand}">
+                <Button.Content>
+                    <Image Source="/GisEditorInfrastructure;component/Images/refresh.png" />
+                </Button.Content>
+            </Button>
+            <TextBox Grid.Column="2"
+                     VerticalContentAlignment="Center"
+                     Foreground="{Binding TextColor}"
+                     GotFocus="TextBox_GotFocus"
+                     LostFocus="TextBox_LostFocus"
+                     Text="{Binding SearchKey,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <!--
+            <TabControl Grid.Row="1"
+            Margin="0 5 0 0"
+            ItemsSource="{Binding StyleCategories}"
+            SelectedItem="{Binding SelectedStyleCategory,
+            Mode=TwoWay}">
+            <TabControl.ContentTemplate>
+            <DataTemplate>
+        -->
+        <Grid Grid.Row="1" Margin="0 5 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="2.5*" />
+            </Grid.ColumnDefinitions>
+            <TreeView ItemsSource="{Binding SelectedStyleCategory.Folders}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type local:StyleFolderViewModel}" ItemsSource="{Binding Folders}">
+                        <Grid Background="Transparent">
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem CommandParameter="{Binding FolderPath}" Style="{StaticResource OpenExplorerMenuItemStyle}" />
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Width="24"
+                                   Height="24"
+                                   Source="/GisEditorInfrastructure;component/Images/folder.png" />
+                            <TextBlock Grid.Column="2"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding FolderName}" />
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+            <ListBox Grid.Column="2"
+                     VerticalContentAlignment="Top"
+                     ItemsSource="{Binding SelectedStyleCategory.Previews}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectedItem="{Binding SelectedStylePreview,
+                                            Mode=TwoWay}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="10 10 0 0" />
+                        <EventSetter Event="MouseDoubleClick" Handler="StylePreviewMouseDoubleClick" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Width="{TemplateBinding ActualWidth}" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="100" Background="Transparent">
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem CommandParameter="{Binding StyleFilePath}" Style="{StaticResource OpenExplorerMenuItemStyle}" />
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+                            <Border Width="100"
+                                    Height="100"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1">
+                                <Image Width="36"
+                                       Height="36"
+                                       Margin="5"
+                                       Source="{Binding Preview}" />
+                            </Border>
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="{Binding DisplayName}"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Click="OkClick"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    IsEnabled="{Binding IsOKButtonEnabled}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="CancelClick"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="Help_Click" Style="{DynamicResource ConfigurationButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="16"
+                           Height="16"
+                           Margin="0 0 5 0"
+                           Source="/GisEditorInfrastructure;component/Images/help.png" />
+                    <TextBlock Text="{DynamicResource ResourceKey=StyleLibraryWindowHelpText}" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

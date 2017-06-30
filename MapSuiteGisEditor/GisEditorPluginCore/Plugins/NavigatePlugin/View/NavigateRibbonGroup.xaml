@@ -1,0 +1,157 @@
+<r:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.NavigateRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+               xmlns:li="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+               xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+               xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+               CanAddToQuickAccessToolBarDirectly="False"
+               Header="{DynamicResource NavigateRibbonGroupHeader}">
+    <r:RibbonGroup.Resources>
+        <ResourceDictionary>
+            <li:GisEditorTriggers x:Key="ZoomToLevelTriggers" x:Shared="False">
+                <i:EventTrigger EventName="Click">
+                    <li:CommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=r:RibbonMenuButton}, Path=DataContext.ZoomToLevelCommand}" CommandParameter="{Binding ScaleIndex}" />
+                </i:EventTrigger>
+            </li:GisEditorTriggers>
+        </ResourceDictionary>
+    </r:RibbonGroup.Resources>
+    <r:RibbonGroup.GroupSizeDefinitions>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+        </r:RibbonGroupSizeDefinition>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+        </r:RibbonGroupSizeDefinition>
+    </r:RibbonGroup.GroupSizeDefinitions>
+    <r:RibbonButton Command="{Binding SwitchToPanModeCommand}"
+                    Label="{DynamicResource ResourceKey=NavigateRibbonGroupPanToModeToolTip}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/pan_32x32.png"
+                    QuickAccessToolBarId="PanMode"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/pan_32x32.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=NavigateRibbonGroupSwitchDesc}"
+                    ToolTipTitle="{DynamicResource ResourceKey=NavigateRibbonGroupPanToModeToolTip}" />
+    <r:RibbonButton Command="{Binding SwitchToTrackZoomModeCommand}"
+                    Label="{DynamicResource ResourceKey=NavigateRibbonGroupTrackZoomToModeLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/zoom_to_selected.png"
+                    QuickAccessToolBarId="ZoomToSelectionMode"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/zoom_to_selected.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=NavigateRibbonGroupTrackSwitchToModeToolTipDesc}"
+                    ToolTipTitle="{DynamicResource ResourceKey=NavigateRibbonGroupTrackZoomToModeToolTip}" />
+    <r:RibbonButton Command="{Binding SwitchToIdentifyModeCommand}"
+                    Label="{DynamicResource ResourceKey=NavigateRibbonGroupIdentifyLable}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/info.png"
+                    QuickAccessToolBarId="IdentifyMode"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/identify.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=NavigateRibbonGroupIdentifyModeToolTipTitleDesc}"
+                    ToolTipTitle="{DynamicResource ResourceKey=NavigateRibbonGroupIdentifyModeToolTipTitle}" />
+    <r:RibbonButton Command="{Binding OpenSearchWindowCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupPlaceSearchLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/ribbon_place_search_32.png"
+                    QuickAccessToolBarId="PlaceSearch"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/ribbon_place_search_32.png" 
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupPlaceSearchLabel}" 
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupPlaceSearchDescription}"/>
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.OpenPlotPointWindowCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupPlotPointLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/plotpoint32.png"
+                    QuickAccessToolBarId="PlotPoint"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/plotpoint32.png"
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupPlotPointToolTipDescription}"
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupPlotPointToolTip}" />
+
+    <r:RibbonButton Command="{Binding RefreshMapCommand}"
+                    Label="{DynamicResource ResourceKey=NavigateRibbonGroupRefreshLabelDesc}"
+                    QuickAccessToolBarId="Refresh"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/refresh.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=NavigateRibbonGroupRefreshCurrentMapToolTipDesc}"
+                    ToolTipTitle="{DynamicResource ResourceKey=RefreshMenuItemHeader}" />
+
+    <r:RibbonButton Command="{Binding SetScaleCommand}"
+                    Label="{DynamicResource ResourceKey=CommonSetScaleText}"
+                    QuickAccessToolBarId="SetScale"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/zoomto.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=NavigateRibbonGroupSetCurrentScaleToolTipDesc}"
+                    ToolTipTitle="{DynamicResource ResourceKey=CommonSetScaleText}" />
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.ZoomInCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupZoomInLabel}"
+                    QuickAccessToolBarId="ZoomIn"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/zoomin.png"
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupZoomInTooltipDescription}"
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupZoomInTooltipTitle}" />
+    <r:RibbonButton Command="{x:Static local:CommandHelper.ZoomOutCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupZoomOutLabel}"
+                    QuickAccessToolBarId="ZoomOut"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/zoomout.png"
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupZoomOutTooltipDescription}"
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupZoomOutTooltipTitle}" />
+    <r:RibbonMenuButton x:Name="rmbZoomTo"
+                        ItemsSource="{Binding CurrentZoomLevels}"
+                        Label="{DynamicResource NavigateRibbonGroupZoomLabel}"
+                        QuickAccessToolBarId="ZoomTo"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/zoomto.png"
+                        ToolTipDescription="{DynamicResource NavigateRibbonGroupZoomTooltipDescription}"
+                        ToolTipTitle="{DynamicResource NavigateRibbonGroupZoomTooltipTitle}"
+                        x:FieldModifier="private">
+        <r:RibbonMenuButton.ItemContainerStyle>
+            <Style TargetType="r:RibbonMenuItem">
+                <!--  <EventSetter Event="r:RibbonMenuItem.Click" Handler="ZoomToScaleMenuItemClick" />  -->
+                <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+                <Setter Property="li:InteractionExtension.Triggers" Value="{StaticResource ZoomToLevelTriggers}" />
+            </Style>
+        </r:RibbonMenuButton.ItemContainerStyle>
+        <r:RibbonMenuButton.ItemTemplate>
+            <ItemContainerTemplate>
+                <TextBlock Text="{Binding Name}" />
+            </ItemContainerTemplate>
+        </r:RibbonMenuButton.ItemTemplate>
+    </r:RibbonMenuButton>
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.ZoomToFullExtentCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupFullExtentLabel}"
+                    QuickAccessToolBarId="FullExtent"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/base_globe_16.png"
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupFullExtentTooltipDescription}"
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupFullExtentTooltipTitle}" />
+    <r:RibbonButton Command="{x:Static local:CommandHelper.ZoomToPreviousExtentCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupPreviousLabel}"
+                    QuickAccessToolBarId="PreviousExtent"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/previous_extent.png"
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupPreviousTooltipDescription}"
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupPreviousTooltipTitle}" />
+    <r:RibbonButton Command="{x:Static local:CommandHelper.ZoomToNextExtentCommand}"
+                    Label="{DynamicResource NavigateRibbonGroupNextLabel}"
+                    QuickAccessToolBarId="NextExtent"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/next_extent.png"
+                    ToolTipDescription="{DynamicResource NavigateRibbonGroupNextTooltipDescription}"
+                    ToolTipTitle="{DynamicResource NavigateRibbonGroupNextTooltipTitle}" />
+</r:RibbonGroup>

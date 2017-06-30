@@ -1,0 +1,26 @@
+<ribbon:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ReprojectionRibbonGroup"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                    xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                    CanAddToQuickAccessToolBarDirectly="False"
+                    Header="{DynamicResource PluginRibbonGroupHeader}">
+    <ribbon:RibbonGroup.GroupSizeDefinitions>
+        <ribbon:RibbonGroupSizeDefinition>
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+        </ribbon:RibbonGroupSizeDefinition>
+    </ribbon:RibbonGroup.GroupSizeDefinitions>
+
+    <ribbon:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                           Path=ReprojectionCommand}"
+                         Label="{DynamicResource PluginRibbonGroupReprojectionWizardLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/reprojection_32x32.png"
+                         QuickAccessToolBarId="ReprojectionWizard"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/reprojection_32x32.png"
+                         ToolTipDescription="{DynamicResource PluginRibbonGroupReprojectionWizardDescription}"
+                         ToolTipTitle="{DynamicResource PluginRibbonGroupReprojectionWizardLabel}" />
+</ribbon:RibbonGroup>

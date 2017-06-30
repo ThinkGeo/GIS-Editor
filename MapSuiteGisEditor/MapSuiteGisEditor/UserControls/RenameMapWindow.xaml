@@ -1,0 +1,51 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.RenameMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+        Title="{DynamicResource ResourceKey=RenameWindowMapNameTitle}"
+        Width="270"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}">
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Width="200"
+                   Margin="0 0 0 12"
+                   HorizontalAlignment="Left"
+                   Text="{DynamicResource ResourceKey=RenameWindowDscMapnamescanDscText}"
+                   TextWrapping="Wrap" />
+        <TextBox Name="txtName"
+                 Grid.Row="1"
+                 Height="22"
+                 VerticalContentAlignment="Center"
+                 KeyDown="TxtName_KeyDown"
+                 TextChanged="TxtName_TextChanged"
+                 >
+            <TextBox.Text>
+                <Binding Path="Name" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:MapNameValidation />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBlock Grid.Row="2"
+                   Foreground="Red"
+                   Text="{Binding ElementName=txtName,Path=(Validation.Errors)[0].ErrorContent}"
+                   TextWrapping="Wrap"
+                    />
+        <Grid Grid.Row="3" Margin="0 8 0 0">
+            <Button Name="btnOK"
+                    HorizontalAlignment="Right"
+                    Click="OKClick"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    IsEnabled="False"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+        </Grid>
+    </Grid>
+</Window>

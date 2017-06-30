@@ -1,0 +1,91 @@
+<rb:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ShapeOperationsRibbonGroup"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:rb="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                d:DesignHeight="300"
+                d:DesignWidth="300"
+                Header="{DynamicResource ShapeOperationsRibbonGroupHeader}"
+                mc:Ignorable="d">
+    <rb:RibbonGroup.DataContext>
+        <local:ShapeOperationsViewModel />
+    </rb:RibbonGroup.DataContext>
+    <rb:RibbonGroup.GroupSizeDefinitions>
+        <rb:RibbonGroupSizeDefinition>
+            <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+        </rb:RibbonGroupSizeDefinition>
+        <rb:RibbonGroupSizeDefinition>
+            <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+        </rb:RibbonGroupSizeDefinition>
+    </rb:RibbonGroup.GroupSizeDefinitions>
+
+    <rb:RibbonGroup.Items>
+        <rb:RibbonButton Command="{Binding CombineFeaturesCommand}"
+                         Label="{DynamicResource ShapeOperationsRibbonGroupCombineButtonLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Combine.png"
+                         QuickAccessToolBarId="ShapeOperation_Combine"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Combine.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=CombineFeaturesButtonTipsDescritpion}"
+                         ToolTipTitle="{DynamicResource ResourceKey=CombineFeaturesButtonTips}" />
+        <rb:RibbonButton Command="{Binding ExplodeFeaturesCommand}"
+                         Label="Uncombine"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Explode.png"
+                         QuickAccessToolBarId="ShapeOperation_Explode"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Explode.png"
+                         ToolTipDescription="Uncombine"
+                         ToolTipTitle="Uncombine" />
+        <rb:RibbonButton Command="{Binding UnionFeaturesCommand}"
+                         Label="{DynamicResource ShapeOperationsRibbonGroupUnionButtonLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Union.png"
+                         QuickAccessToolBarId="ShapeOperation_Union"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Union.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=UnionFeaturesButtonTipsDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=UnionFeaturesButtonTips}" />
+
+        <rb:RibbonButton Command="{Binding SubtractFeaturesCommand}"
+                         Label="{DynamicResource ShapeOperationsRibbonGroupSubtractButtonLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Subtract.png"
+                         QuickAccessToolBarId="ShapeOperation_Subtract"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Subtract.png"
+                         ToolTipDescription="{DynamicResource SubtractFeaturesButtonTipsDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=SubtractFeaturesButtonTips}" />
+
+        <rb:RibbonButton Command="{Binding IntersetFeaturesCommand}"
+                         Label="{DynamicResource ShapeOperationsRibbonGroupIntersectButtonLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Intersect.png"
+                         QuickAccessToolBarId="ShapeOperation_Intersect"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Intersect.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=IntersetFeaturesButtonTipsDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=IntersetFeaturesButtonTips}" />
+
+        <rb:RibbonButton Command="{Binding SplitFeaturesCommand}"
+                         Label="{DynamicResource GeoprocessingGroupSplitLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Split.png"
+                         QuickAccessToolBarId="ShapeOperation_Split"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Split.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=SplitFeaturesButtonTipsDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=SplitFeaturesButtonTips}" />
+
+        <rb:RibbonButton Command="{Binding InnerRingCommand}"
+                         Label="{DynamicResource ResourceKey=ShapeOperationRibbonGroupInnerRingLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_InnerRing.png"
+                         QuickAccessToolBarId="ShapeOperation_InnerRing"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_InnerRing.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=InnerRingButtonTipsDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=InnerRingButtonTips}" />
+    </rb:RibbonGroup.Items>
+
+</rb:RibbonGroup>

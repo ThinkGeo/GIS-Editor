@@ -1,0 +1,100 @@
+<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DotDensityAreaStyleUserControl"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+                          xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:styleuc="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                          xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                          mc:Ignorable="d">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="PointStyleTypeProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:PointStyleType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <gisToolKit:BusyIndicator x:Name="BusyPanel" IsBusy="False">
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="10 5 0 5" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="FontSize" Value="11" />
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0 5 0 5" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="FontSize" Value="11" />
+                </Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="Height" Value="20" />
+                    <Setter Property="Margin" Value="0 5 0 5" />
+                    <Setter Property="FontSize" Value="11" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10 5 0 5" />
+                    <Setter Property="FontSize" Value="11" />
+                    <Setter Property="Width" Value="80" />
+                </Style>
+            </StackPanel.Resources>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{DynamicResource DotDensityAreaStyleUserControlNameText}" />
+                <TextBox Name="nameTextBox"
+                         Grid.Column="1"
+                         Text="{Binding Name,
+                                        Mode=TwoWay}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{DynamicResource DotDensityAreaStyleUserControlColumnNameText}" />
+                <ComboBox Name="columnNameComboBox"
+                          Grid.Column="1" DisplayMemberPath="Value"
+                          ItemsSource="{Binding RequiredColumnNames}"
+                          SelectedItem="{Binding SelectedColumnName,
+                                                  Mode=TwoWay}">
+
+                </ComboBox>
+                <Button Name="viewDataButton"
+                        Grid.Column="2"
+                        Click="viewDataButton_Click"
+                        Content="{DynamicResource DotDensityAreaStyleUserControlViewDataContent}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                           Text="{DynamicResource ResourceKey=DotDensityAreaStyleUserControlDscShow1dotDscText}"
+                           TextAlignment="Right" />
+                <!--<TextBlock Grid.Column="1" Text="1" Width="5" ></TextBlock>
+                <TextBlock Grid.Column="2" Text="Dots for each increment of " TextAlignment="Left" />-->
+                <TextBox Name="yTextBox"
+                         Grid.Column="3" Width="245" HorizontalAlignment="Right"
+                         Text="{Binding PointValueRatioY,
+                                        Mode=TwoWay,
+                                        UpdateSourceTrigger=LostFocus}" />
+                <Button Grid.Column="4"
+                        Click="Button_Click"
+                        Content="{DynamicResource ResourceKey=DotDensityAreaStyleUserControlRecommendContent}"
+                        IsEnabled="{Binding IsRecommandEnabled}" />
+            </Grid>
+        </StackPanel>
+    </gisToolKit:BusyIndicator>
+</styleuc:StyleUserControl>

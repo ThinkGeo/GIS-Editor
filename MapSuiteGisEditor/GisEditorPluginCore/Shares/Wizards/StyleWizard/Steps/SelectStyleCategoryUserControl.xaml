@@ -1,0 +1,69 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SelectStyleCategoryUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Resources/mainstyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource BorderMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="{DynamicResource ChooseStyleCategory}" />
+            <TextBlock Margin="0 5 0 0" Text="{DynamicResource SelectFollowingStyle}" />
+            <ListBox x:Name="List1"
+                     BorderThickness="0"
+                     ItemsSource="{Binding StyleCategories}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                     SelectedItem="{Binding SelectedStyleCategory,
+                                            Mode=TwoWay}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Focusable" Value="False" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="ItemPanel" Background="White">
+                                        <ContentPresenter />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="ListBoxItem.IsSelected" Value="True">
+                                            <Setter TargetName="ItemPanel" Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0 20 0 0">
+                            <RadioButton Content="{Binding Name}" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" />
+                            <TextBlock Width="{Binding ElementName=List1,
+                                                       Path=ActualWidth}"
+                                       Margin="17 2 20 0"
+                                       Text="{Binding Description}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        <CheckBox Grid.Row="1"
+                  Margin="5 5 5 0"
+                  Content="{DynamicResource ResourceKey=SelectStyleCategoryUserControlDscAlwaysshowStyleDscContent}"
+                  IsChecked="{Binding IsAlwaysShow,
+                                      Mode=TwoWay}" />
+    </Grid>
+</UserControl>

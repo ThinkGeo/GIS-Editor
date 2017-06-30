@@ -1,0 +1,27 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.TransactionErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource TransactionErrorWindowTitle}" ResizeMode="NoResize" Height="280" Width="370" Style="{StaticResource WindowStyle}">
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Margin="0 0 0 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Image Width="40"
+                   Height="40"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Source="/GisEditorPluginCore;component/Images/sad.png" Margin="0 0 8 0" />
+            <TextBlock Text="{DynamicResource TransactionErrorWindowDescription}" TextWrapping="Wrap" Grid.Column="1" Margin="0 0 0 5" />
+        </Grid>
+        <ListBox x:Name="lbxRecord" Grid.Row="1">
+        </ListBox>
+        <Button Content="{DynamicResource ConfigurationOKLable}" Click="OKClick" Width="70" HorizontalAlignment="Right" Margin="0 5 0 0" Grid.Row="2" />
+    </Grid>
+</Window>

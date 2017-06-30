@@ -1,0 +1,14 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Image x:Key="IdentifyIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/identify.png"/>
+    <Image x:Key="PreviousExtentIconKey" x:Shared="false" Source="/GisEditorPluginCore;component/Images/previous_extent.png"/>
+    <Image x:Key="NextExtentIconKey" x:Shared="false" Source="/GisEditorPluginCore;component/Images/next_extent.png"/>
+    <Image x:Key="ZoomInIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/ZoomIn.png"/>
+    <Image x:Key="ZoomOutIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/ZoomOut.png"/>
+    <Image x:Key="CenterAtIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/center_at.png"/>
+    <Image x:Key="AddDocumentIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/map_add.png"/>
+    <Image x:Key="RenameDocumentIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/rename.png"/>
+    <Image x:Key="RefreshMapIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/refresh.png"/>
+    <Image x:Key="DeleteDocumentIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/document-delete.png" Height="14" Width="14"/>
+    <Image x:Key="CreateDocumentIconKey" x:Shared="false" Source="/MapSuiteGisEditor;component/Images/document-new.png" Height="14" Width="14"/>
+</ResourceDictionary>

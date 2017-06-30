@@ -1,0 +1,48 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.CSVConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ResourceKey=CSVConfigWindowConfigureFileTitle}"
+        Width="800"
+        Height="600"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <local:CSVConfigUserControl x:Name="configControl" Margin="5" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Name="saveButton"
+                    Grid.Row="1"
+                    Width="80"
+                    Height="25"
+                    Margin="10 10 10 15"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Click="Button_Click"
+                    Content="{DynamicResource ResourceKey=CSVConfigWindowSaveAddContent}"
+                    IsDefault="True"
+                    IsEnabled="{Binding ElementName=configControl,
+                                        Path=DataContext.SelectedCSVModel.IsReady}" />
+            <Button Name="cancelButton"
+                    Grid.Row="1"
+                    Width="80"
+                    Height="25"
+                    Margin="0 0 0 15"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Click="Button_Click"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    IsCancel="True" />
+            <ContentPresenter x:Name="HelpContainer"
+                              Grid.Row="1"
+                              Width="80"
+                              Height="25"
+                              Margin="10 0 0 15"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Bottom" />
+        </StackPanel>
+    </Grid>
+</Window>

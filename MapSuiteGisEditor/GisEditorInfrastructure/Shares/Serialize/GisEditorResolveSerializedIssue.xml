@@ -1,0 +1,34 @@
+﻿<ResolveList>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.Core.TextFilterStyle, MapSuiteCore,</Old>
+    <New>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.TextFilterStyle, WpfDesktopEditionExtension,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.Core.SymbolPointStyle, MapSuiteCore,</Old>
+    <New>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.SymbolPointStyle, WpfDesktopEditionExtension,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.Core.FontPointStyle, MapSuiteCore,</Old>
+    <New>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.FontPointStyle, WpfDesktopEditionExtension,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.PredefinedLineStyle, WpfDesktopEditionExtension,</Old>
+    <New>ThinkGeo.MapSuite.Core.LineStyle, MapSuiteCore,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.AdvancedLineStyle, WpfDesktopEditionExtension,</Old>
+    <New>ThinkGeo.MapSuite.Core.LineStyle, MapSuiteCore,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.PredefinedAreaStyle, WpfDesktopEditionExtension,</Old>
+    <New>ThinkGeo.MapSuite.Core.AreaStyle, MapSuiteCore,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.AdvancedAreaStyle, WpfDesktopEditionExtension,</Old>
+    <New>ThinkGeo.MapSuite.Core.AreaStyle, MapSuiteCore,</New>
+  </Pair>
+  <Pair>
+    <Old>ThinkGeo.MapSuite.WpfDesktopEdition.Extension.PredefinedPointStyle, WpfDesktopEditionExtension,</Old>
+    <New>ThinkGeo.MapSuite.Core.PointStyle, MapSuiteCore,</New>
+  </Pair>
+</ResolveList>

@@ -1,0 +1,256 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.NorthArrowsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:layers="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite"
+        xmlns:Custom="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="{DynamicResource NorthArrowsWindowTitle}"
+        Width="510"
+        Height="425"
+        MinWidth="510"
+        MinHeight="425"
+        Style="{StaticResource WindowStyle}">
+    <Window.DataContext>
+        <local:NorthArrowViewModel x:Name="northArrowViewModel" />
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <local:EmfConverter x:Key="emfConverter" />
+        <ObjectDataProvider x:Key="sizeValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:LogoSizeMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="locationValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="layers:AdornmentLocation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="RadioButton">
+                    <Setter Property="Margin" Value="0 0 0 5" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="{DynamicResource NorthArrowsWindowNorthArrowTypeHeader}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="imgList"
+                             BorderBrush="Black"
+                             BorderThickness="1"
+                             ItemsSource="{Binding Images}"
+                             SelectedItem="{Binding SelectedImage,
+                                                    Mode=TwoWay}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Margin" Value="2 2 0 0" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="50"
+                                        Height="50"
+                                        BorderBrush="Black"
+                                        BorderThickness="1">
+                                    <Image HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Source="{Binding .,
+                                                            Converter={StaticResource emfConverter}}" />
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=ActualWidth}" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                    <Grid Grid.Row="1" Margin="0 10 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="0 0 0 5" Text="{DynamicResource NorthArrowsWindowCustomImageLabel}" />
+                        <TextBox Grid.Row="1"
+                                 Margin="0 0 5 0"
+                                 IsReadOnly="True"
+                                 Text="{Binding DisplayPathInText,
+                                                Mode=OneWay}" />
+                        <Button Grid.Row="1"
+                                Grid.Column="1" Margin="5 0 0 0" Width="70"
+                                Content="{DynamicResource GeneralBrowserContent}">
+                            <Custom:Interaction.Triggers>
+                                <Custom:EventTrigger EventName="Click">
+                                    <GalaSoft_MvvmLight_Command:EventToCommand Command="{Binding BrowseCommand, Mode=OneWay}" />
+                                </Custom:EventTrigger>
+                            </Custom:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="{DynamicResource NorthArrowsWindowPreviewLabel}">
+                <Image Width="120"
+                       Height="120"
+                       VerticalAlignment="Top"
+                       Source="{Binding PreviewImage}" />
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Row="1">
+            <GroupBox Header="{DynamicResource NorthArrowsWindowSizeHeader}" IsEnabled="{Binding IsSizeAndPositionEnable}">
+                <StackPanel Margin="5">
+                    <StackPanel.Resources>
+                        <Style TargetType="Grid">
+                            <Setter Property="Margin" Value="0 0 0 5" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Text="{DynamicResource NorthArrowsWindowLocationLabel}" />
+                        <ComboBox Grid.Row="0"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding Source={StaticResource locationValues}}"
+                                  SelectedItem="{Binding ArrowLocation,
+                                                         Mode=TwoWay}">
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="ComboBoxItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="UseOffsets">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+                        </ComboBox>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="2"
+                                   Text="{DynamicResource NorthArrowsWindowLeftOffsetLabel}" />
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="3"
+                                 Text="{Binding ArrowLeft,
+                                                Mode=TwoWay}" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="4"
+                                   Text="{DynamicResource NorthArrowsWindowTopOffsetLabel}" />
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="5"
+                                 Text="{Binding ArrowTop,
+                                                Mode=TwoWay}" />
+                    </Grid>
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Text="{DynamicResource CommonSizeText}" />
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding Source={StaticResource sizeValues}}"
+                                  SelectedItem="{Binding ArrowSize,
+                                                         Mode=TwoWay}" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="2"
+                                   IsEnabled="{Binding IsCustomSizeEnable}"
+                                   Text="{DynamicResource NorthArrowsWindowWidthLabel}" />
+                        <TextBox Grid.Row="1"
+                                 Grid.Column="3"
+                                 IsEnabled="{Binding IsCustomSizeEnable}"
+                                 Text="{Binding ArrowWidth,
+                                                Mode=TwoWay}" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="4"
+                                   IsEnabled="{Binding IsCustomSizeEnable}"
+                                   Text="{DynamicResource NorthArrowsWindowHeightLabel}" />
+                        <TextBox Grid.Row="1"
+                                 Grid.Column="5"
+                                 IsEnabled="{Binding IsCustomSizeEnable}"
+                                 Text="{Binding ArrowHeight,
+                                                Mode=TwoWay}" />
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        <StackPanel Grid.Row="2"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Content="{DynamicResource ConfigurationOKLable}" Style="{DynamicResource ConfigurationButtonStyle}">
+                <Custom:Interaction.Triggers>
+                    <Custom:EventTrigger EventName="Click">
+                        <GalaSoft_MvvmLight_Command:EventToCommand Command="{Binding OKCommand, Mode=OneWay}" />
+                    </Custom:EventTrigger>
+                </Custom:Interaction.Triggers>
+            </Button>
+            <Button Content="{DynamicResource ConfigurationCancelLable}" Style="{DynamicResource ConfigurationButtonStyle}">
+                <Custom:Interaction.Triggers>
+                    <Custom:EventTrigger EventName="Click">
+                        <GalaSoft_MvvmLight_Command:EventToCommand Command="{Binding CancelCommand, Mode=OneWay}" />
+                    </Custom:EventTrigger>
+                </Custom:Interaction.Triggers>
+            </Button>
+            <Button Content="{DynamicResource ConfigurationApplyLable}" Style="{DynamicResource ConfigurationButtonStyle}">
+                <Custom:Interaction.Triggers>
+                    <Custom:EventTrigger EventName="Click">
+                        <GalaSoft_MvvmLight_Command:EventToCommand Command="{Binding ApplyCommand, Mode=OneWay}" />
+                    </Custom:EventTrigger>
+                </Custom:Interaction.Triggers>
+            </Button>
+            <ContentPresenter x:Name="HelpContainer"
+                              Width="70"
+                              Margin="11 0 0 0" />
+        </StackPanel>
+    </Grid>
+</Window>

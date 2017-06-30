@@ -1,0 +1,245 @@
+<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GeoPenUserControl"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:core="clr-namespace:ThinkGeo.MapSuite.Drawing;assembly=ThinkGeo.MapSuite"
+                          xmlns:CP="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:styleuc="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                          xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style x:Key="textBoxStyle" TargetType="TextBox">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="local:DropDownColorPicker">
+                <Setter Property="Height" Value="22" />
+                <!--  <Setter Property="MinWidth" Value="350" />  -->
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="RadioButton">
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <local:EnumToStringConverter x:Key="LineDashStyleConvertor" EnumType="{x:Type core:LineDashStyle}" />
+            <local:EnumToStringConverter x:Key="GeoDashCapConvertor" EnumType="{x:Type core:GeoDashCap}" />
+            <local:EnumToStringConverter x:Key="DrawingLineCapConvertor" EnumType="{x:Type core:DrawingLineCap}" />
+            <local:EnumToStringConverter x:Key="DrawingLineJoinConvertor" EnumType="{x:Type core:DrawingLineJoin}" />
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <local:DashPatterToStringConverter x:Key="DashPatterToStringConverter" />
+            <local:DashStyleToIsUsingCustomConverter x:Key="IsUsingCustomConverter" />
+            <local:DashStyleToIsNotUsingCustomConverter x:Key="IsNotUsingCustomConverter" />
+            <local:DashStyleToSelectValueConverter x:Key="DashStyleToSelectValueConverter" />
+
+            <local:SelectValueToVisibleTextBoxConverter x:Key="SelectValueToVisibleTextBoxConverter" />
+            <local:SelectValueToVisibleComboBoxConverter x:Key="SelectValueToVisibleComboBoxConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="{DynamicResource ResourceKey=GeoPenUserControlDashPatternHeader}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlPatternTypeText}" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlDashStyleText}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlDashCapText}" />
+
+                <ComboBox x:Name="PatternType"
+                          Grid.Row="0"
+                          Grid.Column="1"
+                          SelectedValue="{Binding DashStyle,
+                                                  Mode=OneTime,
+                                                  Converter={StaticResource ResourceKey=DashStyleToSelectValueConverter}}" />
+                <ComboBox x:Name="DashStyleComboBox"
+                          Grid.Row="0"
+                          Grid.Column="3"
+                          SelectedValue="{Binding DashStyle,
+                                                  Mode=TwoWay,
+                                                  Converter={StaticResource ResourceKey=LineDashStyleConvertor},
+                                                  UpdateSourceTrigger=Explicit}"
+                          SelectionChanged="DashStyleComboBox_SelectionChanged"
+                          Visibility="{Binding ElementName=PatternType,
+                                               Mode=TwoWay,
+                                               Converter={StaticResource ResourceKey=SelectValueToVisibleComboBoxConverter},
+                                               Path=SelectedValue}" />
+                <ComboBox x:Name="DashCapComboBox"
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          SelectedValue="{Binding DashCap,
+                                                  Mode=TwoWay,
+                                                  Converter={StaticResource ResourceKey=GeoDashCapConvertor}}" />
+                <TextBox Name="DashPatternTextBox"
+                         Grid.Row="0"
+                         Grid.Column="3"
+                         Style="{StaticResource ResourceKey=textBoxStyle}"
+                         Text="{Binding DashPattern,
+                                        Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged,
+                                        Converter={StaticResource ResourceKey=DashPatterToStringConverter}}"
+                         Visibility="{Binding ElementName=PatternType,
+                                              Path=SelectedValue,
+                                              Converter={StaticResource ResourceKey=SelectValueToVisibleTextBoxConverter}}" />
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="{DynamicResource ResourceKey=GeoPenUserControlAdvancedHeader}">
+            <Grid>
+                <Grid.Resources>
+                    <ObjectDataProvider x:Key="DrawingLevelProvider"
+                                        MethodName="GetValues"
+                                        ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="core:DrawingLevel" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <local:DrawingLevelToNumberConverter x:Key="DrawingLevelToNumberConverter" />
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlXOffsetText}" />
+                <CP:Numeric Grid.Row="0"
+                            Grid.Column="1"
+                            Height="20"
+                            Margin="5 0 5 0"
+                            AllowDecimal="True"
+                            Maximum="1000"
+                            Minimum="-1000"
+                            Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl,
+                                                                           Mode=FindAncestor,
+                                                                           AncestorLevel=2},
+                                            Path=DataContext.XOffsetInPixel,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlYOffsetText}" />
+                <CP:Numeric Grid.Row="0"
+                            Grid.Column="3"
+                            Height="20"
+                            Margin="5 0 5 0"
+                            AllowDecimal="True"
+                            Maximum="1000"
+                            Minimum="-1000"
+                            Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl,
+                                                                           Mode=FindAncestor,
+                                                                           AncestorLevel=2},
+                                            Path=DataContext.YOffsetInPixel,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlStartCapText}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlEndCapText}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlLineJoinText}" />
+
+                <ComboBox x:Name="StartCapComboBox"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          SelectedValue="{Binding StartCap,
+                                                  Mode=TwoWay,
+                                                  Converter={StaticResource ResourceKey=DrawingLineCapConvertor}}" />
+                <ComboBox x:Name="EndCapComboBox"
+                          Grid.Row="1"
+                          Grid.Column="3"
+                          SelectedValue="{Binding EndCap,
+                                                  Mode=TwoWay,
+                                                  Converter={StaticResource ResourceKey=DrawingLineCapConvertor}}" />
+
+                <ComboBox x:Name="LineJoinComboBox"
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          SelectedValue="{Binding LineJoin,
+                                                  Mode=TwoWay,
+                                                  Converter={StaticResource ResourceKey=DrawingLineJoinConvertor}}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlMiterLimitText}" />
+                <CP:Numeric Grid.Row="2"
+                            Grid.Column="3"
+                            Height="20"
+                            Margin="5 0 5 0"
+                            Value="{Binding MiterLimit,
+                                            Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="3"
+                           Grid.Column="0"
+                           Margin="5 5 0 5"
+                           Text="{DynamicResource ResourceKey=GeoPenUserControlDrawingLevelText}" />
+                <ComboBox Grid.Row="3"
+                          Grid.Column="1"
+                          Height="20"
+                          ItemsSource="{Binding Source={StaticResource DrawingLevelProvider}}"
+                          SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=UserControl,
+                                                                                Mode=FindAncestor,
+                                                                                AncestorLevel=2},
+                                                 Path=DataContext.DrawingLevel,
+                                                 Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=., Converter={StaticResource DrawingLevelToNumberConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</styleuc:StyleUserControl>

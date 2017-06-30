@@ -1,0 +1,38 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ParcelAtlasContractIDWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             Style="{StaticResource WindowStyle}" SizeToContent="Height"
+             Title="{DynamicResource ParcelAtlasContractIDWindowTitle}" ResizeMode="NoResize" Height="110" Width="370">
+    <Grid Margin="6 7 6 8">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="70" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Margin" Value="5 5 0 0" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{DynamicResource ParcelAtlasContractIDWindowContractIDLabel}" Margin="0 0 5 0" />
+        <TextBox x:Name="contractIdTxtBox" Grid.Column="1" Grid.Row="0" />
+        <StackPanel Orientation="Horizontal" Margin="0 5 0 0" Grid.Column="1" Grid.Row="1">
+            <TextBlock FontWeight="Light" FontSize="10" Text="{DynamicResource ParcelAtlasContractIDWindowDontHaveLabel}" />
+            <TextBlock FontWeight="Light" FontSize="10" >
+                <Hyperlink Click="Hyperlink_Click" >Contact Boundary Solutions</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2" >
+            <Button Content="{DynamicResource ConfigurationOKLable}" Click="OKClick" />
+            <Button Content="{DynamicResource ConfigurationCancelLable}" Click="CancelClick" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,167 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ClassBreakView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <ObjectDataProvider x:Key="ClassBreakModeProvider"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:ClassBreakBy" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ImageBrush x:Key="CheckerBoardBrush"
+                        Stretch="UniformToFill"
+                        TileMode="Tile"
+                        Viewport="0,0,38,38"
+                        ViewportUnits="Absolute">
+                <ImageBrush.ImageSource>
+                    <BitmapImage UriSource="pack://application:,,,/GisEditorPluginCore;component/Images/checkboard_swatch.png" />
+                </ImageBrush.ImageSource>
+            </ImageBrush>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{DynamicResource ResourceKey=ClassBreakViewDivideDataintoText}" />
+        <TextBlock Grid.Row="1" Text="{DynamicResource ResourceKey=ClassBreakViewLowestValueText}" />
+        <TextBlock Grid.Row="2" Text="{DynamicResource ResourceKey=ClassBreakViewHighestValueText}" />
+        <TextBlock Grid.Row="3" Text="{DynamicResource ResourceKey=ClassBreakViewUseadifferentText}" />
+        <TextBlock Grid.Row="4" Text="{Binding StartColorName}" />
+        <TextBlock Grid.Row="5" Text="{Binding EndColorName}" />
+        <TextBlock Grid.Row="6" Text="{DynamicResource ResourceKey=ClassBreakViewPreviewText}" />
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <local:Numeric Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Minimum="2"
+                           Value="{Binding ClassesCount,
+                                           Mode=TwoWay}" />
+            <TextBlock Grid.Column="1" Text="{DynamicResource ResourceKey=ClassBreakViewequallysizedclassesText}" />
+        </Grid>
+        <local:Numeric Grid.Row="1"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       AllowDecimal="True"
+                       Value="{Binding LowValue,
+                                       Mode=TwoWay,
+                                       StringFormat={}{0:N0},
+                                       ValidatesOnExceptions=True,
+                                       ValidatesOnDataErrors=True}" />
+        <local:Numeric Grid.Row="2"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       AllowDecimal="True"
+                       Value="{Binding HighValue,
+                                       Mode=TwoWay,
+                                       StringFormat={}{0:N0},
+                                       ValidatesOnExceptions=True,
+                                       ValidatesOnDataErrors=True}" />
+
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Grid.Column="0"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding Source={StaticResource ClassBreakModeProvider}}"
+                      SelectedItem="{Binding SelectedColorField,
+                                             Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding .}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Column="1" Text="" />
+        </Grid>
+
+        <local:DropDownColorPicker Grid.Row="4"
+                                   Grid.Column="1"
+                                   Height="22"
+                                   AlphaSliderWidth="100"
+                                   IsGradientColorBrushTabEnabled="False"
+                                   IsHatchBrushTabEnabled="False"
+                                   IsSolidColorBrushTabEnabled="True"
+                                   IsTextureBrushTabEnabled="False"
+                                   SelectedBrush="{Binding BaseBrush,
+                                                           Mode=TwoWay}" />
+        <local:DropDownColorPicker Grid.Row="5"
+                                   Grid.Column="1"
+                                   Height="22"
+                                   AlphaSliderWidth="100"
+                                   IsGradientColorBrushTabEnabled="False"
+                                   IsHatchBrushTabEnabled="False"
+                                   IsSolidColorBrushTabEnabled="True"
+                                   IsTextureBrushTabEnabled="False"
+                                   SelectedBrush="{Binding EndBrush,
+                                                           Mode=TwoWay}"
+                                   Visibility="{Binding ColorPickerVisibility}" />
+        <Slider Grid.Row="5"
+                Grid.Column="1"
+                Maximum="{Binding Maximum}"
+                Minimum="{Binding Minimum}"
+                Visibility="{Binding SliderVisibility}"
+                Value="{Binding CurrentValue,
+                                Mode=TwoWay}" />
+        <Border Grid.Row="6"
+                Grid.Column="1"
+                Height="22"
+                Background="{StaticResource CheckerBoardBrush}"
+                BorderBrush="Black"
+                BorderThickness="1">
+            <Image Source="{Binding PreviewSource}" Stretch="Fill" />
+        </Border>
+
+        <DockPanel Grid.Row="7"
+                   Grid.Column="1"
+                   VerticalAlignment="Top">
+            <DockPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="VerticalAlignment" Value="Top" />
+                    <Setter Property="Foreground" Value="Gray" />
+                </Style>
+            </DockPanel.Resources>
+            <TextBlock Text="{DynamicResource ResourceKey=ClassBreakViewLowerValuesText}" />
+            <TextBlock HorizontalAlignment="Right"
+                       DockPanel.Dock="Right"
+                       Text="{DynamicResource ResourceKey=ClassBreakViewHighValuesText}" />
+        </DockPanel>
+
+        <CheckBox Grid.Row="8"
+                  Grid.Column="1"
+                  Margin="0 8 0 8"
+                  Content="{DynamicResource ResourceKey=ClassBreakViewInvertcolororderContent}"
+                  IsChecked="{Binding InvertColorOrder,
+                                      Mode=TwoWay}" />
+    </Grid>
+</UserControl>

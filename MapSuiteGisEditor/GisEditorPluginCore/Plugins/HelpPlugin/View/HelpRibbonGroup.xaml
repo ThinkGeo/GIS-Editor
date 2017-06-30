@@ -1,0 +1,56 @@
+<R:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.HelpRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:R="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               xmlns:Tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+               Header="{DynamicResource ResourceKey=HelpRibbonGroupHelpResourcesHeader}">
+    <R:RibbonGroup.GroupSizeDefinitions>
+        <R:RibbonGroupSizeDefinition>
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+        </R:RibbonGroupSizeDefinition>
+    </R:RibbonGroup.GroupSizeDefinitions>
+
+    <R:RibbonButton Command="{Binding SearchCommand}"
+                    Label="{DynamicResource HelpsRibbonGroupSearchLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/help_search.png"
+                    QuickAccessToolBarId="SearchHelp"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/help_search.png"
+                    ToolTipDescription="{DynamicResource HelpsRibbonGroupSearchToolTipDescription}"
+                    ToolTipTitle="{DynamicResource HelpsRibbonGroupSearchToolTip}" />
+
+    <R:RibbonButton Command="{Binding AskQuestionCommand}"
+                    Label="{DynamicResource HelpsRibbonGroupAskQuestionLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/help_ask_question.png"
+                    QuickAccessToolBarId="AskQuestionHelp"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/help_ask_question.png"
+                    ToolTipDescription="{DynamicResource HelpsRibbonGroupAskQuestionToolTipDescription}"
+                    ToolTipTitle="{DynamicResource HelpsRibbonGroupAskQuestionToolTip}" />
+
+    <R:RibbonButton Command="{Binding RequestCommand}"
+                    Label="{DynamicResource HelpsRibbonGroupRequestEnhancementLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/help_request_enhancement.png"
+                    QuickAccessToolBarId="RequestEnhancementHelp"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/help_request_enhancement.png"
+                    ToolTipDescription="{DynamicResource HelpsRibbonGroupRequestEnhancementToolTipDescription}"
+                    ToolTipTitle="{DynamicResource HelpsRibbonGroupRequestEnhancementToolTip}" />
+
+    <R:RibbonButton Command="{Binding ReportCommand}"
+                    Label="{DynamicResource HelpsRibbonGroupReportBugLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/help_report_bug.png"
+                    QuickAccessToolBarId="ReportBugHelp"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/help_report_bug.png"
+                    ToolTipDescription="{DynamicResource HelpsRibbonGroupReportBugToolTipDescription}"
+                    ToolTipTitle="{DynamicResource HelpsRibbonGroupReportBugToolTip}" />
+
+    <R:RibbonButton Command="{Binding FindCommand}"
+                    Label="{DynamicResource HelpsRibbonGroupFindExampleLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/help_find_example.png"
+                    QuickAccessToolBarId="FindExampleHelp"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/help_find_example.png" 
+                    ToolTipDescription="{DynamicResource HelpsRibbonGroupFindExampleToolTipDescription}"
+                    ToolTipTitle="{DynamicResource HelpsRibbonGroupFindExampleToolTip}"/>
+</R:RibbonGroup>

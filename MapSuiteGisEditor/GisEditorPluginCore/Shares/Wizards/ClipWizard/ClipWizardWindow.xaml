@@ -1,0 +1,19 @@
+<Window x:Class="ThinkGeo.MapSuite.GISEditor.Plugins.ClipWizardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GISEditor.Plugins"
+        Title="Clip Wizard"
+        Width="800"
+        Height="600"
+        Closed="Window_Closed"
+        Closing="Window_Closing"
+        Loaded="Window_Loaded"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.DataContext>
+        <local:ClippingWizardViewModel x:Name="clipWizardViewModel" />
+    </Window.DataContext>
+    <Grid>
+        <local:WizardView />
+    </Grid>
+</Window>

@@ -1,0 +1,222 @@
+﻿<local:OutputWindow x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GisEditorOutputWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    Title="{DynamicResource GisEditorOutputWindowOutputTitle}"
+                    Width="429"
+                    ResizeMode="NoResize"
+                    SizeToContent="Height"
+                    Style="{StaticResource WindowStyle}">
+    <local:OutputWindow.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="Width" Value="70" />
+            <Setter Property="Margin" Value="5 0 0 0" />
+        </Style>
+
+        <DataTemplate x:Key="CheckCell">
+            <StackPanel Width="65"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                <!--
+                        Command="{Binding ElementName=createNewShapeFileViewModel,
+                        Path=EditCommand}"
+                    -->
+                <CheckBox Width="20"
+                            Height="20"
+                            Margin="20 0 0 0"
+                            IsChecked ="{Binding IsChecked}">
+                </CheckBox>
+
+            </StackPanel>
+        </DataTemplate>
+
+        <GridViewColumn x:Key="EditedColumn"
+                        Width="120"
+                        Header="Edited Name"
+                        x:Shared="False">
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock Text="{Binding EditedColumnName}" Visibility="{Binding ViewVisibility}" />
+                        <TextBox KeyDown="TextBox_KeyDown"
+                                 LostFocus="TextBox_LostFocus"
+                                 Padding="0"
+                                 Text="{Binding EditedColumnName,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="{Binding RenameVisibility}" />
+                    </Grid>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+        <ControlTemplate x:Key="ShowOptionsTemplte">
+            <Border VerticalAlignment="Center"
+                    BorderThickness="1"
+                    MouseEnter="Border_MouseEnter"
+                    MouseLeave="Border_MouseLeave">
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="imgOptions"
+                           Stretch="None"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="/GisEditorPluginCore;component/Images/Option_Down.png" />
+                    <TextBlock x:Name="txbOptions"
+                               Margin="5 0 0 0"
+                               Text="{DynamicResource ResourceKey=CommonWindowSetProjectionText}" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ShowColumnOptionsTemplte">
+            <Border VerticalAlignment="Center"
+                    BorderThickness="1"
+                    MouseEnter="Border_MouseEnter"
+                    MouseLeave="Border_MouseLeave">
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="imgOptions"
+                           Stretch="None"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="/GisEditorPluginCore;component/Images/Option_Down.png" />
+                    <TextBlock x:Name="txbOptions"
+                               Margin="5 0 0 0"
+                               Text="Columns" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="HideColumnOptionsTemplte">
+            <Border VerticalAlignment="Center"
+                    BorderThickness="1"
+                    MouseEnter="Border_MouseEnter"
+                    MouseLeave="Border_MouseLeave">
+                <StackPanel Orientation="Horizontal">
+                    <Image  x:Name="imgOptionsUp"
+                        Stretch="None"
+                        HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="/GisEditorPluginCore;component/Images/Option_Up.png" />
+                    <TextBlock Margin="5 0 0 0" Text="Columns" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="HideOptionsTemplte">
+            <Border VerticalAlignment="Center"
+                    BorderThickness="1"
+                    MouseEnter="Border_MouseEnter"
+                    MouseLeave="Border_MouseLeave">
+                <StackPanel Orientation="Horizontal">
+                    <Image  x:Name="imgOptionsUp"
+                        Stretch="None"
+                        HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="/GisEditorPluginCore;component/Images/Option_Up.png" />
+                    <TextBlock Margin="5 0 0 0" Text="{DynamicResource ResourceKey=CommonWindowSetProjectionText}" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+    </local:OutputWindow.Resources>
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="{DynamicResource ResourceKey=GisEditorOutputWindowOutputTitle}">
+            <local:OutputUserControl x:Name="outputUserControl" Margin="5" />
+        </GroupBox>
+
+        <GroupBox x:Name="ProjectionGrid"
+                  Grid.Row="1"
+                  Margin="0 5 0 5"
+                  Header="{DynamicResource ResourceKey=ProjectionConfigurationCommonProjectionsProjection}"
+                  Visibility="Collapsed">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="txtProjection" IsReadOnly="True" />
+                <Button Grid.Column="1"
+                        Width="30"
+                        Click="ChooseProjectionClick"
+                        Content="..."
+                        Style="{StaticResource buttonStyle}" />
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="ColumnGrid"
+                  Grid.Row="2"
+                  Margin="0 5 0 5"
+                  Header="Columns"
+                  Visibility="Collapsed">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Grid.Column="1" >
+                    <Hyperlink Click="AllHyperlink_Click">Select all</Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="5 0 0 0" Grid.Column="2"  >
+                    <Hyperlink Click="NoneHyperlink_Click">Deselect all</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+                <ListView Name="ColumnList"
+                      Grid.Row="1"
+                      Width="Auto"
+                      Height="200"
+                      Margin="0 5 0 5"
+                      ItemsSource="{Binding ColumnListItemSource}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_MouseDown" />
+                            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView x:Name="GridView">
+                            <GridViewColumn Width="40" CellTemplate="{StaticResource CheckCell}"  />
+                            <GridViewColumn Width="120"
+                                        DisplayMemberBinding="{Binding ColumnName}"
+                                        Header="{DynamicResource ConfigShapeFileWindowColumnNameLabel}" />
+                            <!--<GridViewColumn Width="120"
+                                        DisplayMemberBinding="{Binding EditedColumnName}"
+                                        Header="Edited Name" />-->
+                            <GridViewColumn Width="80"
+                                        DisplayMemberBinding="{Binding ColumnType}"
+                                        Header="{DynamicResource ConfigShapeFileWindowColumnTypeLabel}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </GroupBox>
+
+        <Grid Grid.Row="3">
+            <Button Height="20"
+                    HorizontalAlignment="Left"
+                    Click="ShowOptionsClick"
+                    Template="{StaticResource ShowOptionsTemplte}" />
+
+            <Button Height="20" Margin="100 0 0 0"
+                    HorizontalAlignment="Left"
+                    Click="ShowColumnsOptionsClick"
+                    Template="{StaticResource ShowColumnOptionsTemplte}" />
+            <StackPanel Margin="5 10 5 10"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button x:Name="btnOK"
+                        Click="OKClick"
+                        Content="{DynamicResource ConfigurationOKLable}"
+                        Style="{StaticResource buttonStyle}" />
+                <Button Click="CancelClick"
+                        Content="{DynamicResource ConfigurationCancelLable}"
+                        Style="{StaticResource buttonStyle}" />
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</local:OutputWindow>

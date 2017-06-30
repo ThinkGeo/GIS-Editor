@@ -1,0 +1,71 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SplitWizardChooseOutputUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="319"
+             d:DesignWidth="503"
+             mc:Ignorable="d">
+    <gisToolKit:BusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0 0 0 10">
+                <TextBlock TextWrapping="Wrap">
+                    <TextBlock.Text>
+                        <Binding Path="ExportConfiguration.Count" StringFormat="{}{0:N0} distinct values were found in the column you selected. Below, you can customize which of them you want to split and export into a separate file, as well as the filename for each." />
+                    </TextBlock.Text>
+                </TextBlock>
+
+            </Grid>
+
+            <StackPanel Grid.Row="1"
+                        Margin="0 0 0 10"
+                        HorizontalAlignment="Right">
+                <CheckBox Margin="0 0 30 0"
+                          Click="CheckBox_Click"
+                          Content="{DynamicResource ToolsSplitWizardStepThreeAll}"
+                          IsChecked="True" />
+            </StackPanel>
+            <StackPanel Grid.Row="1"
+                        Margin="0 0 0 10"
+                        HorizontalAlignment="Left">
+                <CheckBox Margin="0 0 30 0"
+                          Content="{DynamicResource ToolsSplitWizardStepThreeOverwrite}"
+                          IsChecked="{Binding OverwriteOutputFiles,
+                                              Mode=TwoWay}" />
+            </StackPanel>
+
+            <Grid Grid.Row="2">
+                <ListView x:Name="DataList" ItemsSource="{Binding ExportConfiguration}">
+                    <ListView.Resources>
+                        <DataTemplate x:Key="OutputPath">
+                            <TextBox Width="200" Text="{Binding OutputFileName, Mode=TwoWay}" />
+                        </DataTemplate>
+                        <DataTemplate x:Key="NeedOutput">
+                            <CheckBox IsChecked="{Binding NeedsToExport, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="100"
+                                            DisplayMemberBinding="{Binding ColumnValue}"
+                                            Header="{DynamicResource ToolsSplitWizardStepThreeGirdViewColumnValues}" />
+                            <GridViewColumn Width="100"
+                                            DisplayMemberBinding="{Binding FeatureCount}"
+                                            Header="{DynamicResource ToolsSplitWizardStepThreeGirdViewFeatureCount}" />
+                            <GridViewColumn CellTemplate="{StaticResource OutputPath}" Header="{DynamicResource ToolsSplitWizardStepThreeGirdViewOutputFilename}" />
+                            <GridViewColumn CellTemplate="{StaticResource NeedOutput}" Header="{DynamicResource ToolsSplitWizardStepThreeGirdViewExport}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
+    </gisToolKit:BusyIndicator>
+</UserControl>

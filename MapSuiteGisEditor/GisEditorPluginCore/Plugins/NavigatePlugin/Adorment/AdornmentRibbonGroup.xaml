@@ -1,0 +1,76 @@
+<rb:RibbonGroup
+    x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.AdornmentRibbonGroup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rb="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+    xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    CanAddToQuickAccessToolBarDirectly="False"
+    mc:Ignorable="d">
+    <rb:RibbonGroup.DataContext>
+        <local:AdornmentRibbonGroupViewModel x:Name="adornmentRibbonGroupViewModel" />
+    </rb:RibbonGroup.DataContext>
+    <rb:RibbonGroup.GroupSizeDefinitions>
+        <rb:RibbonGroupSizeDefinition>
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+        </rb:RibbonGroupSizeDefinition>
+    </rb:RibbonGroup.GroupSizeDefinitions>
+    <rb:RibbonButton
+        Command="{Binding ShowManageLegends}"
+        Label="{DynamicResource AdornmentRibbonGroupLegendsLabel}"
+        LargeImageSource="/GisEditorPluginCore;component/Images/adornments_legend.png"
+        QuickAccessToolBarId="ManageLegends"
+        SmallImageSource="/GisEditorPluginCore;component/Images/adornments_legend.png"
+        ToolTipDescription="{DynamicResource AdornmentRibbonGroupLegendsToolTipDescription}"
+        ToolTipTitle="{DynamicResource AdornmentRibbonGroupLegendsToolTip}" />
+
+    <rb:RibbonButton
+        Command="{Binding ShowTitle}"
+        CommandParameter="Title"
+        Label="{DynamicResource AdornmentRibbonGroupTitlesLabel}"
+        LargeImageSource="/GisEditorPluginCore;component/Images/adornments_titles.png"
+        QuickAccessToolBarId="Titles"
+        SmallImageSource="/GisEditorPluginCore;component/Images/adornments_titles.png"
+        ToolTipDescription="{DynamicResource AdornmentRibbonGroupTitlesToolTipDescription}"
+        ToolTipTitle="{DynamicResource AdornmentRibbonGroupTitlesToolTip}" />
+
+    <rb:RibbonButton
+        Command="{Binding ShowNorthArrow}"
+        CommandParameter="NorthArrow"
+        Label="{DynamicResource AdornmentRibbonGroupNorthArrowsLabel}"
+        LargeImageSource="/GisEditorPluginCore;component/Images/adornments_northarrows.png"
+        QuickAccessToolBarId="NorthArrows"
+        SmallImageSource="/GisEditorPluginCore;component/Images/adornments_northarrows.png"
+        ToolTipDescription="{DynamicResource AdornmentRibbonGroupNorthArrowsToolTipDescription}"
+        ToolTipTitle="{DynamicResource AdornmentRibbonGroupNorthArrowsToolTip}" />
+
+    <rb:RibbonButton
+        Command="{Binding ShowLogo}"
+        CommandParameter="Logo"
+        Label="{DynamicResource AdornmentRibbonGroupLogoLabel}"
+        LargeImageSource="/GisEditorPluginCore;component/Images/adornments_logo.png"
+        QuickAccessToolBarId="Logo"
+        SmallImageSource="/GisEditorPluginCore;component/Images/adornments_logo.png"
+        ToolTipDescription="{DynamicResource AdornmentRibbonGroupLogoToolTipDescription}"
+        ToolTipTitle="{DynamicResource AdornmentRibbonGroupLogoToolTip}" />
+
+    <rb:RibbonButton
+        Command="{Binding ShowScaleBars}"
+        CommandParameter="Scale"
+        Label="{DynamicResource AdornmentRibbonGroupScaleBarsLabel}"
+        LargeImageSource="/GisEditorPluginCore;component/Images/adornments_scalebar.png"
+        QuickAccessToolBarId="Scale"
+        SmallImageSource="/GisEditorPluginCore;component/Images/adornments_scalebar.png"
+        ToolTipDescription="{DynamicResource AdornmentRibbonGroupScaleBarsToolTipDescription}"
+        ToolTipTitle="{DynamicResource AdornmentRibbonGroupScaleBarsToolTip}" />
+</rb:RibbonGroup>

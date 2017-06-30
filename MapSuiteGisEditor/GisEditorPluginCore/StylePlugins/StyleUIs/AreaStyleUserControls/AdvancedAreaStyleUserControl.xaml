@@ -1,0 +1,93 @@
+<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.AdvancedAreaStyleUserControl"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:CP="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:picker="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:styleuc="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                          xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                          MinWidth="527"
+                          mc:Ignorable="d">
+    <StackPanel>
+        <GroupBox Header="{DynamicResource AdvancedAreaStyleUserControlPropertiesHeader}">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="FontSize" Value="11" />
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="0 5 5 5" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="FontSize" Value="11" />
+                    </Style>
+                    <Style TargetType="picker:DropDownColorPicker">
+                        <Setter Property="Height" Value="22" />
+                        <Setter Property="Margin" Value="0 5 5 5" />
+                        <Setter Property="FontSize" Value="11" />
+                    </Style>
+
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{DynamicResource AdvancedAreaStyleUserControlNameText}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="{DynamicResource AdvancedAreaStyleUserControlFillText}" />
+
+                <TextBox Name="nameTextBox"
+                         Grid.Row="0"
+                         Grid.Column="1"
+                         Grid.ColumnSpan="3"
+                         Text="{Binding Path=Name,
+                                        Mode=TwoWay}" />
+                <picker:DropDownColorPicker x:Name="fillColorPicker"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            SelectedBrush="{Binding FillColor,
+                                                                    Mode=TwoWay}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="{DynamicResource AdvancedAreaStyleUserControlOutlineColorText}" />
+                <local:DropDownColorPicker Grid.Row="2"
+                                           Grid.Column="1"
+                                           Grid.ColumnSpan="3"
+                                           Margin="0 5 5 5"
+                                           FontSize="11"
+                                           SelectedBrush="{Binding OutLineColor,
+                                                                   Mode=TwoWay}" />
+                <TextBlock Grid.Row="3"
+                           Grid.Column="0"
+                           Text="{DynamicResource AdvancedAreaStyleUserControlOutlineThicknessText}" />
+                <CP:Numeric Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="0 0 8 0"
+                            Minimum="0"
+                            Value="{Binding OutlineThickness,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </GroupBox>
+        <local:GeoPenUserControl DataContext="{Binding OutlinePen}" />
+    </StackPanel>
+</styleuc:StyleUserControl>

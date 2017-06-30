@@ -1,0 +1,51 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ExportWizardSaveResultsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="359"
+             d:DesignWidth="623"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="Width" Value="70" />
+            <Setter Property="Margin" Value="5 0 0 0" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="0 0 0 20"
+                   Text="{DynamicResource ResourceKey=ExportWizardSaveResultsUserControlDscYourexportisDscText}"
+                   TextWrapping="Wrap" />
+        <local:OutputUserControl Grid.Row="1" />
+
+        <Grid Grid.Row="2" Margin="0 10 0 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Margin="0 0 0 5" Text="Projection:" />
+            <TextBox Grid.Row="1"
+                     IsReadOnly="True"
+                     Text="{Binding ProjectionParameter,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="1"
+                    Grid.Column="1"
+                    Width="30"
+                    Command="{Binding ChooseProjectionCommand}"
+                    Content="..."
+                    Style="{StaticResource buttonStyle}" />
+        </Grid>
+    </Grid>
+</UserControl>

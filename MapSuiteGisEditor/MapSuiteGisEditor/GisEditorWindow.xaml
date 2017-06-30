@@ -1,0 +1,25 @@
+<Window
+    x:Class="ThinkGeo.MapSuite.GisEditor.GisEditorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+    x:Name="ExplorerShell"
+    Title="{DynamicResource ResourceKey=ShellDscMapSuiteGISDscTitle}"
+    Width="1024"
+    Height="768"
+    FontFamily="Segoe UI"
+    FontSize="11"
+    Icon="/MapSuiteGisEditor;component/Images/logo.png"
+    WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/IconTheme.xaml" />
+                <ResourceDictionary Source="Themes/RibbonTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <local:GisEditorUserControl x:Name="GisEditorUserControl" />
+    </Grid>
+</Window>

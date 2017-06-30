@@ -1,0 +1,149 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:CP="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:localctl="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins">
+    <Style TargetType="{x:Type local:DropDownColorPicker}">
+        <Style.Resources>
+            <ImageBrush x:Key="CheckerBoardBrush">
+                <ImageBrush.ImageSource>
+                    <BitmapImage UriSource="pack://application:,,,/GisEditorPluginCore;component/Images/checkboard_swatch.png" />
+                </ImageBrush.ImageSource>
+            </ImageBrush>
+        </Style.Resources>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DropDownColorPicker}">
+                    <Grid Height="22">
+                        <Grid.Resources>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Opacity" Value="1" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.7" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="ColorPickerPanel"
+                                  Grid.Column="0"
+                                  IsEnabled="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                      Path=PartialEnabled}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="40" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="ToggleButton"
+                                              Grid.ColumnSpan="2"
+                                              Background="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                   Path=Background}"
+                                              BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                    Path=Stroke}"
+                                              BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                        Path=StrokeThickness}"
+                                              IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                  Path=IsDropped}"
+                                              Tag="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                            Path=PreviewSourceName}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate>
+                                            <Grid Width="{TemplateBinding Width}"
+                                                  Height="{TemplateBinding Height}"
+                                                  Background="Transparent">
+                                                <Rectangle Fill="{TemplateBinding Background}"
+                                                           Stroke="{TemplateBinding BorderBrush}"
+                                                           StrokeThickness="{TemplateBinding BorderThickness}" />
+                                                <TextBlock Margin="10 0 0 0"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Text="{TemplateBinding Tag}" />
+                                                <Polygon Margin="3"
+                                                         HorizontalAlignment="Right"
+                                                         VerticalAlignment="Center"
+                                                         Fill="Black"
+                                                         Points="-2.5 -0, 2.5 -0, 0 3, -2.5 0" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <Border Margin="4"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="Black"
+                                        BorderThickness="1">
+                                    <Grid Background="{StaticResource CheckerBoardBrush}">
+                                        <Image x:Name="PreviewImage" Source="{TemplateBinding PreviewSource}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                             Path=AlphaVisibility}">
+                                <TextBlock Margin="10 0 0 0"
+                                           VerticalAlignment="Center"
+                                           Text="{DynamicResource PresentationOpacityHeader}" />
+                                <Slider x:Name="Slider"
+                                        Width="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                        Path=AlphaSliderWidth}"
+                                        MinWidth="50"
+                                        Margin="5 0 0 0"
+                                        Maximum="255"
+                                        Minimum="0"
+                                        Value="{Binding Alpha,
+                                                        Mode=TwoWay,
+                                                        RelativeSource={RelativeSource TemplatedParent},
+                                                        UpdateSourceTrigger=PropertyChanged}" />
+                                <CP:Numeric MinWidth="50"
+                                            Margin="5 0 0 0"
+                                            IsEnabled="{Binding ElementName=Slider,
+                                                                Path=IsEnabled}"
+                                            Maximum="255"
+                                            Minimum="0"
+                                            Value="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                            Path=Alpha,
+                                                            Mode=TwoWay,
+                                                            UpdateSourceTrigger=PropertyChanged}">
+                                    <!--
+                                        <CP:Numeric.Resources>
+                                        <Style TargetType="TextBox">
+                                        <Setter Property="Margin" Value="0" />
+                                        </Style>
+                                        </CP:Numeric.Resources>
+                                    -->
+                                </CP:Numeric>
+                            </StackPanel>
+                        </Grid>
+
+                        <local:NonTopMostPopup x:Name="Popup1"
+                                               Width="380"
+                                               Height="300"
+                                               Margin="4"
+                                               AllowsTransparency="True"
+                                               IsOpen="{Binding ElementName=ToggleButton,
+                                                                Path=IsChecked,
+                                                                Mode=TwoWay}"
+                                               Placement="Bottom"
+                                               PlacementTarget="{Binding ElementName=ToggleButton}"
+                                               PopupAnimation="Scroll"
+                                               StaysOpen="True">
+                            <local:TabColorPicker x:Name="ColorPicker"
+                                                  Margin="10"
+                                                  FontSize="11"
+                                                  SelectedBrush="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                          Path=SelectedBrush,
+                                                                          Mode=TwoWay}" />
+                        </local:NonTopMostPopup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

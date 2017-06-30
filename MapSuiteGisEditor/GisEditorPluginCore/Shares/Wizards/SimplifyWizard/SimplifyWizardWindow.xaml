@@ -1,0 +1,24 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SimplifyWizardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:base="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ToolsSimplifyWizardTitle}"
+        Width="800"
+        Height="600"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/Wizards/WizardTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.DataContext>
+            <local:SimplifyWizardViewModel x:Name="viewModel" />
+        </Grid.DataContext>
+        <base:WizardView />
+    </Grid>
+</Window>

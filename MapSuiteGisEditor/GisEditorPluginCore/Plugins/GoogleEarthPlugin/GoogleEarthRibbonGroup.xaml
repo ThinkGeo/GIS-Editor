@@ -1,0 +1,38 @@
+﻿<ribbon:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GoogleEarthRibbonGroup"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                    Header="{DynamicResource GoogleEarthRibbonGroupHeader}"
+                    mc:Ignorable="d">
+    <ribbon:RibbonGroup.GroupSizeDefinitions>
+        <ribbon:RibbonGroupSizeDefinition>
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+        </ribbon:RibbonGroupSizeDefinition>
+    </ribbon:RibbonGroup.GroupSizeDefinitions>
+    <ribbon:RibbonMenuButton IsEnabled="{Binding IsGoolgeEarthButtonEnabled}"
+                             ItemsSource="{Binding Buttons}"
+                             Label="{DynamicResource GoogleEarthRibbonGroupLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/googleEarth.png"
+                             QuickAccessToolBarId="GoogleEarth"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/googleEarth.png"
+                             ToolTipDescription="{DynamicResource GoogleEarthRibbonGroupToolTipDescription}"
+                             ToolTipTitle="{DynamicResource GoogleEarthRibbonGroupToolTipTitle}"
+                             DropDownOpened="GoogleEarthRibbonMenuButton_DropDownOpened">
+        <ribbon:RibbonMenuButton.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding Name}" />
+            </DataTemplate>
+        </ribbon:RibbonMenuButton.ItemTemplate>
+
+        <ribbon:RibbonMenuButton.ItemContainerStyle>
+            <Style TargetType="{x:Type ribbon:RibbonMenuItem}">
+                <Setter Property="ImageSource" Value="{Binding Icon}" />
+                <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=ribbon:RibbonMenuButton}, Path=DataContext.GoolgeEarthCommand}" />
+                <Setter Property="CommandParameter" Value="{Binding .}" />
+                <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+            </Style>
+        </ribbon:RibbonMenuButton.ItemContainerStyle>
+    </ribbon:RibbonMenuButton>
+</ribbon:RibbonGroup>

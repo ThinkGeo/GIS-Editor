@@ -1,0 +1,61 @@
+<Ribbon:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DynamicLanguageRibbonGroup"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                    xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                    xmlns:wpfex="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop.Extension"
+                    CanAddToQuickAccessToolBarDirectly="False"
+                    Header="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupHeader}">
+    <Ribbon:RibbonGroup.GroupSizeDefinitions>
+        <Ribbon:RibbonGroupSizeDefinition>
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+        </Ribbon:RibbonGroupSizeDefinition>
+        <Ribbon:RibbonGroupSizeDefinition>
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+        </Ribbon:RibbonGroupSizeDefinition>
+        <Ribbon:RibbonGroupSizeDefinition>
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+        </Ribbon:RibbonGroupSizeDefinition>
+    </Ribbon:RibbonGroup.GroupSizeDefinitions>
+    <Ribbon:RibbonGroup.Resources>
+        <ResourceDictionary>
+            <wpfex:CSharpDlrLanguage x:Key="CSharpKey" />
+            <wpfex:RubyDlrLanguage x:Key="RubyKey" />
+            <wpfex:PythonDlrLanguage x:Key="PythonKey" />
+        </ResourceDictionary>
+    </Ribbon:RibbonGroup.Resources>
+    <Ribbon:RibbonGroup.DataContext>
+        <local:DynamicLanguageRibbonGroupViewModel />
+    </Ribbon:RibbonGroup.DataContext>
+    <Ribbon:RibbonButton Command="{Binding OpenDynamicLanguageWindowCommand}"
+                         CommandParameter="{StaticResource PythonKey}"
+                         Label="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupPythonLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/python_32.png"
+                         QuickAccessToolBarId="Python"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/python_32.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupPythonToolTipDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupPythonToolTipTitle}" />
+    <Ribbon:RibbonButton Command="{Binding OpenDynamicLanguageWindowCommand}"
+                         CommandParameter="{StaticResource RubyKey}"
+                         Label="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupRubyLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/ruby.png"
+                         QuickAccessToolBarId="Ruby"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/ruby.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupRubyToolTipDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupRubyToolTipTitle}" />
+    <Ribbon:RibbonButton Command="{Binding OpenDynamicLanguageWindowCommand}"
+                         CommandParameter="{StaticResource CSharpKey}"
+                         Label="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupCsLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/cs.png"
+                         QuickAccessToolBarId="C#"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/cs.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupCsToolTipDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupCsToolTipTitle}" />
+</Ribbon:RibbonGroup>

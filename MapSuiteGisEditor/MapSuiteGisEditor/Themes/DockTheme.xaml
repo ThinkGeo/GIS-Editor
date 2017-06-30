@@ -1,0 +1,52 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+                    xmlns:interaction="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:mvvmex="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MapSuiteGisEditor;component/Themes/EditorStrings.xaml"/>
+        <ResourceDictionary Source="/MapSuiteGisEditor;component/Themes/IconTheme.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <ContextMenu x:Key="DocumentsListContextMenu">
+        <MenuItem Header="{DynamicResource AddDocumentHeader}"
+                                  Command="{x:Static local:GisEditorCommands.NewDocumentCommand}"
+                                  Icon="{StaticResource CreateDocumentIconKey}" />
+    </ContextMenu>
+    <MenuItem x:Key="PreviousExtentMenuItem" x:Shared="False" Header="{DynamicResource PreviousExtentHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="PreviousExtent"
+                                  Icon="{StaticResource PreviousExtentIconKey}" />
+    <MenuItem x:Key="NextExtentMenuItem" x:Shared="False" Header="{DynamicResource NextExtentHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="NextExtent"
+                                  Icon="{StaticResource NextExtentIconKey}" />
+    
+    <MenuItem x:Key="ZoomInMenuItem" x:Shared="False" Header="{DynamicResource ZoomInHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="ZoomIn"
+                                  Icon="{StaticResource ZoomInIconKey}" />
+
+    <MenuItem x:Key="ZoomOutMenuItem" x:Shared="False"  Header="{DynamicResource ZoomOutHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="ZoomOut"
+                                  Icon="{StaticResource ZoomOutIconKey}" />
+
+    <MenuItem x:Key="CenterAtMenuItem" x:Shared="False" Header="{DynamicResource CenterAtHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="CenterAt"
+                                  Icon="{StaticResource CenterAtIconKey}" />
+
+    <MenuItem x:Key="AddDocumentMenuItem" x:Shared="False" Header="{DynamicResource AddDocumentHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="AddDocument"
+                                  Icon="{StaticResource AddDocumentIconKey}" />
+
+    <MenuItem x:Key="RenameDocumentMenuItem" x:Shared="False" Header="{DynamicResource RenameDocumentHeader}"
+                                  Command="{x:Static local:GisEditorCommands.MapOperationCommand}"
+                                  CommandParameter="RenameDocument"
+                                  Icon="{StaticResource RenameDocumentIconKey}" />
+
+    <MenuItem x:Key="RefreshMapMenuItem" x:Shared="False" Header="{DynamicResource RefreshMenuItemHeader}"
+                                  Command="{x:Static local:GisEditorCommands.RefreshMapCommand}"
+                                  Icon="{StaticResource RefreshMapIconKey}" />
+</ResourceDictionary>

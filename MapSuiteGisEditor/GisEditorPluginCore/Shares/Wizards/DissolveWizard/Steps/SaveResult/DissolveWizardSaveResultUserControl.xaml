@@ -1,0 +1,28 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DissolveWizardSaveResultUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="440"
+             d:DesignWidth="640"
+             mc:Ignorable="d">
+    <!--<UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/Wizards/DissolveWizard/Resources/DissolveWizardStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <local:IsCancelledToMessageConverter x:Key="IsCancelledToMessageConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Margin="0 0 0 20" Text="{DynamicResource ToolsDissolveWizardStepFourReadyToProcessed}"/>
+        <local:OutputUserControl Grid.Row="1"/>
+    </Grid>
+</UserControl>

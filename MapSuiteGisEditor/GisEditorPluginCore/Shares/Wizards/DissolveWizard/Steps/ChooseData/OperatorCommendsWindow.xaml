@@ -1,0 +1,56 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.OperatorCommendsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource ResourceKey=OperatorCommendsWindowOperatorsTitle}"
+        Width="490"
+        Height="400"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="0 0 0 10" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Margin="6 7 6 8" DockPanel.Dock="Top">
+            <TextBlock Text="{DynamicResource ToolsDissolveWizardStepOneOperatorCommendsTitle}" />
+            <TextBlock>
+                <Bold>First:</Bold>
+                <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowTasksTheValueContent}"></TextBlock>
+            </TextBlock>
+            <TextBlock>
+                <Bold>Last:</Bold>
+                <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowTasksTheLastValueContent}"></TextBlock>
+            </TextBlock>
+            <TextBlock>
+                <Bold>Count:</Bold>
+                <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowCounttheTotalContent}"></TextBlock>
+            </TextBlock>
+            <TextBlock>
+                <Bold>Sum:</Bold>
+                 <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowAddTogetherContent}"></TextBlock>
+            </TextBlock>
+            <TextBlock>
+                <Bold>Average:</Bold>
+                <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowAveagesAllValuesContent}"></TextBlock>
+            </TextBlock>
+            <TextBlock>
+                <Bold>Min:</Bold>
+                <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowAveagesAllValuesContent}"></TextBlock>
+            </TextBlock>
+            <TextBlock>
+                <Bold>Max:</Bold>
+                <TextBlock Text="{DynamicResource ResourceKey=OperatorCommendsWindowUseMinValueContent}"></TextBlock>
+            </TextBlock>
+        </StackPanel>
+        <Grid Background="#f1f1f1" DockPanel.Dock="Bottom">
+            <Button VerticalAlignment="Center"
+                    Click="Button_Click"
+                    Content="{DynamicResource ResourceKey=ConfigurationOKLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+        </Grid>
+    </DockPanel>
+</Window>

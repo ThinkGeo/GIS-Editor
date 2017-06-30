@@ -1,0 +1,190 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension">
+    <Style TargetType="{x:Type local:SwitcherPanZoomBarMapTool}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SwitcherPanZoomBarMapTool}">
+                    <Grid x:Name="PanZoomBarGrid" Width="55">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="55" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition />
+                            <RowDefinition Height="22" />
+                        </Grid.RowDefinitions>
+                        <Grid.Effect>
+                            <DropShadowEffect BlurRadius="4"
+                                              Opacity=".4"
+                                              ShadowDepth="2"
+                                              Color="Gray" />
+                        </Grid.Effect>
+                        <Grid x:Name="PanPanel"
+                              Width="55"
+                              Height="55"
+                              Cursor="Hand"
+                              Visibility="Hidden">
+                            <Image x:Name="GlobeImage"
+                                   Width="20"
+                                   Height="20"
+                                   Cursor="Hand"
+                                   Source="{TemplateBinding GlobeButtonImageSource}"
+                                   Stretch="Fill"
+                                   Visibility="{TemplateBinding GlobeButtonVisibility}" />
+                        </Grid>
+                        <!--  /ThinkGeo.MapSuite.WpfDesktop.Extension;component/Resources/modedisc_no_selection.png  -->
+                        <Image x:Name="OperationImage"
+                               Cursor="Hand"
+                               Source="{TemplateBinding OperationImageSource}" />
+
+                        <Image x:Name="ZoomInImage"
+                               Grid.Row="1"
+                               Margin="1 0 0 0"
+                               VerticalAlignment="Bottom"
+                               Source="/ThinkGeo.MapSuite.Wpf;component/Resources/panZoomBarZoomIn.png" />
+                        <Image x:Name="ZoomOutImage"
+                               Grid.Row="3"
+                               Margin="1 0 0 0"
+                               Source="/ThinkGeo.MapSuite.Wpf;component/Resources/panZoomBarZoomOut.png" />
+                        <Border Grid.Row="2"
+                                Width="8"
+                                Background="#f5f5f5"
+                                BorderBrush="#787878"
+                                BorderThickness="1 0 1 0">
+                            <Canvas x:Name="ZoomBar" Width="6">
+                                <Image x:Name="ZoomHandler"
+                                       Margin="-7 -10 0 0"
+                                       Source="/ThinkGeo.MapSuite.Wpf;component/Resources/panZoomBarHandler.png" />
+                                <Canvas x:Name="ZoomHandlerTip"
+                                        Margin="15 -10 0 0"
+                                        Opacity="0.9"
+                                        Visibility="Collapsed">
+                                    <Path Width="46"
+                                          Height="12"
+                                          Data="M-119.81109,-180 L-112,-168.5 -64.5,-168.5 -64.5,-192.5 -111.90738,-192.5 z"
+                                          Fill="#FFEAEAEA"
+                                          Stretch="Fill" />
+                                    <TextBlock x:Name="ZoomHandlerTipLabel"
+                                               Margin="6 0 0 0"
+                                               FontFamily="arial"
+                                               FontSize="10"
+                                               Text="0" />
+                                </Canvas>
+                            </Canvas>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type local:BoundingBoxSelectorMapTool}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:BoundingBoxSelectorMapTool}">
+                    <Canvas Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                        <Canvas.Resources>
+                            <Style TargetType="Image">
+                                <Setter Property="Opacity" Value=".5" />
+                                <Setter Property="Width" Value="60" />
+                                <Setter Property="Height" Value="60" />
+                                <Setter Property="Stretch" Value="Fill" />
+                                <Setter Property="Cursor" Value="SizeAll" />
+                                <Setter Property="Source" Value="pack://application:,,,/ThinkGeo.MapSuite.WpfDesktop.Extension;component/Images/set_map_position_centroid_arrows.png" />
+                            </Style>
+                            <Style x:Key="CornerHandleStyle" TargetType="Rectangle">
+                                <Setter Property="Stroke" Value="Black" />
+                                <Setter Property="StrokeThickness" Value="1" />
+                                <Setter Property="Cursor" Value="Arrow" />
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="3"
+                                                          Direction="-45"
+                                                          Opacity=".5"
+                                                          ShadowDepth="4"
+                                                          Color="Black" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Canvas.Resources>
+                        <Rectangle Width="{TemplateBinding Width}"
+                                   Height="{TemplateBinding Height}"
+                                   Stroke="{TemplateBinding BorderBrush}"
+                                   StrokeDashArray="4 2"
+                                   StrokeThickness="2" />
+                        <StackPanel Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Height}"
+                                    MinWidth="300"
+                                    MinHeight="50"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top">
+                            <StackPanel Margin="0 -35 0 0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Orientation="Horizontal">
+                                <TextBlock x:Name="DisplayTxt"
+                                           Height="20"
+                                           VerticalAlignment="Bottom"
+                                           Text="{DynamicResource GeneralScaleLabel}"
+                                           Visibility="Collapsed" />
+                                <ComboBox x:Name="ScaleComboBox"
+                                          Width="85"
+                                          Margin="0 0 5 0"
+                                          HorizontalContentAlignment="Right"
+                                          DisplayMemberPath="DisplayScale"
+                                          IsEditable="True"
+                                          IsTextSearchEnabled="False"
+                                          Visibility="Collapsed" />
+                                <ComboBox x:Name="UnitComboBox"
+                                          Width="65"
+                                          FontSize="12"
+                                          Visibility="Collapsed">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Item2}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="ToolTip" Value="{Binding Item1}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
+                                <Button x:Name="DoneButton"
+                                        Width="50"
+                                        Height="20"
+                                        Margin="5 0 0 0"
+                                        Content="{DynamicResource ResourceKey=GenericDoneContent}" />
+                                <Button x:Name="CancelButton"
+                                        Width="50"
+                                        Height="20"
+                                        Margin="5 0 0 0"
+                                        Content="{DynamicResource ResourceKey=ConfigurationCancelLable}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Image x:Name="DragHandler" />
+
+                        <Rectangle x:Name="UpperLeftCornerHandler"
+                                   Width="{TemplateBinding HandleCornerWidth}"
+                                   Height="{TemplateBinding HandleCornerWidth}"
+                                   Fill="{TemplateBinding HandleCornerBrush}"
+                                   Style="{StaticResource CornerHandleStyle}" />
+                        <Rectangle x:Name="UpperRightCornerHandler"
+                                   Width="{TemplateBinding HandleCornerWidth}"
+                                   Height="{TemplateBinding HandleCornerWidth}"
+                                   Fill="{TemplateBinding HandleCornerBrush}"
+                                   Style="{StaticResource CornerHandleStyle}" />
+                        <Rectangle x:Name="LowerLeftCornerHandler"
+                                   Width="{TemplateBinding HandleCornerWidth}"
+                                   Height="{TemplateBinding HandleCornerWidth}"
+                                   Fill="{TemplateBinding HandleCornerBrush}"
+                                   Style="{StaticResource CornerHandleStyle}" />
+                        <Rectangle x:Name="LowerRightCornerHandler"
+                                   Width="{TemplateBinding HandleCornerWidth}"
+                                   Height="{TemplateBinding HandleCornerWidth}"
+                                   Fill="{TemplateBinding HandleCornerBrush}"
+                                   Style="{StaticResource CornerHandleStyle}" />
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

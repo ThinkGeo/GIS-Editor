@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataRepositorySorter>
+  <DataRepositories>
+    <DataRepository Index="0" FullName="DataRepositoryPlugin.FolderDataRepositoryItem;DataRepositoryPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+    <DataRepository Index="1" FullName="DataRepositoryPlugin.WmsDataRepositoryItem;DataRepositoryPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+    <DataRepository Index="2" FullName="DataRepositoryPlugin.DelimitedDataRepositoryItem;DataRepositoryPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+    <DataRepository Index="3" FullName="DataRepositoryPlugin.BaseMapsDataRepositoryItem;DataRepositoryPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+  </DataRepositories>
+</DataRepositorySorter>

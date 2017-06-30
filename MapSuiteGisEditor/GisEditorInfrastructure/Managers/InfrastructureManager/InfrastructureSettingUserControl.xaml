@@ -1,0 +1,39 @@
+﻿<ThinkGeo:SettingUserControl x:Class="ThinkGeo.MapSuite.GisEditor.InfrastructureSettingUserControl"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+                             x:ClassModifier="internal">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Row="0"
+                 ItemsSource="{Binding PluginDirectories}"
+                 SelectedItem="{Binding SelectedDirectory,
+                                        Mode=TwoWay}" KeyDown="ListBox_KeyDown">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding .}" Margin="0 3 0 2" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0 10 0 0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Width" Value="60" />
+                    <Setter Property="Margin" Value="10 0 0 0" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Command="{Binding AddDirectoryCommand}" Content="{DynamicResource GeneralAddContent}" />
+            <Button Command="{Binding RemoveDirectoryCommand}" Content="{DynamicResource GeneralRemoveContent}" />
+        </StackPanel>
+    </Grid>
+</ThinkGeo:SettingUserControl>

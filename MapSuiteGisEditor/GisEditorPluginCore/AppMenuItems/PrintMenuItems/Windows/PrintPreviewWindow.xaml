@@ -1,0 +1,106 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.PrintPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource ResourceKey=PrintPreviewWindowPrintPreviewTitle}"
+        Width="640"
+        Height="480"
+        Closed="Window_Closed"
+        ShowInTaskbar="False"
+        Style="{StaticResource WindowStyle}"
+        WindowState="Maximized">
+    <Window.Resources>
+        <Style x:Key="{x:Type DocumentViewer}" TargetType="{x:Type DocumentViewer}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DocumentViewer}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Focusable="False">
+                            <Grid KeyboardNavigation.TabNavigation="Local">
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
+                                </Grid.Background>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ToolBar KeyboardNavigation.TabNavigation="Continue" ToolBarTray.IsLocked="True">
+                                    <ToolBar.Resources>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Width" Value="24" />
+                                            <Setter Property="Height" Value="24" />
+                                        </Style>
+                                    </ToolBar.Resources>
+                                    <Button Command="ApplicationCommands.Print"
+                                            CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                            ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowPrintToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/Print.png" />
+                                    </Button>
+                                    <Separator />
+                                    <Button Command="NavigationCommands.IncreaseZoom"
+                                            CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                            ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowZoomInToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/ZoomIn32.png" />
+                                    </Button>
+                                    <Button Command="NavigationCommands.DecreaseZoom"
+                                            CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                            ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowZoomOutToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/ZoomOut32.png" />
+                                    </Button>
+                                    <Separator />
+                                    <Button Command="NavigationCommands.Zoom"
+                                            CommandParameter="100.0"
+                                            CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                            ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowActualSizeToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/size_both.png" />
+                                    </Button>
+                                    <Button Command="DocumentViewer.FitToWidthCommand"
+                                            CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                            ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowDscFittoWidthDscToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/width.png" />
+                                    </Button>
+                                    <Button Command="DocumentViewer.FitToMaxPagesAcrossCommand"
+                                            CommandParameter="1"
+                                            CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                            ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowDscFittoWindowDscToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/WholePage.png" />
+                                    </Button>
+                                    <Separator />
+                                    <Button Click="Landscape_Click" ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowLandscapeToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/landscape.png" />
+                                    </Button>
+                                    <Button Click="Portrait_Click" ToolTip="{DynamicResource ResourceKey=PrintPreviewWindowPortraitToolTip}">
+                                        <Image Source="/GisEditorPluginCore;component/Images/portrait.png" />
+                                    </Button>
+                                </ToolBar>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Grid.Row="1"
+                                              CanContentScroll="true"
+                                              HorizontalScrollBarVisibility="Auto"
+                                              IsTabStop="true" />
+                                <ContentControl x:Name="PART_FindToolBarHost"
+                                                Grid.Row="2"
+                                                Visibility="Collapsed" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <DocumentViewer Name="docViewer">
+                <DocumentViewer.CommandBindings>
+                    <CommandBinding CanExecute="Print_CanExecute"
+                                    Command="ApplicationCommands.Print"
+                                    Executed="Print_Executed" />
+                </DocumentViewer.CommandBindings>
+            </DocumentViewer>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,52 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ChooseBlendStyleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="431" d:DesignWidth="557">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="0 15 0 15" Text="{DynamicResource ToolsBlendWizardStepTwoDecideWhether}" TextWrapping="Wrap"/>
+        <Grid Grid.Row="1" Margin="0 5 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="LightGray" BorderThickness="2" Grid.Column="1" Grid.RowSpan="2"/>
+            <StackPanel Margin="0 0 15 0">
+                <RadioButton IsChecked="{Binding IsCombine}" GroupName="blendStyle">
+                    <TextBlock Text="{DynamicResource ToolsBlendWizardStepTwoCombineFeatures}" Style="{DynamicResource SubtitleStyle}" />
+                </RadioButton>
+                <TextBlock Margin="0 5 15 10" TextWrapping="Wrap"
+                           Text="{DynamicResource ToolsBlendWizardStepTwoCombineFeaturesDesctription}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="{DynamicResource ToolsBlendWizardStepTwoOriginal}" HorizontalAlignment="Center" FontWeight="DemiBold"/>
+                <Image Source="/GisEditorPluginCore;component/Images/blend_step2_combine.png" Stretch="None"/>
+                <TextBlock Text="{DynamicResource ToolsBlendWizardStepTwoBlendResult}" HorizontalAlignment="Center" FontWeight="DemiBold"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Margin="15 0 0 0">
+                <RadioButton IsChecked="{Binding IsIntersect}" GroupName="blendStyle">
+                    <TextBlock Text="{DynamicResource ToolsBlendWizardStepTwoIntersectFeatures}" Style="{DynamicResource SubtitleStyle}" />
+                </RadioButton>
+                <TextBlock Margin="0 5 15 10" TextWrapping="Wrap"
+                           Text="{DynamicResource ToolsBlendWizardStepTwoIntersectFeaturesDescription}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <TextBlock Text="{DynamicResource ToolsBlendWizardStepTwoOriginal}" HorizontalAlignment="Center" FontWeight="DemiBold"/>
+                <Image Source="/GisEditorPluginCore;component/Images/blend_step2_intersect.png" Stretch="None" Grid.Row="1" Grid.Column="2"/>
+                <TextBlock Text="{DynamicResource ToolsBlendWizardStepTwoBlendResult}" HorizontalAlignment="Center" FontWeight="DemiBold"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,107 @@
+<ms:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SnappingToolsRibbonGroup"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:ms="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                d:DesignHeight="300"
+                d:DesignWidth="300"
+                Header="{DynamicResource SnappingToolsRibbonGroupHeader}"
+                ToolTip="{DynamicResource SnappingToolsRibbonGroupHeaderToolTip}"
+                mc:Ignorable="d">
+    <ms:RibbonGroup.DataContext>
+        <local:SnappingToolsViewModel x:Name="viewModel" />
+    </ms:RibbonGroup.DataContext>
+    <ms:RibbonGroup.Resources>
+        <!--  <local:SnappingDistanceValidationRule x:Key="distanceValidationRule"/>  -->
+        <local:SnappingDistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
+        <DataTemplate x:Key="MenuButtonTemplate">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DistanceMenuButtonTemplate">
+            <TextBlock Text="{Binding Value, Converter={StaticResource DistanceUnitToStringConverter}}" />
+        </DataTemplate>
+    </ms:RibbonGroup.Resources>
+    <ms:RibbonGroup.GroupSizeDefinitions>
+        <ms:RibbonGroupSizeDefinition>
+            <ms:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <ms:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <ms:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <ms:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <ms:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+            <ms:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
+        </ms:RibbonGroupSizeDefinition>
+    </ms:RibbonGroup.GroupSizeDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="0 0 4 4" />
+            </Style>
+        </Grid.Resources>
+
+        <TextBlock Text="{DynamicResource SnappingToolsRibbonGroupSnappingLabel}" />
+        <ms:RibbonMenuButton Grid.Column="1"
+                             MaxWidth="100"
+                             DisplayMemberPath="Name"
+                             ItemsSource="{Binding TargetLayers}"
+                             Label="{Binding SnappingLayerName}"
+                             ToolTipDescription="{DynamicResource SnappingToolsRibbonGroupSnappingDescription}"
+                             ToolTipTitle="{DynamicResource SnappingToolsRibbonGroupSnappingLabel}">
+            <ms:RibbonMenuButton.ItemContainerStyle>
+                <Style TargetType="{x:Type ms:RibbonMenuItem}">
+                    <Style.Setters>
+                        <EventSetter Event="Click" Handler="TargetLayerSelected" />
+                        <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+                        <Setter Property="ToolTip" Value="{Binding Name}" />
+                    </Style.Setters>
+                </Style>
+            </ms:RibbonMenuButton.ItemContainerStyle>
+        </ms:RibbonMenuButton>
+
+        <TextBlock Grid.Row="1" Text="{DynamicResource SnappingToolsRibbonGroupDistanceLabel}" />
+        <ms:RibbonTextBox Grid.Row="1"
+                          Grid.Column="1"
+                          ToolTipTitle="{DynamicResource SnappingToolsRibbonGroupDistanceLabel}"
+                          ToolTipDescription="{DynamicResource SnappingToolsRibbonGroupDistanceDescription}">
+            <ms:RibbonTextBox.Text>
+                <Binding Path="SnappingDistance" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:SnappingDistanceValidationRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </ms:RibbonTextBox.Text>
+        </ms:RibbonTextBox>
+
+        <TextBlock Grid.Row="2" Text="{DynamicResource SnappingToolsRibbonGroupDistanceUnitLabel}" />
+        <ms:RibbonComboBox Grid.Row="2"
+                           Grid.Column="1"
+                           IsEnabled="{Binding IsSnappingOptionEnabled}"
+                           ToolTipTitle="{DynamicResource SnappingToolsRibbonGroupDistanceUnitLabel}"
+                           ToolTipDescription="{DynamicResource SnappingToolsRibbonGroupDistanceUnitDescription}"
+                           ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <ms:RibbonGallery ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="SnappingDistanceUnitChanged">
+                <ms:RibbonGalleryCategory ItemsSource="{Binding DistanceUnits}" ItemTemplate="{StaticResource DistanceMenuButtonTemplate}">
+                    <ms:RibbonGalleryCategory.ItemContainerStyle>
+                        <Style TargetType="ms:RibbonGalleryItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                    <Setter Property="IsSelected" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ms:RibbonGalleryCategory.ItemContainerStyle>
+                </ms:RibbonGalleryCategory>
+            </ms:RibbonGallery>
+        </ms:RibbonComboBox>
+    </Grid>
+</ms:RibbonGroup>

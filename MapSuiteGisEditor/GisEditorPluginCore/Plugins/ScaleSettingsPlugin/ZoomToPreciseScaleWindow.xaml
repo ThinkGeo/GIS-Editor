@@ -1,0 +1,103 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ZoomToPreciseScaleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:tgshapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+        Title="{DynamicResource ResourceKey=ZoomToPreciseScaleWindowTitleText}"
+        d:DesignHeight="300"
+        d:DesignWidth="300"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="DistanceUnitProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="tgshapes:DistanceUnit" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid Margin="6 7 6 8">
+        <Grid.Resources>
+            <ObjectDataProvider x:Key="DistanceUnitProvider"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type tgshapes:DistanceUnit}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:TypeExtension TypeName="tgshapes:DistanceUnit" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <local:DistanceUnitToShortStringConverter x:Key="DistanceUnitToStringConverter" />
+            <local:DistanceUnitToStringConverter x:Key="DistanceToStringConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0"
+                   Margin="0 0 5 0"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource GeneralScaleLabel}" />
+        <ComboBox Grid.Column="1"
+                  Width="90"
+                  Margin="0 0 5 0"
+                  HorizontalContentAlignment="Right"
+                  DisplayMemberPath="DisplayScale"
+                  FontSize="12"
+                  IsEditable="True"
+                  IsTextSearchEnabled="False"
+                  ItemsSource="{Binding Scales}"
+                  SelectedItem="{Binding SelectedScale,
+                                         Mode=TwoWay}"
+                  Text="{Binding Value,
+                                 Mode=TwoWay,
+                                 UpdateSourceTrigger=PropertyChanged}">
+            <!--
+                <ComboBox.Resources>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Themes/ComboBoxTemplate.xaml" />
+                </ComboBox.Resources>
+            -->
+        </ComboBox>
+        <ComboBox Grid.Row="0"
+                  Grid.Column="2"
+                  Width="65"
+                  FontSize="12"
+                  ItemsSource="{Binding Source={StaticResource DistanceUnitProvider}}"
+                  SelectedItem="{Binding Path=SelectedDistanceUnit,
+                                         Mode=TwoWay}">
+            <!--
+                <ComboBox.Resources>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Themes/ComboBoxTemplate.xaml" />
+                </ComboBox.Resources>
+            -->
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Width="55"
+                               Text="{Binding Converter={StaticResource DistanceUnitToStringConverter}}"
+                               ToolTip="{Binding Converter={StaticResource DistanceToStringConverter}}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Click="Button_Click"
+                Command="{Binding SetScaleCommand}"
+                Content="{DynamicResource ResourceKey=CommonSetScaleText}">
+            <!--
+                <Button.Resources>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/themes/ButtomTemplate.xaml" />
+                </Button.Resources>
+            -->
+        </Button>
+    </Grid>
+</Window>

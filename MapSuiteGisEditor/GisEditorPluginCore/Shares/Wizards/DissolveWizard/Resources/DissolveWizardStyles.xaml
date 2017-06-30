@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <Thickness x:Key="BorderMargin"
+               Bottom="0"
+               Left="0"
+               Right="0"
+               Top="0" />
+    <Thickness x:Key="DescriptionMargin"
+               Bottom="0"
+               Left="0"
+               Right="0"
+               Top="15" />
+    <Thickness x:Key="SmallMarginBottom"
+               Bottom="5"
+               Left="0"
+               Right="0"
+               Top="0" />
+    <Style TargetType="TextBlock">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="ContentTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Arial" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+</ResourceDictionary>

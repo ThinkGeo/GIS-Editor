@@ -1,0 +1,895 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ThinkGeo.MapSuite.GisEditor</RootNamespace>
+    <AssemblyName>GisEditorInfrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\MapSuiteGISEditor\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\ThinkGeo.MapSuite.MapSuiteGISEditor.Contracts.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>..\MapSuiteGISEditor\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;Release</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>..\MapSuiteGISEditor\bin\Release\ThinkGeo.MapSuite.MapSuiteGISEditor.Contracts.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <DocumentationFile>..\MapSuiteGISEditor\bin\Release\GisEditorInfrastructure.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Evaluation|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;Evaluation</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>..\MapSuiteGISEditor\bin\Release\ThinkGeo.MapSuite.MapSuiteGISEditor.Contracts.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'GISEditorUnitTest|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\GISEditorUnitTest\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;GISEditorUnitTest</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\ThinkGeo.MapSuite.MapSuiteGISEditor.Contracts.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReadOnly|AnyCPU'">
+    <OutputPath>..\MapSuiteGISEditor\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;ReadOnly</DefineConstants>
+    <DocumentationFile>..\MapSuiteGISEditor\bin\Release\GisEditorInfrastructure.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>..\MapSuiteGISEditor\bin\Release\ThinkGeo.MapSuite.MapSuiteGISEditor.Contracts.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AvalonDock, Version=1.3.3578.0, Culture=neutral, PublicKeyToken=85a1e0ada7ec13e4, processorArchitecture=MSIL">
+      <HintPath>..\..\Dependencies\AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF4, Version=0.0.0.0, Culture=neutral, PublicKeyToken=63eb5c012e0b3c1c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\GalaSoft.MvvmLight.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.0.1\lib\net45\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="GeocodeServerSdk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\GeocodeServerSdk.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=4.0.0.5048, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\..\Dependencies\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\Dependencies\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.0.2\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.0.1\lib\net45\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Net35, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Newtonsoft.Json.Net35.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.0.1\lib\net45\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="RibbonControlsLibrary, Version=3.5.40729.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\RibbonControlsLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Dependencies\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="ThinkGeo.MapSuite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.CloudFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.CloudFile.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.CloudFile.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.ShapeFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.ShapeFile.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.ShapeFile.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.TinyGeo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TinyGeo.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.TinyGeo.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.ProductCenter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.11.0.0-beta007\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.ClassBreak, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Composite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Composite.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Composite.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.DotDensity, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.DotDensity.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.DotDensity.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Filter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Filter.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Icon, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Icon.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Icon.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Regex, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Regex.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Regex.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Value, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Value.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Value.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Wpf, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDesktopForWpf-BareBone.11.0.0-beta012\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dock\DocumentWindow.cs" />
+    <Compile Include="Managers\Advanced\GettingPluginsPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\Advanced\GottenPluginsPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\Advanced\Manager.cs" />
+    <Compile Include="Managers\Advanced\PluginManager.cs" />
+    <Compile Include="Managers\ControlPluginManager.cs" />
+    <Compile Include="Managers\DockWindowManager\SortedDockWindowsEventArgs.cs" />
+    <Compile Include="Managers\DockWindowManager\SortingDockWindowsEventArgs.cs" />
+    <Compile Include="Managers\LayerListManager\AddStyleTypes.cs" />
+    <Compile Include="Managers\LayerListManager\GottenLayerListItemContextMenuItemsEventArgs.cs" />
+    <Compile Include="Managers\LayerListManager\LayerListHelper.cs" />
+    <Compile Include="Managers\LayerListManager\GettingLayerListItemContextMenuItemsEventArgs.cs" />
+    <Compile Include="Managers\LayerListManager\LayerListManager.cs" />
+    <Compile Include="Managers\DockWindowManager\ThemeChangedDockWindowManagerEventArgs.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\AddSpecifiedStyleByPluginMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\AddStyleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\AddStyleWizardMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\BingMapStyleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\DrawingMarginMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\DuplicateMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\EditStyleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\ExportAsCodeMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\InsertFromLibraryMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\LayerListMenuItemHelper.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\LoadFromLibraryMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\MovementMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\PropertiesMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RemoveMenuItems\RemoveLayerMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RemoveMenuItems\RemoveMarkerMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RemoveMenuItems\RemoveOverlayMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RemoveMenuItems\RemoveStyleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RemoveMenuItems\RemoveSubStyleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RemoveMenuItems\RemoveZoomLevelMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\RenameMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\ReplaceFromLibraryMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\ReprojectMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\SaveStyleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\SetLowerScaleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\SetUpperScaleMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\StyleBuilderMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\TransparencyMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\ViewDataMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MenuItems\ZoomToExtentMenuItem.cs" />
+    <Compile Include="Managers\LayerListManager\MovementAction.cs" />
+    <Compile Include="Managers\LayerListManager\SelectedLayerListItemChangedLayerListManagerEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\EnterViewPasswordWindow.xaml.cs">
+      <DependentUpon>EnterViewPasswordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\ProjectManager\GettingDeserializedMapsEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\GottenDeserializedMaps.cs" />
+    <Compile Include="Managers\ProjectManager\MissingDataWindow.xaml.cs">
+      <DependentUpon>MissingDataWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\ProjectManager\PackProgressWindow.xaml.cs">
+      <DependentUpon>PackProgressWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\ProjectManager\ProjectLockWindow.xaml.cs">
+      <DependentUpon>ProjectLockWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\ProjectManager\ProjectReadWriteMode.cs" />
+    <Compile Include="Managers\ProjectManager\StateChangedProjectPluginManagerEventArgs.cs" />
+    <Compile Include="Plugins\DataRepositories\Advanced\DataRepositoryContentUserControl1.xaml.cs">
+      <DependentUpon>DataRepositoryContentUserControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\DataRepositories\Advanced\DataRepositoryContentViewModel.cs" />
+    <Compile Include="Plugins\DataRepositories\Advanced\DataRepositoryGridCellConverter.cs" />
+    <Compile Include="Plugins\DataRepositories\Advanced\DataRepositoryGridColumn.cs" />
+    <Compile Include="Plugins\DataRepositories\Advanced\DataRepositoryHelper.cs" />
+    <Compile Include="Plugins\DataRepositories\Advanced\DataRepositoryItemMouseDoubleClickUserControlEventArgs.cs" />
+    <Compile Include="Plugins\DataRepositories\LoadedDataRepositoryItemEventArgs.cs" />
+    <Compile Include="Plugins\DataRepositories\LoadingDataRepositoryItemEventArgs.cs" />
+    <Compile Include="Plugins\Layers\Providers\DataSourceResolveTool.cs" />
+    <Compile Include="Plugins\Layers\Providers\SearchPlaceTool.cs" />
+    <Compile Include="Plugins\Layers\ConfigureFeatureLayerParameters.cs" />
+    <Compile Include="Managers\InfrastructureManager\InfrastructureSettingUserControl.xaml.cs">
+      <DependentUpon>InfrastructureSettingUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\InfrastructureManager\InfrastructureSettingViewModel.cs" />
+    <Compile Include="Managers\LoggerManager\LoggerLevels.cs" />
+    <Compile Include="Managers\LoggerManager\LoggerMessage.cs" />
+    <Compile Include="Managers\LoggerManager\LoggerMessageComparer.cs" />
+    <Compile Include="Managers\LoggerManager\LoggingLoggerManagerEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\CanAutoBackupChangedProjectPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\SelectionManager.cs" />
+    <Compile Include="Managers\TaskManager\ITaskHost.cs" />
+    <Compile Include="Managers\TaskManager\TaskCommand.cs" />
+    <Compile Include="Managers\TaskManager\TaskPluginManagerInProcess.cs" />
+    <Compile Include="Managers\DataRepositoryManager\DataRepositoryPluginManager.cs" />
+    <Compile Include="Managers\ProjectManager\AutoBackupIntervalChangedProjectPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\UriChangedProjectPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\OpeningProjectManagerEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\ProjectStreamInfo.cs" />
+    <Compile Include="Managers\TaskManager\TaskState.cs" />
+    <Compile Include="Managers\TaskManager\UpdatingTaskProgressEventArgs.cs" />
+    <Compile Include="Managers\UIPluginManager\GottenMapContextMenuItemsUIPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\UIPluginManager\RefreshedPluginsUIPluginManagerEventArgs.cs" />
+    <Compile Include="Managers\UIPluginManager\RibbonExtension.cs" />
+    <Compile Include="Plugins\Layers\GottenLayerPreviewSourceLayerPluginEventArgs.cs" />
+    <Compile Include="Plugins\Layers\GettingLayerPreviewSourceLayerPluginEventArgs.cs" />
+    <Compile Include="Plugins\Layers\GroupLayerPlugin.cs" />
+    <Compile Include="Plugins\Layers\UIs\MemoColumnConvertMode.cs" />
+    <Compile Include="Plugins\Layers\UIs\LongColumnTruncateMode.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\MultiStyleBuilderViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\MultiStyleBuilderWindow.xaml.cs">
+      <DependentUpon>MultiStyleBuilderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Styles\StyleWizard.cs" />
+    <Compile Include="Plugins\Layers\FeatureLayerPlugin.cs" />
+    <Compile Include="Plugins\Layers\FeatureLayerPluginProjection.cs" />
+    <Compile Include="Plugins\Layers\GottenLayersLayerPluginEventArgs.cs" />
+    <Compile Include="Plugins\Layers\GettingLayersLayerPluginEventArgs.cs" />
+    <Compile Include="Plugins\Layers\GetLayersParameters.cs" />
+    <Compile Include="Plugins\Layers\SimpleShapeType.cs" />
+    <Compile Include="Plugins\Styles\StyleWizardResult.cs" />
+    <Compile Include="Plugins\Styles\StyleWrapper.cs" />
+    <Compile Include="Plugins\UIPlugins\GetLayerListItemContextMenuParameters.cs" />
+    <Compile Include="Plugins\UIPlugins\GetMapContextMenuParameters.cs" />
+    <Compile Include="Managers\LayerListManager\LayerListItem.cs" />
+    <Compile Include="Plugins\Layers\UIs\LayerPropertiesUserControl.xaml.cs">
+      <DependentUpon>LayerPropertiesUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Layers\UIs\LayerPropertiesUserControlViewModel.cs" />
+    <Compile Include="Plugins\UIPlugins\RibbonEntry.cs" />
+    <Compile Include="Shares\StringProtector.cs" />
+    <Compile Include="Shares\Advanced\LayerPluginKeyAttribute.cs" />
+    <Compile Include="Shares\Columns\IntermediateColumn.cs" />
+    <Compile Include="Shares\Columns\IntermediateColumnType.cs" />
+    <Compile Include="Shares\Converters\ColumnNameToAliasNameConverter.cs" />
+    <Compile Include="Shares\Converters\DatumTypeToStringConverter.cs" />
+    <Compile Include="Shares\Converters\ErrorMessageToSubStringConverter.cs" />
+    <Compile Include="Shares\Converters\HasItemsToVisibilityConverter.cs" />
+    <Compile Include="Shares\Converters\HighlightModeToMessageConverter.cs" />
+    <Compile Include="Shares\Converters\LayerToColumnsConverter.cs" />
+    <Compile Include="Shares\Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Shares\Converters\ProjectionTypeToStringConverter.cs" />
+    <Compile Include="Shares\Converters\QueryMatchModeToNameConverter.cs" />
+    <Compile Include="Shares\Converters\RecordIndexConverter.cs" />
+    <Compile Include="Shares\Converters\TooLongMultiRowsStringConverter.cs" />
+    <Compile Include="Shares\Converters\UnitTypeToStringConverter.cs" />
+    <Compile Include="Shares\FeatureLayerAdapters\FeatureLayerAdapter.cs" />
+    <Compile Include="Shares\FeatureLayerAdapters\PagedFeatureLayerAdapter.cs" />
+    <Compile Include="Shares\Serialize\GisEditorGeoSerializer.cs" />
+    <Compile Include="Shares\Serialize\GisEditorXmlGeoSerializationFormatter.cs" />
+    <Compile Include="Shares\UIs\DataViewer\EditDataChange.cs" />
+    <Compile Include="Shares\UIs\DataViewer\EditDataShortcutKeyMode.cs" />
+    <Compile Include="Shares\UIs\DataViewer\ViewModel\DataViewerCountConverter.cs" />
+    <Compile Include="Shares\UIs\DataViewer\View\LoadingUriColumnsDataViewerUserControlEventArgs.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\CommonProjectionsState.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\CustomProjectionsState.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\ProjectionsState.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryFeatureLayerWindow.xaml.cs">
+      <DependentUpon>QueryFeatureLayerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryOperatorHelper.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryOperaterType.cs" />
+    <Compile Include="Shares\PluginManagerWindow\ManagerTabItemSource.cs" />
+    <Compile Include="Shares\PluginManagerWindow\PluginManagerListUserControl.xaml.cs">
+      <DependentUpon>PluginManagerListUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\PluginManagerWindow\PluginManagerListViewModel.cs" />
+    <Compile Include="Shares\PluginManagerWindow\PluginManagerTabItemSource.cs" />
+    <Compile Include="Shares\PluginManagerWindow\PluginManagerWindow.xaml.cs">
+      <DependentUpon>PluginManagerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\PluginManagerWindow\PluginViewModel.cs" />
+    <Compile Include="Plugins\DataRepositories\DataRepositoryItem.cs" />
+    <Compile Include="Plugins\DataRepositories\DataRepositoryPlugin.cs" />
+    <Compile Include="Plugins\LoggerPlugin.cs" />
+    <Compile Include="Plugins\Projects\ProjectPlugin.cs" />
+    <Compile Include="Managers\ProjectManager\ProjectPluginManager.cs" />
+    <Compile Include="Managers\UIPluginManager\FilePathConverter.cs" />
+    <Compile Include="Managers\LanguageManager\LanguageSetting.cs" />
+    <Compile Include="Managers\DockWindowManager\DockWindowOpenedDockWindowManagerEventArgs.cs" />
+    <Compile Include="Managers\LoggerManager\LoggedLoggerManagerEventArgs.cs" />
+    <Compile Include="Managers\LoggerManager\LoggerPluginManager.cs" />
+    <Compile Include="Managers\UIPluginManager\RefreshArgs.cs" />
+    <Compile Include="Managers\ProjectManager\OpenedProjectManagerEventArgs.cs" />
+    <Compile Include="Managers\ProjectManager\LoadingPreviewImageProjectPluginManagerEventArgs.cs" />
+    <Compile Include="Plugins\Projects\ProjectSaveAsResult.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\ComponentStyleItem.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\HelpKeyToButtonConverter.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\ImageToImageSourceConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugins\Styles\StyleBuilder\StyleBuilderWindow.xaml.cs">
+      <DependentUpon>StyleBuilderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Styles\StyleBuilder\StyleBuilderViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\ZoomLevelViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleLayerListItem.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilder\StyleItemViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleLibrary\StyleCategoryViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleLibrary\StyleFolderViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleLibrary\StyleLibraryViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleLibrary\StyleLibraryWindow.xaml.cs">
+      <DependentUpon>StyleLibraryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Styles\StyleLibrary\StylePreviewViewModel.cs" />
+    <Compile Include="Plugins\Styles\StyleUserControl.cs" />
+    <Compile Include="Shares\CompileConditions.cs" />
+    <Compile Include="Shares\Converters\ImageSourceToImageBrushConverter.cs" />
+    <Compile Include="Shares\IStorableSettings.cs" />
+    <Compile Include="Shares\MessageBoxHelper.cs" />
+    <Compile Include="Shares\RefreshArgsDescriptions.cs" />
+    <Compile Include="Shares\Settings\SettingAdapter.cs" />
+    <Compile Include="Shares\StorableSettings.cs" />
+    <Compile Include="Shares\Theme.cs" />
+    <Compile Include="Plugins\Layers\LayerPlugin.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilderArguments.cs" />
+    <Compile Include="Plugins\Styles\StyleCategories.cs" />
+    <Compile Include="Plugins\Styles\StylePlugin.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilderResult.cs" />
+    <Compile Include="Plugins\Styles\StyleBuilderUIElements.cs" />
+    <Compile Include="Shares\FolderBrowserDialogHelper.cs" />
+    <Compile Include="Managers\LanguageManager\LanguageManager.cs" />
+    <Compile Include="Managers\DockWindowManager\DockWindowManager.cs" />
+    <Compile Include="Managers\LayerPluginManager.cs" />
+    <Compile Include="Managers\TaskManager\ExceptionInfo.cs" />
+    <Compile Include="Managers\TaskManager\ITaskCallbackReceiver.cs" />
+    <Compile Include="Managers\TaskManager\TaskPlugin.cs" />
+    <Compile Include="Managers\TaskManager\TaskPluginManager.cs" />
+    <Compile Include="Managers\StylePluginManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\SelectionAdorner.cs" />
+    <Compile Include="Shares\Advanced\SettingUserControl.cs" />
+    <Compile Include="Shares\UIs\DataViewer\Extensions\DataViewerHelper.cs" />
+    <Compile Include="Shares\UIs\DataViewer\ViewModel\DataViewerViewModel.cs" />
+    <Compile Include="Shares\UIs\DataViewer\View\DataViewerUserControl.xaml.cs">
+      <DependentUpon>DataViewerUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\ExportCodeDialog\ExportCodeWindow.xaml.cs">
+      <DependentUpon>ExportCodeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\FeatureLayerProperties\FeatureLayerPropertiesUserControl.xaml.cs">
+      <DependentUpon>FeatureLayerPropertiesUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\FeatureLayerProperties\FeatureLayerPropertiesUserControlViewModel.cs" />
+    <Compile Include="Shares\UIs\FeatureLayerProperties\PropertiesValueDataTemplateSelector.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\DatumType.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\DetailProj4Model.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\Proj4Model.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\ProjectionType.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\SearchProjectionType.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\TabSource.cs" />
+    <Compile Include="Shares\UIs\Projections\Model\UnitType.cs" />
+    <Compile Include="Shares\UIs\Projections\ViewModel\CommonProjectionViewModel.cs" />
+    <Compile Include="Shares\UIs\Projections\ViewModel\IProjectionViewModel.cs" />
+    <Compile Include="Shares\UIs\Projections\ViewModel\OtherProjectionViewModel.cs" />
+    <Compile Include="Shares\UIs\Projections\ViewModel\ProjectionSelectionViewModel.cs" />
+    <Compile Include="Shares\UIs\Projections\ViewModel\TabSources.cs" />
+    <Compile Include="Shares\UIs\Projections\View\CommonProjection.xaml.cs">
+      <DependentUpon>CommonProjection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\Projections\View\OtherProjection.xaml.cs">
+      <DependentUpon>OtherProjection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\Projections\View\ProjectionWindow.xaml.cs">
+      <DependentUpon>ProjectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\SelectionAndQuerying\Model\AdvancedQueryModel.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryOperater.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryMatchMode.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\AdvancedQueryViewModel.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryConditionViewModel.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\SimpleQueryViewModel.cs" />
+    <Compile Include="Shares\UIs\SelectionAndQuerying\AdvancedQueryUserControl.xaml.cs">
+      <DependentUpon>AdvancedQueryUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\SelectionAndQuerying\QueryConditionWindow.xaml.cs">
+      <DependentUpon>QueryConditionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\UIs\SelectionAndQuerying\SimpleQueryUserControl.xaml.cs">
+      <DependentUpon>SimpleQueryUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shares\Validators.cs" />
+    <Compile Include="Plugins\Advanced\Plugin.cs" />
+    <Compile Include="Dock\DockWindowPosition.cs" />
+    <Compile Include="Dock\DockWindow.cs" />
+    <Compile Include="GisEditor.cs" />
+    <Compile Include="Managers\InfrastructureManager\InfrastructureManager.cs" />
+    <Compile Include="Managers\UIPluginManager\UIPluginManager.cs" />
+    <Compile Include="Plugins\UIPlugins\UIPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Dock\DockWindowStartupMode.cs" />
+    <Compile Include="Shares\PluginHelper.cs" />
+    <Compile Include="Plugins\ControlPlugin.cs" />
+    <Compile Include="Shares\ZoomLevelHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="languages\ar\GisEditorStringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="languages\de\GisEditorStringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="languages\en\GisEditorStringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="languages\es\GisEditorStringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="languages\pt\GisEditorStringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="languages\zh-CHS\GisEditorStringResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="Managers\InfrastructureManager\InfrastructureSettingUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Managers\ProjectManager\EnterViewPasswordWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Managers\ProjectManager\MissingDataWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Managers\ProjectManager\PackProgressWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Managers\ProjectManager\ProjectLockWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\DataRepositories\Advanced\DataRepositoryContentUserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Layers\UIs\LayerPropertiesUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Styles\StyleBuilder\MultiStyleBuilderWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\Styles\StyleBuilder\StyleBuilderWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\PluginManagerWindow\PluginManagerListUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\PluginManagerWindow\PluginManagerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\DataViewer\View\DataViewerUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\ExportCodeDialog\ExportCodeWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\FeatureLayerProperties\FeatureLayerPropertiesUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\Projections\View\CommonProjection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\Projections\View\OtherProjection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\Projections\View\ProjectionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\SelectionAndQuerying\AdvancedQueryUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\SelectionAndQuerying\QueryConditionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shares\UIs\SelectionAndQuerying\QueryFeatureLayerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shares\UIs\SelectionAndQuerying\SimpleQueryUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="Themes\TreeViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="Plugins\Styles\StyleLibrary\StyleLibraryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="Resources\LoggerSettings.txt">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Shares\UIs\Projections\Resources\projOther.db" />
+    <None Include="Shares\UIs\Projections\Resources\projStatePlane.db" />
+    <None Include="Shares\UIs\Projections\Resources\projToWkt.db" />
+    <None Include="Shares\UIs\Projections\Resources\projUTM.db" />
+    <None Include="Shares\UIs\Projections\Resources\zoneForStatePlane.db" />
+    <None Include="Shares\UIs\Projections\Resources\zoneForUtm.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder-open_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\addStyle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\duplicate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\deletestyle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder_large.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\windowsexplorer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\drawing_margin_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\export_as_code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\insert_from_library.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\load_from_library.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\moveUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\moveDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\toTop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\toBottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\properties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\unload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\replace_from_library.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\reprojection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Set Lower Scale.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Set Upper Scale.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\style_builder_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\viewdata.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\zoomextent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dr_place_on_map.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\arrowDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NoIndexFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Unavailable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dr_fileicon_raster.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\zoom_to_selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\zoom_to_feature.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dialogs_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dialogs_Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dialogs_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\editstyle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Current Styling.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\current_styling_16x16.png" />
+    <Resource Include="Images\current_styling_32x32.png" />
+    <Resource Include="Images\set_as_default_style_16x16.png" />
+    <Resource Include="Images\set_as_default_style_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\copytoexcel.png" />
+    <Resource Include="Images\exporttoexcel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GisEditorToolKits\GisEditorToolkits\GisEditorToolkits.csproj">
+      <Project>{99b4b46d-b52d-4eaf-98ee-c7b398575d90}</Project>
+      <Name>GisEditorToolkits</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfDesktopExtension\WpfDesktopExtension.csproj">
+      <Project>{5027d56d-61b7-4c7f-91c4-24b0f1f5d272}</Project>
+      <Name>WpfDesktopExtension</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PasswordEye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shares\Serialize\GisEditorResolveSerializedIssue.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MSExcel-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

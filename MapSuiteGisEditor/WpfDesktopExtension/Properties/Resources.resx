@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CSharpFilterCondition" xml:space="preserve">
+    <value>using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using ThinkGeo.MapSuite.Core;
+using System;
+
+public class Script   
+{
+  public static Collection&lt;Feature&gt; GetFeaturesToMatch(IEnumerable&lt;Feature&gt; features)
+  {
+       Collection&lt;Feature&gt; newFeatures = new Collection&lt;Feature&gt;();	   
+       foreach(var feature in features) {
+         if(Match(feature)) newFeatures.Add(feature);
+       }
+	   
+	   return newFeatures;
+  }
+  
+  private static bool Match(Feature f)
+  {
+     return [expression];
+  }  
+}</value>
+  </data>
+  <data name="CSharpFilterFunction" xml:space="preserve">
+    <value>using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using ThinkGeo.MapSuite.Core;
+using System;
+
+public class Script   
+{
+  public static Collection&lt;Feature&gt; GetFeaturesToMatch(IEnumerable&lt;Feature&gt; features)
+  {
+       Collection&lt;Feature&gt; newFeatures  = new Collection&lt;Feature&gt;();
+	   
+       foreach(var feature in features) {
+         if(Match(feature)) newFeatures.Add(feature);
+       }
+	   
+	   return newFeatures;
+  }
+  
+  private static bool Match(Feature feature)
+  {
+       [expression]
+  }  
+  
+}</value>
+  </data>
+  <data name="CSharpSampleCode" xml:space="preserve">
+    <value>//The code below shows how to write C# Script for MapSuite Explorer
+//You can use "map" to access the WpfMap control
+using System;
+using System.Windows.Forms;
+using ThinkGeo.MapSuite.WpfDesktopEdition;
+
+public class Script
+{
+    public static void ScriptMain(WpfMap map)
+    {
+        int count = 0;
+
+        Timer timer = new Timer();
+        timer.Interval = 600;
+        timer.Tick += (object sender, EventArgs e) =&gt;
+        {
+            count++;
+            if (count == 12)
+            {
+                timer.Stop();
+            }
+            if (count % 2 == 0)
+            {
+                map.ZoomIn();
+            }
+            else
+            {
+                map.ZoomOut();
+            }
+        };
+
+        timer.Start();
+    }
+}</value>
+  </data>
+  <data name="InvalidFeatures" xml:space="preserve">
+    <value>Some invalid features exist in current shape files, we have ignored them and click OK to continue.</value>
+  </data>
+  <data name="PythonFilterCondition" xml:space="preserve">
+    <value>import clr
+clr.AddReference("mscorlib")
+clr.AddReference("MapSuiteCore")
+
+from System.Collections.ObjectModel import *
+from ThinkGeo.MapSuite.Core import *
+
+def matchFeature(f):
+	return [expression]
+
+features = Collection[Feature]()
+for f in Features:
+	try:
+		if matchFeature(f): features.Add(f)
+	except:
+		pass
+features</value>
+  </data>
+  <data name="PythonFilterFunction" xml:space="preserve">
+    <value>import clr
+clr.AddReference("mscorlib")
+clr.AddReference("MapSuiteCore")
+
+from System.Collections.ObjectModel import *
+from ThinkGeo.MapSuite.Core import *
+def match(feature):
+[expression]
+
+features = Collection[Feature]()
+for f in Features:
+	try:
+		if match(f): features.Add(f)
+	except:
+		pass
+features</value>
+  </data>
+  <data name="PythonSampleCode" xml:space="preserve">
+    <value>#The code below shows how to write Python Script for MapSuite Explorer
+#You can use "Map" to access the WpfMap control
+import clr
+clr.AddReference('System.Windows.Forms')
+from System.Windows.Forms import *
+
+count=0
+
+def timer_Tick(*args):
+	global count
+	count+=1
+	if count==12:
+		timer.Stop()
+		
+	if count%2==0:
+		Map.ZoomIn()
+	else:
+		Map.ZoomOut()
+
+timer=Timer()
+timer.Tick+=timer_Tick
+timer.Interval=600
+timer.Start()</value>
+  </data>
+  <data name="RubyFilterCondition" xml:space="preserve">
+    <value>load_assembly("mscorlib")
+load_assembly("MapSuiteCore")
+
+def isMatch(f)                                                                                                                                             var =  ([expression])
+        return var
+end
+
+def getMatchFeatures(featuresToMatch)
+	matchFeatures = System::Collections::ObjectModel::Collection[ThinkGeo::MapSuite::Core::Feature].new
+	featuresToMatch.each do |f|
+		begin
+			if isMatch(f)
+				matchFeatures&lt;&lt;f
+			end
+		rescue
+
+		end
+	end
+	return matchFeatures
+end
+
+return getMatchFeatures(Features)</value>
+  </data>
+  <data name="RubyFilterFunction" xml:space="preserve">
+    <value>load_assembly("mscorlib")
+load_assembly("MapSuiteCore")
+                                                                                                                                                              def match(feature)  
+    [expression]
+ end                                                                                                                                                              
+def getMatchFeatures(featuresToMatch)
+	matchFeatures = System::Collections::ObjectModel::Collection[ThinkGeo::MapSuite::Core::Feature].new
+	featuresToMatch.each do |f|
+		begin
+			if match(f)
+				matchFeatures&lt;&lt;f
+			end
+		rescue
+
+		end
+	end
+	return matchFeatures
+end
+
+return getMatchFeatures(Features)</value>
+  </data>
+  <data name="RubySampleCode" xml:space="preserve">
+    <value>#The code below shows how to write Ruby Script for MapSuite Explorer
+#You can use "Map" to access the WpfMap control
+
+load_assembly("System.Windows.Forms")
+
+count=0
+
+timer=System::Windows::Forms::Timer.new
+timer.Interval=600
+
+timer.Tick do |sender,e|
+	count+=1
+	if count==12
+		timer.Stop
+	end
+	
+	if count%2==0
+		Map.ZoomIn
+	else
+		Map.ZoomOut
+	end
+end
+
+timer.Start</value>
+  </data>
+</root>

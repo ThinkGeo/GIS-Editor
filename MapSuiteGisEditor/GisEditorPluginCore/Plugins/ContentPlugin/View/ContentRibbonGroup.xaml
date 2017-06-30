@@ -1,0 +1,95 @@
+<r:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ContentRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+               xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+               xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+               xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+               CanAddToQuickAccessToolBarDirectly="False"
+               Header="{DynamicResource ResourceKey=ContentRibbonGroupHeader}">
+    <r:RibbonGroup.GroupSizeDefinitions>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+        </r:RibbonGroupSizeDefinition>
+    </r:RibbonGroup.GroupSizeDefinitions>
+    <r:RibbonGroup.DataContext>
+        <local:ContentRibbonGroupViewModel />
+    </r:RibbonGroup.DataContext>
+
+    <r:RibbonSplitButton x:Name="AddLayerRibbonSplitButton"
+                         Command="{Binding AddAllKindOfLayersCommand}"
+                         CommandParameter="Shapefiles"
+                         ItemsSource="{Binding SupportedLayerProviders}"
+                         Label="{DynamicResource ResourceKey=ContentRibbonGroupAddLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/NewContent.png"
+                         QuickAccessToolBarId="Contents"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/NewContent.png"
+                         ToolTipDescription="{DynamicResource ResourceKey=ContentRibbonGroupAddButtonToolTipDescription}"
+                         ToolTipTitle="{DynamicResource ResourceKey=ContentRibbonGroupAddButtonToolTip}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="DropDownOpened">
+                <mvvm:EventToCommand Command="{Binding RefreshSupportedLayerProvidersCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <r:RibbonSplitButton.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Name}"
+                           ToolTip="{Binding Description}" />
+            </DataTemplate>
+        </r:RibbonSplitButton.ItemTemplate>
+        <r:RibbonSplitButton.ItemContainerStyle>
+            <Style TargetType="{x:Type r:RibbonMenuItem}">
+                <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=r:RibbonSplitButton}, Path=DataContext.AddLayerCommand}" />
+                <Setter Property="CommandParameter" Value="{Binding Name}" />
+                <Setter Property="CanAddToQuickAccessToolBarDirectly" Value="False" />
+            </Style>
+        </r:RibbonSplitButton.ItemContainerStyle>
+    </r:RibbonSplitButton>
+
+    <r:RibbonButton Name="viewData"
+                    Command="{x:Static local:CommandHelper.OpenViewDataWindowCommand}"
+                    Label="{DynamicResource ResourceKey=ContentRibbonGroupViewDataLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/viewData.png"
+                    QuickAccessToolBarId="ViewData"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/viewData.png"
+                    ToolTipTitle="{DynamicResource ResourceKey=ContentRibbonGroupViewDataLabel}"
+                    ToolTipDescription="{DynamicResource ResourceKey=ContentRibbonGroupViewDataToolTip}" />
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.AddStyleCommand}"
+                    Label="{DynamicResource ResourceKey=StyleBuilderWindowAddStyleLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/addStyle.png"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/addStyle.png"
+                    ToolTipTitle="{DynamicResource ResourceKey=StyleBuilderWindowAddStyleLabel}"
+                    ToolTipDescription="{DynamicResource ResourceKey=ContentRibbonGroupAddStyleToolTip}" />
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.AddLayerGroupCommand}"
+                    Label="{DynamicResource ResourceKey=ContentRibbonGroupEmptyLayerGroupLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/LayerGroup.png"
+                    QuickAccessToolBarId="AddLayerGroup"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/LayerGroup.png"
+                    ToolTipDescription="{DynamicResource ContentRibbonGroupEmptyLayerGroupToolTipDescription}"
+                    ToolTipTitle="{DynamicResource ContentRibbonGroupEmptyLayerGroupLabel}" />
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.OpenDataRepositoryWindowCommand}"
+                    Label="{DynamicResource ResourceKey=ContentRibbonGroupDataRepositoryLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/data_repository_ribbon_button.png"
+                    QuickAccessToolBarId="FromDataRepository"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/data_repository_ribbon_button.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=ContentRibbonGroupDataRepositoryToolTipDescription}"
+                    ToolTipTitle="{DynamicResource ResourceKey=ContentRibbonGroupDataRepositoryToolTip}" />
+
+    <r:RibbonButton Command="{x:Static local:CommandHelper.OpenViewColumnsWindowCommand}"
+                    Label="{DynamicResource ContentRibbonGroupViewColumnsLabel}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/edit_column.png"
+                    QuickAccessToolBarId="ViewData"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/edit_column.png"
+                    ToolTipTitle="{DynamicResource ContentRibbonGroupViewColumnsLabel}"
+                    ToolTipDescription="{DynamicResource ContentRibbonGroupViewColumnsDescription}" />
+</r:RibbonGroup>

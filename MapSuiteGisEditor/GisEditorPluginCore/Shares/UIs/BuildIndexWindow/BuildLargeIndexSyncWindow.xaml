@@ -1,0 +1,111 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.BuildLargeIndexSyncWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowDscBuildingIndexNoticeDscTitle}"
+        Width="600"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}"
+        mc:Ignorable="d">
+    <Grid Margin="5">
+        <Grid.Resources>
+            <sys:Int32 x:Key="BuildInBackgroundKey">1</sys:Int32>
+            <sys:Int32 x:Key="BuildNormallyKey">2</sys:Int32>
+            <sys:Int32 x:Key="SkipBuildKey">3</sys:Int32>
+            <sys:Int32 x:Key="CancelAddKey">4</sys:Int32>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Margin="20 20 0 0"
+                       VerticalAlignment="Top"
+                       Source="/GisEditorPluginCore;component/Images/info.png" />
+                <FlowDocumentScrollViewer Grid.Column="1"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden">
+                    <FlowDocument>
+                        <Section>
+                            <Paragraph FontFamily="Arial" FontSize="12">
+                                <Run Text="{DynamicResource BuildLargeIndexSyncWindowtheshapefileText}" />
+                                <Run FontWeight="Bold" Text="{Binding FileName}" />
+                                <Run Text="{DynamicResource BuildLargeIndexSyncWindowdoesnothaveText}" />
+                            </Paragraph>
+                        </Section>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
+            </Grid>
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="20 0 0 20" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="52" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--  Build in background  -->
+                <StackPanel Grid.Row="0" Grid.Column="1">
+                    <Button Command="{Binding ConfirmBuildIndexModeCommand}"
+                            CommandParameter="{StaticResource BuildInBackgroundKey}"
+                            Content="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowBuildinBackgroundConten}" />
+                </StackPanel>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowBuildsthespatialText}" />
+                <!--  Build in Normally  -->
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Button Command="{Binding ConfirmBuildIndexModeCommand}"
+                            CommandParameter="{StaticResource BuildNormallyKey}"
+                            Content="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowBuildNormallyConten}" />
+                </StackPanel>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowBuildsspatialindexforegroundText}" />
+                <!--  Skip Building  -->
+                <StackPanel Grid.Row="2" Grid.Column="1">
+                    <Button Command="{Binding ConfirmBuildIndexModeCommand}"
+                            CommandParameter="{StaticResource SkipBuildKey}"
+                            Content="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowSkipBuildingConten}" />
+                </StackPanel>
+                <TextBlock Grid.Row="2"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowDontbuildspatialindexText}" />
+                <!--  Don't add this File  -->
+                <StackPanel Grid.Row="3" Grid.Column="1">
+                    <Button Command="{Binding ConfirmBuildIndexModeCommand}"
+                            CommandParameter="{StaticResource CancelAddKey}"
+                            Content="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowDontAddFileConten}" />
+                </StackPanel>
+                <TextBlock Grid.Row="3"
+                           Grid.Column="2"
+                           Text="{DynamicResource ResourceKey=BuildLargeIndexSyncWindowDontaddthisshapefileindexText}" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

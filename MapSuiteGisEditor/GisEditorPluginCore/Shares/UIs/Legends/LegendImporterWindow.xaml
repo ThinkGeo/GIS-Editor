@@ -1,0 +1,65 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.LegendImporterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ResourceKey=LegendImporterWindowImportLegendItemsTitle}"
+        Width="540"
+        Height="560"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.DataContext>
+        <local:LegendImporterViewModel x:Name="viewModel" />
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/StringResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="{DynamicResource LegendImporterWindowImportDescription}" TextWrapping="Wrap" />
+            <Grid Margin="0 15 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="115" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource LegendImporterWindowMaptoImportFromText}" />
+                <ComboBox Grid.Column="1"
+                          HorizontalAlignment="Stretch"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding AllMaps}"
+                          SelectedItem="{Binding SelectedMap,
+                                                 Mode=TwoWay}" />
+            </Grid>
+
+            <CheckBox x:Name="CheckAllCheckBox"
+                      Margin="5 20 0 5"
+                      IsChecked="{Binding CheckAll}" Content="{DynamicResource LegendImporterWindowSelectAllContent}" />
+        </StackPanel>
+        <Border Grid.Row="1"
+                BorderBrush="Gray"
+                BorderThickness="1">
+            <ListBox x:Name="LegendLayout" ItemsSource="{Binding LegendImporterItems}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <local:LegendImporterItemUserControl Margin="{Binding LeftPaddingLevel, Converter={StaticResource leftPaddingLevelToMargin}}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <StackPanel Grid.Row="2"
+                    Margin="0 6 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Click="Import_Click" Style="{DynamicResource ConfigurationButtonStyle}" Content="{DynamicResource LegendImporterWindowImportContent}" />
+            <Button Click="Cancel_Click" Style="{DynamicResource ConfigurationButtonStyle}" Content="{DynamicResource ConfigurationCancelLable}" />
+        </StackPanel>
+    </Grid>
+</Window>

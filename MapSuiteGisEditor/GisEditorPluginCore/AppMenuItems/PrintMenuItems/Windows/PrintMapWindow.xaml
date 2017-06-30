@@ -1,0 +1,686 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.PrintMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:ThinkGeo.MapSuite;assembly=ThinkGeo.MapSuite"
+        xmlns:shapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+        xmlns:printer="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.PrinterLayers"
+        xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:wpfEdition="clr-namespace:ThinkGeo.MapSuite.Wpf;assembly=ThinkGeo.MapSuite.Wpf"
+        Title="{DynamicResource ResourceKey=PrintMapWindowPrintMapTitle}"
+        Width="920"
+        Height="630"
+        MinWidth="870"
+        MinHeight="610"
+        IsEnabled="{Binding IsEnabled}"
+        Loaded="Window_Loaded"
+        PreviewKeyDown="GroupBox_KeyDown"
+        Style="{StaticResource WindowStyle}"
+        WindowState="Maximized">
+    <Window.DataContext>
+        <local:PrintMapViewModel x:Name="printMapViewModel" />
+    </Window.DataContext>
+    <Window.Resources>
+        <ObjectDataProvider x:Key="PrinterOrientationProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="printer:PrinterOrientation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="DistanceUnit"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="shapes:DistanceUnit" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="PrinterPageSizeProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="printer:PrinterPageSize" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="SizeUnitProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:SizeUnit" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <local:PrinterPageSizeToStringConverter x:Key="printerPageSizeToStringConverter" />
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="ConfigPanel">
+            <Grid.Resources>
+                <Style TargetType="GroupBox">
+                    <Setter Property="Margin" Value="0 0 0 20" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0" Header="{DynamicResource ResourceKey=PrintMapWindowPageSetupHeader}">
+                <StackPanel Margin="5">
+                    <Grid Margin="0 10 0 10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Row="0"
+                                Grid.Column="0"
+                                Command="{Binding PrintPreviewCommand}"
+                                Content="{DynamicResource ResourceKey=PrintMapWindowPrintPreviewContent}" />
+                        <Button Grid.Row="2"
+                                Grid.Column="0"
+                                Click="CancelClick"
+                                Content="{DynamicResource ConfigurationCancelLable}" />
+                        <Button Grid.Row="4"
+                                Grid.Column="0"
+                                Command="{Binding ToBitmapCommand}"
+                                Content="{DynamicResource ResourceKey=PrintMapWindowExportContent}" />
+                        <Button Grid.Row="0"
+                                Grid.RowSpan="5"
+                                Grid.Column="2"
+                                Command="{Binding PrintCommand}"
+                                FontWeight="Bold">
+                            <Button.Content>
+                                <StackPanel>
+                                    <Image Source="/GisEditorPluginCore;component/Images/print_icon.png" />
+                                    <TextBlock HorizontalAlignment="Center" Text="{DynamicResource ResourceKey=PrintMapWindowPrintText}" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Margin" Value="0 0 0 0" />
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Margin" Value="0 0 0 0" />
+                            </Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Width" Value="85" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{DynamicResource ResourceKey=PrintMapWindowOrientationText}" />
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Text="{DynamicResource ResourceKey=PrintMapWindowPageSizeText}" />
+                        <CheckBox Grid.Row="4"
+                                   Grid.Column="1"
+                                   Content="{DynamicResource PrintMapWindowAutomaticallySelectPageSizeLabel}" IsChecked="{Binding AutoSelectPageSize,Mode=TwoWay}" />
+                        <TextBlock Grid.Row="6"
+                                   Grid.Column="0"
+                                   IsEnabled="{Binding CustomSizePanelVisibility}"
+                                   Text="{DynamicResource ResourceKey=PrintMapWindowCustomSizeText}" />
+                        <TextBlock Grid.Row="8"
+                                   Grid.Column="0"
+                                   IsEnabled="{Binding DpiPanelVisibility}"
+                                   Text="{DynamicResource ResourceKey=PrintMapWindowDPIText}"
+                                   Visibility="Collapsed" />
+                        <ComboBox Grid.Row="0"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding Source={StaticResource PrinterOrientationProvider}}"
+                                  SelectedItem="{Binding Orientation,
+                                                         Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=.}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox Grid.Row="2"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding Source={StaticResource PrinterPageSizeProvider}}"
+                                  SelectedItem="{Binding Size,
+                                                         Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=., Converter={StaticResource printerPageSizeToStringConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Grid Grid.Row="6"
+                              Grid.Column="1"
+                              IsEnabled="{Binding CustomSizePanelVisibility}">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Width" Value="40" />
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="0 0 5 0" />
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource ResourceKey=PrintMapWindowWidthText}" />
+                            <TextBox Grid.Column="1" Text="{Binding Width, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="2" Text="{DynamicResource ResourceKey=PrintMapWindowHeightText}" />
+                            <TextBox Grid.Column="3" Text="{Binding Height, Mode=TwoWay}" />
+                            <ComboBox Grid.Column="4"
+                                      ItemsSource="{Binding Source={StaticResource SizeUnitProvider}}"
+                                      SelectedItem="{Binding SelectedSizeUnit,
+                                                             Mode=TwoWay}" />
+                        </Grid>
+                        <Grid Grid.Row="8"
+                              Grid.Column="1"
+                              IsEnabled="{Binding DpiPanelVisibility}"
+                              Visibility="Collapsed">
+                            <TextBox Text="{Binding Dpi, Mode=TwoWay}" />
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Header="{DynamicResource ResourceKey=PrintMapWindowAddElementsHeader}">
+                <GroupBox.Resources>
+                    <LinearGradientBrush x:Key="defaultButtonBackground" StartPoint="0,0" EndPoint="0,1">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="#FFF3F3F3" />
+                            <GradientStop Offset="0.5" Color="#FFEBEBEB" />
+                            <GradientStop Offset="0.5" Color="#FFDDDDDD" />
+                            <GradientStop Offset="1" Color="#FFCDCDCD" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <Style TargetType="Button">
+                        <Setter Property="Width" Value="40" />
+                        <Setter Property="Height" Value="45" />
+                        <Setter Property="Margin" Value="0 0 5 0" />
+                    </Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Width" Value="40" />
+                        <Setter Property="Height" Value="45" />
+                        <Setter Property="Margin" Value="0 0 5 0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Border x:Name="border"
+                                            Width="40"
+                                            Height="45"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Background="{StaticResource defaultButtonBackground}"
+                                            BorderBrush="Black"
+                                            BorderThickness="1,1,1,1"
+                                            CornerRadius="5,5,5,5"
+                                            SnapsToDevicePixels="True">
+                                        <ContentPresenter x:Name="contentPresenter" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="true">
+                                            <Setter TargetName="border" Property="Background" Value="Orange" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </GroupBox.Resources>
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="5" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="5" />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="0"
+                                  Click="PointTrackClick"
+                                  IsChecked="{Binding IsPoint,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotogglePointDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="25"
+                                   Height="25"
+                                   Source="/GisEditorPluginCore;component/Images/element_point.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="1"
+                                  Click="LineTrackClick"
+                                  IsChecked="{Binding IsLine,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotoggleLineDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="27"
+                                   Height="27"
+                                   Source="/GisEditorPluginCore;component/Images/element_line.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="2"
+                                  Click="PolygonTrackClick"
+                                  IsChecked="{Binding IsPolygon,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotogglePolygonDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="27"
+                                   Height="27"
+                                   Source="/GisEditorPluginCore;component/Images/element_polygon.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="3"
+                                  Click="CircleTrackClick"
+                                  IsChecked="{Binding IsCircle,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotoggleCircleDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="27"
+                                   Height="27"
+                                   Source="/GisEditorPluginCore;component/Images/element_circle.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="4"
+                                  Click="RectangleTrackClick"
+                                  IsChecked="{Binding IsRectangle,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotoggleRectangleDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="33"
+                                   Height="27"
+                                   Source="/GisEditorPluginCore;component/Images/element_rectangle.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="5"
+                                  Click="SquareTrackClick"
+                                  IsChecked="{Binding IsSquare,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotoggleSquareDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="27"
+                                   Height="27"
+                                   Source="/GisEditorPluginCore;component/Images/element_square.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Grid.Row="0"
+                                  Grid.Column="6"
+                                  Click="EllipseTrackClick"
+                                  IsChecked="{Binding IsEllipse,
+                                                      Mode=TwoWay}"
+                                  ToolTip="{DynamicResource ResourceKey=PrintMapWindowDscClicktotoggleEllipseDscToolTip}">
+                        <ToggleButton.Content>
+                            <Image Width="33"
+                                   Height="27"
+                                   Source="/GisEditorPluginCore;component/Images/element_ellipse.png" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowPointText}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowLineText}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="2"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowPolygonText}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="3"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowCircleText}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="4"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowRectangleText}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="5"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowSquareText}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="6"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowEllipseText}" />
+                    <Button Grid.Column="0" Grid.Row="3" Click="MapElementClick">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/element_map.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="1" Click="TextElementClick" Grid.Row="3">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/element_text.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="2" Click="ImageElementClick" Grid.Row="3">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/adornments_northarrows.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="3" Grid.Row="3"
+                            Click="ScaleLineClick"
+                            IsEnabled="{Binding IsSelectMapElement}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/element_scaleline.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="4" Grid.Row="3"
+                            Click="ScaleBarClick"
+                            IsEnabled="{Binding IsSelectMapElement}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/element_scalebar.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="5" Click="DataGridClick" Grid.Row="3">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/element_datagrid.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="6" Click="LegendClick" Grid.Row="3">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/element_legend.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="0"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowMapText}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="1"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowTextText}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="2"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowImageText}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="3"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowScaleLineText}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="4"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowScaleBarText}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="5"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowDataGridText}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="6"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowLegendText}" />
+                    <Button Grid.Row="6"  Grid.Column="0" Click="CurrentDateClick">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/currentDate.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="7"
+                               Grid.Column="0"
+                               Text="Date" />
+                    <Button Grid.Row="6"  Grid.Column="1" Click="ProjectPathClick">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/projectPath.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="7"
+                               Grid.Column="1"
+                               Text="Project Path" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="2" Header="{DynamicResource ResourceKey=PrintMapWindowPageLayoutHeader}">
+                <GroupBox.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Width" Value="55" />
+                        <Setter Property="Height" Value="60" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </GroupBox.Resources>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="7" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="7" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="7" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="7" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0"
+                            Grid.Column="0"
+                            Command="{Binding LoadLayoutFromCurrentMapCommand}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/pagelayout_loadFromMap.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowDscLoadLayoutFromCurrentMapDscText}"
+                               TextWrapping="Wrap" />
+
+                    <Button Grid.Row="0"
+                            Grid.Column="2"
+                            Command="{Binding NewLayoutCommand}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/pagelayout_new_fromscratch.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="2"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowDscNewLayoutDscText}"
+                               TextWrapping="Wrap" />
+                    <Button Grid.Row="0"
+                            Grid.Column="4"
+                            Command="{Binding NewLayoutFromTemplateCommand}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/pagelayout_new_fromtemplate.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="4"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowDscNewLayoutTemplateDscText}"
+                               TextWrapping="Wrap" />
+                    <Button Grid.Row="0"
+                            Grid.Column="6"
+                            Command="{Binding LoadLayoutCommand}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/pagelayout_load.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="6"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowDscLoadLayoutDscText}"
+                               TextWrapping="Wrap" />
+                    <Button Grid.Row="0"
+                            Grid.Column="8"
+                            Command="{Binding SaveLayoutCommand}">
+                        <Button.Content>
+                            <Image Source="/GisEditorPluginCore;component/Images/pagelayout_save.png" />
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="8"
+                               Text="{DynamicResource ResourceKey=PrintMapWindowDscSaveLayoutDscText}"
+                               TextWrapping="Wrap" />
+
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{DynamicResource PrintMapWindowScaleLabel}" Grid.Row="3">
+                <GroupBox.Resources>
+                    <Style TargetType="RadioButton">
+                        <Setter Property="Margin" Value="0 0 5 0" />
+                    </Style>
+                </GroupBox.Resources>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <RadioButton x:Name="PreserveExtentRadioButton" Content="{DynamicResource PrintMapWindowPreserveExtentLabel}" IsChecked="True" GroupName="Scale" Checked="PreserveExtentChecked" />
+                    <RadioButton x:Name="PreserveScaleRadioButton" Content="{DynamicResource PrintMapWindowPreserveScaleLabel}" GroupName="Scale" Checked="PreserveScaleChecked" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Signatures" Grid.Row="4">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Margin" Value="5 0 5 0" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ListBox ItemsSource="{Binding Signatures}" SelectedItem="{Binding SelectedSignature}" Height="80" Grid.Column="0" Grid.ColumnSpan="4" Margin="5">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <gisToolKit:RenameTextBlock VerticalAlignment="Center"
+                                                        IsEdit="{Binding IsRenaming,
+                                                                         Mode=TwoWay}"
+                                                        Text="{Binding Name}"
+                                                        TextRenamed="RenameTextBlock_TextRenamed" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Content="Delete" Command="{Binding DeleteSignatureCommand}" Grid.Row="1" Grid.Column="0" />
+                    <Button Content="New" Command="{Binding NewSignatureCommand}" Grid.Row="1" Grid.Column="1" />
+                    <Button Content="Rename" Command="{Binding RenameSignatureCommand}" Grid.Row="1" Grid.Column="2" />
+                    <Button Content="Apply" Command="{Binding ApplySignatureCommand}" Grid.Row="1" Grid.Column="3" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Annotation" Grid.Row="5">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <CheckBox Content="Display Annotation" IsChecked="True"  Checked="AnnotationCheckBox_Checked" Unchecked="AnnotationCheckBox_Unchecked"/>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" Grid.Row="6">
+                <Button Content="{DynamicResource PrintMapWindowRefreshPreviewLabel}" Click="RefreshMapElementClick" Height="20" Width="150" />
+                <Button Content="{DynamicResource PrintMapWindowGridlinesLabel}" Click="GridlinesClick" Height="20" Width="150" Margin="5 0 0 0" />
+            </StackPanel>
+        </Grid>
+
+        <ContentPresenter x:Name="HelpContainer"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom" />
+
+        <gisToolKit:BusyIndicator x:Name="BusyIndicator"
+                                  Grid.Column="2"
+                                  BusyContent="{Binding BusyContent}"
+                                  IsBusy="{Binding IsBusy}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <GroupBox Header="{DynamicResource ResourceKey=PrintMapWindowLayoutBuilderHeader}">
+                    <ContentPresenter Content="{Binding PrintMap}" />
+                </GroupBox>
+                <Grid Grid.Row="1"
+                      Margin="0 5 0 0"
+                      Background="LightGray">
+                    <StackPanel Margin="0 5 0 5"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Visibility="Collapsed">
+                        <TextBlock Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Text="1''" />
+                        <!--
+                            <ComboBox Width="100"
+                            Margin="0 0 5 0"
+                            ItemsSource="{Binding Source={StaticResource ResourceKey=DistanceUnit}}"
+                            SelectedItem="{Binding LeftUnit}" />
+                        -->
+                        <TextBlock Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Text="=" />
+                        <TextBox Width="70"
+                                 Margin="0 0 5 0"
+                                 VerticalContentAlignment="Center"
+                                 Text="{Binding CurrentScale,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox Width="100"
+                                  Margin="0 0 5 0"
+                                  ItemsSource="{Binding Source={StaticResource ResourceKey=DistanceUnit}}"
+                                  SelectedItem="{Binding RightUnit}" />
+                        <Button Width="70"
+                                Command="{Binding SetScaleCommand}"
+                                Content="{DynamicResource CommonSetScaleText}" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Text="{DynamicResource ResourceKey=PrintMapWindowZoomText}" />
+                        <ComboBox Grid.Column="1"
+                                  Width="90"
+                                  ItemsSource="{Binding Zooms}"
+                                  SelectedItem="{Binding CurrentZoom,
+                                                         Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </gisToolKit:BusyIndicator>
+    </Grid>
+</Window>

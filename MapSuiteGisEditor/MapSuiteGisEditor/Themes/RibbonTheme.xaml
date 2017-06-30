@@ -1,0 +1,263 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+    xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MapSuiteGisEditor;component/Themes/EditorStrings.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <r:RibbonApplicationMenu
+        x:Key="ApplicationMenuKey"
+        KeyTip="T"
+        LargeImageSource="/MapSuiteGisEditor;component/Images/logo.png"
+        SmallImageSource="/MapSuiteGisEditor;component/Images/logo_16.png">
+        <r:RibbonApplicationMenu.Items>
+            <r:RibbonApplicationMenuItem
+                Command="{x:Static local:GisEditorCommands.NewProjectCommand}"
+                Header="{DynamicResource ResourceKey=PresentationNewProjectHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/newProject.png"
+                QuickAccessToolBarId="NewProject"
+                ToolTipDescription="{DynamicResource NewProjectToolTipDescription}"
+                ToolTipTitle="{DynamicResource NewProjectToolTipTitle}" />
+            <r:RibbonApplicationMenuItem
+                Uid="OpenProject"
+                Command="{x:Static local:GisEditorCommands.OpenProjectCommand}"
+                Header="{DynamicResource ResourceKey=PresentationOpenProjectHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/folder-open_32.png"
+                QuickAccessToolBarId="OpenProject"
+                ToolTipDescription="{DynamicResource OpenProjectFileTips}"
+                ToolTipTitle="{DynamicResource OpenProjectToolTipTitle}" />
+            <r:RibbonApplicationMenuItem
+                Command="{x:Static local:GisEditorCommands.SaveProjectCommand}"
+                Header="{DynamicResource ResourceKey=PresentationSaveProjectHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/save.png"
+                QuickAccessToolBarId="SaveProject"
+                ToolTipDescription="{DynamicResource SaveProjectFileTips}"
+                ToolTipTitle="{DynamicResource SaveProjectToolTipTitle}" />
+            <r:RibbonApplicationMenuItem
+                Uid="SaveProject"
+                Command="{x:Static local:GisEditorCommands.SaveProjectAsCommand}"
+                Header="{DynamicResource ResourceKey=PresentationSaveProjectAsHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/save_as.png"
+                QuickAccessToolBarId="SaveProjectAs"
+                ToolTipDescription="{DynamicResource SaveAsProjectFileTips}"
+                ToolTipTitle="{DynamicResource SaveAsProjectToolTipTitle}" />
+            <r:RibbonApplicationMenuItem
+                Uid="PackageProject"
+                Command="{x:Static local:GisEditorCommands.PackProjectCommand}"
+                Header="{DynamicResource ResourceKey=PresentationPackageProjectHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/package.png"
+                ToolTipDescription="{DynamicResource PackageProjectTipsDescription}"
+                ToolTipTitle="{DynamicResource PackageProjectTips}" />
+
+            <!--  Custom Area Upper Boundary  -->
+            <r:RibbonSeparator Style="{DynamicResource {x:Static MenuItem.SeparatorStyleKey}}" Tag="0" />
+
+            <r:RibbonSeparator Tag="1" />
+            <!--  Custom Area Lower Boundary  -->
+
+            <!--  Plugin Manager  -->
+            <r:RibbonApplicationMenuItem
+                Command="{x:Static local:GisEditorCommands.OpenPluginsDialogCommand}"
+                Header="{DynamicResource ResourceKey=PresentationPluginManagerHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/pluginManager_32.png"
+                QuickAccessToolBarId="PluginManager"
+                ToolTipDescription="{DynamicResource PluginConfigTips}"
+                ToolTipTitle="{DynamicResource PluginManagerToolTipTitle}" />
+            <!--  Options  -->
+            <r:RibbonApplicationMenuItem
+                Command="{x:Static local:GisEditorCommands.OpenOptionsDialogCommand}"
+                Header="{DynamicResource ResourceKey=PresentationOptionsHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/option_32.png"
+                QuickAccessToolBarId="Options"
+                ToolTipDescription="{DynamicResource OptionTips}"
+                ToolTipTitle="{DynamicResource OptionToolTipTitle}" />
+            <!--  help  -->
+            <r:RibbonApplicationMenuItem
+                Command="{x:Static local:GisEditorCommands.OpenHelpPageCommand}"
+                Header="{DynamicResource ResourceKey=PresentationHelpHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/help.png"
+                QuickAccessToolBarId="Help" />
+            <r:RibbonSeparator Style="{DynamicResource {x:Static MenuItem.SeparatorStyleKey}}" />
+
+            <!--  about  -->
+            <r:RibbonApplicationMenuItem
+                Command="{x:Static local:GisEditorCommands.OpenWelcomePageCommand}"
+                Header="{DynamicResource AboutHeader}"
+                ImageSource="/MapSuiteGisEditor;component/Images/about.png"
+                QuickAccessToolBarId="About" />
+        </r:RibbonApplicationMenu.Items>
+
+        <r:RibbonApplicationMenu.FooterPaneContent>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="5,0,0,0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Focusable" Value="False" />
+                    </Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Width" Value="16" />
+                        <Setter Property="Height" Value="16" />
+                        <Setter Property="Margin" Value="5,0,0,0" />
+                    </Style>
+                </Grid.Resources>
+                <Button
+                    Grid.Column="1"
+                    Command="{x:Static local:GisEditorCommands.ProjectLockCommand}"
+                    ToolTip="{DynamicResource OptionTips}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/MapSuiteGisEditor;component/Images/ProjectLock.png" />
+                            <Label Content="Project" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button
+                    Grid.Column="2"
+                    Command="{x:Static local:GisEditorCommands.OpenOptionsDialogCommand}"
+                    ToolTip="{DynamicResource OptionTips}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/MapSuiteGisEditor;component/Images/option_32.png" />
+                            <Label Content="{DynamicResource ResourceKey=OptionLabel}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button
+                    Grid.Column="3"
+                    Command="{x:Static local:GisEditorCommands.ExitCommand}"
+                    ToolTip="{DynamicResource ResourceKey=ExitTips}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/MapSuiteGisEditor;component/Images/exit.png" />
+                            <Label Content="{DynamicResource ResourceKey=ExitLabel}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </r:RibbonApplicationMenu.FooterPaneContent>
+
+        <r:RibbonApplicationMenu.AuxiliaryPaneContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <r:RibbonSeparator
+                    Grid.Row="0"
+                    Label="{DynamicResource ResourceKey=RibbonThemeRecentProjectsLabel}"
+                    Style="{DynamicResource {x:Static MenuItem.SeparatorStyleKey}}" />
+                <ListBox
+                    Grid.Row="2"
+                    ItemsSource="{Binding}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <r:RibbonMenuItem
+                                x:Name="menu"
+                                Width="400"
+                                Padding="5,2,5,2"
+                                BorderThickness="1"
+                                Command="{x:Static local:GisEditorCommands.OpenRecentProjectFileCommand}"
+                                CommandParameter="{Binding FullPath}"
+                                ContextMenu="{x:Null}"
+                                IsEnabled="{Binding IsEnabled}"
+                                ToolTip="{Binding FullPath}">
+                                <r:RibbonMenuItem.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Text="{Binding Index}"
+                                            TextDecorations="Underline" />
+                                        <TextBlock Grid.Column="2" Text="{Binding Label}" />
+                                    </Grid>
+                                </r:RibbonMenuItem.Header>
+                                <!--
+                                    <r:RibbonMenuItem.Triggers>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                    <Setter  Property="Content" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    </Trigger>
+                                    </r:RibbonMenuItem.Triggers>
+                                -->
+                                <!--
+                                    <r:RibbonMenuItem.Style>
+                                    <Style TargetType="{x:Type r:RibbonMenuItem}">
+                                    <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Control.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    </Trigger>
+                                    </Style.Triggers>
+                                    </Style>
+                                    </r:RibbonMenuItem.Style>
+                                -->
+                            </r:RibbonMenuItem>
+                            <DataTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="menu" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(r:RibbonControlService.Ribbon).MouseOverBackground}" />
+                                    <Setter TargetName="menu" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(r:RibbonControlService.Ribbon).MouseOverBorderBrush}" />
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </r:RibbonApplicationMenu.AuxiliaryPaneContent>
+    </r:RibbonApplicationMenu>
+
+    <Grid x:Key="HelpButtonKey" Width="30">
+        <Grid.Resources>
+            <r:RibbonControlSizeDefinition
+                x:Key="helpButtonControlSize"
+                ImageSize="Small"
+                IsLabelVisible="False" />
+        </Grid.Resources>
+        <r:RibbonButton
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Command="{x:Static local:GisEditorCommands.OpenHelpPageCommand}"
+            ControlSizeDefinition="{StaticResource helpButtonControlSize}"
+            QuickAccessToolBarId="Help"
+            SmallImageSource="/MapSuiteGisEditor;component/Images/help.png" />
+    </Grid>
+
+    <r:RibbonQuickAccessToolBar x:Key="QuickAccessBarKey" />
+
+    <r:RibbonGroupSizeDefinitionBaseCollection x:Key="DefaultRibbonGroupStyleKey">
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" />
+        </r:RibbonGroupSizeDefinition>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+        </r:RibbonGroupSizeDefinition>
+    </r:RibbonGroupSizeDefinitionBaseCollection>
+</ResourceDictionary>

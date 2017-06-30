@@ -1,0 +1,134 @@
+<R:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.AnnotationRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:R="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               xmlns:Tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+               Header="{DynamicResource AnnotationRibbonGroupHeader}">
+    <R:RibbonGroup.GroupSizeDefinitions>
+        <R:RibbonGroupSizeDefinition>
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+            <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+        </R:RibbonGroupSizeDefinition>
+    </R:RibbonGroup.GroupSizeDefinitions>
+
+    <R:RibbonToggleButton Command="{Binding SelectMoveCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},
+                                                     Path=IsChecked}"
+                          IsChecked="{Binding IsInModifyMode}"
+                          Click="RibbonToggleButton_Click"
+                          Label="{DynamicResource AnnotationRibbonGroupSelectLable}"
+                          LargeImageSource="/GisEditorPluginCore;component/Images/editTool.png"
+                          QuickAccessToolBarId="SelectMove"
+                          SmallImageSource="/GisEditorPluginCore;component/Images/editTool.png"
+                          ToolTipDescription="{DynamicResource AnnotationRibbonGroupSelectLableDescription}"
+                          ToolTipTitle="{DynamicResource AnnotationRibbonGroupSelectLableToolTip}" />
+
+    <ListBox ItemsSource="{Binding TrackModes}"
+             Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type R:RibbonGroup},Mode=FindAncestor},Path=Background}"
+             ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+             BorderBrush="Transparent" 
+             SelectedItem="{Binding SelectedMode,Mode=TwoWay}"
+             BorderThickness="0">
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding}" Value="Dragable">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </DataTrigger>
+                </Style.Triggers>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border x:Name="ItemPanel" Background="Transparent">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}" />
+            </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <R:RibbonToggleButton 
+                    Label="{Binding Name}"
+                    IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},Path=IsSelected}"
+                    Click="RibbonToggleButton_Unchecked"
+                    LargeImageSource="{Binding ImagePath}"
+                    QuickAccessToolBarId="{Binding Name}"
+                    SmallImageSource="{Binding ImagePath}" />
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
+
+    <R:RibbonButton Command="{Binding UndoCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},
+                                               Path=IsChecked}"
+                    Label="{DynamicResource AnnotationRibbonGroupUndoLable}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/Undo.png"
+                    QuickAccessToolBarId="Undo"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/Undo.png" />
+
+    <R:RibbonButton Command="{Binding RedoCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},
+                                               Path=IsChecked}"
+                    Label="{DynamicResource AnnotationRibbonGroupRedoLable}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/Redo.png"
+                    QuickAccessToolBarId="Redo"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/Redo.png" />
+
+    <R:RibbonButton Command="{Binding DeleteCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},
+                                               Path=IsChecked}"
+                    Label="{DynamicResource AnnotationRibbonGroupDeleteLable}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/delete_annotation.png"
+                    QuickAccessToolBarId="Delete"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/delete_annotation.png" />
+
+    <R:RibbonButton Command="{Binding ClearCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},
+                                               Path=IsChecked}"
+                    Label="{DynamicResource AnnotationRibbonGroupClearLable}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/Clear.png"
+                    QuickAccessToolBarId="Clear"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/Clear.png"
+                    ToolTipDescription="{DynamicResource ResourceKey=AnnotationClearAllButtonTooltip}"
+                    ToolTipTitle="{DynamicResource ResourceKey=AnnotationClearAnnotationsButtonTooltipTitle}" />
+    <R:RibbonButton Command="{Binding ChangeAnnotationStyleCommand}"
+                        Label="Annotation Style"
+                        LargeImageSource="{Binding AnnotationPreview}"
+                        QuickAccessToolBarId="Selection Style"
+                        SmallImageSource="{Binding AnnotationPreview}"
+                        ToolTipTitle="Annotation Style" />
+    <R:RibbonButton Command="{Binding DisplayHideCommand}"
+                        Label="{Binding DisplayHideText}"
+                        LargeImageSource="{Binding DisplayHidePreview}"
+                        QuickAccessToolBarId="Selection Style"
+                        SmallImageSource="{Binding DisplayHidePreview}"
+                        ToolTipTitle="{Binding DisplayHideText}" />
+    <R:RibbonButton Command="{Binding ConvertToAnnotationCommand}"
+                        Label="Convert"
+                        LargeImageSource="/GisEditorPluginCore;component/Images/convertToAnnotation.png"
+                        QuickAccessToolBarId="Selection Style"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/convertToAnnotation.png"
+                        ToolTipTitle="Convert labels to Annotations." ToolTipDescription="Convert all labels on the map to annotations." />
+</R:RibbonGroup>

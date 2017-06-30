@@ -1,0 +1,237 @@
+<ribbon:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SelectionAndQueryingRibbonGroup"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:li="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                    xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                    Header="{DynamicResource ResourceKey=SelectFeaturesTabHeader}"
+                    ToolTip="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupSelectionAndQueryingToolTip}"
+                    mc:Ignorable="d">
+    <ribbon:RibbonGroup.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ApplySelectionModelButtonStyle" TargetType="ribbon:RibbonRadioButton">
+                <Setter Property="Command" Value="{Binding ApplySelectionModeCommand}" />
+                <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}" />
+            </Style>
+            <li:GisEditorTriggers x:Key="ApplySpatialQueryModeTriggers" x:Shared="False">
+                <i:EventTrigger EventName="Click">
+                    <li:CommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=ribbon:RibbonMenuButton}, Path=DataContext.ApplySpatialQueryModeCommand}" CommandParameter="{Binding}" />
+                </i:EventTrigger>
+            </li:GisEditorTriggers>
+            <li:GisEditorTriggers x:Key="ApplyOutlineThicknessTriggers" x:Shared="False">
+                <i:EventTrigger EventName="Click">
+                    <li:CommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=ribbon:RibbonMenuButton}, Path=DataContext.ApplyOutlineThicknessCommand}" CommandParameter="{Binding}" />
+                </i:EventTrigger>
+            </li:GisEditorTriggers>
+            <li:GisEditorTriggers x:Key="SelectFeatureLayerTriggers" x:Shared="False">
+                <i:EventTrigger EventName="Click">
+                    <li:CommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=ribbon:RibbonMenuButton}, Path=DataContext.SelectFeatureLayerCommand}" CommandParameter="{Binding}" />
+                </i:EventTrigger>
+            </li:GisEditorTriggers>
+        </ResourceDictionary>
+    </ribbon:RibbonGroup.Resources>
+
+    <ribbon:RibbonGroup.GroupSizeDefinitions>
+        <ribbon:RibbonGroupSizeDefinition>
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
+        </ribbon:RibbonGroupSizeDefinition>
+        <ribbon:RibbonGroupSizeDefinition>
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+        </ribbon:RibbonGroupSizeDefinition>
+    </ribbon:RibbonGroup.GroupSizeDefinitions>
+
+    <StackPanel Width="116">
+        <TextBlock Margin="5 15 0 3"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Text="{DynamicResource SelectionAndQueryingRibbonGroupSelectionLayersLabel}" />
+        <ribbon:RibbonMenuButton x:Name="ribbonSelection"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 DisplayMemberPath="Name"
+                                 ItemsSource="{Binding Layers}"
+                                 Label="{Binding DisplayText}">
+            <ribbon:RibbonMenuButton.ItemContainerStyle>
+                <Style TargetType="{x:Type ribbon:RibbonMenuItem}">
+                    <Style.Setters>
+                        <!--  <EventSetter Event="Click" Handler="SelectLayer_Checked" />  -->
+                        <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+                        <Setter Property="ToolTip" Value="{Binding Name}" />
+                        <Setter Property="li:InteractionExtension.Triggers" Value="{StaticResource SelectFeatureLayerTriggers}" />
+                    </Style.Setters>
+                </Style>
+            </ribbon:RibbonMenuButton.ItemContainerStyle>
+        </ribbon:RibbonMenuButton>
+    </StackPanel>
+
+    <ribbon:RibbonRadioButton Name="pointSelection"
+                              IsChecked="{Binding IsPointChecked,
+                                                  Mode=TwoWay}"
+                              Label="{DynamicResource SelectionAndQueryingRibbonGroupPointSelectionLabel}"
+                              LargeImageSource="/GisEditorPluginCore;component/Images/select1.png"
+                              QuickAccessToolBarId="pointSelection"
+                              SmallImageSource="/GisEditorPluginCore;component/Images/select1.png"
+                              Style="{StaticResource ApplySelectionModelButtonStyle}"
+                              ToolTip="{DynamicResource ResourceKey=PointSelectButtonTips}" />
+
+    <ribbon:RibbonRadioButton Name="rectangleSelection"
+                              IsChecked="{Binding IsRectangleChecked,
+                                                  Mode=TwoWay}"
+                              Label="{DynamicResource SelectionAndQueryingRibbonGroupRectangleSelectionLabel}"
+                              LargeImageSource="/GisEditorPluginCore;component/Images/draw_rectangle.png"
+                              QuickAccessToolBarId="rectangleSelection"
+                              SmallImageSource="/GisEditorPluginCore;component/Images/draw_rectangle.png"
+                              Style="{StaticResource ApplySelectionModelButtonStyle}"
+                              ToolTip="{DynamicResource ResourceKey=RectangleSelectionButtonTips}" />
+
+    <ribbon:RibbonRadioButton Name="polygonSelection"
+                              IsChecked="{Binding IsPolygonChecked,
+                                                  Mode=TwoWay}"
+                              Label="{DynamicResource SelectionAndQueryingRibbonGroupPolygonLayersLabel}"
+                              LargeImageSource="/GisEditorPluginCore;component/Images/draw_polygon.png"
+                              QuickAccessToolBarId="polygonSelection"
+                              SmallImageSource="/GisEditorPluginCore;component/Images/draw_polygon.png"
+                              Style="{StaticResource ApplySelectionModelButtonStyle}"
+                              ToolTip="{DynamicResource ResourceKey=PolygonSelectionButtonTips}" />
+
+    <ribbon:RibbonRadioButton Name="circleSelection"
+                              IsChecked="{Binding IsCircleChecked,
+                                                  Mode=TwoWay}"
+                              Label="{DynamicResource SelectionAndQueryingRibbonGroupCircleLayersLabel}"
+                              LargeImageSource="/GisEditorPluginCore;component/Images/draw_circle.png"
+                              QuickAccessToolBarId="circleSelection"
+                              SmallImageSource="/GisEditorPluginCore;component/Images/draw_circle.png"
+                              Style="{StaticResource ApplySelectionModelButtonStyle}"
+                              ToolTip="{DynamicResource ResourceKey=CircleSelectionButtonTips}" />
+
+    <ribbon:RibbonRadioButton Name="lineSelection"
+                              IsChecked="{Binding IsLineChecked,
+                                                  Mode=TwoWay}"
+                              Label="{DynamicResource SelectionAndQueryingRibbonGroupLineLayersLabel}"
+                              LargeImageSource="/GisEditorPluginCore;component/Images/draw_line.png"
+                              QuickAccessToolBarId="lineSelection"
+                              SmallImageSource="/GisEditorPluginCore;component/Images/draw_line.png"
+                              Style="{StaticResource ApplySelectionModelButtonStyle}"
+                              ToolTip="{DynamicResource ResourceKey=LineSelectionButtonTips}" />
+
+    <ribbon:RibbonButton Name="findOrQuery"
+                         Command="{x:Static local:CommandHelper.OpenFindFeaturesWindowCommand}"
+                         Label="{DynamicResource SelectionAndQueryingRibbonGroupFindQueryLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/Find.png"
+                         QuickAccessToolBarId="FindQuery"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/Find.png"
+                         ToolTipTitle="{DynamicResource SelectionAndQueryingRibbonGroupFindQueryToolTip}" />
+
+    <ribbon:RibbonButton Name="ZoomToSelectedFeatures"
+                         Command="{x:Static local:CommandHelper.ZoomToSelectFeaturesCommand}"
+                         Label="{DynamicResource SelectionAndQueryingRibbonGroupZoomToSelectFeatures}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/zoom_to_selected.png"
+                         QuickAccessToolBarId="ZoomTo"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/zoom_to_selected.png"
+                         ToolTipTitle="{DynamicResource SelectionAndQueryingRibbonGroupZoomToSelectFeaturesToolTip}" />
+
+    <ribbon:RibbonButton Name="clear"
+                         Command="{Binding CleanSelectionHistoryCommand}"
+                         Label="{DynamicResource SelectionAndQueryingRibbonGroupClearLable}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/Clear.png"
+                         QuickAccessToolBarId="Clear"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/Clear.png"
+                         ToolTip="{DynamicResource SelectionAndQueryingRibbonGroupClearToolTip}" />
+
+    <ribbon:RibbonButton Name="viewData"
+                         Command="{Binding OpenDbfViewerWindowCommand}"
+                         Label="{DynamicResource SelectionAndQueryingRibbonGroupViewDataLable}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/viewData.png"
+                         QuickAccessToolBarId="ViewData"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/viewData.png"
+                         ToolTip="{DynamicResource SelectionAndQueryingRibbonGroupViewDataToolTip}" />
+
+    <ribbon:RibbonMenuButton x:Name="spatialQueryModeMenu"
+                             ItemsSource="{Binding SpatialQueryModeEntities}"
+                             Label="{DynamicResource SelectionAndQueryingRibbonGroupspatialQueryModeLable}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/SpatialQueryMode.png"
+                             QuickAccessToolBarId="SpatialQueryMode"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/SpatialQueryMode.png"
+                             ToolTip="{DynamicResource ResourceKey=SelectionModeTips}"
+                             x:FieldModifier="private">
+        <ribbon:RibbonMenuButton.ItemContainerStyle>
+            <Style TargetType="ribbon:RibbonMenuItem">
+                <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+                <Setter Property="li:InteractionExtension.Triggers" Value="{StaticResource ApplySpatialQueryModeTriggers}" />
+            </Style>
+        </ribbon:RibbonMenuButton.ItemContainerStyle>
+        <ribbon:RibbonMenuButton.ItemTemplate>
+            <ItemContainerTemplate>
+                <TextBlock Text="{Binding Name}" />
+            </ItemContainerTemplate>
+        </ribbon:RibbonMenuButton.ItemTemplate>
+    </ribbon:RibbonMenuButton>
+
+    <ribbon:RibbonButton Command="{Binding ChangeSelectionStyleCommand}"
+                        Label="Selection Style"
+                        LargeImageSource="{Binding OutlineColorPreview}"
+                        QuickAccessToolBarId="Selection Style"
+                        SmallImageSource="{Binding OutlineColorPreview}"
+                        ToolTipDescription="{DynamicResource SelectionAndQueryingRibbonGroupOutlineColorToolTip}"
+                        ToolTipTitle="Selection Style" />
+    
+    <ribbon:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                           Path=ExportSelectedFeaturesCommand}"
+                         Label="{DynamicResource SelectionAndQueryingRibbonGroupExportLabel}"
+                         LargeImageSource="/GisEditorPluginCore;component/Images/Export.png"
+                         QuickAccessToolBarId="Export"
+                         SmallImageSource="/GisEditorPluginCore;component/Images/Export.png"
+                         ToolTip="{DynamicResource ResourceKey=SelectionExportTips}" />
+
+    <ribbon:RibbonSplitButton x:Name="ribbonSplitButton" Command="{Binding CopyToNewLayerCommand}"
+                              Label="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToLabelText}"
+                              LargeImageSource="/GisEditorPluginCore;component/Images/CopyToEditLayer.png"
+                              QuickAccessToolBarId="CopyToEditLayer"
+                              SmallImageSource="/GisEditorPluginCore;component/Images/CopyToEditLayer.png"
+                              ToolTipTitle="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToLabelText}" 
+                              ToolTipDescription="{DynamicResource SelectionAndQueryingRibbonGroupCopyToToolTipDescription}"
+                              DropDownOpened="RibbonSplitButton_DropDownOpened">
+        <ribbon:RibbonSplitButton.Items>
+            <ribbon:RibbonMenuItem Header="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToNewHeaderText}"
+                                   Command="{Binding CopyToNewLayerCommand}"
+                                   ImageSource="/GisEditorPluginCore;component/Images/CopyToEditLayer.png"
+                                   ToolTip="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToNewText}"
+                                   ToolTipDescription="{DynamicResource ResourceKey= SelectionAndQueryingRibbonGroupCopyToNewDescText}" />
+            <ribbon:RibbonMenuItem x:Name="editingLayerMenuItem" Header="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToEditHeaderText}" 
+                                   Visibility="Collapsed"
+                                   Command="{Binding CopyToEditLayerCommand}"
+                                   ImageSource="/GisEditorPluginCore;component/Images/CopyToEditLayer.png"
+                                   ToolTip="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToEditText}"
+                                   ToolTipDescription="{DynamicResource ResourceKey=SelectionAndQueryingRibbonGroupCopyToEditDescText}"/>
+        </ribbon:RibbonSplitButton.Items>
+    </ribbon:RibbonSplitButton>
+</ribbon:RibbonGroup>

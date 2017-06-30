@@ -1,0 +1,124 @@
+﻿<local:OutputWindow x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.CreateFileGeodatabaseWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    Title="{DynamicResource CreateFileGeodatabaseWindowTitle}"
+                    Width="400"
+                    Loaded="OutputWindow_Loaded"
+                    ResizeMode="NoResize"
+                    SizeToContent="Height"
+                    mc:Ignorable="d">
+    <local:OutputWindow.Resources>
+        <ControlTemplate x:Key="ShowOptionsTemplte">
+            <Border VerticalAlignment="Center"
+                    BorderThickness="1"
+                    MouseEnter="Border_MouseEnter"
+                    MouseLeave="Border_MouseLeave">
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="imgOptions"
+                            Stretch="None"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="/GisEditorPluginCore;component/Images/Option_Down.png" />
+                    <TextBlock x:Name="txbOptions"
+                               Margin="5 0 0 0"
+                               Text="{DynamicResource CreateFileGeodatabaseWindowSetProjectionLabel}" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="HideOptionsTemplte">
+            <Border VerticalAlignment="Center"
+                    BorderThickness="1"
+                    MouseEnter="Border_MouseEnter"
+                    MouseLeave="Border_MouseLeave">
+                <StackPanel Orientation="Horizontal">
+                    <Image   Stretch="None"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="/GisEditorPluginCore;component/Images/Option_Up.png" />
+                    <TextBlock Margin="5 0 0 0" Text="{DynamicResource CreateFileGeodatabaseWindowSetProjectionLabel}" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+    </local:OutputWindow.Resources>
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <local:OutputUserControl x:Name="outputUserControl"
+                                 Grid.Row="0"
+                                 Grid.ColumnSpan="2"
+                                 Margin="0 0 0 10" />
+        <TextBlock Grid.Row="1"
+                   Margin="0 0 10 10"
+                   Text="{DynamicResource CreateFileGeodatabaseWindowLabel}" />
+        <TextBox x:Name="geodatabaseTb"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="0 0 0 10"
+                 IsEnabled="False" />
+        <TextBlock Grid.Row="2"
+                   Margin="0 0 10 0"
+                   Text="{DynamicResource CreateFileGeodatabaseWindowTableNameLabel}" />
+        <TextBox x:Name="tableNameTb"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 TextChanged="tableNameTb_TextChanged" />
+        <GroupBox x:Name="ProjectionGrid"
+                  Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="0 5 0 5"
+                  Header="{DynamicResource CreateFileGeodatabaseWindowProjectionLabel}"
+                  Visibility="Collapsed">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="txtProjection" IsReadOnly="True" />
+                <Button Grid.Column="1"
+                        Width="30"
+                        Margin="5 0 0 0"
+                        Click="ChooseProjectionClick"
+                        Content="..." />
+            </Grid>
+        </GroupBox>
+        <TextBlock x:Name="txtWarning" Grid.Row="4"
+              Grid.Column="0"
+              Grid.ColumnSpan="2" Foreground="Red" TextWrapping="Wrap" Text="Table name can only contain letters, numbers and underscores and must start with letters or underscores."  Visibility="Collapsed"  Margin="0 5 0 0" />
+        <Grid Grid.Row="5"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="0 8 0 0">
+            <Button Height="20"
+                    HorizontalAlignment="Left"
+                    Click="ShowOptionsClick"
+                    Template="{StaticResource ShowOptionsTemplte}"
+                    Visibility="Collapsed" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button x:Name="OkButton"
+                        Width="70"
+                        Margin="0 0 11 0"
+                        Click="Button_Click"
+                        Content="{DynamicResource ConfigurationOKLable}"
+                        IsEnabled="False" />
+                <Button Width="70"
+                        Content="{DynamicResource ConfigurationCancelLable}"
+                        IsCancel="True" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</local:OutputWindow>

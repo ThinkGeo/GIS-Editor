@@ -1,0 +1,85 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SetMarginsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="{DynamicResource SetMarginsWindowTitle}"
+        Width="335"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="70" />
+            <Setter Property="Margin" Value="5 5 0 0" />
+        </Style>
+        <Style TargetType="local:Numeric">
+            <Setter Property="Margin" Value="0 0 0 5" />
+            <Setter Property="Width" Value="101" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="55" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{DynamicResource SetMarginsWindowUnitLabel}" Grid.Row="0" />
+        <ComboBox x:Name="cbxUnit" SelectionChanged="CbxUnit_SelectionChanged" Grid.Row="0" Grid.Column="1" Margin="0 0 0 5" />
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{DynamicResource SetMarginsWindowLeftLabel}" />
+                <local:Numeric x:Name="txtLeft" Grid.Column="1" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{DynamicResource SetMarginsWindowTopLabel}" />
+                <local:Numeric x:Name="txtTop" Grid.Column="1"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{DynamicResource SetMarginsWindowRightLabel}" />
+                <local:Numeric x:Name="txtRight" Grid.Column="1"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{DynamicResource SetMarginsWindowBottomLabel}" />
+                <local:Numeric x:Name="txtBottom" Grid.Column="1" />
+            </Grid>
+        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="1">
+            <Button IsDefault="True" Content="{DynamicResource ConfigurationOKLable}" Click="OKClick" />
+            <Button Content="{DynamicResource ConfigurationCancelLable}" Click="CancelClick" />
+        </StackPanel>
+    </Grid>
+</Window>

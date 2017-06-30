@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Proj4s>
+  <Proj4 SRS="26701" Name="NAD27 / UTM Zone 1N" Type="UTM" Parameter="+proj=utm +zone=1 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  1 North (180°W - 174°W)" />
+  <Proj4 SRS="26702" Name="NAD27 / UTM Zone 2N" Type="UTM" Parameter="+proj=utm +zone=2 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  2 North (174°W - 168°W)" />
+  <Proj4 SRS="26703" Name="NAD27 / UTM Zone 3N" Type="UTM" Parameter="+proj=utm +zone=3 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  3 North (168°W - 162°W)" />
+  <Proj4 SRS="26704" Name="NAD27 / UTM Zone 4N" Type="UTM" Parameter="+proj=utm +zone=4 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  4 North (162°W - 156°W)" />
+  <Proj4 SRS="26705" Name="NAD27 / UTM Zone 5N" Type="UTM" Parameter="+proj=utm +zone=5 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  5 North (156°W - 150°W)" />
+  <Proj4 SRS="26706" Name="NAD27 / UTM Zone 6N" Type="UTM" Parameter="+proj=utm +zone=6 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  6 North (150°W - 144°W)" />
+  <Proj4 SRS="26707" Name="NAD27 / UTM Zone 7N" Type="UTM" Parameter="+proj=utm +zone=7 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  7 North (144°W - 138°W)" />
+  <Proj4 SRS="26708" Name="NAD27 / UTM Zone 8N" Type="UTM" Parameter="+proj=utm +zone=8 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  8 North (138°W - 132°W)" />
+  <Proj4 SRS="26709" Name="NAD27 / UTM Zone 9N" Type="UTM" Parameter="+proj=utm +zone=9 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone  9 North (132°W - 126°W)" />
+  <Proj4 SRS="26710" Name="NAD27 / UTM Zone 10N" Type="UTM" Parameter="+proj=utm +zone=10 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 10 North (126°W - 120°W)" />
+  <Proj4 SRS="26711" Name="NAD27 / UTM Zone 11N" Type="UTM" Parameter="+proj=utm +zone=11 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 11 North (120°W - 114°W)" />
+  <Proj4 SRS="26712" Name="NAD27 / UTM Zone 12N" Type="UTM" Parameter="+proj=utm +zone=12 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 12 North (114°W - 108°W)" />
+  <Proj4 SRS="26713" Name="NAD27 / UTM Zone 13N" Type="UTM" Parameter="+proj=utm +zone=13 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 13 North (108°W - 102°W)" />
+  <Proj4 SRS="26714" Name="NAD27 / UTM Zone 14N" Type="UTM" Parameter="+proj=utm +zone=14 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 14 North (102°W - 96°W)" />
+  <Proj4 SRS="26715" Name="NAD27 / UTM Zone 15N" Type="UTM" Parameter="+proj=utm +zone=15 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 15 North (96°W - 90°W)" />
+  <Proj4 SRS="26716" Name="NAD27 / UTM Zone 16N" Type="UTM" Parameter="+proj=utm +zone=16 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 16 North (90°W - 84°W)" />
+  <Proj4 SRS="26717" Name="NAD27 / UTM Zone 17N" Type="UTM" Parameter="+proj=utm +zone=17 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 17 North (84°W - 78°W)" />
+  <Proj4 SRS="26718" Name="NAD27 / UTM Zone 18N" Type="UTM" Parameter="+proj=utm +zone=18 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 18 North (78°W - 72°W)" />
+  <Proj4 SRS="26719" Name="NAD27 / UTM Zone 19N" Type="UTM" Parameter="+proj=utm +zone=19 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 19 North (72°W - 66°W)" />
+  <Proj4 SRS="26720" Name="NAD27 / UTM Zone 20N" Type="UTM" Parameter="+proj=utm +zone=20 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 20 North (66°W - 60°W)" />
+  <Proj4 SRS="26721" Name="NAD27 / UTM Zone 21N" Type="UTM" Parameter="+proj=utm +zone=21 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 21 North (60°W - 54°W)" />
+  <Proj4 SRS="26722" Name="NAD27 / UTM Zone 22N" Type="UTM" Parameter="+proj=utm +zone=22 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 22 North (54°W - 48°W)" />
+  <Proj4 SRS="26901" Name="NAD83 / UTM Zone 1N" Type="UTM" Parameter="+proj=utm +zone=1 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  1 North (180°W - 174°W)" />
+  <Proj4 SRS="26902" Name="NAD83 / UTM Zone 2N" Type="UTM" Parameter="+proj=utm +zone=2 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  2 North (174°W - 168°W)" />
+  <Proj4 SRS="26903" Name="NAD83 / UTM Zone 3N" Type="UTM" Parameter="+proj=utm +zone=3 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  3 North (168°W - 162°W)" />
+  <Proj4 SRS="26904" Name="NAD83 / UTM Zone 4N" Type="UTM" Parameter="+proj=utm +zone=4 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  4 North (162°W - 156°W)" />
+  <Proj4 SRS="26905" Name="NAD83 / UTM Zone 5N" Type="UTM" Parameter="+proj=utm +zone=5 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  5 North (156°W - 150°W)" />
+  <Proj4 SRS="26906" Name="NAD83 / UTM Zone 6N" Type="UTM" Parameter="+proj=utm +zone=6 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  6 North (150°W - 144°W)" />
+  <Proj4 SRS="26907" Name="NAD83 / UTM Zone 7N" Type="UTM" Parameter="+proj=utm +zone=7 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  7 North (144°W - 138°W)" />
+  <Proj4 SRS="26908" Name="NAD83 / UTM Zone 8N" Type="UTM" Parameter="+proj=utm +zone=8 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  8 North (138°W - 132°W)" />
+  <Proj4 SRS="26909" Name="NAD83 / UTM Zone 9N" Type="UTM" Parameter="+proj=utm +zone=9 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone  9 North (132°W - 126°W)" />
+  <Proj4 SRS="26910" Name="NAD83 / UTM Zone 10N" Type="UTM" Parameter="+proj=utm +zone=10 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 10 North (126°W - 120°W)" />
+  <Proj4 SRS="26911" Name="NAD83 / UTM Zone 11N" Type="UTM" Parameter="+proj=utm +zone=11 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 11 North (120°W - 114°W)" />
+  <Proj4 SRS="26912" Name="NAD83 / UTM Zone 12N" Type="UTM" Parameter="+proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 12 North (114°W - 108°W)" />
+  <Proj4 SRS="26913" Name="NAD83 / UTM Zone 13N" Type="UTM" Parameter="+proj=utm +zone=13 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 13 North (108°W - 102°W)" />
+  <Proj4 SRS="26914" Name="NAD83 / UTM Zone 14N" Type="UTM" Parameter="+proj=utm +zone=14 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 14 North (102°W - 96°W)" />
+  <Proj4 SRS="26915" Name="NAD83 / UTM Zone 15N" Type="UTM" Parameter="+proj=utm +zone=15 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 15 North (96°W - 90°W)" />
+  <Proj4 SRS="26916" Name="NAD83 / UTM Zone 16N" Type="UTM" Parameter="+proj=utm +zone=16 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 16 North (90°W - 84°W)" />
+  <Proj4 SRS="26917" Name="NAD83 / UTM Zone 17N" Type="UTM" Parameter="+proj=utm +zone=17 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 17 North (84°W - 78°W)" />
+  <Proj4 SRS="26918" Name="NAD83 / UTM Zone 18N" Type="UTM" Parameter="+proj=utm +zone=18 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 18 North (78°W - 72°W)" />
+  <Proj4 SRS="26919" Name="NAD83 / UTM Zone 19N" Type="UTM" Parameter="+proj=utm +zone=19 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 19 North (72°W - 66°W)" />
+  <Proj4 SRS="26920" Name="NAD83 / UTM Zone 20N" Type="UTM" Parameter="+proj=utm +zone=20 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 20 North (66°W - 60°W)" />
+  <Proj4 SRS="26921" Name="NAD83 / UTM Zone 21N" Type="UTM" Parameter="+proj=utm +zone=21 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 21 North (60°W - 54°W)" />
+  <Proj4 SRS="26922" Name="NAD83 / UTM Zone 22N" Type="UTM" Parameter="+proj=utm +zone=22 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 22 North (54°W - 48°W)" />
+  <Proj4 SRS="26923" Name="NAD83 / UTM Zone 23N" Type="UTM" Parameter="+proj=utm +zone=23 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 23 North (48°W - 42°W)" />
+  <Proj4 SRS="32601" Name="WG South 84 / UTM Zone 1N" Type="UTM" Parameter="+proj=utm +zone=1 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  1 North (180°W - 174°W)" />
+  <Proj4 SRS="32602" Name="WG South 84 / UTM Zone 2N" Type="UTM" Parameter="+proj=utm +zone=2 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  2 North (174°W - 168°W)" />
+  <Proj4 SRS="32603" Name="WG South 84 / UTM Zone 3N" Type="UTM" Parameter="+proj=utm +zone=3 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  3 North (168°W - 162°W)" />
+  <Proj4 SRS="32604" Name="WG South 84 / UTM Zone 4N" Type="UTM" Parameter="+proj=utm +zone=4 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  4 North (162°W - 156°W)" />
+  <Proj4 SRS="32605" Name="WG South 84 / UTM Zone 5N" Type="UTM" Parameter="+proj=utm +zone=5 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  5 North (156°W - 150°W)" />
+  <Proj4 SRS="32606" Name="WG South 84 / UTM Zone 6N" Type="UTM" Parameter="+proj=utm +zone=6 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  6 North (150°W - 144°W)" />
+  <Proj4 SRS="32607" Name="WG South 84 / UTM Zone 7N" Type="UTM" Parameter="+proj=utm +zone=7 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  7 North (144°W - 138°W)" />
+  <Proj4 SRS="32608" Name="WG South 84 / UTM Zone 8N" Type="UTM" Parameter="+proj=utm +zone=8 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  8 North (138°W - 132°W)" />
+  <Proj4 SRS="32609" Name="WG South 84 / UTM Zone 9N" Type="UTM" Parameter="+proj=utm +zone=9 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  9 North (132°W - 126°W)" />
+  <Proj4 SRS="32610" Name="WG South 84 / UTM Zone 10N" Type="UTM" Parameter="+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 10 North (126°W - 120°W)" />
+  <Proj4 SRS="32611" Name="WG South 84 / UTM Zone 11N" Type="UTM" Parameter="+proj=utm +zone=11 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 11 North (120°W - 114°W)" />
+  <Proj4 SRS="32612" Name="WG South 84 / UTM Zone 12N" Type="UTM" Parameter="+proj=utm +zone=12 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 12 North (114°W - 108°W)" />
+  <Proj4 SRS="32613" Name="WG South 84 / UTM Zone 13N" Type="UTM" Parameter="+proj=utm +zone=13 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 13 North (108°W - 102°W)" />
+  <Proj4 SRS="32614" Name="WG South 84 / UTM Zone 14N" Type="UTM" Parameter="+proj=utm +zone=14 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 14 North (102°W - 96°W)" />
+  <Proj4 SRS="32615" Name="WG South 84 / UTM Zone 15N" Type="UTM" Parameter="+proj=utm +zone=15 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 15 North (96°W - 90°W)" />
+  <Proj4 SRS="32616" Name="WG South 84 / UTM Zone 16N" Type="UTM" Parameter="+proj=utm +zone=16 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 16 North (90°W - 84°W)" />
+  <Proj4 SRS="32617" Name="WG South 84 / UTM Zone 17N" Type="UTM" Parameter="+proj=utm +zone=17 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 17 North (84°W - 78°W)" />
+  <Proj4 SRS="32618" Name="WG South 84 / UTM Zone 18N" Type="UTM" Parameter="+proj=utm +zone=18 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 18 North (78°W - 72°W)" />
+  <Proj4 SRS="32619" Name="WG South 84 / UTM Zone 19N" Type="UTM" Parameter="+proj=utm +zone=19 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 19 North (72°W - 66°W)" />
+  <Proj4 SRS="32620" Name="WG South 84 / UTM Zone 20N" Type="UTM" Parameter="+proj=utm +zone=20 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 20 North (66°W - 60°W)" />
+  <Proj4 SRS="32621" Name="WG South 84 / UTM Zone 21N" Type="UTM" Parameter="+proj=utm +zone=21 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 21 North (60°W - 54°W)" />
+  <Proj4 SRS="32622" Name="WG South 84 / UTM Zone 22N" Type="UTM" Parameter="+proj=utm +zone=22 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 22 North (54°W - 48°W)" />
+  <Proj4 SRS="32623" Name="WG South 84 / UTM Zone 23N" Type="UTM" Parameter="+proj=utm +zone=23 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 23 North (48°W - 42°W)" />
+  <Proj4 SRS="32624" Name="WG South 84 / UTM Zone 24N" Type="UTM" Parameter="+proj=utm +zone=24 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 24 North (42°W - 36°W)" />
+  <Proj4 SRS="32625" Name="WG South 84 / UTM Zone 25N" Type="UTM" Parameter="+proj=utm +zone=25 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 25 North (36°W - 30°W)" />
+  <Proj4 SRS="32626" Name="WG South 84 / UTM Zone 26N" Type="UTM" Parameter="+proj=utm +zone=26 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 26 North (30°W - 24°W)" />
+  <Proj4 SRS="32627" Name="WG South 84 / UTM Zone 27N" Type="UTM" Parameter="+proj=utm +zone=27 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 27 North (24°W - 18°W)" />
+  <Proj4 SRS="32628" Name="WG South 84 / UTM Zone 28N" Type="UTM" Parameter="+proj=utm +zone=28 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 28 North (18°W - 12°W)" />
+  <Proj4 SRS="32629" Name="WG South 84 / UTM Zone 29N" Type="UTM" Parameter="+proj=utm +zone=29 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="Utm Zone 29 North (12°W - 6°W)" />
+  <Proj4 SRS="32630" Name="WG South 84 / UTM Zone 30N" Type="UTM" Parameter="+proj=utm +zone=30 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 30 North (6°W - 0°W)" />
+  <Proj4 SRS="32631" Name="WG South 84 / UTM Zone 31N" Type="UTM" Parameter="+proj=utm +zone=31 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 31 North (0°E - 6°E)" />
+  <Proj4 SRS="32632" Name="WG South 84 / UTM Zone 32N" Type="UTM" Parameter="+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 32 North (6°E - 12°E)" />
+  <Proj4 SRS="32633" Name="WG South 84 / UTM Zone 33N" Type="UTM" Parameter="+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 33 North (12°E - 18°E)" />
+  <Proj4 SRS="32634" Name="WG South 84 / UTM Zone 34N" Type="UTM" Parameter="+proj=utm +zone=34 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 34 North (18°E - 24°E)" />
+  <Proj4 SRS="32635" Name="WG South 84 / UTM Zone 35N" Type="UTM" Parameter="+proj=utm +zone=35 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 35 North (24°E - 30°E)" />
+  <Proj4 SRS="32636" Name="WG South 84 / UTM Zone 36N" Type="UTM" Parameter="+proj=utm +zone=36 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 36 North (30°E - 36°E)" />
+  <Proj4 SRS="32637" Name="WG South 84 / UTM Zone 37N" Type="UTM" Parameter="+proj=utm +zone=37 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 37 North (36°E - 42°E)" />
+  <Proj4 SRS="32638" Name="WG South 84 / UTM Zone 38N" Type="UTM" Parameter="+proj=utm +zone=38 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 38 North (42°E - 48°E)" />
+  <Proj4 SRS="32639" Name="WG South 84 / UTM Zone 39N" Type="UTM" Parameter="+proj=utm +zone=39 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 39 North (48°E - 54°E)" />
+  <Proj4 SRS="32640" Name="WG South 84 / UTM Zone 40N" Type="UTM" Parameter="+proj=utm +zone=40 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 40 North (54°E - 60°E)" />
+  <Proj4 SRS="32641" Name="WG South 84 / UTM Zone 41N" Type="UTM" Parameter="+proj=utm +zone=41 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 41 North (60°E - 66°E)" />
+  <Proj4 SRS="32642" Name="WG South 84 / UTM Zone 42N" Type="UTM" Parameter="+proj=utm +zone=42 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 42 North (66°E - 72°E)" />
+  <Proj4 SRS="32643" Name="WG South 84 / UTM Zone 43N" Type="UTM" Parameter="+proj=utm +zone=43 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 43 North (72°E - 78°E)" />
+  <Proj4 SRS="32644" Name="WG South 84 / UTM Zone 44N" Type="UTM" Parameter="+proj=utm +zone=44 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 44 North (78°E - 84°E)" />
+  <Proj4 SRS="32645" Name="WG South 84 / UTM Zone 45N" Type="UTM" Parameter="+proj=utm +zone=45 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 45 North (84°E - 90°E)" />
+  <Proj4 SRS="32646" Name="WG South 84 / UTM Zone 46N" Type="UTM" Parameter="+proj=utm +zone=46 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 46 North (90°E - 96°E)" />
+  <Proj4 SRS="32647" Name="WG South 84 / UTM Zone 47N" Type="UTM" Parameter="+proj=utm +zone=47 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 47 North (96°E - 102°E)" />
+  <Proj4 SRS="32648" Name="WG South 84 / UTM Zone 48N" Type="UTM" Parameter="+proj=utm +zone=48 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 48 North (102°E - 108°E)" />
+  <Proj4 SRS="32649" Name="WG South 84 / UTM Zone 49N" Type="UTM" Parameter="+proj=utm +zone=49 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 49 North (108°E - 114°E)" />
+  <Proj4 SRS="32650" Name="WG South 84 / UTM Zone 50N" Type="UTM" Parameter="+proj=utm +zone=50 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 50 North (114°E - 120°E)" />
+  <Proj4 SRS="32651" Name="WG South 84 / UTM Zone 51N" Type="UTM" Parameter="+proj=utm +zone=51 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 51 North (120°E - 126°E)" />
+  <Proj4 SRS="32652" Name="WG South 84 / UTM Zone 52N" Type="UTM" Parameter="+proj=utm +zone=52 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 52 North (126°E - 132°E)" />
+  <Proj4 SRS="32653" Name="WG South 84 / UTM Zone 53N" Type="UTM" Parameter="+proj=utm +zone=53 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 53 North (132°E - 138°E)" />
+  <Proj4 SRS="32654" Name="WG South 84 / UTM Zone 54N" Type="UTM" Parameter="+proj=utm +zone=54 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 54 North (138°E - 144°E)" />
+  <Proj4 SRS="32655" Name="WG South 84 / UTM Zone 55N" Type="UTM" Parameter="+proj=utm +zone=55 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 55 North (144°E - 150°E)" />
+  <Proj4 SRS="32656" Name="WG South 84 / UTM Zone 56N" Type="UTM" Parameter="+proj=utm +zone=56 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 56 North (150°E - 156°E)" />
+  <Proj4 SRS="32657" Name="WG South 84 / UTM Zone 57N" Type="UTM" Parameter="+proj=utm +zone=57 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 57 North (156°E - 162°E)" />
+  <Proj4 SRS="32658" Name="WG South 84 / UTM Zone 58N" Type="UTM" Parameter="+proj=utm +zone=58 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 58 North (162°E - 168°E)" />
+  <Proj4 SRS="32659" Name="WG South 84 / UTM Zone 59N" Type="UTM" Parameter="+proj=utm +zone=59 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 59 North (168°E - 174°E)" />
+  <Proj4 SRS="32660" Name="WG South 84 / UTM Zone 60N" Type="UTM" Parameter="+proj=utm +zone=60 +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 60 North (174°E - 180°E)" />
+  <Proj4 SRS="32701" Name="WG South 84 / UTM Zone 1S" Type="UTM" Parameter="+proj=utm +zone=1 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  1 South (180°W - 174°W)" />
+  <Proj4 SRS="32702" Name="WG South 84 / UTM Zone 2S" Type="UTM" Parameter="+proj=utm +zone=2 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  2 South (174°W - 168°W)" />
+  <Proj4 SRS="32703" Name="WG South 84 / UTM Zone 3S" Type="UTM" Parameter="+proj=utm +zone=3 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  3 South (168°W - 162°W)" />
+  <Proj4 SRS="32704" Name="WG South 84 / UTM Zone 4S" Type="UTM" Parameter="+proj=utm +zone=4 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  4 South (162°W - 156°W)" />
+  <Proj4 SRS="32705" Name="WG South 84 / UTM Zone 5S" Type="UTM" Parameter="+proj=utm +zone=5 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  5 South (156°W - 150°W)" />
+  <Proj4 SRS="32706" Name="WG South 84 / UTM Zone 6S" Type="UTM" Parameter="+proj=utm +zone=6 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  6 South (150°W - 144°W)" />
+  <Proj4 SRS="32707" Name="WG South 84 / UTM Zone 7S" Type="UTM" Parameter="+proj=utm +zone=7 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  7 South (144°W - 138°W)" />
+  <Proj4 SRS="32708" Name="WG South 84 / UTM Zone 8S" Type="UTM" Parameter="+proj=utm +zone=8 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  8 South (138°W - 132°W)" />
+  <Proj4 SRS="32709" Name="WG South 84 / UTM Zone 9S" Type="UTM" Parameter="+proj=utm +zone=9 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone  9 South (132°W - 126°W)" />
+  <Proj4 SRS="32710" Name="WG South 84 / UTM Zone 10S" Type="UTM" Parameter="+proj=utm +zone=10 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 10 South (126°W - 120°W)" />
+  <Proj4 SRS="32711" Name="WG South 84 / UTM Zone 11S" Type="UTM" Parameter="+proj=utm +zone=11 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 11 South (120°W - 114°W)" />
+  <Proj4 SRS="32712" Name="WG South 84 / UTM Zone 12S" Type="UTM" Parameter="+proj=utm +zone=12 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 12 South (114°W - 108°W)" />
+  <Proj4 SRS="32713" Name="WG South 84 / UTM Zone 13S" Type="UTM" Parameter="+proj=utm +zone=13 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 13 South (108°W - 102°W)" />
+  <Proj4 SRS="32714" Name="WG South 84 / UTM Zone 14S" Type="UTM" Parameter="+proj=utm +zone=14 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 14 South (102°W - 96°W)" />
+  <Proj4 SRS="32715" Name="WG South 84 / UTM Zone 15S" Type="UTM" Parameter="+proj=utm +zone=15 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 15 South (96°W - 90°W)" />
+  <Proj4 SRS="32716" Name="WG South 84 / UTM Zone 16S" Type="UTM" Parameter="+proj=utm +zone=16 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 16 South (90°W - 84°W)" />
+  <Proj4 SRS="32717" Name="WG South 84 / UTM Zone 17S" Type="UTM" Parameter="+proj=utm +zone=17 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 17 South (84°W - 78°W)" />
+  <Proj4 SRS="32718" Name="WG South 84 / UTM Zone 18S" Type="UTM" Parameter="+proj=utm +zone=18 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 18 South (78°W - 72°W)" />
+  <Proj4 SRS="32719" Name="WG South 84 / UTM Zone 19S" Type="UTM" Parameter="+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 19 South (72°W - 66°W)" />
+  <Proj4 SRS="32720" Name="WG South 84 / UTM Zone 20S" Type="UTM" Parameter="+proj=utm +zone=20 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 20 South (66°W - 60°W)" />
+  <Proj4 SRS="32721" Name="WG South 84 / UTM Zone 21S" Type="UTM" Parameter="+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 21 South (60°W - 54°W)" />
+  <Proj4 SRS="32722" Name="WG South 84 / UTM Zone 22S" Type="UTM" Parameter="+proj=utm +zone=22 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 22 South (54°W - 48°W)" />
+  <Proj4 SRS="32723" Name="WG South 84 / UTM Zone 23S" Type="UTM" Parameter="+proj=utm +zone=23 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 23 South (48°W - 42°W)" />
+  <Proj4 SRS="32724" Name="WG South 84 / UTM Zone 24S" Type="UTM" Parameter="+proj=utm +zone=24 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 24 South (42°W - 36°W)" />
+  <Proj4 SRS="32725" Name="WG South 84 / UTM Zone 25S" Type="UTM" Parameter="+proj=utm +zone=25 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 25 South (36°W - 30°W)" />
+  <Proj4 SRS="32726" Name="WG South 84 / UTM Zone 26S" Type="UTM" Parameter="+proj=utm +zone=26 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 26 South (30°W - 24°W)" />
+  <Proj4 SRS="32727" Name="WG South 84 / UTM Zone 27S" Type="UTM" Parameter="+proj=utm +zone=27 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 27 South (24°W - 18°W)" />
+  <Proj4 SRS="32728" Name="WG South 84 / UTM Zone 28S" Type="UTM" Parameter="+proj=utm +zone=28 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 28 South (18°W - 12°W)" />
+  <Proj4 SRS="32729" Name="WG South 84 / UTM Zone 29S" Type="UTM" Parameter="+proj=utm +zone=29 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 29 South (12°W - 6°W)" />
+  <Proj4 SRS="32730" Name="WG South 84 / UTM Zone 30S" Type="UTM" Parameter="+proj=utm +zone=30 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 30 South (6°W - 0°W)" />
+  <Proj4 SRS="32731" Name="WG South 84 / UTM Zone 31S" Type="UTM" Parameter="+proj=utm +zone=31 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 31 South (0°E - 6°E)" />
+  <Proj4 SRS="32732" Name="WG South 84 / UTM Zone 32S" Type="UTM" Parameter="+proj=utm +zone=32 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 32 South (6°E - 12°E)" />
+  <Proj4 SRS="32733" Name="WG South 84 / UTM Zone 33S" Type="UTM" Parameter="+proj=utm +zone=33 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 33 South (12°E - 18°E)" />
+  <Proj4 SRS="32734" Name="WG South 84 / UTM Zone 34S" Type="UTM" Parameter="+proj=utm +zone=34 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 34 South (18°E - 24°E)" />
+  <Proj4 SRS="32735" Name="WG South 84 / UTM Zone 35S" Type="UTM" Parameter="+proj=utm +zone=35 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 35 South (24°E - 30°E)" />
+  <Proj4 SRS="32736" Name="WG South 84 / UTM Zone 36S" Type="UTM" Parameter="+proj=utm +zone=36 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 36 South (30°E - 36°E)" />
+  <Proj4 SRS="32737" Name="WG South 84 / UTM Zone 37S" Type="UTM" Parameter="+proj=utm +zone=37 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 37 South (36°E - 42°E)" />
+  <Proj4 SRS="32738" Name="WG South 84 / UTM Zone 38S" Type="UTM" Parameter="+proj=utm +zone=38 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 38 South (42°E - 48°E)" />
+  <Proj4 SRS="32739" Name="WG South 84 / UTM Zone 39S" Type="UTM" Parameter="+proj=utm +zone=39 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 39 South (48°E - 54°E)" />
+  <Proj4 SRS="32740" Name="WG South 84 / UTM Zone 40S" Type="UTM" Parameter="+proj=utm +zone=40 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 40 South (54°E - 60°E)" />
+  <Proj4 SRS="32741" Name="WG South 84 / UTM Zone 41S" Type="UTM" Parameter="+proj=utm +zone=41 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 41 South (60°E - 66°E)" />
+  <Proj4 SRS="32742" Name="WG South 84 / UTM Zone 42S" Type="UTM" Parameter="+proj=utm +zone=42 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 42 South (66°E - 72°E)" />
+  <Proj4 SRS="32743" Name="WG South 84 / UTM Zone 43S" Type="UTM" Parameter="+proj=utm +zone=43 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 43 South (72°E - 78°E)" />
+  <Proj4 SRS="32744" Name="WG South 84 / UTM Zone 44S" Type="UTM" Parameter="+proj=utm +zone=44 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 44 South (78°E - 84°E)" />
+  <Proj4 SRS="32745" Name="WG South 84 / UTM Zone 45S" Type="UTM" Parameter="+proj=utm +zone=45 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 45 South (84°E - 90°E)" />
+  <Proj4 SRS="32746" Name="WG South 84 / UTM Zone 46S" Type="UTM" Parameter="+proj=utm +zone=46 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 46 South (90°E - 96°E)" />
+  <Proj4 SRS="32747" Name="WG South 84 / UTM Zone 47S" Type="UTM" Parameter="+proj=utm +zone=47 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 47 South (96°E - 102°E)" />
+  <Proj4 SRS="32748" Name="WG South 84 / UTM Zone 48S" Type="UTM" Parameter="+proj=utm +zone=48 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 48 South (102°E - 108°E)" />
+  <Proj4 SRS="32749" Name="WG South 84 / UTM Zone 49S" Type="UTM" Parameter="+proj=utm +zone=49 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 49 South (108°E - 114°E)" />
+  <Proj4 SRS="32750" Name="WG South 84 / UTM Zone 50S" Type="UTM" Parameter="+proj=utm +zone=50 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 50 South (114°E - 120°E)" />
+  <Proj4 SRS="32751" Name="WG South 84 / UTM Zone 51S" Type="UTM" Parameter="+proj=utm +zone=51 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 51 South (120°E - 126°E)" />
+  <Proj4 SRS="32752" Name="WG South 84 / UTM Zone 52S" Type="UTM" Parameter="+proj=utm +zone=52 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 52 South (126°E - 132°E)" />
+  <Proj4 SRS="32753" Name="WG South 84 / UTM Zone 53S" Type="UTM" Parameter="+proj=utm +zone=53 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 53 South (132°E - 138°E)" />
+  <Proj4 SRS="32754" Name="WG South 84 / UTM Zone 54S" Type="UTM" Parameter="+proj=utm +zone=54 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 54 South (138°E - 144°E)" />
+  <Proj4 SRS="32755" Name="WG South 84 / UTM Zone 55S" Type="UTM" Parameter="+proj=utm +zone=55 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 55 South (144°E - 150°E)" />
+  <Proj4 SRS="32756" Name="WG South 84 / UTM Zone 56S" Type="UTM" Parameter="+proj=utm +zone=56 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 56 South (150°E - 156°E)" />
+  <Proj4 SRS="32757" Name="WG South 84 / UTM Zone 57S" Type="UTM" Parameter="+proj=utm +zone=57 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 57 South (156°E - 162°E)" />
+  <Proj4 SRS="32758" Name="WG South 84 / UTM Zone 58S" Type="UTM" Parameter="+proj=utm +zone=58 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 58 South (162°E - 168°E)" />
+  <Proj4 SRS="32759" Name="WG South 84 / UTM Zone 59S" Type="UTM" Parameter="+proj=utm +zone=59 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 59 South (168°E - 174°E)" />
+  <Proj4 SRS="32760" Name="WG South 84 / UTM Zone 60S" Type="UTM" Parameter="+proj=utm +zone=60 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs" Datum="WGS84" Zone="UTM Zone 60 South (174°E - 180°E)" />
+  <Proj4 SRS="3370" Name="NAD27 / UTM Zone 59N" Type="UTM" Parameter="+proj=utm +zone=59 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 59 North (168°E - 174°E)" />
+  <Proj4 SRS="3371" Name="NAD27 / UTM Zone 60N" Type="UTM" Parameter="+proj=utm +zone=60 +ellps=clrk66 +datum=NAD27 +units=m +no_defs" Datum="NAD27" Zone="UTM Zone 60 North (174°E - 180°E)" />
+  <Proj4 SRS="3372" Name="NAD83 / UTM Zone 59N" Type="UTM" Parameter="+proj=utm +zone=59 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 59 North (168°E - 174°E)" />
+  <Proj4 SRS="3373" Name="NAD83 / UTM Zone 60N" Type="UTM" Parameter="+proj=utm +zone=60 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" Datum="NAD83" Zone="UTM Zone 60 North (174°E - 180°E)" />
+</Proj4s>

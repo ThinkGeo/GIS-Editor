@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <LongitudeAndLatitude>
+    <Item LongitudeColumnName="Longitude" LatitudeColumnName="Latitude" />
+    <Item LongitudeColumnName="X" LatitudeColumnName="Y" />
+    <Item LongitudeColumnName="Long" LatitudeColumnName="Lat" />
+  </LongitudeAndLatitude>
+  <WellKnownText>
+    <Item />
+  </WellKnownText>
+  <WellKnownTextValue>
+    <Item Value="POINT(" />
+    <Item Value="MULTIPOINT(" />
+  </WellKnownTextValue>
+</root>

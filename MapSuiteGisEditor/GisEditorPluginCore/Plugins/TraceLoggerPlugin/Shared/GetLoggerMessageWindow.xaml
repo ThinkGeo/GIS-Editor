@@ -1,0 +1,76 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GetLoggerMessageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wfi ="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:wf ="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        Title="{DynamicResource ResourceKey=GetLoggerMessageTitleText}"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight" 
+        mc:Ignorable="d">
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="0 0 10 5" Text="{DynamicResource ResourceKey=GetLoggerMessageLoggerPluginText}" />
+        <ComboBox x:Name="pluginComboBox"
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0 0 0 5"
+                  SelectedIndex="0"
+                  SelectionChanged="PluginComboBox_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Grid.Row="1"
+                   Margin="0 0 10 5"
+                   Text="{DynamicResource ResourceKey=GetLoggerMessageFromDateTimeText}" />
+        <wfi:WindowsFormsHost    
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="0 0 0 5">
+            <wf:DateTimePicker x:Name="startDatePicker" Format="Custom" CustomFormat="dd/MM/yyyy hh:mm:ss tt"  ValueChanged="StartDatePicker_ValueChanged" />
+        </wfi:WindowsFormsHost>
+
+        <TextBlock Grid.Row="2"
+                   Margin="0 0 10 5"
+                   Text="{DynamicResource ResourceKey=GetLoggerMessageToDateTimeText}" />
+        <wfi:WindowsFormsHost    
+                    Grid.Row="2"
+                    Grid.Column="1">
+            <wf:DateTimePicker x:Name="toDatePicker" Format="Custom" CustomFormat="dd/MM/yyyy hh:mm:ss tt"  ValueChanged="ToDatePicker_SelectedDateChanged" />
+        </wfi:WindowsFormsHost>
+        <!--<DatePicker x:Name="toDatePicker"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    SelectedDateChanged="ToDatePicker_SelectedDateChanged" />-->
+        <StackPanel Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    
+                    Orientation="Horizontal">
+            <TextBlock  Foreground="Red" Margin="0 0 10 0" x:Name="errorText"></TextBlock>
+            <Button x:Name="okButton"
+                    Width="70"
+                    Margin="0 0 11 0"
+                    Click="OkButton_Click"  
+                    IsDefault="True"
+                    Content="{DynamicResource ResourceKey=ConfigurationOkLable}" />
+            <Button Width="70"
+                    Content="{DynamicResource ResourceKey=ConfigurationCancelLable}"
+                    IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

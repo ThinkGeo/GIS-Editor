@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DebugOutputUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:infrastructure="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <sys:String x:Key="ConverterParameter">TimeSpan</sys:String>
+        <ObjectDataProvider x:Key="LoggerLevelProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="infrastructure:LoggerLevel" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <local:CustomDataConverter x:Key="CustomDataConverter" />
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+        </Style>
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Setter Property="Width" Value="22" />
+            <Setter Property="Height" Value="22" />
+            <Setter Property="BorderThickness" Value="1" />
+            <EventSetter Event="MouseEnter" Handler="Border_MouseEnter" />
+            <EventSetter Event="MouseLeave" Handler="Border_MouseLeave" />
+            <Setter Property="Margin" Value="0 0 5 0" />
+        </Style>
+        <Style x:Key="SeparatorStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="#FFC5C5C5" />
+            <Setter Property="Margin" Value="0,0,5,0" />
+            <Setter Property="Width" Value="2" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource BorderStyle}">
+                <Button Grid.Column="0"
+                        Command="{Binding LoadCommand}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{DynamicResource ResourceKey=DebugOutputUserControlLoadText}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/GisEditorPluginCore;component/Images/computer_tasks/open.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+            <Border x:Name="ExportBorder" Style="{StaticResource BorderStyle}">
+                <Button Grid.Column="3"
+                        Click="ExportClick"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{DynamicResource ResourceKey=DebugOutputUserControlExportText}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/GisEditorPluginCore;component/Images/Export.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+            <Border Style="{StaticResource SeparatorStyle}" />
+            <Border Style="{StaticResource BorderStyle}">
+                <ToggleButton Grid.Column="4"
+                              IsChecked="{Binding IsCapture,
+                                                  Mode=TwoWay}"
+                              ToolTip="{DynamicResource ResourceKey=DebugOutputUserControlCaptureText}">
+                    <ToggleButton.Resources>
+                        <Style TargetType="ToggleButton">
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Image Source="/GisEditorPluginCore;component/Images/icon_capture_engaged_16x16.png" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Image Source="/GisEditorPluginCore;component/Images/icon_capture_16x16.png" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+            </Border>
+            <Border Style="{StaticResource SeparatorStyle}" />
+            <Border x:Name="FilterBorder" Style="{StaticResource BorderStyle}">
+                <Button Grid.Column="5"
+                        Command="{Binding FilterCommand}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{DynamicResource ResourceKey=DebugOutputUserControlFilterText}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/GisEditorPluginCore;component/Images/log_filter.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+            <Border Style="{StaticResource SeparatorStyle}" />
+            <Border x:Name="ClearBorder" Style="{StaticResource BorderStyle}">
+                <Button Grid.Column="6"
+                        Command="{Binding ClearCommand}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{DynamicResource ResourceKey=FeatureInfoWindowClearContent}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/GisEditorPluginCore;component/Images/icon_clear_16x16.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+            <Border Style="{StaticResource SeparatorStyle}" />
+            <Border x:Name="FindBorder" Style="{StaticResource BorderStyle}">
+                <Button x:Name="FindButton"
+                        Grid.Column="7"
+                        Click="FindClick"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="{DynamicResource ResourceKey=GeneralFindContent}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/GisEditorPluginCore;component/Images/log_find.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+        </StackPanel>
+        <ListView x:Name="LoggerList"
+                  Grid.Row="1"
+                  Margin="0 10 0 0"
+                  GridViewColumnHeader.Click="GridViewColumnHeader_Click"
+                  ItemsSource="{Binding DisplayLoggerMessages}"
+                  SelectedItem="{Binding SelectedLoggerMessage,
+                                         Mode=TwoWay}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Width="60" Header="{DynamicResource ResourceKey=DebugOutputUserControlShapeText}" DisplayMemberBinding="{Binding Index}" />
+                                        <!--DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                                                                      AncestorType={x:Type ListViewItem}},
+                                                                       Converter={StaticResource CustomDataConverter}}"
+                                        Header="" />-->
+                        <GridViewColumn Width="80" Header="{DynamicResource ResourceKey=DebugOutputUserControlTimeText}" DisplayMemberBinding="{Binding Time,Converter={StaticResource CustomDataConverter}}" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LoggerMessage.Message}"
+                                        Header="{DynamicResource ResourceKey=DebugOutputUserControlMessageText}" />
+                        <GridViewColumn Width="128"
+                                        DisplayMemberBinding="{Binding LoggerMessage.DateTime}"
+                                        Header="{DynamicResource ResourceKey=DebugOutputUserControlDateText}" />
+                        <GridViewColumn Width="100"
+                                        DisplayMemberBinding="{Binding LoggerMessage.LoggerLevel}"
+                                        Header="{DynamicResource ResourceKey=DebugOutputUserControlLevelText}" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LoggerMessage.Category}"
+                                        Header="{DynamicResource ResourceKey=DebugOutputUserControlCategoryText}" />
+                        <GridViewColumn Width="125"
+                                        DisplayMemberBinding="{Binding LoggerMessage.Elapsed,Converter={StaticResource CustomDataConverter},ConverterParameter={StaticResource ConverterParameter}}"
+                                        Header="{DynamicResource ResourceKey=DebugOutputUserControlElapsedText}" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

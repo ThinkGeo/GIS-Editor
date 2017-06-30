@@ -1,0 +1,59 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FileGeoDatabaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="{DynamicResource FileGeoDatabaseWindowTitle}"
+        Width="400"
+        d:DesignHeight="300"
+        d:DesignWidth="300"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        mc:Ignorable="d">
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Margin="0 0 0 5" Text="{DynamicResource FileGeoDatabaseWindowTableNameLabel}" />
+        <ComboBox x:Name="tableComBox"
+                  Grid.Row="1"
+                  Margin="0 0 0 5"
+                  SelectionChanged="TableComBox_SelectionChanged" />
+        <!--
+            <TextBox x:Name="txtTable"
+            Grid.Row="1"
+            Margin="0 0 0 5"
+            TextChanged="TxtTable_TextChanged" />
+        -->
+        <TextBlock Grid.Row="2"
+                   Margin="0 0 0 5"
+                   Text="{DynamicResource FileGeoDatabaseWindowFeatureIdColumnLabel}"
+                   Visibility="Collapsed" />
+        <ComboBox x:Name="fieldComBox"
+                  Grid.Row="3"
+                  SelectionChanged="FieldComBox_SelectionChanged"
+                  Visibility="Collapsed" />
+        <!--
+            <TextBox x:Name="txtColumn"
+            Grid.Row="3"
+            TextChanged="TxtTable_TextChanged" />
+        -->
+        <StackPanel Grid.Row="4"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button x:Name="okButton"
+                    Width="70"
+                    Margin="0 0 11 0"
+                    Click="Button_Click"
+                    Content="{DynamicResource ConfigurationOKLable}" />
+            <Button Width="70"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

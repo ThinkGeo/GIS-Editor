@@ -1,0 +1,151 @@
+<contract:SettingUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.StyleSettingUserControl"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:contract="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             d:DesignHeight="300"
+                             d:DesignWidth="300"
+                             mc:Ignorable="d">
+    <contract:SettingUserControl.Resources>
+        <local:BooleanToggleConverter x:Key="ReverseBooleanConverter" />
+        <local:StyleToStyleUserControlConverter x:Key="styleToUserControlConverter" />
+    </contract:SettingUserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <CheckBox Margin="0 0 0 5"
+                      Content="{DynamicResource ResourceKey=StyleSettingCheckBoxContent}"
+                      IsChecked="{Binding UseRandomColors}" />
+            <Button Grid.Column="1"
+                    Margin="0 0 0 5"
+                    HorizontalAlignment="Right"
+                    Command="{Binding AddDefaultCommand}"
+                    Content="Add new default" />
+        </Grid>
+        <!--<ScrollViewer Grid.Row="1"
+                      Margin="0 0 0 5"
+                      Height="388"
+                      VerticalScrollBarVisibility="Auto">-->
+        <Grid Margin="5"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ContentControl Content="{Binding SelectedStyle, Converter={StaticResource styleToUserControlConverter}}" />
+            <TextBlock Grid.Row="1"
+                       Margin="0 10 0 3"
+                       Text="Default styles:" />
+            <Grid  Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="35" />
+                </Grid.ColumnDefinitions>
+                <ListBox 
+                     HorizontalContentAlignment="Stretch"
+                     ItemsSource="{Binding StyleItems}"
+                     SelectedItem="{Binding SelectedStyleItem,
+                                                Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Image Margin="10 0 5 0"
+                                   Source="{Binding BitmapImage}" />
+                                <TextBlock Grid.Column="1"
+                                       Text="{Binding Name}" />
+                                <TextBlock Grid.Column="2"
+                                       Margin="0 0 10 0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center">
+                                    <Hyperlink Click="Hyperlink_Click">Delete</Hyperlink>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Width" Value="24" />
+                            <Setter Property="Height" Value="24" />
+                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Command="{Binding ToTopCommand}" IsEnabled="{Binding CanMoveUp}">
+                        <Image Source="/GisEditorPluginCore;component/Images/toTop.png" />
+                    </Button>
+                    <Button Margin="0 0 0 25"
+                            Command="{Binding MoveUpCommand}"
+                            IsEnabled="{Binding CanMoveUp}">
+                        <Image Source="/GisEditorPluginCore;component/Images/moveUp.png" />
+                    </Button>
+                    <Button Command="{Binding MoveDownCommand}" IsEnabled="{Binding CanMoveDown}">
+                        <Image Source="/GisEditorPluginCore;component/Images/moveDown.png" />
+                    </Button>
+                    <Button Command="{Binding ToBottomCommand}" IsEnabled="{Binding CanMoveDown}">
+                        <Image Source="/GisEditorPluginCore;component/Images/toBottom.png" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <!--
+                    <ItemsControl Margin="0 0 5 0" ItemsSource="{Binding Styles}">
+                    <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                    <Grid Margin="0 0 0 10">
+                    <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0"
+                    Height="25"
+                    Margin="0 0 0 5"
+                    Background="#ffeeeeee">
+                    <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="10 0 0 0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Name}" />
+                    <TextBlock Grid.Column="1"
+                    Margin="0 0 10 0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                    <Hyperlink Click="Hyperlink_Click">Delete</Hyperlink>
+                    </TextBlock>
+                    <Border Grid.ColumnSpan="2"
+                    BorderBrush="#FFE2E4E7"
+                    BorderThickness="0 0 0 1" />
+                    </Grid>
+                    <ContentControl Grid.Row="1" Content="{Binding ., Converter={StaticResource styleToUserControlConverter}}" />
+                    </Grid>
+                    </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                -->
+        </Grid>
+        <!--</ScrollViewer>-->
+    </Grid>
+</contract:SettingUserControl>

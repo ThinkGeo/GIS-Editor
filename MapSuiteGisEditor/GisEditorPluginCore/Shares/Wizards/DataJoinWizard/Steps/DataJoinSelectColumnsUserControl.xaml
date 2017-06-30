@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DataJoinSelectColumnsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:infrastructure="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <infrastructure:ColumnNameToAliasNameConverter x:Key="ColumnNameToAliasNameConverterProvider" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Thickness x:Key="BottomMargin" Bottom="20" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Margin="{StaticResource BottomMargin}"
+                   Text="{DynamicResource ResourceKey=DataJoinSelectColumnsUserControlChoosethecolumnsDescriptionText}"
+                   TextWrapping="Wrap" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Width="160"
+                    Margin="0 0 120 20"
+                    HorizontalAlignment="Left"
+                    Command="{Binding ViewLayerDataCommand}"
+                    Content="{DynamicResource ResourceKey=DataJoinSelectColumnsUserControlViewLayerDataContent}" />
+            <Button Grid.Column="1"
+                    Width="160"
+                    Margin="{StaticResource BottomMargin}"
+                    HorizontalAlignment="Left"
+                    Command="{Binding ViewDelimitedFileDataCommand}"
+                    Content="{DynamicResource ResourceKey=DataJoinSelectColumnsUserControlViewDelimitedFileContent}" />
+        </Grid>
+        <ItemsControl Grid.Row="3" ItemsSource="{Binding MatchConditions}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=Title}" 
+                                   Style="{DynamicResource SubtitleStyle}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=LayerSubTitle}" 
+                                   Margin="0 0 0 5"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=DelimitedSubTilte}"
+                                   />
+                        <ComboBox Grid.Row="2" Grid.Column="0" Width="180" 
+                                  HorizontalAlignment="Left" ItemsSource="{Binding Path=LayerColumns}"
+                                  SelectedItem="{Binding Path=SelectedLayerColumn}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource ColumnNameToAliasNameConverterProvider}" >
+                                                <Binding Path="ColumnName" />
+                                                <Binding Path="DataContext.SelectedFeatureLayer" RelativeSource="{RelativeSource AncestorType=UserControl,Mode=FindAncestor}" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox Grid.Row="2" Grid.Column="1" Width="180" 
+                                  HorizontalAlignment="Left" ItemsSource="{Binding Path=DelimitedColumns}"
+                                  SelectedItem="{Binding Path=SelectedDelimitedColumn}"/>
+                        <Grid Grid.Row="3" Grid.Column="1" Margin="0 5 0 0" HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Width="20" Height="20" Content="+" Margin="0 0 5 0"
+                                HorizontalAlignment="Right" IsEnabled="{Binding Path=CanAdd}"
+                                    Command="{Binding Path=AddCommand}"/>
+                            <Button Grid.Column="1" Width="20" Height="20" Content="-" 
+                                HorizontalAlignment="Right" IsEnabled="{Binding Path=CanRomove}"
+                                    Command="{Binding Path=RemoveCommand}"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

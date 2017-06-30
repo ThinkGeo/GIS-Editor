@@ -1,0 +1,100 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.PluginManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource PluginManagerListUserControlPluginManagerTitle}"
+        Width="830"
+        Height="600"
+        Icon="/MapSuiteGisEditor;component/Images/pluginWindow_16x16.png"
+        Loaded="Window_Loaded"
+        ResizeMode="NoResize"
+        ShowInTaskbar="True"
+        Style="{StaticResource WindowStyle}"
+        Topmost="False">
+    <Grid x:Name="grid" Margin="{DynamicResource MainWindowMargin}">
+        <Grid.Resources>
+            <Style x:Key="listBoxStyle">
+                <Style.Resources>
+                    <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0.0" Color="#D5E2F2" />
+                        <GradientStop Offset="0.25" Color="#CADAEE" />
+                        <GradientStop Offset="1.0" Color="#E1EDFC" />
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                </Style.Resources>
+            </Style>
+            <DataTemplate x:Key="HeaderPanel">
+                <StackPanel Orientation="Vertical">
+                    <Image Width="32"
+                           Height="32"
+                           FocusVisualStyle="{x:Null}"
+                           Source="{Binding HeaderBackground}" />
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding HeaderText}" />
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <TabControl Name="tabControl1"
+                    ItemsSource="{Binding ManagerTabs}"
+                    SelectionChanged="tabControl1_SelectionChanged"
+                    TabStripPlacement="Top">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="HeaderTemplate" Value="{StaticResource HeaderPanel}" />
+                    <Setter Property="Width" Value="90" />
+                    <Setter Property="Height" Value="60" />
+                    <Setter Property="Content" Value="{Binding Content}" />
+                </Style>
+            </TabControl.Resources>
+        </TabControl>
+        <Grid Grid.Row="1" Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Button x:Name="btnSelectAll"
+                        Width="70"
+                        Click="btnEnableAll_Click"
+                        Content="{DynamicResource ResourceKey=PluginManagerListUserControlEnableAllContent}"
+                        x:FieldModifier="private" />
+                <Button x:Name="btnSelectNone"
+                        Width="70"
+                        Click="btnDisableAll_Click"
+                        Content="{DynamicResource ResourceKey=PluginManagerListUserControlDisableAllContent}"
+                        Style="{DynamicResource ConfigurationButtonStyle}"
+                        x:FieldModifier="private" />
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Button x:Name="btnOK"
+                        Click="btnOK_Click"
+                        Content="{DynamicResource PluginManagerListUserControlOKContent}"
+                        Style="{DynamicResource ConfigurationButtonStyle}"
+                        x:FieldModifier="private" />
+                <Button x:Name="btnCancel"
+                        Click="btnCancel_Click"
+                        Content="{DynamicResource ConfigurationCancelLable}"
+                        Style="{DynamicResource ConfigurationButtonStyle}"
+                        x:FieldModifier="private" />
+                <Button x:Name="btnHelp"
+                        Click="btnHelp_Click"
+                        Style="{DynamicResource ConfigurationButtonStyle}"
+                        x:FieldModifier="private">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="16"
+                               Height="16"
+                               Source="/GisEditorInfrastructure;component/Images/help.png" />
+                        <TextBlock Margin="2 0 0 0" Text="{DynamicResource ResourceKey=PluginManagerListUserControlHelpText}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,256 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FilterConditionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="{DynamicResource ResourceKey=FilterConditionWindowDscFilterStyleConditionDscTitle}"
+        Width="400"
+        d:DesignHeight="300"
+        d:DesignWidth="300"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <local:AreaUnitToStringConverter x:Key="AreaUnitToStringConverter" />
+        <local:MatchTypeToStringConverter x:Key="MatchTypeToStringConverter" />
+        <local:ValidStatusConverter x:Key="ValidStatusConverter" />
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0 5 0 0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="Height" Value="21" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style TargetType="Button">
+                <!--  <Setter Property="Height" Value="22" />  -->
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Based on" Visibility="{Binding BasedOnVisibility}" />
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Visibility="{Binding BasedOnVisibility}">
+                <RadioButton x:Name="AttributesRadioButton" GroupName="FilterStyleBaseOn" IsChecked="True" Click="AttributesRadioButtonClick" Content="{DynamicResource FilterConditionWindowAttributesRadioButtonContent}" />
+                <RadioButton x:Name="AreaRadioButton" GroupName="FilterStyleBaseOn" Content="{DynamicResource FilterConditionWindowAreaRadioButtonContent}" Click="AreaRadioButtonClick" Margin="10 0 0 0" />
+            </StackPanel>
+
+            <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Visibility="{Binding ColumnNamesVisibility}"
+                   Text="{DynamicResource ResourceKey=FilterConditionWindowColumnNamesText}" />
+
+            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="{Binding IsColumnNamesEnabled}" Visibility="{Binding ColumnNamesVisibility}"
+                      ItemsSource="{Binding ColumnNames}"
+                      DisplayMemberPath="Value"
+                      SelectedItem="{Binding SelectedColumnName,
+                                             Mode=TwoWay}" />
+
+            <TextBlock Grid.Row="1" Visibility="{Binding AreaUnitsVisibility}"
+                   Grid.Column="0"
+                   Text="Area Unit" />
+
+            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Visibility="{Binding AreaUnitsVisibility}"
+                      ItemsSource="{Binding AreaUnits}"
+                      SelectedItem="{Binding SelectedAreaUnit,
+                                             Mode=TwoWay}" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding .,Converter={StaticResource AreaUnitToStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button Grid.Row="2" Grid.Column="2"
+                    Width="80"
+                    Height="21"
+                    Margin="5 0 0 0"
+                    Command="{Binding ViewDataCommand}"
+                    Content="{DynamicResource ResourceKey=FilterConditionWindowViewDataContent}" />
+
+            <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="{DynamicResource ResourceKey=FilterConditionWindowMatchTypeText}" />
+            <ComboBox Grid.Row="2"
+                  Grid.Column="1"
+                  ItemsSource="{Binding FilterConditionTemplates}"
+                  SelectedItem="{Binding MatchType,
+                                         Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Key, Converter={StaticResource MatchTypeToStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Visibility="{Binding MatchValueVisible}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{DynamicResource ResourceKey=FilterConditionWindowMatchValueText}" />
+                <TextBox Grid.Column="1"
+                         IsEnabled="{Binding MatchExpressionIsEnabled}"
+                         Text="{Binding MatchExpression,
+                                        Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Grid.Column="2" Margin="5 5 0 0" VerticalAlignment="Center"
+                                  Content="{DynamicResource FilterConditionWindowIgnoreCaseText}"
+                                  IsChecked="{Binding IsIgnoreCase,
+                                                      Mode=TwoWay,
+                                                      UpdateSourceTrigger=PropertyChanged}"
+                                  IsEnabled="{Binding MatchExpressionIsEnabled}" />
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Visibility="{Binding MatchNumbericVisible}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=StyleBuilderWindowFromText}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=StyleBuilderWindowToText}" />
+                <TextBox Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="0 5 0 0"
+                         Text="{Binding FromNumberic,
+                                        Mode=TwoWay}" />
+                <TextBox Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="0 5 0 0"
+                         Text="{Binding ToNumberic,
+                                        Mode=TwoWay}" />
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Visibility="{Binding MatchDateVisible}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=FilterConditionWindowFromDateText}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=FilterConditionWindowToDateText}" />
+                <DatePicker Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0 5 0 0"
+                            Text="{Binding FromDate,
+                                           Mode=TwoWay}" />
+                <DatePicker Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0 5 0 0"
+                            Text="{Binding ToDate,
+                                           Mode=TwoWay}" />
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Visibility="{Binding MatchValidFeatureVisible}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding ValidStatus, Mode=TwoWay}">
+                    <ComboBox.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </ComboBox.Resources>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ., Converter={StaticResource ResourceKey=ValidStatusConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <sys:Boolean>True</sys:Boolean>
+                    <sys:Boolean>False</sys:Boolean>
+                </ComboBox>
+            </Grid>
+        </StackPanel>
+
+        <!--<StackPanel Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Logical"  />
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"  Margin="0 8 0 0">
+                    <RadioButton x:Name="AndRadioButton" GroupName="FilterLogical" IsChecked="True" Content="AND"  Click="AndRadioButtonClick" />
+                    <RadioButton x:Name="OrRadioButton" GroupName="FilterLogical" Content="OR" Click="OrRadioButtonClick" Margin="10 0 0 0" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>-->
+
+        <StackPanel Grid.Row="3"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Click="SaveButton_Click"
+                    Content="{DynamicResource ResourceKey=FilterConditionWindowSaveContent}"
+                    IsEnabled="{Binding IsValid}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Content="{DynamicResource ConfigurationCancelLable}"
+                    IsCancel="True"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,156 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ZoomLevelSetConfigurationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:plugin="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowDscSetZoomLevelsDscTitle}"
+        Width="444"
+        Height="540"
+        Closing="Window_Closing"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowDscCurrentZoomLevelsDscHeader}">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <plugin:DoubleFormatConverter x:Key="DoubleFormatConverter" />
+                </Grid.Resources>
+                <ListView Margin="0 0 0 10"
+                          ItemsSource="{Binding ZoomLevelSetViewModel}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          SelectedItem="{Binding SelectedZoomLevel,
+                                                 Mode=TwoWay}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Width="105" Header="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowZoomLevelHeader}">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock HorizontalAlignment="Center" Text="{Binding ZoomLevelText}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="190" Header="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowScaleHeader}">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <gisToolKit:RenameTextBlock HorizontalAlignment="Right"
+                                                                            IsEdit="{Binding IsRenaming,
+                                                                                             Mode=TwoWay}"
+                                                                            Text="{Binding Scale,
+                                                                                           Converter={StaticResource DoubleFormatConverter}}"
+                                                                            TextRenamed="ScaleEdited" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <StackPanel.Resources>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Width" Value="16" />
+                                                        <Setter Property="Height" Value="16" />
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <Button Click="EditZoomLevelClick">
+                                                    <Image Source="/GisEditorPluginCore;component/Images/dialogs_Edit.png" />
+                                                </Button>
+                                                <Button Margin="5 0 0 0" Click="RemoveZoomLevelClick">
+                                                    <Image Source="/GisEditorPluginCore;component/Images/delete32x32.png" />
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="MouseDoubleClick" Handler="ListBoxItemMouseDoubleClick" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <!--
+                        <ListBox.ItemTemplate>
+                        <DataTemplate>
+                        <TextBlock Text="{Binding Text}" />
+                        </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="0 0 0 3" />
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItemMouseDoubleClick" />
+                        </Style>
+                        </ListBox.ItemContainerStyle>
+                    -->
+                </ListView>
+                <Grid Grid.Row="1">
+                    <Button Width="85"
+                            HorizontalAlignment="Left"
+                            Click="AddZoomLevelClick"
+                            Content="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowAddNewContent}" />
+                    <Button Width="130"
+                            HorizontalAlignment="Right"
+                            Click="RevertDefaultClick"
+                            Content="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowDscReverttoDefaultDscContent}" />
+                </Grid>
+                <TextBlock Grid.Row="2"
+                           Margin="0 10 0 0"
+                           Text="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowDescriptionText}"
+                           TextWrapping="Wrap" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowDscCustomZoomLevelDscHeader}">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Click="LoadCustomSetClick"
+                        Content="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowLoadCustomSetContent}" />
+                <Button Grid.Column="2"
+                        Click="SaveCustomSetClick"
+                        Content="{DynamicResource ResourceKey=ZoomLevelSetConfigurationWindowSaveasCustomContent}" />
+            </Grid>
+        </GroupBox>
+        <StackPanel Grid.Row="2"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Click="OkClick"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="CancelClick"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="ApplyClick"
+                    Content="{DynamicResource ConfigurationApplyLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <ContentPresenter x:Name="helpContent"
+                              Grid.Row="2"
+                              Width="70"
+                              Margin="11 0 0 0" />
+        </StackPanel>
+    </Grid>
+</Window>

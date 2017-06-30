@@ -1,0 +1,22 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.ExportCodeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+        Title="{DynamicResource ResourceKey=ExportCodeWindowExportcodeTitle}"
+        MinWidth="640"
+        MinHeight="480"
+        Style="{StaticResource WindowStyle}" x:ClassModifier="internal">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <AvalonEdit:TextEditor Name="textBox"
+                               Grid.Row="0"
+                               Margin="0 0 0 10" />
+        <Button Grid.Row="1"
+                HorizontalAlignment="Right"
+                Click="Button_Click"
+                Content="{DynamicResource ResourceKey=ExportCodeWindowCopytoclipboardContent}" />
+    </Grid>
+</Window>

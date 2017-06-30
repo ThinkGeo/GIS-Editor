@@ -1,0 +1,36 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FeatureWktWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ResourceKey=FeatureWktWindowFeatureWelllKnownTitle}"
+        Width="300"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}">
+    <Grid Margin="5">
+        <Grid.Resources>
+            <local:WktToAbbrevationConverter x:Key="wktConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="5 0 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" Text="{DynamicResource ResourceKey=FeatureWktWindowWellKnownTextText}" />
+            <TextBlock Grid.Column="1" HorizontalAlignment="Right">
+                <Hyperlink Click="Hyperlink_Click">Copy WKT to clipboard</Hyperlink>
+            </TextBlock>
+        </Grid>
+        <TextBox Grid.Row="1"
+                 Margin="0 5 0 5"
+                 IsReadOnly="True"
+                 Text="{Binding WKT,
+                                Mode=OneWay,
+                                Converter={StaticResource ResourceKey=wktConverter}}"
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto" />
+    </Grid>
+</Window>

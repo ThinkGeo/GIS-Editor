@@ -1,0 +1,329 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.LegendEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:tg="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite"
+        Title="{DynamicResource ResourceKey=LegendEditorLegendEditorTitle}"
+        Width="880"
+        Height="640"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/StringResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ObjectDataProvider x:Key="AdornmentLocationProvider"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:TypeExtension Type="{x:Type tg:AdornmentLocation}" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="LegendSizeProvider"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:TypeExtension Type="{x:Type local:LegendSizeMode}" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="SymbolSizeProvider"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:TypeExtension Type="{x:Type local:SymbolSizeMode}" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <local:LegendLocationToStringConverter x:Key="LegendLocationToStringConverter" />
+            <local:SizeToStringConverter x:Key="SizeToStringConverter" />
+            <local:SymbolSizeModelToStringConverter x:Key="SymbolSizeModelToStringConverter" />
+            <RoutedCommand x:Key="CloseLegendCommand" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="380" />
+        </Grid.ColumnDefinitions>
+        <!--  Legend Settings  -->
+        <GroupBox Margin="{StaticResource MarginBottom}" Header="{DynamicResource LegendEditorLegendSettingsLabel}">
+            <StackPanel Margin="{StaticResource MarginAll}">
+                <DockPanel x:Name="NamePanel" Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="{DynamicResource ResourceKey=LegendEditorNameText}" />
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <!--  Location Settings  -->
+                <DockPanel x:Name="LocationPanel" Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="{DynamicResource ResourceKey=LegendEditorLocationText}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource AdornmentLocationProvider}}" SelectedItem="{Binding Location, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource LegendLocationToStringConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Grid.Column="1"
+                                   Margin="{StaticResource SmlMarginRightForLabel}"
+                                   HorizontalAlignment="Right"  Text="{DynamicResource ResourceKey=LegendEditorLeftText}">
+                        </TextBlock>
+                        <TextBox Grid.Column="2" Text="{Binding XOffsetInPixel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="3"
+                                   Margin="{StaticResource SmlMarginRightForLabel}"
+                                   HorizontalAlignment="Right" Text="{DynamicResource ResourceKey=LegendEditorTopText}">
+                        </TextBlock>
+                        <TextBox Grid.Column="4" Text="{Binding YOffsetInPixel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </DockPanel>
+                <!--  Legend Size  -->
+                <DockPanel Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="{DynamicResource ResourceKey=CommonSizeText}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource LegendSizeProvider}}" SelectedItem="{Binding LegendSizeMode}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource SizeToStringConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Grid.Column="1"
+                                   Margin="{StaticResource SmlMarginRightForLabel}"
+                                   HorizontalAlignment="Right" Text="{DynamicResource ResourceKey=LegendEditorWidthText}">
+                        </TextBlock>
+                        <TextBox Grid.Column="2"
+                                 IsEnabled="{Binding IsLegendSizeEnabled}"
+                                 Text="{Binding Width,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="3"
+                                   Margin="{StaticResource SmlMarginRightForLabel}"
+                                   HorizontalAlignment="Right" Text="{DynamicResource ResourceKey=LegendEditorHeightText}">
+                        </TextBlock>
+                        <TextBox Grid.Column="4"
+                                 IsEnabled="{Binding IsLegendSizeEnabled}"
+                                 Text="{Binding Height,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </DockPanel>
+                <!--  Min H/W  -->
+                <DockPanel Margin="{StaticResource MarginBottom}">
+                    <TextBlock Margin="{StaticResource SmlMarginRightForLabel}"
+                               DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="{DynamicResource ResourceKey=LegendEditorMinimumWidthText}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Width="60" Text="{Binding MinWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="1"
+                                   Margin="{StaticResource SmlMarginRightForLabel}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Text="{DynamicResource ResourceKey=LegendEditorMinimumHeightText}" />
+                        <TextBox Grid.Column="2" Text="{Binding MinHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </DockPanel>
+                <!--  Background Mask  -->
+                <DockPanel Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="{DynamicResource ResourceKey=LegendEditorBackgroundStyleText}" />
+                    <Button Width="140"
+                            HorizontalAlignment="Left"
+                            Command="{Binding ConfigureBackgroundStyleCommand}" Content="{DynamicResource ResourceKey=LegendEditorConfigureConten}">
+                    </Button>
+                </DockPanel>
+                <!--  Symbol Size  -->
+                <DockPanel Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="{DynamicResource ResourceKey=LegendEditorSymbolSizeModelText}" />
+                    <ComboBox HorizontalAlignment="Stretch"
+                              ItemsSource="{Binding Source={StaticResource SymbolSizeProvider}}"
+                              SelectedItem="{Binding SymbolSizeMode,
+                                                     Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource SymbolSizeModelToStringConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+                <!--  Symbol W/H  -->
+                <DockPanel Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="" />
+                    <StackPanel VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{DynamicResource ResourceKey=LegendEditorSymbolWidthText}"></TextBlock>
+                            <TextBox Width="40"
+                                     Margin="{StaticResource MarginLeft}"
+                                     IsEnabled="{Binding IsSymbolSizeEnabled}"
+                                     Text="{Binding FixedSymbolWidth,
+                                                    Mode=TwoWay,
+                                                    UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Margin="{StaticResource MarginLeft}" VerticalAlignment="Center" Text="{DynamicResource ResourceKey=LegendEditorSymbolHeightText}"></TextBlock>
+                            <TextBox Width="40"
+                                     Margin="{StaticResource MarginLeft}"
+                                     IsEnabled="{Binding IsSymbolSizeEnabled}"
+                                     Text="{Binding FixedSymbolHeight,
+                                                    Mode=TwoWay,
+                                                    UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+                <!--  Word wrap length  -->
+                <DockPanel Margin="{StaticResource MarginBottom}">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{StaticResource SettingLabel}"
+                               Text="" />
+                </DockPanel>
+            </StackPanel>
+        </GroupBox>
+        <!--  Legend Items  -->
+        <GroupBox Grid.Row="1"
+                  Margin="{StaticResource MarginBottom}"
+                  Header="{DynamicResource LegendEditorLegendItemsLabel}">
+            <Grid Margin="0 10 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="60" />
+                </Grid.ColumnDefinitions>
+                <!--  Legend Item Buttons  -->
+                <StackPanel Margin="{StaticResource MarginRight}">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Width" Value="110" />
+                            <Setter Property="Margin" Value="{StaticResource MarginBottom}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Command="{Binding ImportFromMapCommand}" IsEnabled="{Binding CanAutoImportLegend}" Content="{DynamicResource ResourceKey=LegendEditorImportfromMapContent}"></Button>
+                    <Button Command="{Binding AddNewCommand}" Content="{DynamicResource ResourceKey=LegendEditorAddNewContent}"></Button>
+                    <Button Command="{Binding DuplicateItemCommand}" IsEnabled="{Binding IsLegendItemOperationEnabled}" Content="{DynamicResource ResourceKey=LegendEditorDuplicateContent}"></Button>
+                    <Button Command="{Binding EditCommand}" IsEnabled="{Binding IsLegendItemOperationEnabled}" Content="{DynamicResource ResourceKey=LegendEditorEditContent}"></Button>
+                    <Button Margin="0 0 0 40"
+                            Command="{Binding DeleteItemCommand}"
+                            IsEnabled="{Binding IsLegendItemOperationEnabled}" Content="{DynamicResource ResourceKey=LegendEditorDeleteContent}">
+                    </Button>
+                    <Button Command="{Binding SetTitleFooterCommand}"
+                            CommandParameter="{x:Static local:LegendItemType.Header}"
+                            IsEnabled="{Binding IsLegendItemOperationEnabled}"
+                            Content="{DynamicResource ResourceKey=LegendEditorSetasTitleContent}">
+                    </Button>
+                    <Button Command="{Binding SetTitleFooterCommand}"
+                            CommandParameter="{x:Static local:LegendItemType.Footer}"
+                            IsEnabled="{Binding IsLegendItemOperationEnabled}"
+                            Content="{DynamicResource ResourceKey=LegendEditorSetasFooterContent}">
+                    </Button>
+                </StackPanel>
+                <!--  Legend List  -->
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding LegendItems}"
+                         SelectedItem="{Binding SelectedLegendItem,
+                                                Mode=TwoWay}">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <EventSetter Event="ListBox.MouseDoubleClick" Handler="EditMouseDoubleClick" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TextPreview}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <!--  Operation Buttons  -->
+                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Width" Value="24" />
+                            <Setter Property="Height" Value="24" />
+                            <Setter Property="Margin" Value="{StaticResource MarginBottom}" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Command="{Binding ToTopCommand}" IsEnabled="{Binding CanMoveUp}">
+                        <Image Source="/GisEditorPluginCore;component/Images/toTop.png" />
+                    </Button>
+                    <Button Margin="0 0 0 25"
+                            Command="{Binding MoveUpCommand}"
+                            IsEnabled="{Binding CanMoveUp}">
+                        <Image Source="/GisEditorPluginCore;component/Images/moveUp.png" />
+                    </Button>
+                    <Button Command="{Binding MoveDownCommand}" IsEnabled="{Binding CanMoveDown}">
+                        <Image Source="/GisEditorPluginCore;component/Images/moveDown.png" />
+                    </Button>
+                    <Button Command="{Binding ToBottomCommand}" IsEnabled="{Binding CanMoveDown}">
+                        <Image Source="/GisEditorPluginCore;component/Images/toBottom.png" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <!--  Legend Preview  -->
+        <GroupBox Grid.RowSpan="2"
+                  Grid.Column="1"
+                  Margin="{StaticResource MarginLeftBottom}"
+                  Header="{DynamicResource LegendEditorLegendPreviewLabel}">
+            <Grid SizeChanged="Image_SizeChanged">
+                <Image Source="{Binding PreviewSource}" />
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="0 5 0 0">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Command="{Binding OKCommand}"
+                        Content="{DynamicResource ConfigurationOKLable}"
+                        Style="{DynamicResource ConfigurationButtonStyle}" />
+                <Button Command="{Binding CancelCommand}"
+                        Content="{DynamicResource ConfigurationCancelLable}"
+                        Style="{DynamicResource ConfigurationButtonStyle}" />
+                <!--<Button Command="{Binding ApplyCommand}"
+                        Content="{DynamicResource ConfigurationApplyLable}"
+                        Style="{DynamicResource ConfigurationButtonStyle}" />-->
+                <ContentPresenter x:Name="HelpContainer"
+                                  Width="70"
+                                  Margin="11 0 0 0" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GridConfigureUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:GridInterpolationModelToStringConverter x:Key="gridInterpolationModelToStringConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Style="{DynamicResource SubtitleStyle}" Text="{DynamicResource ToolsGridWizardStepThreeInterpolationAlgorithm}" />
+        <TextBlock Grid.Row="1"
+                   Margin="0 0 0 5"
+                   Text="{DynamicResource ToolsGridWizardStepThreeDeterminesMethod}"
+                   TextWrapping="Wrap" />
+
+        <ComboBox Grid.Row="2"
+                  Width="300"
+                  Margin="0 0 0 20"
+                  HorizontalAlignment="Left"
+                  ItemsSource="{Binding InterpolationAlgorithms}"
+                  SelectedItem="{Binding SelectedInterpolationAlgorithms,
+                                         Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=., Converter={StaticResource gridInterpolationModelToStringConverter}}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Grid Margin="0 0 0 20" Grid.Row="3" Visibility="{Binding IsSelectedIDW}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource ToolsGridWizardStepThreePower}" Style="{DynamicResource SubtitleStyle}"/>
+                <TextBox Text="{Binding Power}" Margin="0 0 20 0" Width="70"/>
+            </StackPanel>
+            <TextBlock Grid.Row="1" Margin="0 0 0 20" TextWrapping="Wrap" Text="{DynamicResource ToolsGridWizardStepThreeHigherPower}"/>
+            <TextBlock Grid.Row="2" Text="{DynamicResource ToolsGridWizardStepThreeSearchRadius}" Style="{DynamicResource SubtitleStyle}"/>
+            <TextBlock Grid.Row="3" Margin="0 0 0 10" Text="{DynamicResource ToolsGridWizardStepThreeLimitesNumber}"/>
+            <RadioButton Grid.Row="4" Content="{DynamicResource ToolsGridWizardStepThreeAllPoints}" IsChecked="{Binding IsAllPointsChecked}"/>
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <ObjectDataProvider x:Key="DistanceUnitDataProvider"
+                                            MethodName="GetValues"
+                                            ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="core:DistanceUnit" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <local:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
+                </StackPanel.Resources>
+                <RadioButton Content="{DynamicResource ToolsGridWizardStepThreeOnlyPoints}" IsChecked="{Binding IsOnlyPointsChecked}"/>
+                <TextBox Width="70" Text="{Binding SearchRadius}" Margin="0 0 5 0" IsEnabled="{Binding IsOnlyPointsEnable}"/>
+                <ComboBox Width="110" IsEnabled="{Binding IsOnlyPointsEnable}"
+                              ItemsSource="{Binding Source={StaticResource DistanceUnitDataProvider}}"
+                              SelectedIndex="0"
+                              SelectedValue="{Binding SelectedRadiusUnit}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource DistanceUnitToStringConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="4" Margin="0 20 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Style="{DynamicResource SubtitleStyle}" Text="{DynamicResource ToolsGridWizardStepThreeCellSize}" />
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                   Margin="0 0 0 5"
+                   Text="{DynamicResource ToolsGridWizardStepThreeEachCellGrid}" TextWrapping="Wrap"/>
+            <Grid Grid.Row="2" Grid.Column="0">
+                <StackPanel Margin="0 0 0 10">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <ObjectDataProvider x:Key="DistanceUnitDataProvider"
+                                            MethodName="GetValues"
+                                            ObjectType="{x:Type sys:Enum}">
+                                <ObjectDataProvider.MethodParameters>
+                                    <x:Type TypeName="core:DistanceUnit" />
+                                </ObjectDataProvider.MethodParameters>
+                            </ObjectDataProvider>
+                            <local:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
+                        </StackPanel.Resources>
+                        <TextBox Width="70"
+                             Margin="0 0 5 0"
+                             Text="{Binding CellSize,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}" />
+
+                        <ComboBox Width="110"
+                              ItemsSource="{Binding Source={StaticResource DistanceUnitDataProvider}}"
+                              SelectedIndex="0"
+                              SelectedValue="{Binding SelectedCellSizeDistanceUnit}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource DistanceUnitToStringConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                    </StackPanel>
+                    <TextBlock Foreground="Red" Text="{Binding WarningMessage}" />
+                </StackPanel>
+            </Grid>
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="20 0 0 0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Source="/GisEditorPluginCore;component/Images/Grid Cell Size Diagram.png"
+               Stretch="None" />
+        </Grid>
+    </Grid>
+</UserControl>

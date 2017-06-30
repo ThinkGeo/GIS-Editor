@@ -1,0 +1,158 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ScaleBarElementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.AdornmentLayers"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="{DynamicResource ResourceKey=ScaleBarElementWindowScaleBarTitle}"
+        Width="555"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="UnitSystemProvider"
+                            MethodName="GetValues"
+                            ObjectType="sys:Enum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:UnitSystem" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="ScaleNumericFormatTypeProvider"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:ScaleNumericFormatType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="{DynamicResource ResourceKey=ScaleBarElementWindowStyleHeader}">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Width" Value="110" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <Style x:Key="gridStyle" TargetType="Grid">
+                        <Setter Property="Margin" Value="0 0 0 5" />
+                    </Style>
+                    <Style TargetType="local:DropDownColorPicker">
+                        <Setter Property="Height" Value="22" />
+                    </Style>
+                </StackPanel.Resources>
+                <Grid Style="{StaticResource gridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource ResourceKey=ScaleBarElementWindowBackgroundText}" />
+                    <Button Grid.Column="1"
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            Command="{Binding ConfigureCommand}"
+                            Content="{DynamicResource ResourceKey=ScaleBarElementWindowConfigureContent}" />
+                </Grid>
+                <Grid Style="{StaticResource gridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource ResourceKey=ScaleBarElementWindowColorText}" />
+                    <local:DropDownColorPicker Grid.Column="1" SelectedBrush="{Binding Color, Mode=TwoWay}" />
+                </Grid>
+                <Grid Style="{StaticResource gridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource ResourceKey=ScaleBarElementWindowAlternatingColorText}" />
+                    <local:DropDownColorPicker Grid.Column="1" SelectedBrush="{Binding AlternatingColor, Mode=TwoWay}" />
+                </Grid>
+                <Grid Style="{StaticResource gridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource ResourceKey=ScaleBarElementWindowNumericFormatText}" />
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding Source={StaticResource ScaleNumericFormatTypeProvider}}"
+                              SelectedItem="{Binding SelectedNumericFormatType,
+                                                     Mode=TwoWay}" />
+                </Grid>
+                <Grid Style="{StaticResource gridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource ResourceKey=ScaleBarElementWindowUnitSystemText}" />
+                    <ListBox Grid.Column="1"
+                             BorderBrush="Transparent"
+                             ItemsSource="{Binding Source={StaticResource UnitSystemProvider}}"
+                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                             SelectedItem="{Binding SelectedUnitSystem,
+                                                    Mode=TwoWay}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Border x:Name="ItemPanel" Background="Transparent">
+                                                <ContentPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Content="{Binding .}"
+                                             GroupName="UnitSystem"
+                                             IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
+                                                                 Path=IsSelected}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <local:ResizeModeUserControl />
+            <local:DragModeUserControl Grid.Column="1" />
+            <GroupBox Grid.Column="2" Header="{DynamicResource ResourceKey=ScaleBarElementWindowPreviewHeader}">
+                <Image Margin="5"
+                       Source="{Binding Preview}"
+                       Stretch="None" />
+            </GroupBox>
+        </Grid>
+        <StackPanel Grid.Row="2"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Click="OKClick"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="CancelClick"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <ContentPresenter x:Name="HelpContainer"
+                              Width="70"
+                              Margin="11 0 0 0" />
+        </StackPanel>
+    </Grid>
+</Window>

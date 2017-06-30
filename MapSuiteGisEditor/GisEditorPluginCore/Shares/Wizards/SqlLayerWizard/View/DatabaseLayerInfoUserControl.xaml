@@ -1,0 +1,215 @@
+<UserControl xmlns:my="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+             x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DatabaseLayerInfoUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:infrastructure="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Plugins/DataRepositoryPlugin/View/TreeViewItemTemplateForDataRepository.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Margin="10">
+        <StackPanel.Resources>
+            <Thickness x:Key="DescMargin"
+                       Bottom="20" />
+            <Thickness x:Key="MainMargin"
+                       Bottom="10" />
+            <Thickness x:Key="SecondaryMargin"
+                       Bottom="5" />
+            <local:BooleanToggleConverter x:Key="ToggleBooleanConverter" />
+            <local:TableNameConverter x:Key="TableNameConverter" />
+            <local:BooleanToToggledVisibilityConverter x:Key="BooleanToToggledVisibilityConverter" />
+        </StackPanel.Resources>
+        <TextBlock Margin="{StaticResource DescMargin}"
+                   TextWrapping="Wrap"
+                   Text="{Binding Description}"></TextBlock>
+        <TextBlock Margin="{StaticResource SecondaryMargin}"
+                   Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlServernameText}"></TextBlock>
+        <Grid Margin="{StaticResource MainMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <my:AutoCompleteBox x:Name="autoCompleteServerName"
+                                Text="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="TextBox_KeyDown"
+                                ItemsSource="{Binding HistoryServerNames}" />
+            <Button Grid.Column="1"
+                    Margin="5 0 0 0"
+                    Click="Button_Click"
+                    Command="{Binding ConnectToDatabaseCommand}"
+                    Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlConnectContent}">
+            </Button>
+        </Grid>
+        <GroupBox Margin="{StaticResource MainMargin}"
+                  Header="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlDscLogontoDscHeader}">
+            <StackPanel Margin="15">
+                <RadioButton Margin="{StaticResource SecondaryMargin}"
+                             GroupName="UseTrustAuth"
+                             IsChecked="{Binding UseTrustAuthentication,
+                                                 Mode=TwoWay}"
+                             Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlUseWindowAuthenticationContent}">
+                </RadioButton>
+                <RadioButton Margin="{StaticResource SecondaryMargin}"
+                             GroupName="UseTrustAuth"
+                             Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlUseSQLAuthenticationContent}"></RadioButton>
+                <StackPanel Margin="20 0 0 0"
+                            IsEnabled="{Binding UseTrustAuthentication, Converter={StaticResource ToggleBooleanConverter}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Margin="{StaticResource SecondaryMargin}"
+                                   Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlUsernameText}"></TextBlock>
+                        <TextBox Grid.Column="1"
+                                 Margin="{StaticResource SecondaryMargin}"
+                                 Text="{Binding UserName,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="{StaticResource SecondaryMargin}"
+                                   Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlPasswordText}"></TextBlock>
+                        <PasswordBox x:Name="txtPassword"
+                                     Grid.Row="1"
+                                     Grid.Column="1"
+                                     TabIndex="2"
+                                     Margin="{StaticResource SecondaryMargin}"
+                                     gisToolKit:PasswordHelper.Attach="True"
+                                     gisToolKit:PasswordHelper.Password="{Binding Path=Password,
+                                                                                          Mode=TwoWay,
+                                                                                          UpdateSourceTrigger=PropertyChanged}" />
+                        <!--<TextBox Grid.Row="1"
+                                 Grid.Column="1"
+                                 Margin="{StaticResource SecondaryMargin}"
+                                 Text="{Binding Password,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />-->
+
+                        <CheckBox Grid.Row="2"
+                                  Grid.Column="1"
+                                  Visibility="Collapsed"
+                                  Margin="{StaticResource SecondaryMargin}"
+                                  Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlSavemypasswordContent}">
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Margin="{StaticResource MainMargin}"
+                  Header="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlDscConnecttoaDscHeader}"
+                  IsEnabled="{Binding IsServerConnected}">
+            <StackPanel Margin="15">
+                <TextBlock Margin="{StaticResource SecondaryMargin}"
+                           TextWrapping="Wrap"
+                           Text="Select a table name."></TextBlock>
+                <Grid Margin="{StaticResource MainMargin}">
+                    <TextBox x:Name="dropdownTB"
+                             IsReadOnly="True"
+                             MouseLeftButtonUp="dropdownTB_MouseLeftButtonUp"
+                             Text="{Binding CurrentItem,Converter={StaticResource TableNameConverter}}" />
+                    <ToggleButton Width="30"
+                                  Content="..."
+                                  x:Name="DropdownButton"
+                                  HorizontalAlignment="Right" />
+                </Grid>
+                <local:NonTopMostPopup x:Name="popUp2"
+                                       Width="380"
+                                       Height="300"
+                                       OffsetX="10"
+                                       OffsetY="9"
+                                       AllowsTransparency="True"
+                                       IsOpen="{Binding ElementName=DropdownButton,
+                                            Path=IsChecked,
+                                            Mode=TwoWay}"
+                                       Placement="Bottom"
+                                       PlacementTarget="{Binding ElementName=dropdownTB}"
+                                       PopupAnimation="Scroll"
+                                       StaysOpen="True">
+                    <!--<ScrollViewer>-->
+                    <TreeView x:Name="DataRepositoryTree"
+                              Grid.Column="0"
+                              Margin="2 -22 0 2"
+                              ItemsSource="{Binding Children}"
+                              VirtualizingStackPanel.IsVirtualizing="False"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate  DataType="{x:Type infrastructure:DataRepositoryItem}" 
+                                                      ItemsSource="{Binding Children}">
+                                <Grid Margin="4 2 4 2"
+                                      Background="Transparent"
+                                      ContextMenu="{Binding ContextMenu}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="16"
+                                           Height="16"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Source="{Binding Icon}"
+                                           Stretch="Fill" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Name, Mode=OneWay}"
+                                               ToolTip="{Binding Name}" />
+                                </Grid>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="Margin"
+                                        Value="-6 0 0 0" />
+                                <Setter Property="IsSelected"
+                                        Value="{Binding IsSelected, Mode=TwoWay}" />
+                                <Setter Property="IsExpanded"
+                                        Value="True" />
+                                <EventSetter Event="MouseDoubleClick"
+                                             Handler="TreeViewItem_MouseDoubleClick" />
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                                <Setter Property="Template"
+                                        Value="{StaticResource GisTreeViewitemTemplateShowExpander}" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+                    <!--</ScrollViewer>-->
+                </local:NonTopMostPopup>
+                <!--<ComboBox Margin="{StaticResource MainMargin}"
+                          ItemsSource="{Binding Databases}"
+                          SelectedItem="{Binding DatabaseName,
+                                                 Mode=TwoWay}" />
+                <TextBlock Margin="{StaticResource SecondaryMargin}"
+                           TextWrapping="Wrap"
+                           Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlSelectatablenameText}"></TextBlock>
+                <ComboBox Margin="{StaticResource MainMargin}"
+                          ItemsSource="{Binding DataTables}"
+                          SelectedItem="{Binding TableName,
+                                                 Mode=TwoWay}" />-->
+                <TextBlock Margin="{StaticResource SecondaryMargin}"
+                           TextWrapping="Wrap"
+                           Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlSelectafeatureidcolumnText}"></TextBlock>
+                <ComboBox Margin="{StaticResource MainMargin}"
+                          ItemsSource="{Binding Columns}"
+                          SelectedItem="{Binding FeatureIDColumnName,
+                                                 Mode=TwoWay}" />
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

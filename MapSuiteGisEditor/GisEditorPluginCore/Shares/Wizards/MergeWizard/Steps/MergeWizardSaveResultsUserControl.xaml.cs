@@ -1,0 +1,58 @@
+/*
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using Microsoft.Win32;
+
+namespace ThinkGeo.MapSuite.GisEditor.Plugins
+{
+    /// <summary>
+    /// Interaction logic for SaveResults.xaml
+    /// </summary>
+    public partial class MergeWizardSaveResultsUserControl : UserControl
+    {
+        public MergeWizardSaveResultsUserControl(MergeWizardShareObject parameter)
+        {
+            InitializeComponent();
+            DataContext = parameter;
+        }
+
+        [Obfuscation]
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Shape Files(*.shp)|*.shp";
+            if (saveFileDialog.ShowDialog().GetValueOrDefault())
+            {
+                MergeWizardShareObject entity = DataContext as MergeWizardShareObject;
+                if (entity != null)
+                    entity.OutputPathFileName = saveFileDialog.FileName;
+            }
+        }
+
+        [Obfuscation]
+        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Button_Click(sender, e);
+        }
+    }
+}

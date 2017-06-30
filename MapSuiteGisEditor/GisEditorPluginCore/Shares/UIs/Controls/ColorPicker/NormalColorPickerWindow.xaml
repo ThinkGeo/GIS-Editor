@@ -1,0 +1,28 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.NormalColorPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource ResourceKey=NormalColorPickerWindowColorPickerTitle}"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <h:NormalColorPicker x:Name="ColorPicker" />
+        <StackPanel Grid.Row="1"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <Button Click="CancelButton_Click"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="OkButton_Click"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+        </StackPanel>
+    </Grid>
+</Window>

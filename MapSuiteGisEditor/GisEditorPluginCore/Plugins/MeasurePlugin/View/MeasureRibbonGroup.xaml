@@ -1,0 +1,290 @@
+<r:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.MeasureRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+               xmlns:li="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+               xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+               xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               xmlns:t="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+               xmlns:tgshapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+               CanAddToQuickAccessToolBarDirectly="False"
+               Header="{DynamicResource MeasureRibbonGroupRibbonGroupHeader}"
+               x:ClassModifier="public">
+    <r:RibbonGroup.Resources>
+        <li:GisEditorTriggers x:Key="ApplyThicknessTriggers" x:Shared="False">
+            <i:EventTrigger EventName="Click">
+                <li:CommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=r:RibbonMenuButton}, Path=DataContext.ChangeThicknessCommand}" CommandParameter="{Binding Value}" />
+            </i:EventTrigger>
+        </li:GisEditorTriggers>
+
+        <ControlTemplate x:Key="validationTemplate" x:Shared="False">
+            <AdornedElementPlaceholder />
+        </ControlTemplate>
+    </r:RibbonGroup.Resources>
+    <r:RibbonGroup.GroupSizeDefinitions>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+        </r:RibbonGroupSizeDefinition>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+            <r:RibbonControlSizeDefinition ImageSize="Large" />
+        </r:RibbonGroupSizeDefinition>
+    </r:RibbonGroup.GroupSizeDefinitions>
+    <r:RibbonGroup.Items>
+        <r:RibbonRadioButton Name="selectMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupSelectLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/select1.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/select1.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupSelectToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupSelectToolTip}" />
+        <r:RibbonRadioButton Name="lineMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupLineLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/draw_line.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/draw_line.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupLineToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupLineToolTip}" />
+        <r:RibbonRadioButton Name="polygonMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupPolygonLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/draw_polygon.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/draw_polygon.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupPolygonToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupPolygonToolTip}" />
+        <r:RibbonRadioButton Name="circleMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupCircleLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/draw_circle.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/draw_circle.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupCircleToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupCircleToolTip}" />
+        <r:RibbonRadioButton Name="squareMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupSquareLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/draw_square.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/draw_square.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupSquareToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupSquareToolTip}" />
+        <r:RibbonRadioButton Name="rectangleMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupRectangleLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/draw_rectangle.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/draw_rectangle.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupRectangleToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupRectangleToolTip}" />
+        <r:RibbonRadioButton Name="ellipseMeasure"
+                             Command="{Binding ChangeMeasureModeCommand}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=Name}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupEllipseLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/draw_ellipse.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/draw_ellipse.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupEllipseToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupEllipseToolTip}" />
+
+        <r:RibbonRadioButton Name="move"
+                             Command="{Binding MoveMeasureCommand}"
+                             GroupName="buttons"
+                             Label="{DynamicResource MeasureRibbonGroupMoveLabel}"
+                             LargeImageSource="/GisEditorPluginCore;component/Images/move.png"
+                             SmallImageSource="/GisEditorPluginCore;component/Images/move.png"
+                             ToolTipDescription="{DynamicResource MeasureRibbonGroupMoveToolTipDescription}"
+                             ToolTipTitle="{DynamicResource MeasureRibbonGroupMoveToolTip}" />
+
+        <r:RibbonButton Name="clear"
+                        Command="{Binding ClearCommand}"
+                        Label="{DynamicResource MeasureRibbonGroupClearLabel}"
+                        LargeImageSource="/GisEditorPluginCore;component/Images/Clear.png"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/Clear.png"
+                        ToolTipDescription="{DynamicResource MeasureRibbonGroupClearToolTipDescription}"
+                        ToolTipTitle="{DynamicResource MeasureRibbonGroupClearToolTip}" />
+
+        <r:RibbonButton Name="undo"
+                        Command="{Binding UndoCommand}"
+                        Label="{DynamicResource MeasureRibbonGroupUndoLabel}"
+                        LargeImageSource="/GisEditorPluginCore;component/Images/undo.png"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/undo.png"
+                        ToolTip="{DynamicResource MeasureRibbonGroupUndoToolTip}" />
+        <r:RibbonButton Name="redo"
+                        Command="{Binding RedoCommand}"
+                        Label="{DynamicResource MeasureRibbonGroupRedoLabel}"
+                        LargeImageSource="/GisEditorPluginCore;component/Images/redo.png"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/redo.png"
+                        ToolTip="{DynamicResource MeasureRibbonGroupRedoLabelToolTip}" />
+
+        <r:RibbonButton Command="{Binding ChangeMeasurementStyleCommand}"
+                        Label="Measurement Style"
+                        LargeImageSource="{Binding MeasurementStylePreview}"
+                        QuickAccessToolBarId="Measurement Style"
+                        SmallImageSource="{Binding MeasurementStylePreview}"
+                        ToolTipDescription="{DynamicResource MeasureRibbonGroupTextStyleToolTipDescription}"
+                        ToolTipTitle="{DynamicResource MeasureRibbonGroupTextStyleToolTip}" />
+        <r:RibbonButton Command="{Binding DisplayHideCommand}"
+                        Label="{Binding DisplayHideText}"
+                        LargeImageSource="{Binding DisplayHidePreview}"
+                        QuickAccessToolBarId="HideMeasures"
+                        SmallImageSource="{Binding DisplayHidePreview}"
+                        ToolTipDescription="{Binding DisplayHideText}"
+                        ToolTipTitle="{Binding DisplayHideText}" />
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                </Style>
+                <Style TargetType="r:RibbonComboBox">
+                    <Setter Property="SelectionBoxWidth" Value="125" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{DynamicResource MeasureRibbonGroupAreaUnitLabel}" />
+            <r:RibbonComboBox Grid.Row="0"
+                              Grid.Column="1"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                              ToolTipDescription="{DynamicResource MeasureRibbonGroupAreaUnitToolTipDescription}"
+                              ToolTipTitle="{DynamicResource MeasureRibbonGroupAreaUnitToolTip}">
+                <r:RibbonComboBox.Resources>
+                    <local:AreaUnitToStringConverter x:Key="AreaUnitToStringConverter" />
+                    <ObjectDataProvider x:Key="AreaUnitProvider"
+                                        MethodName="GetValues"
+                                        ObjectType="{x:Type tgshapes:AreaUnit}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:TypeExtension TypeName="tgshapes:AreaUnit" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                </r:RibbonComboBox.Resources>
+                <r:RibbonGallery MaxColumnCount="1"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                 SelectedItem="{Binding Path=SelectedAreaUnit,
+                                                        Mode=TwoWay}"
+                                 Validation.ErrorTemplate="{StaticResource validationTemplate}">
+                    <r:RibbonGalleryCategory ItemsSource="{Binding Source={StaticResource AreaUnitProvider}}">
+                        <r:RibbonGalleryCategory.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource AreaUnitToStringConverter}}" />
+                            </DataTemplate>
+                        </r:RibbonGalleryCategory.ItemTemplate>
+                    </r:RibbonGalleryCategory>
+                </r:RibbonGallery>
+            </r:RibbonComboBox>
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Text="{DynamicResource MeasureRibbonGroupDistanceUnitLabel}" />
+            <r:RibbonComboBox Grid.Row="1"
+                              Grid.Column="1"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                              ToolTipDescription="{DynamicResource MeasureRibbonGroupDistanceUnitToolTipDescription}"
+                              ToolTipTitle="{DynamicResource MeasureRibbonGroupDistanceUnitToolTip}">
+                <r:RibbonComboBox.Resources>
+                    <local:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
+                    <ObjectDataProvider x:Key="DistanceUnitProvider"
+                                        MethodName="GetValues"
+                                        ObjectType="{x:Type tgshapes:DistanceUnit}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:TypeExtension TypeName="tgshapes:DistanceUnit" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                </r:RibbonComboBox.Resources>
+                <r:RibbonGallery MaxColumnCount="1"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                 SelectedItem="{Binding Path=SelectedDistanceUnit,
+                                                        Mode=TwoWay}"
+                                 Validation.ErrorTemplate="{StaticResource validationTemplate}">
+                    <r:RibbonGalleryCategory ItemsSource="{Binding Source={StaticResource DistanceUnitProvider}}">
+                        <r:RibbonGalleryCategory.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource DistanceUnitToStringConverter}}" />
+                            </DataTemplate>
+                        </r:RibbonGalleryCategory.ItemTemplate>
+                    </r:RibbonGalleryCategory>
+                </r:RibbonGallery>
+            </r:RibbonComboBox>
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="{DynamicResource MeasureRibbonGroupMeasureInLabel}" />
+            <r:RibbonComboBox Grid.Row="2"
+                              Grid.Column="1"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                              ToolTipDescription="{DynamicResource MeasureRibbonGroupMeasureInToolTipDescription}"
+                              ToolTipTitle="{DynamicResource MeasureRibbonGroupMeasureInToolTip}">
+                <r:RibbonComboBox.Resources>
+                    <local:MeasuringInModeToStringConverter x:Key="MeasuringInModeToStringConverter" />
+                </r:RibbonComboBox.Resources>
+                <r:RibbonGallery MaxColumnCount="1"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                 SelectedItem="{Binding Path=SelectedMeasuringMode,
+                                                        Mode=TwoWay}"
+                                 Validation.ErrorTemplate="{StaticResource validationTemplate}">
+                    <r:RibbonGalleryCategory ItemsSource="{Binding MeasuringModes}">
+                        <r:RibbonGalleryCategory.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ., Converter={StaticResource MeasuringInModeToStringConverter}}" />
+                            </DataTemplate>
+                        </r:RibbonGalleryCategory.ItemTemplate>
+                    </r:RibbonGalleryCategory>
+                </r:RibbonGallery>
+            </r:RibbonComboBox>
+        </Grid>
+        <r:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                          Path=ExportMeasuredFeaturesCommand}"
+                        Label="{DynamicResource MeasureRibbonGroupExportUnitLabel}"
+                        LargeImageSource="/GisEditorPluginCore;component/Images/Export.png"
+                        QuickAccessToolBarId="Export"
+                        SmallImageSource="/GisEditorPluginCore;component/Images/Export.png"
+                        ToolTipDescription="{DynamicResource MeasureRibbonGroupExportUnitToolTipDescription}"
+                        ToolTipTitle="{DynamicResource MeasureRibbonGroupExportUnitToolTip}" />
+    </r:RibbonGroup.Items>
+</r:RibbonGroup>

@@ -1,0 +1,87 @@
+<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.AdvancedLineStyleUserControl"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:core="clr-namespace:ThinkGeo.MapSuite.Drawing;assembly=ThinkGeo.MapSuite"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:styleuc="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                          xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <Grid MinWidth="527">
+        <Grid.Resources>
+            <ObjectDataProvider x:Key="DrawingLevelProvider"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="core:DrawingLevel" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="10 5 0 5" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style x:Key="TextBoxStyle" TargetType="TextBox">
+                <Setter Property="Margin" Value="0 5 0 5" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <local:DrawingLevelToNumberConverter x:Key="DrawingLevelToNumberConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="{DynamicResource ResourceKey=AdvancedLineStyleUserControlPropertiesHeader}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=AdvancedLineStyleUserControlNameText}" />
+                <TextBox Name="nameTextBox"
+                         Grid.Row="0"
+                         Grid.Column="1"
+                         Grid.ColumnSpan="3"
+                         Margin="0 5 5 5"
+                         Style="{StaticResource ResourceKey=TextBoxStyle}"
+                         Text="{Binding Name,
+                                        Mode=TwoWay}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=AdvancedLineStyleUserControlColorText}" />
+                <local:DropDownColorPicker Grid.Row="1"
+                                           Grid.Column="1"
+                                           Grid.ColumnSpan="3"
+                                           Height="22"
+                                           Margin="0 5 5 5"
+                                           FontSize="11"
+                                           SelectedBrush="{Binding OuterPenColor,
+                                                                   Mode=TwoWay}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="{DynamicResource ResourceKey=AdvancedLineStyleUserControlThicknessText}" />
+                <local:Numeric Grid.Row="2"
+                               Grid.Column="1"
+                               Margin="0 5 8 5"
+                               Minimum="0"
+                               Value="{Binding OuterPenWidth,
+                                               Mode=TwoWay,
+                                               UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </GroupBox>
+
+        <local:GeoPenUserControl Grid.Row="1" DataContext="{Binding OuterPen}" />
+    </Grid>
+</styleuc:StyleUserControl>

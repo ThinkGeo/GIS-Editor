@@ -1,0 +1,315 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GridlinesSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        Title="{DynamicResource GridlinesSettingsWindowTitle}"
+        Width="380"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}">
+    <Window.Resources>
+        <Style x:Key="ValidationStyle" TargetType="local:Numeric">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="local:Numeric.ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="20" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="70" />
+            <Setter Property="Margin" Value="5 5 0 0" />
+        </Style>
+        <Style TargetType="local:Numeric">
+            <!--  <Setter Property="Margin" Value="0 0 0 5" />  -->
+            <!--  <Setter Property="Width" Value="101" />  -->
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="6 7 6 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <RadioButton x:Name="rdbShow"
+                         Checked="rdbShow_Checked"
+                         Content="{DynamicResource GridlinesSettingsWindowShowGridlinesLabel}"
+                         GroupName="Gridlines"
+                         IsChecked="True" />
+            <RadioButton x:Name="rdbHide"
+                         Margin="5 0 0 0"
+                         Checked="rdbHide_Checked"
+                         Content="{DynamicResource GridlinesSettingsWindowHideGridlinesLabel}"
+                         GroupName="Gridlines" />
+        </StackPanel>
+        <GroupBox x:Name="gbxGridLayout"
+                  Grid.Row="1"
+                  Margin="0 5 0 0"
+                  Header="{DynamicResource GridlinesSettingsWindowGridLayoutLabel}">
+            <Grid Margin="6 7 6 8">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <RadioButton x:Name="rdbcell"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Checked="cellChk_Checked"
+                             Content="{DynamicResource GridlinesSettingsWindowCellSizeLabel}"
+                             GroupName="GridStyle" 
+                             IsChecked="{Binding UseCellSize,
+                                                 Mode=TwoWay}"
+                             Unchecked="cellChk_Checked" />
+                <RadioButton x:Name="rdbrc"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2"
+                             Content="{DynamicResource GridlinesSettingsWindowGridSizeLabel}"
+                             GroupName="GridStyle"
+                              />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="3"
+                           Text="{DynamicResource GridlinesSettingsWindowRowsLabel}" />
+                <local:Numeric x:Name="gridRows"
+                               Grid.Row="2"
+                               Grid.Column="4"
+                               Minimum="1"
+                               Style="{StaticResource ValidationStyle}">
+                    <local:Numeric.Value>
+                        <Binding Mode="TwoWay"
+                                 Path="Rows"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <local:RowColumnValidation MinValue="1" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </local:Numeric.Value>
+                </local:Numeric>
+                <TextBlock Grid.Row="4"
+                           Grid.Column="3"
+                           Text="{DynamicResource GridlinesSettingsWindowColumnsLabel}" />
+                <local:Numeric x:Name="gridColumns"
+                               Grid.Row="4"
+                               Grid.Column="4"
+                               Minimum="1"
+                               Style="{StaticResource ValidationStyle}">
+                    <local:Numeric.Value>
+                        <Binding Mode="TwoWay"
+                                 Path="Columns"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <local:RowColumnValidation MinValue="1" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </local:Numeric.Value>
+                </local:Numeric>
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="{DynamicResource GridlinesSettingsWindowUnitLabel}" />
+                <ComboBox x:Name="cellUnit"
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          IsEnabled="False"
+                          ItemsSource="{Binding Units}"
+                          SelectedItem="{Binding SelectedCellUnit,
+                                                 Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="0"
+                           Text="{DynamicResource GridlinesSettingsWindowWidthLabel}" />
+                <local:Numeric x:Name="cellWidth"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               IsEnabled="False"
+                               Minimum="1"
+                               Style="{StaticResource ValidationStyle}">
+                    <local:Numeric.Value>
+                        <Binding Mode="TwoWay"
+                                 Path="CellWidth"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <local:RowColumnValidation MinValue="1" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </local:Numeric.Value>
+                </local:Numeric>
+                <TextBlock Grid.Row="6"
+                           Grid.Column="0"
+                           Text="{DynamicResource GridlinesSettingsWindowHeightLabel}" />
+                <local:Numeric x:Name="cellHeight"
+                               Grid.Row="6"
+                               Grid.Column="1"
+                               IsEnabled="False"
+                               Minimum="1"
+                               Style="{StaticResource ValidationStyle}">
+                    <local:Numeric.Value>
+                        <Binding Mode="TwoWay"
+                                 Path="CellHeight"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <local:RowColumnValidation MinValue="1" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </local:Numeric.Value>
+                </local:Numeric>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="gbxGridStyle"
+                  Grid.Row="2"
+                  Margin="0 5 0 0"
+                  Header="{DynamicResource GridlinesSettingsWindowGridStyleLabel}">
+            <Grid Margin="6 7 6 8">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{DynamicResource GridlinesSettingsWindowColorLabel}" />
+                <local:DropDownColorPicker Grid.Column="1"
+                                           Grid.ColumnSpan="4"
+                                           AlphaVisibility="Collapsed"
+                                           FontSize="11"
+                                           SelectedBrush="{Binding SelectedBrush,
+                                                                   Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="2" Text="{DynamicResource GridlinesSettingsWindowDashStyleLabel}" />
+                <ComboBox Grid.Row="2"
+                          Grid.Column="1"
+                          ItemsSource="{Binding DashStyles}"
+                          SelectedItem="{Binding SelectedDashStyle,
+                                                 Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="3"
+                           Text="{DynamicResource GridlinesSettingsWindowWidthLabel}" />
+                <local:Numeric Grid.Row="2"
+                               Grid.Column="4"
+                               Minimum="1"
+                               Style="{StaticResource ValidationStyle}">
+                    <local:Numeric.Value>
+                        <Binding Mode="TwoWay"
+                                 Path="PenWidth"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <local:RowColumnValidation MinValue="1" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </local:Numeric.Value>
+                </local:Numeric>
+            </Grid>
+        </GroupBox>
+
+
+        <GroupBox x:Name="gbxMargins"
+                  Grid.Row="3"
+                  Margin="0 5 0 0"
+                  Header="{DynamicResource GridlinesSettingsWindowMarginsLabel}">
+            <Grid Margin="6 7 6 8">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Text="{DynamicResource GridlinesSettingsWindowUnitLabel}" />
+                <ComboBox Grid.Row="0"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="4"
+                          ItemsSource="{Binding Units}"
+                          SelectedItem="{Binding SelectedUnit,
+                                                 Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="{DynamicResource GridlinesSettingsWindowLeftLabel}" />
+                <local:Numeric x:Name="txtLeft"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               Value="{Binding Left,
+                                               Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="3"
+                           Text="{DynamicResource GridlinesSettingsWindowTopLabel}" />
+                <local:Numeric x:Name="txtTop"
+                               Grid.Row="2"
+                               Grid.Column="4"
+                               Value="{Binding Top,
+                                               Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="0"
+                           Text="{DynamicResource GridlinesSettingsWindowRightLabel}" />
+                <local:Numeric x:Name="txtRight"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               Value="{Binding Right,
+                                               Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="3"
+                           Text="{DynamicResource GridlinesSettingsWindowBottomLabel}" />
+                <local:Numeric x:Name="txtBottom"
+                               Grid.Row="4"
+                               Grid.Column="4"
+                               Value="{Binding Bottom,
+                                               Mode=TwoWay}" />
+            </Grid>
+        </GroupBox>
+        <StackPanel Grid.Row="4"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Click="OKClick"
+                    Content="{DynamicResource ConfigurationOKLable}" />
+            <Button Click="CancelClick" Content="{DynamicResource ConfigurationCancelLable}" />
+        </StackPanel>
+    </Grid>
+</Window>

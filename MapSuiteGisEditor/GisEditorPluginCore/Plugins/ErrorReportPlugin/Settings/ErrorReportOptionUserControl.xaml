@@ -1,0 +1,13 @@
+<ThinkGeo:SettingUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ErrorReportOptionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Grid>
+        <CheckBox IsChecked="{Binding NeedReportUnhandledError, Mode=TwoWay}" Content="{DynamicResource ErrorReportOptionUserControlContentLabel}" />
+    </Grid>
+</ThinkGeo:SettingUserControl>

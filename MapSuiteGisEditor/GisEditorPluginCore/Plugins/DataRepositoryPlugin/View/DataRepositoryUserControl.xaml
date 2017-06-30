@@ -1,0 +1,205 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DataRepositoryUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:infrastructure="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+             xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Loaded="UserControl_Loaded"
+             x:ClassModifier="internal">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GisEditorPluginCore;component/Plugins/DataRepositoryPlugin/View/TreeViewItemTemplateForDataRepository.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <local:TextboxWatermarkConverter x:Key="TextboxWatermarkConverter" />
+            <BooleanToVisibilityConverter x:Key="RenamingToBox" />
+            <local:BooleanToToggledVisibilityConverter x:Key="BooleanToToggledVisibilityConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="2 2 2 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value=" 0 0 0 2" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="Transparent">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Border">
+                    <Setter Property="Width" Value="22" />
+                    <Setter Property="Height" Value="22" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <EventSetter Event="MouseEnter" Handler="Border_MouseEnter" />
+                    <EventSetter Event="MouseLeave" Handler="Border_MouseLeave" />
+                </Style>
+                <Style TargetType="Image">
+                    <Setter Property="Width" Value="16" />
+                    <Setter Property="Height" Value="16" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </Grid.Resources>
+
+            <StackPanel Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
+                <Button x:Name="addDataButton"
+                        Command="{Binding AddDataCommand}"
+                        ToolTip="{DynamicResource DataRepositoryUserControlAddDataButtonToolTip}"
+                        ToolTipService.ShowOnDisabled="True">
+                    <Border>
+                        <Image Source="/MapSuiteGisEditor;component/Images/addData.png" />
+                    </Border>
+                </Button>
+                <Button x:Name="placeOnMapButton"
+                        Command="{Binding PlaceOnMapCommand}"
+                        ToolTip="{DynamicResource DataRepositoryUserControlPlaceOnMapButtonToolTip}"
+                        ToolTipService.ShowOnDisabled="True"
+                        Visibility="Collapsed">
+                    <Border>
+                        <Image Source="/MapSuiteGisEditor;component/Images/placeOnMap.png" />
+                    </Border>
+                </Button>
+                <Button x:Name="removeButton"
+                        Command="{Binding RemoveCommand}"
+                        ToolTip="{DynamicResource DataRepositoryUserControlRemoveButtonToolTip}"
+                        ToolTipService.ShowOnDisabled="True"
+                        Visibility="Collapsed">
+                    <Border>
+                        <Image Source="/MapSuiteGisEditor;component/Images/remove.png" />
+                    </Border>
+                </Button>
+                <Button Command="{Binding RefreshCommand}"
+                        ToolTip="{DynamicResource DataRepositoryUserControlRefreshButtonToolTip}"
+                        ToolTipService.ShowOnDisabled="True">
+                    <Border>
+                        <Image Source="/MapSuiteGisEditor;component/Images/refresh.png" />
+                    </Border>
+                </Button>
+            </StackPanel>
+
+            <ContentControl Grid.Column="1" Content="{Binding ContextMenuStackPanel}"/>
+
+            <Grid Grid.Column="2"
+                  Height="20"
+                  Margin="5 0 0 2">
+                <TextBlock Name="txtAngleInNonBlock"
+                           Margin="5,2"
+                           Foreground="DarkGray"
+                           Text="{DynamicResource ResourceKey=SearchFolderDescription}">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource TextboxWatermarkConverter}">
+                            <Binding ElementName="txtAngleInNon" Path="Text.IsEmpty" />
+                            <Binding ElementName="txtAngleInNon" Path="IsFocused" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+                <TextBox Name="txtAngleInNon"
+                         Background="Transparent"
+                         KeyDown="SearchTextBox_KeyDown"
+                         Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+            <Button Grid.Column="3"
+                    Margin="5 0 0 0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding SearchCommand}"
+                    TabIndex="-1">
+                <Border>
+                    <Image Source="/GisEditorPluginCore;component/Images/search.png" ToolTip="{DynamicResource ResourceKey=DataRepositoryUserControlDscSearchDataRepositoryDscToolTip}" />
+                </Border>
+            </Button>
+            <Border Grid.Column="4">
+                <ContentPresenter x:Name="HelpContainer" />
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" MinWidth="150" />
+                <ColumnDefinition Width="2" />
+                <ColumnDefinition Width="*" MinWidth="200" />
+            </Grid.ColumnDefinitions>
+            <TreeView x:Name="DataRepositoryTree"
+                      Grid.Column="0"
+                      Margin="2 0 0 2"
+                      ItemsSource="{Binding Children}"
+                      SelectedItemChanged="TreeView_SelectedItemChanged"
+                      VirtualizingStackPanel.IsVirtualizing="False"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type infrastructure:DataRepositoryItem}" ItemsSource="{Binding Children}">
+                        <Grid Margin="4 2 4 2"
+                              Background="Transparent"
+                              ContextMenu="{Binding ContextMenu}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image Width="16"
+                                   Height="16"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Source="{Binding Icon}"
+                                   Stretch="Fill" />
+                            <gisToolKit:RenameTextBlock Grid.Column="1"
+                                                        IsEdit="{Binding IsRenaming, Mode=TwoWay}"
+                                                        Text="{Binding Name, Mode=OneWay}"
+                                                        TextRenamed="RenameControl_TextRenamed"
+                                                        ToolTip="{Binding Name}" />
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="Margin" Value="-6 0 0 0" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <EventSetter Event="ContextMenuOpening" Handler="TreeViewItem_ContextMenuOpening" />
+                        <EventSetter Event="MouseRightButtonDown" Handler="TreeViewItem_RightMouseButtonDown" />
+                        <EventSetter Event="Expanded" Handler="TreeViewItem_Expanded" />
+                        <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick" />
+                        <Setter Property="Visibility" Value="{Binding IsLeaf, Converter={StaticResource BooleanToToggledVisibilityConverter}}" />
+                        <Setter Property="Template" Value="{StaticResource GisTreeViewitemTemplate}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+
+            <GridSplitter Grid.Column="1"
+                          Width="2"
+                          ResizeBehavior="PreviousAndNext"
+                          ResizeDirection="Columns" />
+            <ContentControl x:Name="contentControl"
+                            Grid.Column="2"
+                            Margin="0 0 2 2"
+                            Content="{Binding CurrentPluginItemViewModel.Content}"
+                            Visibility="{Binding ContentVisibility}" />
+            <local:FolderDataRepositoryUserControl Grid.Column="2"
+                                                   Margin="0 0 2 2"
+                                                   DataContext="{Binding SearchResult}"
+                                                   Visibility="{Binding ElementName=contentControl, Path=DataContext.SearchResultVisibility}" />
+        </Grid>
+    </Grid>
+</UserControl>

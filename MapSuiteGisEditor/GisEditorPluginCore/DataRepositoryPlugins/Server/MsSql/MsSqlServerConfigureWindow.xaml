@@ -1,0 +1,102 @@
+﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.MsSqlServerConfigureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:my="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+        mc:Ignorable="d"
+        Width="400" Title="Connect to SQL serve database"
+        SizeToContent="Height" ResizeMode="NoResize"
+        d:DesignHeight="300"
+        d:DesignWidth="300">
+    <Grid>
+        <StackPanel Margin="6 7 6 8">
+            <StackPanel.Resources>
+                <Thickness x:Key="DescMargin"
+                           Bottom="20" />
+                <Thickness x:Key="MainMargin"
+                           Bottom="10" />
+                <Thickness x:Key="SecondaryMargin"
+                           Bottom="5" />
+                <local:BooleanToggleConverter x:Key="ToggleBooleanConverter" />
+            </StackPanel.Resources>
+            <TextBlock Margin="{StaticResource DescMargin}"
+                       TextWrapping="Wrap"
+                       Text="{Binding Description}"></TextBlock>
+            <TextBlock Margin="{StaticResource SecondaryMargin}"
+                       Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlServernameText}"></TextBlock>
+
+            <my:AutoCompleteBox Margin="{StaticResource MainMargin}"
+                                TextChanged="autoCompleteServerName_TextChanged"
+                                x:Name="autoCompleteServerName"
+                                Text="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="TextBox_KeyDown"
+                                ItemsSource="{Binding HistoryServerNames}" />
+
+            <GroupBox Margin="{StaticResource MainMargin}"
+                      Header="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlDscLogontoDscHeader}">
+                <StackPanel Margin="15">
+                    <RadioButton Margin="{StaticResource SecondaryMargin}"
+                                 GroupName="UseTrustAuth"
+                                 IsChecked="{Binding UseTrustAuthentication,
+                                                 Mode=TwoWay}"
+                                 Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlUseWindowAuthenticationContent}">
+                    </RadioButton>
+                    <RadioButton Margin="{StaticResource SecondaryMargin}"
+                                 GroupName="UseTrustAuth"
+                                 Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlUseSQLAuthenticationContent}"></RadioButton>
+                    <StackPanel Margin="20 0 0 0"
+                                IsEnabled="{Binding UseTrustAuthentication, Converter={StaticResource ToggleBooleanConverter}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Margin="{StaticResource SecondaryMargin}"
+                                       Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlUsernameText}"></TextBlock>
+                            <TextBox Grid.Column="1"
+                                     Margin="{StaticResource SecondaryMargin}"
+                                     Text="{Binding UserName,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBlock Grid.Row="1"
+                                       Margin="{StaticResource SecondaryMargin}"
+                                       Text="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlPasswordText}"></TextBlock>
+                            <PasswordBox x:Name="txtPassword"
+                                         Grid.Row="1"
+                                         Grid.Column="1"
+                                         Margin="{StaticResource SecondaryMargin}"
+                                         gisToolKit:PasswordHelper.Attach="True"
+                                         gisToolKit:PasswordHelper.Password="{Binding Path=Password,
+                                                                                          Mode=TwoWay,
+                                                                                          UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Grid.Row="2"
+                                      Grid.Column="1"
+                                      Visibility="Collapsed"
+                                      Margin="{StaticResource SecondaryMargin}"
+                                      Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlSavemypasswordContent}">
+                            </CheckBox>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <Button Margin="0 10 0 0"
+                    x:Name="ConnectButton"
+                    IsEnabled="False"
+                    HorizontalAlignment="Right"
+                    Width="70"
+                    Click="Button_Click"
+                    Content="{DynamicResource ResourceKey=DatabaseLayerInfoUserControlConnectContent}">
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

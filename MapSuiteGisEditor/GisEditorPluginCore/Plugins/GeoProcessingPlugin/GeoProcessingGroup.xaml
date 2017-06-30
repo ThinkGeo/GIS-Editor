@@ -1,0 +1,106 @@
+<rb:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.GeoProcessingGroup"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:rb="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                xmlns:tg="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                d:DesignHeight="300"
+                d:DesignWidth="300"
+                Header="{DynamicResource GeoprocessingGroupHeader}"
+                mc:Ignorable="d">
+    <rb:RibbonGroup.GroupSizeDefinitions>
+        <rb:RibbonGroupSizeDefinition>
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+            <rb:RibbonControlSizeDefinition ImageSize="Large" />
+        </rb:RibbonGroupSizeDefinition>
+    </rb:RibbonGroup.GroupSizeDefinitions>
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=BufferWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupBufferLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_buffer.png"
+                     QuickAccessToolBarId="BufferWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_buffer.png" 
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupBufferLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupBufferDescription}"/>
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=SimplifyWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupSimplifyLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_simplify.png"
+                     QuickAccessToolBarId="SimplifyWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_simplify.png"
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupSimplifyLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupSimplifyDescription}" />
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=BlendWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupBlendLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_blend.png"
+                     QuickAccessToolBarId="BlendWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_blend.png"
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupBlendLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupBlendDescription}" />
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=DissolveWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupDissolveLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_dissolve.png"
+                     QuickAccessToolBarId="DissolveWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_dissolve.png"
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupDissolveLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupDissolveDescription}" />
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=ClipWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupClipLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_clip.png"
+                     QuickAccessToolBarId="ClipWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_clip.png"
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupClipLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupClipDescription}" />
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=MergeWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupMergeLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_merge.png"
+                     QuickAccessToolBarId="MergeWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_merge.png"
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupMergeLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupMergeDescription}" />
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=SplitWizardCommand}"
+                     Label="{DynamicResource GeoprocessingGroupSplitLabel}"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/geoproc_split.png"
+                     QuickAccessToolBarId="SplitWizard"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/geoproc_split.png"
+                     ToolTipTitle="{DynamicResource GeoprocessingGroupSplitLabel}"
+                     ToolTipDescription="{DynamicResource GeoprocessingGroupSplitDescription}" />
+
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=GridWizardCommand}"
+                     Label="{DynamicResource ResourceKey=GeoProcessingGroupGridLabel}"
+                     QuickAccessToolBarId="GridWizard"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/Grid Wizard Ribbon Bar Icon.png"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/Grid Wizard Ribbon Bar Icon.png"
+                     ToolTipTitle="{DynamicResource GeoProcessingGroupGridLabel}"
+                     ToolTipDescription="{DynamicResource GeoProcessingGroupGridDescription}" />
+    <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
+                                       Path=ExplodeWizardCommand}"
+                     Label="Uncombine"
+                     QuickAccessToolBarId="UncombineWizard"
+                     LargeImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Explode.png"
+                     SmallImageSource="/GisEditorPluginCore;component/Images/ShapeOps_Explode.png"
+                     ToolTipTitle="Uncombine"
+                     ToolTipDescription="Uncombine" />
+</rb:RibbonGroup>

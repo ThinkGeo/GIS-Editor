@@ -1,0 +1,36 @@
+<contract:DockWindow x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FeatureInfoWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:contract="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                     xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+                     Name="FeatureInformation"
+                     Title="FeatureInfoWindowTitle">
+    <contract:DockWindow.Content>
+        <ContentControl>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <local:FeatureInfoUserControl x:Name="featureInfoControl" Grid.Row="0" />
+                <ContentPresenter x:Name="HelpContainer"
+                                  Grid.Row="1"
+                                  Width="60"
+                                  Height="20"
+                                  Margin="5 0 0 5"
+                                  HorizontalAlignment="Left" />
+                <StackPanel Grid.Row="1"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+
+                    <Button Width="60"
+                            Height="20"
+                            Margin="0 0 5 5"
+                            HorizontalAlignment="Right"
+                            Click="ClearClick"
+                            Content="{DynamicResource ResourceKey=FeatureInfoWindowClearContent}" />
+                </StackPanel>
+            </Grid>
+        </ContentControl>
+    </contract:DockWindow.Content>
+</contract:DockWindow>

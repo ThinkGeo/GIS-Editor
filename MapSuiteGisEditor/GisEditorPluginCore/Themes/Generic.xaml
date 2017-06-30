@@ -1,0 +1,10 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/ColorPickers/PredefinedStylePicker.xaml" />
+        <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/ColorPickers/DropDownColorPicker.xaml" />
+        <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/ColorPickers/TabColorPicker.xaml" />
+        <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/ColorPickers/FontPicker.xaml" />
+        <ResourceDictionary Source="/GISEditorToolKits;component/BusyIndicator/BusyIndicator.xaml" />
+        <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/Controls/Themes/Generic.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

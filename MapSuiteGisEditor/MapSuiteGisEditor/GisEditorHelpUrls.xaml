@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="StyleWizardHelp">http://giseditorwiki.thinkgeo.com/w/Style_Wizard</sys:String>
+    <sys:String x:Key="ColorPickerHelp">http://giseditorwiki.thinkgeo.com/w/Color_Picker</sys:String>
+    <sys:String x:Key="AreaStyleHelp">http://giseditorwiki.thinkgeo.com/w/Area_Style</sys:String>
+    <sys:String x:Key="LabelStyleHelp">http://giseditorwiki.thinkgeo.com/w/Label_Style</sys:String>
+    <sys:String x:Key="LineStyleHelp">http://giseditorwiki.thinkgeo.com/w/Line_Style</sys:String>
+    <sys:String x:Key="PointStyleHelp">http://giseditorwiki.thinkgeo.com/w/Point_Style</sys:String>
+    <sys:String x:Key="FontPointStyleHelp">http://giseditorwiki.thinkgeo.com/w/Font_Point_Style</sys:String>
+    <sys:String x:Key="CustomPointStyleHelp">http://giseditorwiki.thinkgeo.com/w/Custom_Point_Style</sys:String>
+    <sys:String x:Key="DotDensityAreaStyleHelp">http://giseditorwiki.thinkgeo.com/w/Dot_Density_Area_Style</sys:String>
+    <sys:String x:Key="ValueStyleHelp">http://giseditorwiki.thinkgeo.com/w/Value_Style</sys:String>
+    <sys:String x:Key="ClassBreakStyleHelp">http://giseditorwiki.thinkgeo.com/w/Class_Break_Style</sys:String>
+    <sys:String x:Key="FilterStyleHelp">http://giseditorwiki.thinkgeo.com/w/Filter_Style</sys:String>
+    <sys:String x:Key="DataRepositoryHelp">http://giseditorwiki.thinkgeo.com/w/Data_Repository</sys:String>
+    <sys:String x:Key="OptionsHelp">http://giseditorwiki.thinkgeo.com/w/Options</sys:String>
+    <sys:String x:Key="SelectFeaturesPluginHelp">http://giseditorwiki.thinkgeo.com/w/Select_Features_Plugin</sys:String>
+    <sys:String x:Key="BufferWizardHelp">http://giseditorwiki.thinkgeo.com/w/Buffer_Wizard</sys:String>
+    <sys:String x:Key="SimplifyWizardHelp">http://giseditorwiki.thinkgeo.com/w/Simplify_Wizard</sys:String>
+    <sys:String x:Key="BlendWizardHelp">http://giseditorwiki.thinkgeo.com/w/Blend_Wizard</sys:String>
+    <sys:String x:Key="DissolveWizardHelp">http://giseditorwiki.thinkgeo.com/w/Dissolve_Wizard</sys:String>
+    <sys:String x:Key="ClipWizardHelp">http://giseditorwiki.thinkgeo.com/w/Clip_Wizard</sys:String>
+    <sys:String x:Key="MergeWizardHelp">http://giseditorwiki.thinkgeo.com/w/Merge_Wizard</sys:String>
+    <sys:String x:Key="SplitWizardHelp">http://giseditorwiki.thinkgeo.com/w/Split_Wizard</sys:String>
+    <sys:String x:Key="GridWizardHelp">http://giseditorwiki.thinkgeo.com/w/Grid_Wizard</sys:String>
+    <sys:String x:Key="DataJoinWizardHelp">http://giseditorwiki.thinkgeo.com/w/Data_Join_Wizard</sys:String>
+    <sys:String x:Key="ReprojectionWizardHelp">http://giseditorwiki.thinkgeo.com/w/Reprojection_Wizard</sys:String>
+    <sys:String x:Key="ExportWizardHelp">http://giseditorwiki.thinkgeo.com/w/Export_Wizard</sys:String>
+    <sys:String x:Key="ViewDataHelp">http://giseditorwiki.thinkgeo.com/w/View_Data</sys:String>
+    <sys:String x:Key="EditDataHelp">http://giseditorwiki.thinkgeo.com/w/Edit_Data</sys:String>
+    <sys:String x:Key="FindFeaturesHelp">http://giseditorwiki.thinkgeo.com/w/Find_Features</sys:String>
+    <sys:String x:Key="EditorPluginHelp">http://giseditorwiki.thinkgeo.com/w/Editor_Plugin</sys:String>
+    <sys:String x:Key="CreateNewShapefileHelp">http://giseditorwiki.thinkgeo.com/w/Create_New_Layer</sys:String>
+    <sys:String x:Key="EditColumnHelp">http://giseditorwiki.thinkgeo.com/w/Edit_Column</sys:String>
+    <sys:String x:Key="MeasurePluginHelp">http://giseditorwiki.thinkgeo.com/w/Measure_Plugin</sys:String>
+    <sys:String x:Key="AdornmentsHelp">http://giseditorwiki.thinkgeo.com/w/Adornments</sys:String>
+    <sys:String x:Key="LegendEditorHelp">http://giseditorwiki.thinkgeo.com/w/Legend_Editor</sys:String>
+    <sys:String x:Key="LegendItemEditorHelp">http://giseditorwiki.thinkgeo.com/w/Legend_Item_Editor</sys:String>
+    <sys:String x:Key="TitlesHelp">http://giseditorwiki.thinkgeo.com/w/Titles</sys:String>
+    <sys:String x:Key="LogoHelp">http://giseditorwiki.thinkgeo.com/w/Logos</sys:String>
+    <sys:String x:Key="ScaleBarsHelp">http://giseditorwiki.thinkgeo.com/w/Scale_Bars</sys:String>
+    <sys:String x:Key="PlotPointHelp">http://giseditorwiki.thinkgeo.com/w/Plot_Point</sys:String>
+    <sys:String x:Key="PlaceSearchHelp">http://giseditorwiki.thinkgeo.com/w/Place_Search</sys:String>
+    <sys:String x:Key="MapProjectionHelp">http://giseditorwiki.thinkgeo.com/w/Map_Projection</sys:String>
+    <sys:String x:Key="AccountProfileHelp">http://giseditorwiki.thinkgeo.com/w/Account_Profile</sys:String>
+    <sys:String x:Key="BookmarksHelp">http://giseditorwiki.thinkgeo.com/w/Bookmarks</sys:String>
+    <sys:String x:Key="FeatureInformationHelp">http://giseditorwiki.thinkgeo.com/w/Feature_Information</sys:String>
+    <sys:String x:Key="ConfigureDelimitedFileHelp">http://giseditorwiki.thinkgeo.com/w/Configure_Delimited_File</sys:String>
+    <sys:String x:Key="PrintMapHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map</sys:String>
+    <sys:String x:Key="PrintMapTextHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map_Text</sys:String>
+    <sys:String x:Key="PrintMapDataGridHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map_Data_Grid</sys:String>
+    <sys:String x:Key="PrintMapPageLayoutHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map_Page_Layout</sys:String>
+    <sys:String x:Key="SetSpatialReferenceInformationHelp">http://giseditorwiki.thinkgeo.com/w/Set_Spatial_Reference_Information</sys:String>
+    <sys:String x:Key="SetZoomLevelsHelp">http://giseditorwiki.thinkgeo.com/w/Set_Zoom_Levels</sys:String>
+    <sys:String x:Key="StyleBuilderHelp">http://giseditorwiki.thinkgeo.com/w/Style_Builder</sys:String>
+    <sys:String x:Key="StyleLibraryHelp">http://giseditorwiki.thinkgeo.com/w/Style_Library</sys:String>
+    <sys:String x:Key="VersionUpdateLogHelp">http://giseditorwiki.thinkgeo.com/w/Version_Update_Log</sys:String>
+    <sys:String x:Key="NorthArrowHelp">http://giseditorwiki.thinkgeo.com/w/North_Arrow</sys:String>
+    <sys:String x:Key="PrintMapScaleLineHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map_Scale_Line</sys:String>
+    <sys:String x:Key="PrintMapScaleBarHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map_Scale_Bar</sys:String>
+    <sys:String x:Key="PrintMapImageHelp">http://giseditorwiki.thinkgeo.com/w/Print_Map_Image</sys:String>
+    <sys:String x:Key="RoutingIndexBuilderHelp">http://giseditorwiki.thinkgeo.com/w/Welcome_to_the_Map_Suite_GIS_Editor_Wiki</sys:String>    
+
+    <!--  Help plugin  -->
+    <sys:String x:Key="SearchHelp">http://giseditorwiki.thinkgeo.com</sys:String>
+    <sys:String x:Key="AskAQuestionHelp">http://thinkgeo.com/forums/MapSuite/tabid/143/aff/44/Default.aspx</sys:String>
+    <sys:String x:Key="RequestAnEnhancementHelp">http://helpdesk.thinkgeo.com/EnhancementTracker?product=Map%20Suite%20GIS%20Editor</sys:String>
+    <sys:String x:Key="ReportABugHelp">http://helpdesk.thinkgeo.com/</sys:String>
+    <sys:String x:Key="FindAnExampleHelp">http://giseditorwiki.thinkgeo.com/w/Sample_Projects</sys:String>
+
+</ResourceDictionary>

@@ -1,0 +1,16 @@
+<r:RibbonGroup x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.TraceLoggerRibbonGroup"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+               CanAddToQuickAccessToolBarDirectly="False"
+               Header="{DynamicResource ResourceKey= TraceLoggerTitleText}">
+    <r:RibbonGroup.GroupSizeDefinitions>
+        <r:RibbonGroupSizeDefinition>
+            <r:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
+        </r:RibbonGroupSizeDefinition>
+    </r:RibbonGroup.GroupSizeDefinitions>
+    <r:RibbonButton Click="ShowOutput_Click"
+                    Label="{DynamicResource ResourceKey=TraceLoggerShowOutPutText}"
+                    LargeImageSource="/GisEditorPluginCore;component/Images/icon_show_logger_output_32x32.png"
+                    SmallImageSource="/GisEditorPluginCore;component/Images/icon_show_logger_output_32x32.png" />
+</r:RibbonGroup>

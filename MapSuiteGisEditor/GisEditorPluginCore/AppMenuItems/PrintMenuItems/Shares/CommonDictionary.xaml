@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:core="clr-namespace:ThinkGeo.MapSuite.Core;assembly=ThinkGeo.MapSuite.Core"
+                    >
+    <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="ResizeModeProvider">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="core:PrinterResizeMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="DragModeProvider">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="core:PrinterDragMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+</ResourceDictionary>

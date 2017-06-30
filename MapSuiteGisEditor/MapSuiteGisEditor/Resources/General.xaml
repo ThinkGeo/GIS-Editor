@@ -1,0 +1,40 @@
+<ResourceDictionary x:Class="ThinkGeo.MapSuite.GisEditor.General"
+                    x:ClassModifier="public"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+                    xmlns:infrastructure="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                    >    
+    <Style TargetType="Window" x:Key="WindowStyle">
+        <Setter Property="local:WindowHelper.WindowShowUpLocation" Value="CenterOwner" />
+        <Setter Property="local:WindowHelper.WindowOwner" Value="{x:Static local:AppHelper.WindowOwner}" />
+        <Setter Property="FlowDirection" Value="{Binding Source={x:Static infrastructure:GisEditor.LanguageManager},Path=FlowDirection}" />
+        <EventSetter Event="KeyDown" Handler="Window_KeyDown" />
+    </Style>
+    <Style TargetType="Button" x:Key="ConfirmButtonStyleKey">
+        <Setter Property="Width" Value="70" />
+        <Setter Property="Margin" Value="5 5 0 5" />
+    </Style>
+    <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="White" />
+    </Style>
+    <Style TargetType="Button" x:Key="ConfigurationButtonStyle">
+        <Setter Property="Width" Value="70" />
+        <Setter Property="Margin" Value="11 0 0 0" />
+    </Style>
+    
+    <!-- These items below are to prevent internal binding errors.  Do not remove them without discussing with David -->
+    <Style TargetType="MenuItem">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="TreeViewItem">
+        <Setter Property="IsEnabled" Value="True"/>
+    </Style>
+    <Style TargetType="r:RibbonMenuItem">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Thickness x:Key="MainWindowMargin" Left="6" Top="7" Right="6" Bottom="8" />
+</ResourceDictionary>

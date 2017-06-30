@@ -1,0 +1,105 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DataGridElementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        Title="{DynamicResource PrintDataGridElementWindowDataGridTitle}"
+        Width="640"
+        MinWidth="640"
+        MinHeight="630"
+        SizeToContent="Height"
+        Style="{StaticResource WindowStyle}">
+    <Grid Margin="{DynamicResource MainWindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Margin="0 0 0 5">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Width" Value="50" />
+                    <Setter Property="Margin" Value="5 0 0 0" />
+                </Style>
+                <Style TargetType="local:DropDownColorPicker">
+                    <Setter Property="Height" Value="22" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0 0 5 0"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource PrintDataGridElementWindowColumnNameLabel}" />
+            <TextBox Grid.Column="1"
+                     KeyDown="ColumnNameTextBox_KeyDown"
+                     Text="{Binding AddingColumnName,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Column="2"
+                    Click="AddClick"
+                    Content="{DynamicResource GeneralAddContent}" />
+            <ComboBox Grid.Column="3"
+                      Margin="10 0 0 0"
+                      IsEnabled="{Binding IsDropDownAndRomoveEnabled}"
+                      ItemsSource="{Binding Columns}"
+                      KeyDown="ComboBox_KeyDown"
+                      SelectedItem="{Binding RemovingColumnName,
+                                             Mode=Twoway}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding .}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Grid.Column="4"
+                    Click="RemoveClick"
+                    Content="{DynamicResource GeneralRemoveContent}"
+                    IsEnabled="{Binding IsDropDownAndRomoveEnabled}" />
+        </Grid>
+        <!--
+            <DataGrid x:Name="dg" Grid.Row="1">
+            </DataGrid>
+        -->
+        <Grid Grid.Row="1" MinHeight="230">
+            <wfi:WindowsFormsHost>
+                <wf:DataGridView x:Name="dgv" />
+            </wfi:WindowsFormsHost>
+        </Grid>
+        <local:FontUserControl Grid.Row="2" Margin="0 5" />
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <local:ResizeModeUserControl Grid.Column="0" />
+            <local:DragModeUserControl Grid.Column="1" Margin="5 0" />
+            <GroupBox Grid.Column="2" Header="{DynamicResource PrintDataGridElementWindowFontPreviewLabel}">
+                <Image Source="{Binding FontPreview}" />
+            </GroupBox>
+        </Grid>
+        <StackPanel Grid.Row="4"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Click="OKClick"
+                    Content="{DynamicResource ConfigurationOKLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <Button Click="CancelClick"
+                    Content="{DynamicResource ConfigurationCancelLable}"
+                    Style="{DynamicResource ConfigurationButtonStyle}" />
+            <ContentPresenter x:Name="HelpContainer"
+                              Width="70"
+                              Margin="11 0 0 0" />
+        </StackPanel>
+    </Grid>
+</Window>

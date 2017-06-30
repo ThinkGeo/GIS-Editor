@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.RandomPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             MinWidth="180"
+             MinHeight="50"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Grid x:Name="MainPanel">
+        <Image x:Name="MainImage"
+               MouseDown="MainImage_MouseDown"
+               Stretch="Fill" />
+        <Canvas>
+            <Polygon x:Name="PickerCursor"
+                     IsHitTestVisible="False"
+                     Points="-3.5,0 0,3.5 3.5,0 0,-3.5 -3.5,0"
+                     Stroke="White"
+                     StrokeThickness="2">
+                <Polygon.Effect>
+                    <DropShadowEffect BlurRadius="4"
+                                      Opacity=".6"
+                                      ShadowDepth="1" />
+                </Polygon.Effect>
+            </Polygon>
+        </Canvas>
+    </Grid>
+</UserControl>

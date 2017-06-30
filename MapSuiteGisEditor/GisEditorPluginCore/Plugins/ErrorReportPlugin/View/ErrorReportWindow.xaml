@@ -1,0 +1,121 @@
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ErrorReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource ErrorReportWindowTitle}"
+        Width="500"
+        Height="380"
+        Background="{x:Static SystemColors.ControlBrush}"
+        Closed="Window_Closed"
+        ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}"
+        Topmost="True"
+        WindowStyle="ThreeDBorderWindow">
+    <Grid x:Name="Grid1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Width="50"
+                   Height="50"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/GisEditorPluginCore;component/Images/sad.png" />
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <TextBlock Margin="5 5 5 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Text="{DynamicResource ErrorReportWindowAlertLabel}"
+                           TextWrapping="Wrap" />
+                <Button Name="viewDetailButton"
+                        Width="65"
+                        Height="20"
+                        Margin=" 5 0 5 5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Click="viewDetailButton_Click"
+                        Content="{DynamicResource ErrorReportWindowViewDetailLabel}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock TextDecorations="Underline">
+                                <ContentPresenter />
+                            </TextBlock>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Foreground" Value="Blue" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Margin="5 5 5 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Margin="5 5 5 0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource ErrorReportWindowEnterCommentslLabel}"
+                       TextWrapping="Wrap" />
+            <Grid Grid.Row="1" Margin="5 5 5 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="ckbNoticeEx"
+                          Margin="0 0 0 5"
+                          Click="ckbNoticeEx_Click"
+                          Content="{DynamicResource ErrorReportWindowAskLabel}"
+                          IsChecked="True" />
+                <TextBox x:Name="ErrorMessage"
+                         Grid.Row="1"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Visible" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2" Margin="5 5 5 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Margin="5 5 5 0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource ErrorReportWindowEnterEmailLabel}"
+                       TextWrapping="Wrap" />
+            <TextBox x:Name="txtEmailAddress"
+                     Grid.Row="1"
+                     Margin="5 5 5 0" />
+        </Grid>
+        <StackPanel Grid.Row="3"
+                    Margin="5 5 5 5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <Button Width="80"
+                    Margin="5 5 0 5"
+                    Click="ButtonSend_Click"
+                    Content="{DynamicResource ErrorReportWindowSendButtonLabel}" />
+            <Button Width="80"
+                    Margin="5 5 5 5"
+                    Click="ButtonCancel_Click"
+                    Content="{DynamicResource ConfigurationCancelLable}" />
+        </StackPanel>
+    </Grid>
+</Window>

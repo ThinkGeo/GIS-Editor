@@ -1,0 +1,151 @@
+﻿<UserControl
+    x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SearchPlaceUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <local:SearchPlaceViewModel x:Name="SearchPlaceViewModel" />
+    </UserControl.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <RoutedCommand x:Key="PlotOnMapCommand" />
+            <RoutedCommand x:Key="ClearPlottedPlacesCommand" />
+            <Thickness x:Key="MarginTop" Top="5" />
+        </Grid.Resources>
+        <Grid.CommandBindings>
+            <CommandBinding Command="{StaticResource PlotOnMapCommand}" Executed="CommandBinding_Executed" />
+            <CommandBinding
+                CanExecute="ClearPlottedPlacesCommandBinding_CanExecute"
+                Command="{StaticResource ClearPlottedPlacesCommand}"
+                Executed="ClearPlottedPlacesCommandBinding_Executed" />
+        </Grid.CommandBindings>
+        <StackPanel>
+            <Grid>
+                <TextBlock HorizontalAlignment="Left" Text="{DynamicResource SearchPlaceUserControlSearchForText}" />
+                <ContentPresenter x:Name="HelpContainer" HorizontalAlignment="Right" />
+            </Grid>
+            <DockPanel Margin="{StaticResource MarginTop}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox KeyDown="TextBox_KeyDown" Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    x:Name="FindButton"
+                    Grid.Column="1"
+                    Width="70"
+                    Margin="5,0,0,0"
+                    Command="{Binding FindCommand}"
+                    Content="{DynamicResource GeneralFindContent}" />
+                <ToggleButton
+                    x:Name="searchEntiesButton"
+                    Grid.Column="2"
+                    Margin="5,0,0,0"
+                    Content="..." />
+                <local:NonTopMostPopup
+                    x:Name="popUp2"
+                    Width="200"
+                    AllowsTransparency="True"
+                    IsOpen="{Binding ElementName=searchEntiesButton, Path=IsChecked, Mode=TwoWay}"
+                    OffsetX="-160"
+                    OffsetY="5"
+                    Placement="Bottom"
+                    PlacementTarget="{Binding ElementName=searchEntiesButton}"
+                    PopupAnimation="Slide"
+                    StaysOpen="True">
+                    <Grid Margin="10" Background="White">
+                        <Border BorderBrush="DarkGray" BorderThickness="1">
+                            <ItemsControl ItemsSource="{Binding SearchEntriesModels}">
+                                <ItemsControl.ItemTemplate>
+                                    <ItemContainerTemplate>
+                                        <CheckBox
+                                            Margin="5"
+                                            Content="{Binding Name}"
+                                            IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                                    </ItemContainerTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </Grid>
+                </local:NonTopMostPopup>
+            </Grid>
+            <TextBlock
+                Margin="{StaticResource MarginTop}"
+                FontStyle="Italic"
+                Foreground="Gray"
+                Text="{DynamicResource SearchPlaceUserControlTipText}" />
+            <TextBlock Margin="0,15,0,0" Text="{DynamicResource SearchPlaceUserControlResultsText}" />
+        </StackPanel>
+
+        <gisToolKit:BusyIndicator
+            Grid.Row="1"
+            BusyContent="{DynamicResource ResourceKey=SearchPlaceUserControlSearchingContent}"
+            IsBusy="{Binding IsBusy}">
+            <Grid>
+                <DataGrid
+                    IsReadOnly="True"
+                    ItemsSource="{Binding CurrentDataTable}"
+                    Visibility="{Binding SpecifiedTableVisibility}">
+                    <DataGrid.ItemContainerStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="ToolTip" Value="{Binding Address}" />
+                            <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick" />
+                        </Style>
+                    </DataGrid.ItemContainerStyle>
+                </DataGrid>
+                <ListView
+                    x:Name="ResultList"
+                    ItemsSource="{Binding SearchResults}"
+                    Visibility="{Binding GeocodeTableVisibility}">
+                    <ListView.Resources>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="MinWidth" Value="60" />
+                        </Style>
+                        <ContextMenu x:Key="ItemContextMenu" />
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="ToolTip" Value="{Binding Address}" />
+                            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                            <EventSetter Event="ContextMenuOpening" Handler="ListViewItem_ContextMenuOpening" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Address}"
+                                    Header="{DynamicResource ResourceKey=SearchPlaceUserControlAddressHeader}" />
+                                <GridViewColumn DisplayMemberBinding="{Binding City}" Header="{DynamicResource ResourceKey=SearchPlaceUserControlCityHeader}" />
+                                <GridViewColumn DisplayMemberBinding="{Binding State}" Header="{DynamicResource ResourceKey=SearchPlaceUserControlStateHeader}" />
+                                <GridViewColumn DisplayMemberBinding="{Binding County}" Header="{DynamicResource ResourceKey=SearchPlaceUserControlCountyHeader}" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Zipcode}" Header="{DynamicResource ResourceKey=SearchPlaceUserControlZipcodeHeader}" />
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </gisToolKit:BusyIndicator>
+        <Button
+            Grid.Row="2"
+            Width="150"
+            Margin="0,10,0,10"
+            Command="{Binding ClearPlottedPlacesCommand}"
+            Content="{DynamicResource SearchPlaceUserControlClearPlottedPlacesContent}" />
+    </Grid>
+</UserControl>

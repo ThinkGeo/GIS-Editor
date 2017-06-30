@@ -1,0 +1,269 @@
+<UserControl
+    x:Class="ThinkGeo.MapSuite.GisEditor.DataViewerUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
+    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="dbfViewer"
+    d:DesignHeight="300"
+    d:DesignWidth="500"
+    Loaded="UserControl_Loaded"
+    PreviewKeyDown="dbfViewer_PreviewKeyDown"
+    Unloaded="UserControl_Unloaded"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="LightGray" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="ContentControl">
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+        <local:RecordIndexConverter x:Key="recordIndexConverter" />
+        <local:DataViewerCountConverter x:Key="DataViewerCountConverter" />
+        <local:ColumnNameToAliasNameConverter x:Key="columnNameToAliasNameConverter" />
+
+        <StackPanel
+            x:Key="CountPanel"
+            x:Shared="False"
+            Orientation="Horizontal">
+            <TextBlock FontWeight="Bold" Text="{Binding SelectedCount}" />
+            <!--<TextBlock Margin="3 0 3 0" Text="{DynamicResource ViewDataOf}" />-->
+            <!--<TextBlock Margin="3 0 3 0" Text="first" Visibility="{Binding FirstRowCountVisibility}"/>-->
+            <TextBlock FontWeight="Bold" Text="{Binding RowCount, Converter={StaticResource DataViewerCountConverter}}" />
+            <TextBlock Margin="3,0,0,0" Text="{DynamicResource ViewDataSelected}" />
+        </StackPanel>
+    </UserControl.Resources>
+    <gisToolKit:BusyIndicator
+        x:Name="busyIndicator1"
+        BusyContent="{Binding BusyContent, UpdateSourceTrigger=PropertyChanged}"
+        IsBusy="{Binding IsBusy}">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="5,0,0,0" />
+                    <Setter Property="Width" Value="20" />
+                </Style>
+            </Grid.Resources>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        Width="200"
+                        HorizontalAlignment="Left"
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding AllLayerAdapters}"
+                        SelectedItem="{Binding SelectedLayerAdapter, Mode=TwoWay}"
+                        Visibility="{Binding InvisbleForEditMode}" />
+                    <TextBlock Text="{DynamicResource ResourceKey=DataViewerUserControlLayerText}" Visibility="{Binding EditVisible}" />
+                    <TextBlock Text="{Binding SelectedLayerAdapter.Name}" Visibility="{Binding EditVisible}" />
+                    <ContentControl Content="{DynamicResource CountPanel}" />
+                    <Button
+                        Width="120"
+                        Command="{Binding DeleteSelectedDataCommand}"
+                        Content="{DynamicResource ResourceKey=DataViewerUserControlDeleteSelectedDataContent}"
+                        Visibility="{Binding EditVisible}" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <!--
+                        <Button Width="100"
+                        Command="{Binding ExportCommand}"
+                        Content="{DynamicResource ViewDataExportButton}" />
+                        <Line Margin="5 2 0 0"
+                        Stroke="Gray"
+                        StrokeEndLineCap="Round"
+                        StrokeStartLineCap="Round"
+                        StrokeThickness="1"
+                        X1="0"
+                        X2="0"
+                        Y1="0"
+                        Y2="20" />
+                    -->
+                    <Button
+                        Width="60"
+                        Command="{Binding FilterCommand}"
+                        Content="{DynamicResource ViewDataFilterButton}" />
+                    <Button
+                        x:Name="btnClear"
+                        Width="60"
+                        Command="{Binding ClearCommand}"
+                        Content="{DynamicResource ViewDataShowAllButton}"
+                        IsEnabled="{Binding ClearEnable}" />
+                    <Button
+                        Margin="5,0,5,0"
+                        Command="{Binding ZoomToSelectedFeatureCommand}"
+                        ToolTip="{DynamicResource ViewDataZoomToFeature}">
+                        <Image Source="/GisEditorInfrastructure;component/Images/zoom_to_selected.png" />
+                    </Button>
+                    <CheckBox
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Content="{DynamicResource ViewDataCheckBoxContent}"
+                        IsChecked="{Binding ShowSelectedFeatures, Mode=TwoWay}" />
+                    <ContentPresenter x:Name="HelpContainer" Margin="20,0,5,0" />
+                </StackPanel>
+            </Grid>
+            <DataGrid
+                x:Name="dg"
+                Grid.Row="1"
+                Margin="0,5,0,5"
+                AutoGeneratingColumn="dg_AutoGeneratingColumn"
+                CanUserAddRows="False"
+                CanUserReorderColumns="False"
+                CellEditEnding="dg_CellEditEnding"
+                EnableColumnVirtualization="{Binding EnableColumnVirtualization}"
+                EnableRowVirtualization="True"
+                IsReadOnly="{Binding IsReadOnly}"
+                ItemsSource="{Binding CurrentDataTable, UpdateSourceTrigger=PropertyChanged}"
+                SelectionChanged="dg_SelectionChanged"
+                Sorting="dg_Sorting">
+                <DataGrid.Resources>
+                    <Style TargetType="Hyperlink">
+                        <EventSetter Event="Click" Handler="Hyperlink_Click" />
+                    </Style>
+                    <!--
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    -->
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Button
+                                        Width="20"
+                                        Height="20"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}, Path=DataContext.ZoomToOneFeatureCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"
+                                        ToolTip="{DynamicResource ResourceKey=DataViewerUserControlZoomtotheToolTip}">
+                                        <Button.Content>
+                                            <Image
+                                                Width="14"
+                                                Height="14"
+                                                Source="/GisEditorInfrastructure;component/Images/zoom_to_feature.png" />
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="deleteColumn">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Button
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}, Path=DataContext.DeleteOneRowCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"
+                                        ToolTip="{DynamicResource ResourceKey=DataViewerUserControlDeleteselectedrowToolTip}">
+                                        <Button.Content>
+                                            <Image
+                                                Width="14"
+                                                Height="14"
+                                                Source="/GisEditorInfrastructure;component/Images/dialogs_remove.png" />
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource columnNameToAliasNameConverter}">
+                                                <Binding Path="." />
+                                                <Binding ElementName="dg" Path="DataContext.SelectedLayerAdapter" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=TGFeatureIsSelected}" Value="True">
+                                <Setter Property="Background" Value="{Binding ElementName=busyIndicator1, Path=DataContext.HightLightRowColor, Mode=OneWay}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <EventSetter Event="DataGridRow.PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseButtonDown" />
+                        <EventSetter Event="DataGridRow.PreviewKeyDown" Handler="DataGridRow_PreviewKeyDown" />
+                        <EventSetter Event="DataGridRow.PreviewKeyUp" Handler="DataGridRow_PreviewKeyUp" />
+                        <EventSetter Event="DataGridRow.PreviewMouseMove" Handler="DataGridRow_PreviewMouseMove" />
+                    </Style>
+                </DataGrid.ItemContainerStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <EventSetter Event="DataGridCell.PreviewMouseRightButtonUp" Handler="DataGridCell_PreviewMouseRightButtonUp" />
+                        <EventSetter Event="DataGridCell.PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown" />
+                        <EventSetter Event="DataGridCell.Loaded" Handler="DataGridCell_Loaded" />
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+            <Grid x:Name="FindPanel" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        x:Name="txtFind"
+                        Width="120"
+                        Margin="0,0,5,0"
+                        KeyDown="TxtFind_KeyDown"
+                        TextChanged="TxtFind_TextChanged" />
+                    <Button
+                        x:Name="btnFind"
+                        Width="70"
+                        Click="FindClick"
+                        Content="{DynamicResource GeneralFindContent}"
+                        IsEnabled="false" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        x:Name="btnSaveChanges"
+                        Width="80"
+                        Margin="5,0,5,0"
+                        Click="SaveChangesClick"
+                        Content="{DynamicResource GeneralSaveChangesContent}"
+                        IsEnabled="False" />
+                    <Button
+                        x:Name="btnCancelChagnes"
+                        Width="80"
+                        Click="CancelChangesClick"
+                        Content="{DynamicResource ConfigurationCancelLable}"
+                        IsEnabled="False" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </gisToolKit:BusyIndicator>
+</UserControl>

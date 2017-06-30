@@ -1,0 +1,257 @@
+﻿<ThinkGeo:SettingUserControl
+    x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ContentsOptionUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
+    xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins">
+    <ThinkGeo:SettingUserControl.Resources>
+        <ResourceDictionary>
+            <local:DefaultBaseMapToStringConverter x:Key="defaultBaseMapToStringConverter" />
+            <local:AltitudeModesToStringConverter x:Key="altitudeModesToStringConverter" />
+        </ResourceDictionary>
+    </ThinkGeo:SettingUserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox
+            Grid.Row="0"
+            BorderThickness="1"
+            Header="{DynamicResource ResourceKey=ContentsOptionUserControlGroupHeader}">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="5,5,0,5"
+                        VerticalAlignment="Center"
+                        Text="{DynamicResource ResourceKey=ContentOptionUserControlDscLoadDefaultMap}" />
+                    <ComboBox
+                        Width="Auto"
+                        Height="23"
+                        Margin="5,0,0,5"
+                        IsEditable="False"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding DefaultBaseMapOptions}"
+                        SelectedItem="{Binding DefaultBaseMapOption, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource defaultBaseMapToStringConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <CheckBox
+                        Width="Auto"
+                        Height="20"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="{DynamicResource ResourceKey=ContentsOptionUserControlLimitDrawingCountText}"
+                        IsChecked="{Binding IsLimitDrawgingFeaturesCount, Mode=TwoWay}" />
+
+                    <ComboBox
+                        Width="60"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsEnabled="{Binding IsLimitDrawgingFeaturesCount}"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding Limitations}"
+                        SelectedItem="{Binding MaxRecordsToDraw, Mode=TwoWay}" />
+                </StackPanel>
+                <CheckBox
+                    Grid.Row="2"
+                    Width="Auto"
+                    Margin="5,5,0,0"
+                    Content="{DynamicResource ResourceKey=ContentsOptionUserControlZoomCheckBoxText}"
+                    IsChecked="{Binding IsZoomToExtentOfNewLayer, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="3"
+                    Width="Auto"
+                    Margin="27,5,0,4"
+                    Content="{DynamicResource ResourceKey=ContentsOptionUserControlZoomFirstOnlyBoxText}"
+                    IsChecked="{Binding IsZoomToExtentOfOnlyFirstLayer, Mode=TwoWay}"
+                    IsEnabled="{Binding IsZoomToExtentOfNewLayer}" />
+                <CheckBox
+                    Grid.Row="5"
+                    Margin="5,5,0,0"
+                    Content="{DynamicResource ResourceKey=ContentsOptionUserControlUseCahceCheckBox}"
+                    IsChecked="{Binding UseCache, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="6"
+                    Margin="5,5,0,0"
+                    Content="{DynamicResource ResourceKey=ContentsOptionUserControlShowStyleWizardText}"
+                    IsChecked="{Binding IsAlwaysShowStyleWizardWhenLayerIsAdded, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="7"
+                    Margin="5,5,0,0"
+                    Content="{DynamicResource ResourceKey=ContentsOptionUserControlShowAddDataRepositoryDialogText}"
+                    IsChecked="{Binding IsShowAddDataRepositoryDialog, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="8"
+                    Margin="5,5,0,0"
+                    Content="{DynamicResource ViewRibbonGroupPanZoomBarLabel}"
+                    IsChecked="{Binding IsShowPanZoomBar, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="9"
+                    Margin="5,5,0,0"
+                    Content="{DynamicResource ResourceKey=ContentsOptionUserControlDscUsehighqualityDscContent}"
+                    IsChecked="{Binding HighQuality, Mode=TwoWay}" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="1"
+            BorderThickness="1"
+            Header="{DynamicResource ResourceKey=ContentsOptionUserControlMapTilesHeader}">
+            <StackPanel>
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource ResourceKey=ContentsOptionUserControlShowTileSizeText}" />
+                    <ComboBox
+                        Width="110"
+                        Margin="10,0,0,0"
+                        IsEditable="False"
+                        IsReadOnly="False"
+                        ItemsSource="{Binding TileSizes}"
+                        SelectedItem="{Binding TileSize, Mode=TwoWay}" />
+                </StackPanel>
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource ResourceKey=ContentsOptionUserControlDelayRefreshInterval}" />
+                    <local:Numeric
+                        Grid.Column="3"
+                        Width="100"
+                        Margin="10,0,0,0"
+                        Increment="100"
+                        Maximum="30000"
+                        Minimum="0"
+                        Value="{Binding OverlayRefreshDelayInterval, Mode=TwoWay}" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox
+            Grid.Row="2"
+            BorderThickness="1"
+            Header="{DynamicResource ContentsOptionUserControlPlaceSearchLabel}">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{DynamicResource ContentsOptionUserControlMaximumNumberLabel}" />
+                <local:Numeric
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="10,0,0,0"
+                    Maximum="1000"
+                    Minimum="1"
+                    Value="{Binding PlaceSearchMaxValue, Mode=TwoWay}" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="3"
+            BorderThickness="1"
+            Header="{DynamicResource ContentsOptionUserControlGoogleEarthLabel}">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource ContentsOptionUserControlAltitudeModeLabel}" />
+                <ComboBox
+                    Grid.Column="1"
+                    Width="120"
+                    Margin="10,0,10,0"
+                    IsEditable="False"
+                    IsReadOnly="False"
+                    ItemsSource="{Binding AltitudeModes}"
+                    SelectedItem="{Binding AltitudeMode, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource altitudeModesToStringConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Text="{DynamicResource ContentsOptionUserControlHeightLabel}" />
+                <local:Numeric
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="10,0,0,0"
+                    Maximum="1000"
+                    Minimum="1"
+                    Value="{Binding Height, Mode=TwoWay}" />
+            </Grid>
+        </GroupBox>
+        <GroupBox
+            Grid.Row="3"
+            BorderThickness="1"
+            Header="{DynamicResource ContentsOptionUserControlGoogleEarthLabel}">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource ContentsOptionUserControlAltitudeModeLabel}" />
+                <ComboBox
+                    Grid.Column="1"
+                    Width="120"
+                    Margin="10,0,10,0"
+                    IsEditable="False"
+                    IsReadOnly="False"
+                    ItemsSource="{Binding AltitudeModes}"
+                    SelectedItem="{Binding AltitudeMode, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource altitudeModesToStringConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Text="{DynamicResource ContentsOptionUserControlHeightLabel}" />
+                <local:Numeric
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="10,0,0,0"
+                    Maximum="1000"
+                    Minimum="1"
+                    Value="{Binding Height, Mode=TwoWay}" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="4" Header="Zoom">
+            <StackPanel Margin="5">
+                <CheckBox
+                    Margin="0,5,0,0"
+                    Content="Always snap to lower zoomlevel when track zoom in (zoom in with Shift key)."
+                    IsChecked="{Binding IsZoomSnapDirectionWithLowerScale, Mode=TwoWay}" />
+                <CheckBox
+                    Margin="0,5,0,0"
+                    Content="Disable globe button on pan zoom bar."
+                    IsChecked="{Binding DisableGlobeButton, Mode=TwoWay}" />
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</ThinkGeo:SettingUserControl>

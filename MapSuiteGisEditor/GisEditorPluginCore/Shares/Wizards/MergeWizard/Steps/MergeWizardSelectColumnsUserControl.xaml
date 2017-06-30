@@ -1,0 +1,111 @@
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.MergeWizardSelectColumnsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="380"
+             d:DesignWidth="560"
+             mc:Ignorable="d">
+    <StackPanel>
+        <TextBlock Text="{DynamicResource ToolsMergeWizardStepTwoChooseIncludeColumns}" TextWrapping="Wrap" />
+        <Grid Margin="0 15 0 0">
+            <Grid.Resources>
+                <Style x:Key="spStyle" TargetType="StackPanel">
+                    <Setter Property="Margin" Value="5 0 0 0" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="0 5 0 0" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Grid>
+                    <TextBlock Style="{DynamicResource SubtitleStyle}" Text="{DynamicResource ToolsMergeWizardStepTwoAvailableColumns}" />
+                    <CheckBox HorizontalAlignment="Right"
+                              Click="AvaliableAll_Click"
+                              Content="{DynamicResource ToolsMergeWizardStepTwoCheckBoxAll}" Margin="0 0 0 5" />
+                </Grid>
+                <ComboBox Margin="0 0 0 5"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding LayerColumnPair.Keys}"
+                          SelectedItem="{Binding SelectedLayerForColumns,
+                                                 Mode=TwoWay}" />
+                <ListBox x:Name="avaliableListBox"
+                         Height="278"
+                         DisplayMemberPath="AliasName"
+                         ItemsSource="{Binding AvaliableColumns}"
+                         SelectionChanged="AvaliableColumns_SelectionChanged"
+                         SelectionMode="Extended">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+                            </Style.Resources>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource spStyle}">
+                <Button Click="LeftToRight_Click">
+                    <Button.Content>
+                        <Image Source="pack://application:,,,/GisEditorPluginCore;component/Images/forward - Merge.png" />
+                    </Button.Content>
+                </Button>
+                <Button Click="RightToLeft_Click">
+                    <Button.Content>
+                        <Image Source="pack://application:,,,/GisEditorPluginCore;component/Images/back - Merge.png" />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Style="{StaticResource spStyle}">
+                <Grid>
+                    <TextBlock Style="{DynamicResource SubtitleStyle}" Text="{DynamicResource ToolsMergeWizardStepTwoColumnsToInclude}" />
+                    <CheckBox HorizontalAlignment="Right"
+                              Click="Include_Click"
+                              Content="{DynamicResource ToolsMergeWizardStepTwoCheckBoxAll}" Margin="0 0 0 5" />
+                </Grid>
+                <ListBox x:Name="includedListBox"
+                         Height="305"
+                         DisplayMemberPath="AliasName"
+                         ItemsSource="{Binding IncludedColumns}"
+                         SelectionChanged="IncludedColumns_SelectionChanged"
+                         SelectionMode="Extended">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkBlue" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="DarkBlue" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
+                            </Style.Resources>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+            <StackPanel Grid.Column="3"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource spStyle}">
+                <Button Click="MoveUp_Click">
+                    <Button.Content>
+                        <Image Source="pack://application:,,,/GisEditorPluginCore;component/Images/up - Merge.png" />
+                    </Button.Content>
+                </Button>
+                <Button Click="MoveDown_Click">
+                    <Button.Content>
+                        <Image Source="pack://application:,,,/GisEditorPluginCore;component/Images/down - Merge.png" />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

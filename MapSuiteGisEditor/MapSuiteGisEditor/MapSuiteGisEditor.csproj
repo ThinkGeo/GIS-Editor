@@ -1,0 +1,800 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{24EBC580-E02D-4D39-9F63-1912638E0F28}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ThinkGeo.MapSuite.GisEditor</RootNamespace>
+    <AssemblyName>MapSuiteGisEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\MapSuiteGISEditor.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\MapSuiteGISEditor.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Evaluation|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;Evaluation</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\MapSuiteGISEditor.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'GISEditorUnitTest|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\GISEditorUnitTest\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;GISEditorUnitTest</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\MapSuiteGISEditor.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReadOnly|AnyCPU'">
+    <OutputPath>bin\ReadOnly\</OutputPath>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\MapSuiteGISEditor.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AvalonDock, Version=1.2.2691.0, Culture=neutral, PublicKeyToken=85a1e0ada7ec13e4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\AvalonDock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AvalonDock.Themes">
+      <HintPath>..\..\Dependencies\AvalonDock.Themes.dll</HintPath>
+    </Reference>
+    <Reference Include="Ciloci.Flee, Version=0.9.26.0, Culture=neutral, PublicKeyToken=c8526a021ef298ed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-CilociFlee.10.0.1\lib\net45\Ciloci.Flee.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=0.0.0.0, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF4, Version=0.0.0.0, Culture=neutral, PublicKeyToken=63eb5c012e0b3c1c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\GalaSoft.MvvmLight.WPF4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.0.0\lib\net45\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="GeocodeServerSdk">
+      <HintPath>..\..\Dependencies\GeocodeServerSdk.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\..\Dependencies\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Dependencies\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.0.0\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-Npgsql.10.0.0\lib\Net40\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.0.0\lib\net45\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Net35, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Dependencies\Newtonsoft.Json.Net35.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.0.11.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-Npgsql.10.0.0\lib\Net40\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.0.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.0.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.0.0\lib\net45\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="RibbonControlsLibrary, Version=3.5.40729.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\RibbonControlsLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-SQLiteCore.10.0.0\lib\net45\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="ThinkGeo.MapSuite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Drawing.PdfGeoCanvas, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Adornments, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Adornments.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Adornments.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Background, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Background.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Background.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.BingMaps, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.BingMaps.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.BingMaps.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.CloudFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.CloudFile.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.CloudFile.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Delimited, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Delimited.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Delimited.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Ecw, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Ecw.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.FileGeoDatabase, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.GeoTiff, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\lib\net45\ThinkGeo.MapSuite.Layers.GeoTiff.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.GoogleMaps, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.GoogleMaps.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.GoogleMaps.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Gpx, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Gpx.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Gpx.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Graticule, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Graticule.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Graticule.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Grids, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Grids.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.Grids.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Group, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Group.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Group.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Heat, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Heat.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Heat.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.IsoLine, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.IsoLine.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.IsoLine.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Jpeg2000, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Kml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Kml.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Kml.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.MapShape, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MapShape.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.MapShape.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.MrSid, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.MrSid.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.MsSql, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MsSql.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.MsSql.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.MultipleFeatureSource, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MultipleFeatureSource.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.MultipleFeatureSource.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.NativeImage, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NativeImage.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.NativeImage.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.NauticalCharts, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Noaa, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Noaa.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Noaa.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.OpenStreetMap, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.OpenStreetMap.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.OpenStreetMap.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.PostgreSql, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.PostgreSql.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.PostgreSql.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Printers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Printers.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Printers.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Restriction, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Restriction.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Restriction.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.ShapeFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.ShapeFile.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.ShapeFile.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Sqlite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Sqlite.11.0.0-beta003\lib\net45\ThinkGeo.MapSuite.Layers.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Tab, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Tab.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Tab.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.TiledWms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TiledWms.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.TiledWms.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.TinyGeo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TinyGeo.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.TinyGeo.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.TobinBas, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TobinBas.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.TobinBas.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Wfs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wfs.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.Wfs.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.WkbFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WkbFile.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Layers.WkbFile.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Wms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wms.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.Wms.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.Wmts, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wmts.11.0.0-beta005\lib\net45\ThinkGeo.MapSuite.Layers.Wmts.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Layers.WorldMapKit, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WorldMapKit.11.0.0-beta002\lib\net45\ThinkGeo.MapSuite.Layers.WorldMapKit.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.ProductCenter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.11.0.0-beta007\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.ClassBreak, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.ClusterPoint, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClusterPoint.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.ClusterPoint.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Composite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Composite.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Composite.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.DotDensity, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.DotDensity.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.DotDensity.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Filter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Filter.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.FleeBoolean, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.FleeBoolean.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.FleeBoolean.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Gradient, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Gradient.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Gradient.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Icon, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Icon.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Icon.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.IconValue, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.IconValue.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.IconValue.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Regex, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Regex.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Regex.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.Value, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Value.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.Value.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.WellPoint, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.WellPoint.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.WellPoint.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Styles.ZedGraph, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ZedGraph.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.ZedGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinkGeo.MapSuite.Wpf, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDesktopForWpf-Standard.11.0.0-beta012\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WPFToolkit">
+      <HintPath>..\..\Dependencies\WPFToolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GisEditorSplashScreen.xaml.cs">
+      <DependentUpon>GisEditorSplashScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\General.xmal.cs" />
+    <Compile Include="Settings\GeneralManager.cs" />
+    <Compile Include="Settings\GeneralSettingUserControl.xaml.cs">
+      <DependentUpon>GeneralSettingUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\GeneralSettingViewModel.cs" />
+    <Compile Include="Settings\QuickAccessToolbarItem.cs" />
+    <Compile Include="Settings\QuickAccessToolbarManager.cs" />
+    <Compile Include="Settings\QuickAccessToolbarSettingUserControl.xaml.cs">
+      <DependentUpon>QuickAccessToolbarSettingUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\QuickAccessToolbarSettingViewModel.cs" />
+    <Compile Include="Settings\SettingGroupTabUserControl.xaml.cs">
+      <DependentUpon>SettingGroupTabUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\PreferenceWindow.xaml.cs">
+      <DependentUpon>PreferenceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\AppHelper.cs" />
+    <Compile Include="Shared\RefreshArgsDescription.cs" />
+    <Compile Include="Shared\DockableContentInfo.cs" />
+    <Compile Include="Shared\GisEditorCommands.cs" />
+    <Compile Include="Shared\GisEditorHelper.cs" />
+    <Compile Include="Shared\GisEditorWpfMapExtension.cs" />
+    <Compile Include="Shared\ProjectionAbbreviations.cs" />
+    <Compile Include="Shared\RecentProjectFileViewModel.cs" />
+    <Compile Include="Shared\RibbonExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Resources\StringResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="GisEditorWindow.xaml.cs">
+      <DependentUpon>GisEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <None Include="MapSuiteGisEditor.exe.mapsuitelicense">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="UserControls\OnlinePluginListUserControl.xaml.cs">
+      <DependentUpon>OnlinePluginListUserControl.xaml</DependentUpon>
+    </None>
+    <Compile Include="UserControls\GisEditorUserControl.xaml.cs">
+      <DependentUpon>GisEditorUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PluginModel.cs" />
+    <Compile Include="UserControls\RenameMapViewModel.cs" />
+    <Compile Include="UserControls\RestoreBackupWindow.xaml.cs">
+      <DependentUpon>RestoreBackupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StringToHyperlinkXamlConverter.cs" />
+    <Compile Include="UserControls\PluginSearchUserControl.xaml.cs">
+      <DependentUpon>PluginSearchUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PluginSearchViewModel.cs" />
+    <Compile Include="UserControls\RenameMapWindow.xaml.cs">
+      <DependentUpon>RenameMapWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StringToXamlConverter.cs" />
+    <Compile Include="UserControls\WelcomePageUserControl.xaml.cs">
+      <DependentUpon>WelcomePageUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\WindowHelper.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StringResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GisEditorInfrastructure\GisEditorInfrastructure.csproj">
+      <Project>{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}</Project>
+      <Name>GisEditorInfrastructure</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\GisEditorToolKits\GisEditorToolkits\GisEditorToolkits.csproj">
+      <Project>{99b4b46d-b52d-4eaf-98ee-c7b398575d90}</Project>
+      <Name>GisEditorToolkits</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfDesktopExtension\WpfDesktopExtension.csproj">
+      <Project>{5027d56d-61b7-4c7f-91c4-24b0f1f5d272}</Project>
+      <Name>WpfDesktopExtension</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Resource Include="GisEditorHelpUrls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Page Include="GisEditorSplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\GeneralSettingUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\QuickAccessToolbarSettingUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingGroupTabUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\PreferenceWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="Images\gis_editor_box_and_cdrom.png" />
+    <Resource Include="Images\icon42_amber_exclamation.png" />
+    <Resource Include="Images\icon42_green_checkmark.png" />
+    <Resource Include="Images\icon42_red_x.png" />
+    <Resource Include="Images\nagbox_bkg.png" />
+    <Page Include="Resources\General.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GisEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DockTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\IconTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\RibbonTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\TreeViewTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\EditorStrings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <None Include="UserControls\OnlinePluginListUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="UserControls\GisEditorUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PluginSearchUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RenameMapWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RestoreBackupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\WelcomePageUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder-open_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\splashScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pluginManager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pluginManager_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\option_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logo_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\about.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WelcomePage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ZoomIn.png" />
+    <Resource Include="Images\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ErrorTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\document-delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\document-new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\map_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\center_at.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Layout.xml" />
+    <Resource Include="Images\save_as.png" />
+    <Resource Include="Images\annotation.png" />
+    <Resource Include="logo.ico" />
+    <Resource Include="Images\pluginWindow_16x16.png" />
+    <Resource Include="Images\update.png" />
+    <Resource Include="Images\identify.png" />
+    <Resource Include="Images\aboutScreen.png" />
+    <Resource Include="Images\addData.png" />
+    <Resource Include="Images\remove.png" />
+    <Resource Include="Images\placeOnMap.png" />
+    <Resource Include="Images\addDataDisabled.png" />
+    <Resource Include="Images\placeOnMapDisabled.png" />
+    <Resource Include="Images\removeDisabled.png" />
+    <Resource Include="Images\refresh.png" />
+    <Resource Include="Images\loginbox_bkg.png" />
+    <Resource Include="Images\QuestionMark.png" />
+    <Resource Include="Images\dataformats.png" />
+    <Resource Include="Images\down.png" />
+    <Resource Include="Images\option_16.png" />
+    <Resource Include="Images\arrow_down.png" />
+    <Resource Include="Images\appmenu.png" />
+    <Resource Include="Images\progress.gif" />
+    <Resource Include="Images\update_progress_dialog_icon.png" />
+    <Resource Include="Images\Styles.png" />
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\UIs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AccountProfile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AccountProfileImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\package.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\newProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DefaultPreview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ProjectLock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PasswordEye.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.11.0.0-beta001\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets" Condition="Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.11.0.0-beta001\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.11.0.0-beta001\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.11.0.0-beta001\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-GdalS57.11.0.0-beta001\build\net45\MapSuiteDependency-GdalS57.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-GdalS57.11.0.0-beta001\build\net45\MapSuiteDependency-GdalS57.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.11.0.0-beta001\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.11.0.0-beta001\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.11.0.0-beta001\build\net45\MapSuiteDependency-LibGeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LibGeoTiff.11.0.0-beta001\build\net45\MapSuiteDependency-LibGeoTiff.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.11.0.0-beta001\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LizardTechMrSid.11.0.0-beta001\build\net45\MapSuiteDependency-LizardTechMrSid.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.0.0\build\net45\MapSuiteDependency-SQLiteCore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SQLiteCore.10.0.0\build\net45\MapSuiteDependency-SQLiteCore.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\MapSuiteDependency-GdalS57.11.0.0-beta001\build\net45\MapSuiteDependency-GdalS57.targets" Condition="Exists('..\..\packages\MapSuiteDependency-GdalS57.11.0.0-beta001\build\net45\MapSuiteDependency-GdalS57.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.11.0.0-beta001\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets" Condition="Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.11.0.0-beta001\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-LibGeoTiff.11.0.0-beta001\build\net45\MapSuiteDependency-LibGeoTiff.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.11.0.0-beta001\build\net45\MapSuiteDependency-LibGeoTiff.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-LizardTechMrSid.11.0.0-beta001\build\net45\MapSuiteDependency-LizardTechMrSid.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.11.0.0-beta001\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-SQLiteCore.10.0.0\build\net45\MapSuiteDependency-SQLiteCore.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.0.0\build\net45\MapSuiteDependency-SQLiteCore.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
