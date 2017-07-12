@@ -12,6 +12,6 @@ A: Here are some things to check.
   - Check whether your environment meets the system requirements listed under: http://wiki.thinkgeo.com/wiki/map_suite_desktop_for_wpf_installation_guide
   - Check to see if the assemblies were blocked during download. Especially the plugins which are placed under _Plugins/ThinkGeo/GisEditorPluginCore.dll_. Right click on the dll and open the property dialog. If there is an `Unblock` checkbox in the _Security_ section on the bottom, check it to make sure the major plugins are unblocked. Then try again.
   
-- __Q: I cloned this project, but it throws exception when I try to debug it.__  
+- __Q: I cloned this project, but it throws an exception when I try to debug it.__  
 A: This project is protected by ThinkGeo's licensing policy. It includes one runtime license of Map Suite Desktop which allows you to run the app without limitation. However, if you want to debug this project, a development license is required.
 
