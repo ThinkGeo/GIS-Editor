@@ -87,8 +87,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.0.0\lib\net45\GeoAPI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.2.0\lib\net45\GeoAPI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="GeocodeServerSdk">
       <HintPath>..\..\Dependencies\GeocodeServerSdk.dll</HintPath>
@@ -123,17 +123,17 @@
       <HintPath>..\..\Dependencies\Microsoft.Scripting.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.0.0\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.2.1\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MapSuiteDependency-Npgsql.10.0.0\lib\Net40\Mono.Security.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.0.0\lib\net45\NetTopologySuite.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.2.1\lib\net45\NetTopologySuite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.3.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.4.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -152,8 +152,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.0.0\lib\net45\PowerCollections.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.2.1\lib\net45\PowerCollections.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -192,8 +192,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="ThinkGeo.MapSuite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.11.0.0-beta060\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Drawing.PdfGeoCanvas, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.dll</HintPath>
@@ -356,8 +356,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.ProductCenter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.11.0.0-beta007\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.11.0.0-beta012\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.ClassBreak, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.11.0.0-beta001\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
@@ -5421,8 +5421,8 @@
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta060\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.11.0.0-beta060\build\net45\ThinkGeo.MapSuite.targets'))" />
   </Target>
   <Import Project="..\..\packages\MapSuiteDependency-GdalS57.11.0.0-beta001\build\net45\MapSuiteDependency-GdalS57.targets" Condition="Exists('..\..\packages\MapSuiteDependency-GdalS57.11.0.0-beta001\build\net45\MapSuiteDependency-GdalS57.targets')" />
   <Import Project="..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.11.0.0-beta001\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets" Condition="Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.11.0.0-beta001\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" />
@@ -5434,8 +5434,8 @@
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.11.0.0-beta001\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta018\build\net45\ThinkGeo.MapSuite.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.11.0.0-beta005\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.11.0.0-beta060\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.11.0.0-beta060\build\net45\ThinkGeo.MapSuite.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
