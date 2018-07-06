@@ -384,50 +384,57 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private static void DrawNormalStyle(this Style style, PlatformGeoCanvas canvas, DrawingRectangleF drawingRectangleF)
         {
-            if (style is LineStyle)
+            try
             {
-                LineStyle lineStyle = (LineStyle)style;
-
-                if (lineStyle.CenterPen.Width <= 2 && lineStyle.InnerPen.Width <= 2 && lineStyle.OuterPen.Width <= 2)
+                if (style is LineStyle)
                 {
-                    lineStyle = (LineStyle)lineStyle.CloneDeep();
+                    LineStyle lineStyle = (LineStyle)style;
 
-                    lineStyle.CenterPen.Width += 1;
-                    lineStyle.InnerPen.Width += 1;
-                    lineStyle.OuterPen.Width += 1;
+                    if (lineStyle.CenterPen.Width <= 2 && lineStyle.InnerPen.Width <= 2 && lineStyle.OuterPen.Width <= 2)
+                    {
+                        lineStyle = (LineStyle)lineStyle.CloneDeep();
 
-                    LineShape line = GenerateStraightHorizontalLineShape(canvas.CurrentWorldExtent);
-                    line.Rotate(line.GetCenterPoint(), 270);
-                    lineStyle.Draw(new BaseShape[] { line }, canvas, new Collection<SimpleCandidate>(), new Collection<SimpleCandidate>());
+                        lineStyle.CenterPen.Width += 1;
+                        lineStyle.InnerPen.Width += 1;
+                        lineStyle.OuterPen.Width += 1;
+
+                        LineShape line = GenerateStraightHorizontalLineShape(canvas.CurrentWorldExtent);
+                        line.Rotate(line.GetCenterPoint(), 270);
+                        lineStyle.Draw(new BaseShape[] { line }, canvas, new Collection<SimpleCandidate>(), new Collection<SimpleCandidate>());
+                    }
+                    else
+                    {
+                        lineStyle.DrawSample(canvas, drawingRectangleF);
+                    }
                 }
-                else
+                else if (style is FontPointStyle)
                 {
-                    lineStyle.DrawSample(canvas, drawingRectangleF);
+                    var fontStyle = (FontPointStyle)style;
+                    var tmpsize = fontStyle.CharacterFont.Size;
+                    if (tmpsize > 26)
+                        fontStyle.CharacterFont = new GeoFont(fontStyle.CharacterFont.FontName, 26, fontStyle.CharacterFont.Style);
+                    fontStyle.DrawSample(canvas, drawingRectangleF);
+                    if (tmpsize > 26)
+                        fontStyle.CharacterFont = new GeoFont(fontStyle.CharacterFont.FontName, tmpsize, fontStyle.CharacterFont.Style);
+                }
+                else if (style is PointStyle)
+                {
+                    var pointStyle = (PointStyle)style;
+                    var tmpSymbolSize = pointStyle.SymbolSize;
+                    if (tmpSymbolSize > 22)
+                        pointStyle.SymbolSize = 22;
+                    pointStyle.DrawSample(canvas, drawingRectangleF);
+                    if (tmpSymbolSize > 22)
+                        pointStyle.SymbolSize = tmpSymbolSize;
+                }
+                else if (style != null)
+                {
+                    style.DrawSample(canvas, drawingRectangleF);
                 }
             }
-            else if (style is FontPointStyle)
+            catch
             {
-                var fontStyle = (FontPointStyle)style;
-                var tmpsize = fontStyle.CharacterFont.Size;
-                if (tmpsize > 26)
-                    fontStyle.CharacterFont = new GeoFont(fontStyle.CharacterFont.FontName, 26, fontStyle.CharacterFont.Style);
-                fontStyle.DrawSample(canvas, drawingRectangleF);
-                if (tmpsize > 26)
-                    fontStyle.CharacterFont = new GeoFont(fontStyle.CharacterFont.FontName, tmpsize, fontStyle.CharacterFont.Style);
-            }
-            else if (style is PointStyle)
-            {
-                var pointStyle = (PointStyle)style;
-                var tmpSymbolSize = pointStyle.SymbolSize;
-                if (tmpSymbolSize > 22)
-                    pointStyle.SymbolSize = 22;
-                pointStyle.DrawSample(canvas, drawingRectangleF);
-                if (tmpSymbolSize > 22)
-                    pointStyle.SymbolSize = tmpSymbolSize;
-            }
-            else if (style != null)
-            {
-                style.DrawSample(canvas, drawingRectangleF);
+                return;
             }
         }
 

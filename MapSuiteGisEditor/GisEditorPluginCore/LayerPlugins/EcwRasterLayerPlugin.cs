@@ -38,8 +38,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             LargeIcon = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/dataformats_ecw.png", UriKind.RelativeOrAbsolute));
             Index = LayerPluginOrder.EcwRasterFileLayerPlugin;
 
-            DataSourceResolveToolCore = new FileDataSourceResolveTool<EcwRasterLayer>(ExtensionFilter, 
-                l => l.PathFilename, 
+            DataSourceResolveToolCore = new FileDataSourceResolveTool<EcwRasterLayer>(ExtensionFilter,
+                l => l.PathFilename,
                 (l, newPathFilename) => l.PathFilename = newPathFilename);
         }
 
@@ -65,17 +65,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             DataSourceResolveTool.ResolveDataSource(layer);
         }
 
-        protected override RasterLayer GetRasterLayer(Uri uri, WorldFileInfo wInfo)
+        protected override RasterLayer GetRasterLayer(Uri uri)
         {
             EcwRasterLayer layer = null;
-            if (File.Exists(wInfo.WorldFilePath))
-            {
-                layer = new EcwRasterLayer(uri.LocalPath, wInfo.WorldFilePath);
-            }
-            else
-            {
-                layer = new EcwRasterLayer(uri.LocalPath);
-            }
+            layer = new EcwRasterLayer(uri.LocalPath);
 
             return layer;
         }

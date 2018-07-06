@@ -74,17 +74,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             DataSourceResolveTool.ResolveDataSource(layer);
         }
 
-        protected override RasterLayer GetRasterLayer(Uri uri, WorldFileInfo wInfo)
+        protected override RasterLayer GetRasterLayer(Uri uri)
         {
             RasterLayer layer = null;
-            if (File.Exists(wInfo.WorldFilePath))
-            {
-                layer = new NativeImageRasterLayer(uri.LocalPath, wInfo.WorldFilePath);
-            }
-            else if (wInfo.ImageExtent != null)
-            {
-                layer = new NativeImageRasterLayer(uri.LocalPath, wInfo.ImageExtent);
-            }
+            layer = new NativeImageRasterLayer(uri.LocalPath);
+
             return layer;
         }
     }
