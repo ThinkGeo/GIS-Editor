@@ -80,7 +80,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return layers;
         }
 
-        protected override RasterLayer GetRasterLayer(Uri uri, WorldFileInfo wInfo)
+        protected override RasterLayer GetRasterLayer(Uri uri)
         {
             WmsRasterLayer layer = null;
             WmsRasterLayerConfigWindow wmsWindow = new WmsRasterLayerConfigWindow();

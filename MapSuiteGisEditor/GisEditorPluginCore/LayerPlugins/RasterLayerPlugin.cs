@@ -60,8 +60,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             foreach (var uri in getLayersParameters.LayerUris)
             {
-                WorldFileInfo wInfo = GetWorldFileInfo(uri);
-                RasterLayer layer = GetRasterLayer(uri, wInfo);
+                RasterLayer layer = GetRasterLayer(uri);
 
                 if (layer != null)
                 {
@@ -93,35 +92,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return layers;
         }
 
-        protected abstract RasterLayer GetRasterLayer(Uri uri, WorldFileInfo wInfo);
-
-        private WorldFileInfo GetWorldFileInfo(Uri uri)
-        {
-            WorldFileInfo wInfo = new WorldFileInfo();
-            string worldFileName = GetWorldFileName(uri.LocalPath);
-
-            if (File.Exists(worldFileName))
-            {
-                wInfo.WorldFilePath = worldFileName;
-            }
-            else
-            {
-                if (RequireWorldFile)
-                {
-                    BoundingBoxWindow dialog = new BoundingBoxWindow();
-                    if (dialog.ShowDialog().GetValueOrDefault())
-                    {
-                        BoundingBoxWindowViewModel worldFileEntity = dialog.SelectedBoundingBox;
-                        RectangleShape bboxShape = new RectangleShape(worldFileEntity.Left, worldFileEntity.Top, worldFileEntity.Right, worldFileEntity.Bottom);
-                        wInfo.ImageExtent = bboxShape;
-                        wInfo.ImageWidth = worldFileEntity.Width;
-                        wInfo.ImageHeight = worldFileEntity.Height;
-                        WarningToSave(bboxShape, worldFileEntity.Width, worldFileEntity.Height, worldFileName);
-                    }
-                }
-            }
-            return wInfo;
-        }
+        protected abstract RasterLayer GetRasterLayer(Uri uri);
 
         private static string GetWorldFileName(string fileName)
         {

@@ -66,17 +66,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             DataSourceResolveTool.ResolveDataSource(layer);
         }
 
-        protected override RasterLayer GetRasterLayer(Uri uri, WorldFileInfo wInfo)
+        protected override RasterLayer GetRasterLayer(Uri uri)
         {
             GeoTiffRasterLayer layer = null;
-            if (File.Exists(wInfo.WorldFilePath))
-            {
-                layer = new GeoTiffRasterLayer(uri.LocalPath, wInfo.WorldFilePath);
-            }
-            else
-            {
-                layer = new GeoTiffRasterLayer(uri.LocalPath);
-            }
+            layer = new GeoTiffRasterLayer(uri.LocalPath);
 
             layer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             //if (Environment.OSVersion.Version.Major <= 5)
