@@ -26,7 +26,7 @@ using ThinkGeo.MapSuite.WpfDesktop.Extension;
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
     [Serializable]
-    public abstract class EcwRasterLayerPlugin : RasterLayerPlugin
+    public class EcwRasterLayerPlugin : RasterLayerPlugin
     {
         public EcwRasterLayerPlugin()
             : base()
