@@ -1,10 +1,18 @@
 # Map Suite GIS Editor
 
+### Description
 Map Suite GIS Editor for Windows lets you design stunning maps, perform geo-analysis and visualize your data. Powerful enough for professional GIS technicians yet accessible enough for nearly anyone who needs to create a map. The GIS Editor is designed as a single-application solution to all of your GIS visualization needs. Now it is open source and free. You can use the Map Suite GIS Editor to: - Quickly build maps using simple and intuitive tools - Visualize data, statistics and trends geographically - Design, style and label rich and detailed maps - Integrate data from a variety of sources, including Web Map Services - Draw right on the map, edit and create feature data - Make your maps publication-ready with titles, legends and annotations You can do all of this without wading through stacks of cryptic toolbars or scouring nested menus. The GIS Editor's simple ribbon bar interface puts its full complement of GIS tools at your fingertips in an easy-to-understand way. Wizards make short work of batch geoprocessing, geocoding and re-projection operations. And with the built-in Data Repository, you can keep all of your data close at hand, regardless of where it lives.
 
-![gis editor preview](https://github.com/ThinkGeo/MapSuiteGisEditor/raw/develop/Previews/mapsuite-giseditor-preview-1.jpg?raw=true)
-
 Looking for a customized GIS Editor or custom plug-ins? Please contact sales@thinkgeo.com for more details. 
+
+Please refer to [Wiki](http://wiki.thinkgeo.com/wiki/map_suite_desktop_for_wpf) for the details.
+
+![Screenshot](https://github.com/ThinkGeo/MapSuiteGisEditor/blob/master/Screenshot.gif)
+
+### Requirements
+This sample makes use of the following NuGet Packages
+
+[MapSuite 10.0.0](https://www.nuget.org/packages?q=ThinkGeo)
 
 ### FAQ
 - __Q: I downloaded the released exe, but it won't run on my machine.__  
