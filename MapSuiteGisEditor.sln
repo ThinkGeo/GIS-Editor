@@ -100,6 +100,7 @@ Global
 		{24EBC580-E02D-4D39-9F63-1912638E0F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24EBC580-E02D-4D39-9F63-1912638E0F28}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24EBC580-E02D-4D39-9F63-1912638E0F28}.Release|x86.ActiveCfg = Release|Any CPU
+		{24EBC580-E02D-4D39-9F63-1912638E0F28}.Release|x86.Build.0 = Release|Any CPU
 		{24EBC580-E02D-4D39-9F63-1912638E0F28}.RoutingFull|Any CPU.ActiveCfg = Release|Any CPU
 		{24EBC580-E02D-4D39-9F63-1912638E0F28}.RoutingFull|Any CPU.Build.0 = Release|Any CPU
 		{24EBC580-E02D-4D39-9F63-1912638E0F28}.RoutingFull|x86.ActiveCfg = Release|Any CPU
@@ -158,6 +159,7 @@ Global
 		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.Release|x86.Build.0 = Release|Any CPU
 		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.RoutingFull|Any CPU.ActiveCfg = Release|Any CPU
 		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.RoutingFull|Any CPU.Build.0 = Release|Any CPU
 		{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}.RoutingFull|x86.ActiveCfg = Release|Any CPU
@@ -216,6 +218,7 @@ Global
 		{3649268C-616C-4A13-B944-0F18DB0931BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3649268C-616C-4A13-B944-0F18DB0931BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3649268C-616C-4A13-B944-0F18DB0931BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{3649268C-616C-4A13-B944-0F18DB0931BD}.Release|x86.Build.0 = Release|Any CPU
 		{3649268C-616C-4A13-B944-0F18DB0931BD}.RoutingFull|Any CPU.ActiveCfg = Release|Any CPU
 		{3649268C-616C-4A13-B944-0F18DB0931BD}.RoutingFull|Any CPU.Build.0 = Release|Any CPU
 		{3649268C-616C-4A13-B944-0F18DB0931BD}.RoutingFull|x86.ActiveCfg = Release|Any CPU
@@ -430,5 +433,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6323B324-132E-423D-995D-C3FEE256679E}
 	EndGlobalSection
 EndGlobal
