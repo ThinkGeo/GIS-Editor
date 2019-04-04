@@ -209,7 +209,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             contentStringBuilder.AppendLine(@"</Placemark>");
         }
 
-        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, float rotateAngle)
+        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, float rotateAngle, DrawingTextAlignment drawingTextAlignment)
         {
             int id = 0;
             if (fillBrush != null)

@@ -121,7 +121,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             DrawScreenImageCore(image, centerXInScreen, centerYInScreen, image.GetWidth(), image.GetHeight(), drawingLevel, xOffset, yOffset, rotateAngle);
         }
 
-        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, float rotateAngle)
+        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, float rotateAngle, DrawingTextAlignment drawingTextAlignment)
         {
             List<ScreenPointF> screenPoints = new List<ScreenPointF>();
 
