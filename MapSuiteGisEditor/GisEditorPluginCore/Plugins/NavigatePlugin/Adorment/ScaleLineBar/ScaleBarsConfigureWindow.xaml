@@ -8,7 +8,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:tgLayers="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite"
-        xmlns:tgAdornmentLayers="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.AdornmentLayers"
+        xmlns:tgAdornmentLayers="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.Adornments"
         Title="{DynamicResource ScaleBarsConfigureWindowTitle}"
         ResizeMode="NoResize"
         Width="700"

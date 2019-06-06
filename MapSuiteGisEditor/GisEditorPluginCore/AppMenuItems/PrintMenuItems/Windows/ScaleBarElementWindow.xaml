@@ -1,7 +1,7 @@
 <Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ScaleBarElementWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:core="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.AdornmentLayers"
+        xmlns:core="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.Adornments"
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="{DynamicResource ResourceKey=ScaleBarElementWindowScaleBarTitle}"

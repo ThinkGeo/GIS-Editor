@@ -5,7 +5,7 @@
                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
                xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
                xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-               xmlns:tg="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop"
+               xmlns:tg="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop.Extension"
                xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
                Header="{DynamicResource BookmarkRibbonGroupHeader}">
     <r:RibbonGroup.GroupSizeDefinitions>
