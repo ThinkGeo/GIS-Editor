@@ -227,10 +227,10 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="ThinkGeo.Cloud.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.Cloud.Client.10.5.0\lib\net45\ThinkGeo.Cloud.Client.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.Cloud.Client.10.5.4\lib\net45\ThinkGeo.Cloud.Client.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.10.5.0\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.10.5.1\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Drawing.PdfGeoCanvas, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.10.5.0\lib\net45\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.dll</HintPath>
@@ -302,7 +302,7 @@
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NativeImage.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.NativeImage.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.NauticalCharts, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\lib\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Noaa, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Noaa.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Noaa.dll</HintPath>
@@ -353,7 +353,7 @@
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WorldMapKit.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.WorldMapKit.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.ProductCenter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.10.5.0\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.10.5.2\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.ClassBreak, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
@@ -395,7 +395,7 @@
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ZedGraph.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.ZedGraph.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Wpf, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDesktopForWpf-Standard.10.5.1\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDesktopForWpf-Standard.10.5.3\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -774,13 +774,13 @@
     <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets'))" />
     <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets'))" />
     <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.10.5.0\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.10.5.0\build\net45\ThinkGeo.MapSuite.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
   </Target>
   <Import Project="..\..\packages\MapSuiteDependency-GdalS57.10.5.0\build\net45\MapSuiteDependency-GdalS57.targets" Condition="Exists('..\..\packages\MapSuiteDependency-GdalS57.10.5.0\build\net45\MapSuiteDependency-GdalS57.targets')" />
   <Import Project="..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.5.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets" Condition="Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.5.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" />
@@ -788,13 +788,13 @@
   <Import Project="..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" />
   <Import Project="..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" />
   <Import Project="..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.10.5.0\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.10.5.0\build\net45\ThinkGeo.MapSuite.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
