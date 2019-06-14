@@ -507,7 +507,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 //    excludeFeatures.Add(item);
                 //}
 
-                editTargetLayer.FeatureIdsToExclude.Clear();
+                //editTargetLayer.FeatureIdsToExclude.Clear();
                 foreach (var item in newFeatureIds)
                 {
                     editTargetLayer.FeatureIdsToExclude.Add(item);

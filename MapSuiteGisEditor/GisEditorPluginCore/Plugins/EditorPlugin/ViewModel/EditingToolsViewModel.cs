@@ -1547,28 +1547,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void EditOverlay_FeatureTrackEnded(object sender, FeatureTrackEndedGisEditorEditInteractiveOverlayEventArgs e)
         {
-            for (int i = 0; i < editOverlay.EditShapesLayer.InternalFeatures.Count; i++)
-            {
-                Feature feature = editOverlay.EditShapesLayer.InternalFeatures[i];
-                if (!SelectedLayer.Value.FeatureIdsToExclude.Contains(feature.Id))
-                {
-                    editOverlay.EditShapesLayer.InternalFeatures.Remove(feature);
-                    i--;
-                }
-            }
-
-            SelectedLayer.Value.FeatureIdsToExclude.Clear();
             foreach (var item in e.SelectedFeatures)
             {
                 if (!editOverlay.EditShapesLayer.InternalFeatures.Contains(item.Id))
                 {
                     editOverlay.EditShapesLayer.InternalFeatures.Add(item.Id, item);
-                }
-
-                int id = 0;
-                if (int.TryParse(item.Id, NumberStyles.Any, CultureInfo.InvariantCulture, out id))
-                {
-                    SelectedLayer.Value.FeatureIdsToExclude.Add(item.Id);
                 }
             }
 
@@ -1586,18 +1569,33 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
             }
 
-            editOverlay.EditShapesLayer.InternalFeatures.Clear();
-            editOverlay.EditCandidatesLayer.InternalFeatures.Clear();
-
-            foreach (var item in allFeatures)
+            foreach (var item in e.SelectedFeatures)
             {
-                if (e.SelectedFeatures.Any(f => f.GetWellKnownText() == item.GetWellKnownText()))
+                if (!editOverlay.EditShapesLayer.InternalFeatures.Contains(item.Id))
                 {
                     editOverlay.EditShapesLayer.InternalFeatures.Add(item.Id, item);
                 }
+            }
+
+            editOverlay.EditShapesLayer.InternalFeatures.Clear();
+            editOverlay.EditCandidatesLayer.InternalFeatures.Clear();
+            SelectedLayer.Value.FeatureIdsToExclude.Clear();
+
+            foreach (var item in allFeatures)
+            {
+                if (e.SelectedFeatures.Any(f => f.Id == item.Id))
+                {
+                    editOverlay.EditShapesLayer.InternalFeatures.Add(item.Id, item);
+                    SelectedLayer.Value.FeatureIdsToExclude.Add(item.Id);
+                }
                 else
                 {
-                    editOverlay.EditCandidatesLayer.InternalFeatures.Add(item.Id, item);
+                    var selectedFeature = SelectedLayer.Value.FeatureSource.GetFeatureById(item.Id, ReturningColumnsType.NoColumns);
+                    if (selectedFeature.GetWellKnownText() != item.GetWellKnownText())
+                    {
+                        editOverlay.EditCandidatesLayer.InternalFeatures.Add(item.Id, item);
+                        SelectedLayer.Value.FeatureIdsToExclude.Add(item.Id);
+                    }
                 }
             }
 
@@ -1625,9 +1623,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (!targetFeatureLayer.IsOpen) targetFeatureLayer.Open();
 
-                    BackupFeatureIdsToExclude(targetFeatureLayer);
-                    targetFeatureLayer.FeatureIdsToExclude.Clear();
-
                     PointShape point = new PointShape(e.Arguments.WorldX, e.Arguments.WorldY);
 
                     Collection<Feature> selectedFeaturesInShapeLayer = new Collection<Feature>();
@@ -1653,7 +1648,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
 
                     FindOutNearestFeatures(ref selectedFeaturesInShapeLayer, editOverlay.EditShapesLayer, point);
-                    RestoreFeatureIdsToExclude(targetFeatureLayer);
                     if (selectedFeaturesInTargetLayer.Count > 0 || selectedFeaturesInShapeLayer.Count > 0)
                     {
                         Collection<Feature> selectedFeatures = new Collection<Feature>();
@@ -1670,6 +1664,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             OpenOrRefreshChooseMultipleEditFeaturesWindow(selectedFeaturesInTargetLayer, searchingArea, selectedFeaturesInShapeLayer, true);
                             return;
                         }
+
+                        foreach (var feature in selectedFeaturesInShapeLayer)
+                            selectedFeatures.Add(feature);
 
                         SelectOrUnselectAFeature(targetFeatureLayer, selectedFeatures);
                         if (selectedFeatures.Count > 0)
@@ -1954,6 +1951,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
             }
             editOverlay.EditShapesLayer.BuildIndex();
+            editOverlay.EditCandidatesLayer.BuildIndex();
         }
 
         private void RefreshTargetLayerList()
@@ -2301,13 +2299,22 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (!editOverlay.NewFeatureIds.Contains(feature.Id))
                     {
-                        targetFeatureLayer.EditTools.Update(feature.GetShape(), feature.ColumnValues);
+                        targetFeatureLayer.EditTools.Update(feature.GetShape());
                         if (targetFeatureLayer.FeatureIdsToExclude.Contains(feature.Id))
-                        {
                             targetFeatureLayer.FeatureIdsToExclude.Remove(feature.Id);
-                        }
                     }
                 }
+
+                foreach (var feature in editOverlay.EditCandidatesLayer.InternalFeatures)
+                {
+                    if (!editOverlay.NewFeatureIds.Contains(feature.Id))
+                    {
+                        targetFeatureLayer.EditTools.Update(feature.GetShape());
+                        if (targetFeatureLayer.FeatureIdsToExclude.Contains(feature.Id))
+                            targetFeatureLayer.FeatureIdsToExclude.Remove(feature.Id);
+                    }
+                }
+
                 TransactionResult transactionResult1 = targetFeatureLayer.EditTools.CommitTransaction();
 
                 if (!targetFeatureLayer.IsOpen) targetFeatureLayer.Open();
@@ -2321,27 +2328,50 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         if (shapeLayer != null)
                         {
                             bool result = CheckShapeTypeIsEqual(shapeLayer.GetShapeFileType(), newFeature.GetWellKnownType());
-                            if (result)
-                            {
-                                targetFeatureLayer.EditTools.Add(newFeature);
-                            }
+                            if (result) targetFeatureLayer.EditTools.Add(newFeature);
                         }
                         else
-                        {
                             targetFeatureLayer.EditTools.Add(newFeature);
-                        }
                     }
-                    IEnumerable<string> columnNames = targetFeatureLayer.FeatureSource.GetColumns().Select(c => c.ColumnName);
-                    editOverlay.EditShapesLayer.Open();
-                    foreach (var column in editOverlay.EditShapesLayer.Columns)
-                    {
-                        if (!columnNames.Any(c => c == column.ColumnName))
-                        {
-                            targetFeatureLayer.FeatureSource.AddColumn(column);
-                        }
-                    }
-                    editOverlay.EditShapesLayer.Close();
                 }
+
+                foreach (var feature in editOverlay.EditCandidatesLayer.InternalFeatures)
+                {
+                    if (editOverlay.NewFeatureIds.Contains(feature.Id))
+                    {
+                        var newFeature = feature;//.MakeValidUsingSqlTypes();
+                        ShapeFileFeatureLayer shapeLayer = targetFeatureLayer as ShapeFileFeatureLayer;
+                        if (shapeLayer != null)
+                        {
+                            bool result = CheckShapeTypeIsEqual(shapeLayer.GetShapeFileType(), newFeature.GetWellKnownType());
+                            if (result) targetFeatureLayer.EditTools.Add(newFeature);
+                        }
+                        else
+                            targetFeatureLayer.EditTools.Add(newFeature);
+                    }
+                }
+
+                IEnumerable<string> columnNames = targetFeatureLayer.FeatureSource.GetColumns().Select(c => c.ColumnName);
+                editOverlay.EditShapesLayer.Open();
+                foreach (var column in editOverlay.EditShapesLayer.Columns)
+                {
+                    if (!columnNames.Any(c => c == column.ColumnName))
+                    {
+                        targetFeatureLayer.FeatureSource.AddColumn(column);
+                    }
+                }
+                editOverlay.EditShapesLayer.Close();
+
+                editOverlay.EditCandidatesLayer.Open();
+                foreach (var column in editOverlay.EditCandidatesLayer.Columns)
+                {
+                    if (!columnNames.Any(c => c == column.ColumnName) && column.ColumnName != "state")
+                    {
+                        targetFeatureLayer.FeatureSource.AddColumn(column);
+                    }
+                }
+                editOverlay.EditCandidatesLayer.Close();
+
                 editOverlay.NewFeatureIds.Clear();
 
                 if (targetFeatureLayer.FeatureIdsToExclude.Count != 0)
