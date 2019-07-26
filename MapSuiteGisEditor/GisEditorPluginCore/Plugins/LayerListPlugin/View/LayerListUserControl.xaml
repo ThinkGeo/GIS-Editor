@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <sys:Boolean x:Key="AddNewLayersCommandParameter">true</sys:Boolean>
     </UserControl.Resources>
-    <ScrollViewer x:Name="scrollViewer" ScrollViewer.VerticalScrollBarVisibility="Auto">
+    <ScrollViewer x:Name="scrollViewer" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         <Grid x:Name="mainGrid" x:FieldModifier="public"
               Background="White" >
             <Grid.ContextMenu>
