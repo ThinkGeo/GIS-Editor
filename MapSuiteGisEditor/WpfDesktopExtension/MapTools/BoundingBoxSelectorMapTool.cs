@@ -185,7 +185,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private void InitializePosition()
         {
             Grid parentGrid = (Grid)Parent;
-            Margin = new Thickness(parentGrid.ActualWidth * .5 - Width * .5, parentGrid.ActualHeight * .5 - Height * .5, 0, 0);
+            //Fixed a render issue.The ActualWith is the rendered width of the element. The ActualWith is not matched with the Width, 
+            //beacause the ActualWit is the rounded value of the Width, which causes some contents missing.
+            double left = Math.Round(parentGrid.ActualWidth * .5 - Width * .5);
+            double top = Math.Round(parentGrid.ActualHeight * .5 - Height * .5);
+            Margin = new Thickness(left, top, 0, 0);
         }
 
         private void InitializeComponents()
