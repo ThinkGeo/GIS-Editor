@@ -82,7 +82,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ciloci.Flee, Version=0.9.26.0, Culture=neutral, PublicKeyToken=c8526a021ef298ed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-CilociFlee.10.5.0\lib\net45\Ciloci.Flee.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-CilociFlee.10.6.0\lib\net45\Ciloci.Flee.dll</HintPath>
     </Reference>
     <Reference Include="CSScriptLibrary, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -90,7 +90,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.5.0\lib\net45\GeoAPI.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.6.0\lib\net45\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -112,36 +112,36 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.5.0\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.6.0\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.5.0\lib\net45\NetTopologySuite.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.6.0\lib\net45\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NewtonsoftJson.10.5.0\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-NewtonsoftJson.10.6.0\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql, Version=3.0.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-Npgsql.10.5.0\lib\net45\Npgsql.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-Npgsql.10.6.0\lib\net45\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.5.0\lib\net20\PdfSharp.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.6.0\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.5.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.6.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.5.0\lib\net45\PowerCollections.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.6.0\lib\net45\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\lib\net45\SkiaSharp.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\lib\net45\SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\lib\net451\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\lib\net451\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -150,175 +150,175 @@
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="ThinkGeo.Cloud.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.Cloud.Client.10.5.4\lib\net45\ThinkGeo.Cloud.Client.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.Cloud.Client.10.6.0\lib\net45\ThinkGeo.Cloud.Client.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.10.5.1\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.10.6.0\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Drawing.PdfGeoCanvas, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.10.5.0\lib\net45\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.10.6.0\lib\net45\ThinkGeo.MapSuite.Drawing.PdfGeoCanvas.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Adornments, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Adornments.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Adornments.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Adornments.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Adornments.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Background, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Background.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Background.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Background.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Background.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.BingMaps, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.BingMaps.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.BingMaps.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.BingMaps.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.BingMaps.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.CloudFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.CloudFile.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.CloudFile.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.CloudFile.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.CloudFile.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Delimited, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Delimited.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Delimited.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Delimited.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Delimited.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Ecw, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Ecw.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Ecw.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.FileGeoDatabase, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.GeoTiff, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.GeoTiff.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.GeoTiff.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.GoogleMaps, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.GoogleMaps.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.GoogleMaps.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.GoogleMaps.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.GoogleMaps.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Gpx, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Gpx.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Gpx.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Gpx.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Gpx.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Graticule, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Graticule.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Graticule.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Graticule.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Graticule.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Grids, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Grids.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Grids.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Grids.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Grids.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Group, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Group.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Group.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Group.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Group.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Heat, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Heat.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Heat.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Heat.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Heat.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.IsoLine, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.IsoLine.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.IsoLine.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.IsoLine.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.IsoLine.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Jpeg2000, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Kml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Kml.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Kml.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Kml.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Kml.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.MapShape, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MapShape.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.MapShape.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MapShape.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.MapShape.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.MrSid, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.MrSid.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.MrSid.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.MsSql, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MsSql.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.MsSql.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MsSql.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.MsSql.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.MultipleFeatureSource, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MultipleFeatureSource.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.MultipleFeatureSource.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.MultipleFeatureSource.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.MultipleFeatureSource.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.NativeImage, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NativeImage.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.NativeImage.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NativeImage.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.NativeImage.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.NauticalCharts, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\lib\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Noaa, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Noaa.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Noaa.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Noaa.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Noaa.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.OpenStreetMap, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.OpenStreetMap.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.OpenStreetMap.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.OpenStreetMap.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.OpenStreetMap.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.PostgreSql, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.PostgreSql.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.PostgreSql.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.PostgreSql.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.PostgreSql.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Printers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Printers.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Printers.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Printers.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Printers.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Restriction, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Restriction.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Restriction.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Restriction.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Restriction.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.ShapeFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.ShapeFile.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.ShapeFile.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.ShapeFile.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.ShapeFile.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Sqlite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Sqlite.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Sqlite.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Sqlite.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Tab, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Tab.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Tab.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Tab.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Tab.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.TiledWms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TiledWms.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.TiledWms.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TiledWms.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.TiledWms.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.TinyGeo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TinyGeo.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.TinyGeo.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TinyGeo.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.TinyGeo.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.TobinBas, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TobinBas.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.TobinBas.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TobinBas.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.TobinBas.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Wfs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wfs.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Wfs.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wfs.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Wfs.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.WkbFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WkbFile.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.WkbFile.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WkbFile.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.WkbFile.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Wms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wms.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Wms.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wms.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Wms.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.Wmts, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wmts.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.Wmts.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.Wmts.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.Wmts.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Layers.WorldMapKit, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WorldMapKit.10.5.0\lib\net45\ThinkGeo.MapSuite.Layers.WorldMapKit.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.WorldMapKit.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.WorldMapKit.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.ProductCenter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.10.5.2\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.10.6.0\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.ClassBreak, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.ClusterPoint, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClusterPoint.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.ClusterPoint.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClusterPoint.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.ClusterPoint.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.Composite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Composite.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.Composite.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Composite.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Composite.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.DotDensity, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.DotDensity.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.DotDensity.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.DotDensity.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.DotDensity.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.Filter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Filter.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.Filter.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Filter.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.FleeBoolean, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.FleeBoolean.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.FleeBoolean.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.FleeBoolean.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.FleeBoolean.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.Gradient, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Gradient.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.Gradient.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Gradient.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Gradient.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.Icon, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Icon.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.Icon.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Icon.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Icon.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.IconValue, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.IconValue.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.IconValue.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.IconValue.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.IconValue.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.Regex, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Regex.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.Regex.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Regex.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Regex.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.Value, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Value.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.Value.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Value.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Value.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.WellPoint, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.WellPoint.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.WellPoint.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.WellPoint.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.WellPoint.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Styles.ZedGraph, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ZedGraph.10.5.0\lib\net45\ThinkGeo.MapSuite.Styles.ZedGraph.dll</HintPath>
+      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ZedGraph.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.ZedGraph.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Wpf, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDesktopForWpf-Standard.10.5.3\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDesktopForWpf-Standard.10.6.0\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -479,39 +479,39 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.5.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets" Condition="Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.5.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets" Condition="Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.5.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.5.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-GdalS57.10.5.0\build\net45\MapSuiteDependency-GdalS57.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-GdalS57.10.5.0\build\net45\MapSuiteDependency-GdalS57.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.5.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.5.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.10.5.0\build\net45\MapSuiteDependency-LibGeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LibGeoTiff.10.5.0\build\net45\MapSuiteDependency-LibGeoTiff.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets'))" />
+    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.10.6.0\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.10.6.0\build\net45\ThinkGeo.MapSuite.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
   </Target>
-  <Import Project="..\..\packages\MapSuiteDependency-GdalS57.10.5.0\build\net45\MapSuiteDependency-GdalS57.targets" Condition="Exists('..\..\packages\MapSuiteDependency-GdalS57.10.5.0\build\net45\MapSuiteDependency-GdalS57.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.5.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets" Condition="Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.5.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-LibGeoTiff.10.5.0\build\net45\MapSuiteDependency-LibGeoTiff.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.10.5.0\build\net45\MapSuiteDependency-LibGeoTiff.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.5.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.5.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.5.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.5.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.10.5.1\build\net45\ThinkGeo.MapSuite.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.5.1\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets" Condition="Exists('..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets" Condition="Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" />
+  <Import Project="..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.10.6.0\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.10.6.0\build\net45\ThinkGeo.MapSuite.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
