@@ -250,7 +250,7 @@
       <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Value.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Value.dll</HintPath>
     </Reference>
     <Reference Include="ThinkGeo.MapSuite.Wpf, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDesktopForWpf-BareBone.10.6.8\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
+      <HintPath>..\..\packages\MapSuiteDesktopForWpf-BareBone.10.6.9\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
