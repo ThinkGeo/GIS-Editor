@@ -19,7 +19,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -80,7 +80,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         ///  
         ///  private static bool Match(Feature f)
         ///  {
-        ///     return [expression] [rest of string was truncated]&quot;;.
+        ///      [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CSharpFilterCondition {
             get {
@@ -108,8 +108,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         ///  }
         ///  
         ///  private static bool Match(Feature feature)
-        ///  {
-        ///       [expressi [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CSharpFilterFunction {
             get {
@@ -136,8 +135,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         ///        {
         ///            count++;
         ///            if (count == 12)
-        ///            {
-        ///                ti [rest of string was truncated]&quot;;.
+        ///            {        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CSharpSampleCode {
             get {
@@ -252,8 +250,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         ///		rescue
         ///
         ///		end
-        ///	end
-        ///	return matc [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RubyFilterCondition {
             get {
@@ -268,7 +265,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         ///    [expression]
         /// end                                                                                                                                                              
         ///def getMatchFeatures(featuresToMatch)
-        ///	matchFeatures = System::Collections::ObjectModel::Collecti [rest of string was truncated]&quot;;.
+        ///	matchFeatures = System::Collections::ObjectModel::Co [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RubyFilterFunction {
             get {

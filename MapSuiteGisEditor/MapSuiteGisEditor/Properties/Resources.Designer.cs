@@ -19,7 +19,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -69,8 +69,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Properties {
         ///         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}
         ///         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}
         ///         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }
-        ///         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }
-        ///     [rest of string was truncated]&quot;;.
+        ///         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ErrorTemplate {
             get {
@@ -94,8 +93,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Properties {
         ///            color: #444;
         ///        }
         ///        h1
-        ///        {
-        ///            fon [rest of string was truncated]&quot;;.
+        ///        {        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WelcomePage {
             get {
