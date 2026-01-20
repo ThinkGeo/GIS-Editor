@@ -24,8 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -144,7 +143,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 Validators.CheckFileExists(CsvPathFileName, "Csv file not found.");
                 Validators.CheckFileExists(idsPathFileName, "Index file not found.");
                 Validators.CheckFileExists(idxPathFileName, "Index file not found.");
-                OpenRtree(idxPathFileName, GeoFileReadWriteMode.Read);
+                OpenRtree(idxPathFileName, FileAccess.Read);
             }
 
             configurationPathFileName = CsvPathFileName + ".config";
@@ -179,9 +178,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             configurationInformation = null;
         }
 
-        protected override int GetCountCore()
+        protected override long GetCountCore()
         {
-            int index = -1;
+            long index = -1;
             using (StreamReader sr = new StreamReader(CsvPathFileName, Encoding))
             {
                 while (!sr.EndOfStream)
@@ -217,13 +216,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         protected override Collection<FeatureSourceColumn> GetColumnsCore()
         {
             Collection<FeatureSourceColumn> result = new Collection<FeatureSourceColumn>();
-            using (var csvReader = CreateCsvReader())
-            {
-                foreach (var headerValue in csvReader.HeaderRecord.Values)
-                {
-                    result.Add(new FeatureSourceColumn(headerValue, DbfColumnType.Character.ToString(), 255));
-                }
-            }
+            //using (var csvReader = CreateCsvReader())
+            //{
+            //    foreach (var headerValue in csvReader.HeaderRecord.Values)
+            //    {
+            //        result.Add(new FeatureSourceColumn(headerValue, DbfColumnType.Character.ToString(), 255));
+            //    }
+            //}
 
             return result;
         }
@@ -310,7 +309,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return features;
         }
 
-        private void OpenRtree(string idxPathFileName, GeoFileReadWriteMode rTreeFileAccess)
+        private void OpenRtree(string idxPathFileName, FileAccess rTreeFileAccess)
         {
             if (RequireIndex)
             {
@@ -810,7 +809,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     RtreeSpatialIndex.CreatePointSpatialIndex(idxPathFileName, RtreeSpatialIndexPageSize.EightKilobytes, RtreeSpatialIndexDataFormat.Float);
                 }
 
-                using (RtreeSpatialIndex tempRTree = new RtreeSpatialIndex(idxPathFileName, GeoFileReadWriteMode.ReadWrite))
+                using (RtreeSpatialIndex tempRTree = new RtreeSpatialIndex(idxPathFileName, FileAccess.ReadWrite))
                 {
                     tempRTree.Open();
                     bool isCanceled = false;

@@ -21,7 +21,7 @@ using Microsoft.SqlServer.Types;
 using System.Collections.ObjectModel;
 using System.Data.SqlTypes;
 using System.Linq;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -36,7 +36,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             foreach (var item in lines)
             {
                 //MultipolygonShape multipolygon = item.Buffer(0.2, 8, BufferCapType.Square, GeographyUnit.DecimalDegree, DistanceUnit.Meter);
-                MultipolygonShape multipolygon = SqlTypesGeometryHelper.Buffer(item, 0.2, 8, BufferCapType.Square, GeographyUnit.DecimalDegree, DistanceUnit.Meter);
+                MultipolygonShape multipolygon = item.Buffer(0.2, 8, BufferCapType.Square, GeographyUnit.DecimalDegree, DistanceUnit.Meter);
                 SqlGeometry multipolygonGeom = SqlGeometry.STGeomFromWKB(new SqlBytes(multipolygon.GetWellKnownBinary()), 0);
                 if (!multipolygonGeom.STIsValid()) multipolygonGeom = multipolygonGeom.MakeValid();
 

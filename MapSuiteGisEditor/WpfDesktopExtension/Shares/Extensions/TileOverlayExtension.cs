@@ -20,9 +20,8 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -45,23 +44,24 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             get { return TimeSpan.FromMilliseconds(requestRefreshBufferTimeInMillisecond); }
         }
 
-        public static void RefreshWithBufferSettings(this Overlay overlay)
+        //public static void RefreshWithBufferSettings(this Overlay overlay)
+        //{
+        //    overlay.Refresh(TimeSpan.FromMilliseconds(RefreshBufferTimeInMillisecond), RequestDrawingBufferTimeType.ResetDelay);
+        //}
+
+        public static async Task Invalidate(this TileOverlay overlay)
         {
-            overlay.Refresh(TimeSpan.FromMilliseconds(RefreshBufferTimeInMillisecond), RequestDrawingBufferTimeType.ResetDelay);
+            await Invalidate(overlay, true);
         }
 
-        public static void Invalidate(this TileOverlay overlay)
-        {
-            Invalidate(overlay, true);
-        }
-
-        public static void Invalidate(this TileOverlay overlay, bool delay)
+        public static async Task Invalidate(this TileOverlay overlay, bool delay)
         {
             if (overlay.TileCache != null) overlay.RefreshCache();
             if (overlay.MapArguments != null)
             {
-                if (delay) overlay.RefreshWithBufferSettings();
-                else overlay.Refresh();
+                //if (delay) overlay.RefreshWithBufferSettings();
+                //else 
+                    await overlay.RefreshAsync();
             }
         }
 
@@ -85,7 +85,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             string cacheId = string.Empty;
             string cacheFolder = string.Empty;
             bool needRefresh = overlay.TileCache == null;
-            FileBitmapTileCache tileCache = null;
+            FileRasterTileCache tileCache = null;
 
             if (bingOverlay != null)
             {
@@ -100,14 +100,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
             else if (wmkOverlay != null)
             {
-                //cacheId = wmkOverlay.Projection.ToString();
-                cacheId = GetDefaultCacheId(wmkOverlay.LayerType, wmkOverlay.Projection, wmkOverlay.MapType);
-                string layerType = wmkOverlay.LayerType.ToString();
-                if (layerType == Layers.WorldMapKitLayerType.Default.ToString())
-                {
-                    layerType = Layers.WorldMapKitLayerType.OSMWorldMapKitLayer.ToString();
-                }
-                cacheFolder = Path.Combine(TemporaryPath, layerType);
+                // ThinkGeo v14+: this project maps the legacy WorldMapKit overlay to
+                // OpenStreetMapOverlay for compatibility. We therefore cache it the same
+                // way we cache OSM tiles.
+                cacheId = "SphereMercator";
+                cacheFolder = Path.Combine(TemporaryPath, "WorldMapKit");
                 needRefresh = true;
 
                 if (enabled) tileCache = GetTileCache(overlay, cacheFolder, cacheId);
@@ -134,12 +131,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             if (needRefresh)
             {
-                BitmapTileCache tempTileCache = overlay.TileCache as BitmapTileCache;
+                RasterTileCache tempTileCache = overlay.TileCache as RasterTileCache;
                 if (!overlay.IsBase && tempTileCache != null)
                 {
                     Task.Factory.StartNew(cache =>
                     {
-                        BitmapTileCache removingCache = (BitmapTileCache)cache;
+                        RasterTileCache removingCache = (RasterTileCache)cache;
                         lock (removingCache)
                         {
                             try { removingCache.ClearCache(); }
@@ -150,58 +147,49 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private static string GetDefaultCacheId(Layers.WorldMapKitLayerType layerType, Layers.WorldMapKitProjection projection, Layers.WorldMapKitMapType mapType)
+        private static FileRasterTileCache GetTileCache(TileOverlay overlay, string cacheDirectory, string cacheId)
         {
-            Layers.WorldMapKitLayerType layerTypeTemp = layerType == Layers.WorldMapKitLayerType.Default ? Layers.WorldMapKitLayerType.OSMWorldMapKitLayer : layerType;
+            FileRasterTileCache newCache = new FileRasterTileCache(cacheDirectory, cacheId);
+            //if (overlay.MapArguments != null)
+            //{
+            //    newCache.TileMatrix.BoundingBoxUnit = overlay.MapArguments.MapUnit;
+            //}
 
-            string cacheIdFormat = projection == Layers.WorldMapKitProjection.SphericalMercator ? "{0}_Projected_{1}" : "{0}_{1}";
-
-            return string.Format(cacheIdFormat, layerTypeTemp.ToString("g"), mapType);
-        }
-
-        private static FileBitmapTileCache GetTileCache(TileOverlay overlay, string cacheDirectory, string cacheId)
-        {
-            FileBitmapTileCache newCache = new FileBitmapTileCache(cacheDirectory, cacheId);
-            if (overlay.MapArguments != null)
-            {
-                newCache.TileMatrix.BoundingBoxUnit = overlay.MapArguments.MapUnit;
-            }
-
-            if (newCache != null)
-            {
-                newCache.TileMatrix.TileHeight = overlay.TileHeight;
-                newCache.TileMatrix.TileWidth = overlay.TileWidth;
-            }
+            //if (newCache != null)
+            //{
+            //    newCache.TileMatrix.TileHeight = overlay.TileHeight;
+            //    newCache.TileMatrix.TileWidth = overlay.TileWidth;
+            //}
 
             return newCache;
         }
 
         public static void RefreshCache(this TileOverlay overlay, bool enabled, string cacheId, string cacheDirectory)
         {
-            BitmapTileCache tempTileCache = overlay.TileCache as BitmapTileCache;
+            RasterTileCache tempTileCache = overlay.TileCache as RasterTileCache;
 
-            FileBitmapTileCache newCache = null;
+            FileRasterTileCache newCache = null;
             if (enabled)
             {
-                newCache = new FileBitmapTileCache(cacheDirectory, cacheId);
+                newCache = new FileRasterTileCache(cacheDirectory, cacheId);
                 if (overlay.MapArguments != null)
                 {
-                    newCache.TileMatrix.BoundingBoxUnit = overlay.MapArguments.MapUnit;
+              //      newCache.TileMatrix.BoundingBoxUnit = overlay.MapArguments.MapUnit;
                 }
             }
 
-            if (newCache != null)
-            {
-                newCache.TileMatrix.TileHeight = overlay.TileHeight;
-                newCache.TileMatrix.TileWidth = overlay.TileWidth;
-            }
+            //if (newCache != null)
+            //{
+            //    newCache.TileMatrix.TileHeight = overlay.TileHeight;
+            //    newCache.TileMatrix.TileWidth = overlay.TileWidth;
+            //}
 
             overlay.TileCache = newCache;
-            if (!overlay.IsBase && tempTileCache != null)
+            if (tempTileCache != null)
             {
                 Task.Factory.StartNew(cache =>
                 {
-                    BitmapTileCache removingCache = (BitmapTileCache)cache;
+                    RasterTileCache removingCache = (RasterTileCache)cache;
                     lock (removingCache)
                     {
                         try { removingCache.ClearCache(); }
@@ -213,14 +201,14 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public static void ClearCaches(this TileOverlay overlay, RectangleShape extent)
         {
-            BitmapTileCache tileCache = overlay.TileCache;
+            RasterTileCache tileCache = overlay.TileCache;
             if (tileCache != null)
             {
                 lock (tileCache)
                 {
                     try
                     {
-                        tileCache.DeleteTiles(extent);
+                        //tileCache.DeleteTiles(extent);
                     }
                     catch { }
                 }
@@ -229,7 +217,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public static void ClearCaches(this TileOverlay overlay)
         {
-            BitmapTileCache tileCache = overlay.TileCache;
+            RasterTileCache tileCache = overlay.TileCache;
             if (tileCache != null)
             {
                 lock (tileCache)
@@ -245,7 +233,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public static void OpenCacheDirectory(this TileOverlay overlay)
         {
-            FileBitmapTileCache tileCache = overlay.TileCache as FileBitmapTileCache;
+            FileRasterTileCache tileCache = overlay.TileCache as FileRasterTileCache;
             if (tileCache != null)
             {
                 if (Directory.Exists(tileCache.CacheDirectory))
@@ -255,7 +243,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        public static bool CacheDirectoryExist(FileBitmapTileCache tileCache)
+        public static bool CacheDirectoryExist(FileRasterTileCache tileCache)
         {
             bool isExist = false;
             if (tileCache != null)

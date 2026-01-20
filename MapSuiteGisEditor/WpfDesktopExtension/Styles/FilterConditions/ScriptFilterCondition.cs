@@ -24,8 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -54,11 +53,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
             else
             {
-                return GetMatchingFeatures(GetFeature(feature)).Count > 0;
+                return GetMatchingFeatures(GetFeature(feature)).Count() > 0;
             }
         }
 
-        protected override Collection<Feature> GetMatchingFeaturesCore(IEnumerable<Feature> features)
+        protected override IEnumerable<Feature> GetMatchingFeaturesCore(IEnumerable<Feature> features)
         {
             var resultFeatures = GetFeaturesByScript(features);
             return new Collection<Feature>(resultFeatures.AsParallel().Where(f => IsMatchCore(f)).ToList());

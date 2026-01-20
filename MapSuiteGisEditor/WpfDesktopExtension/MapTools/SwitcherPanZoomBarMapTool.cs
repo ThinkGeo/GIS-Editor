@@ -24,9 +24,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -139,11 +138,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                     if (rectangles.Count != 0)
                     {
-                        RectangleShape targetExtent = OnGlobeButtonClick(ExtentHelper.GetBoundingBoxOfItems(rectangles));
+                        RectangleShape targetExtent = MapUtil.GetBoundingBoxOfItems(rectangles);
                         if (targetExtent != null)
                         {
                             CurrentMap.CurrentExtent = targetExtent;
-                            CurrentMap.Refresh();
+                            _ = CurrentMap.RefreshAsync();
                         }
                     }
                 }

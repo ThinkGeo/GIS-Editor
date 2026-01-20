@@ -19,9 +19,8 @@
 
 using System;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -44,7 +43,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             ZoomToExtentAutomatically = false;
             TargetLayerOverlayType = TargetLayerOverlayType.Static;
             DrawingQuality = DrawingQuality.HighQuality;
-            TileType = TileType.HybridTile;
+            TileType = TileType.PreloadDataMultiTile;
         }
 
         public string Proj4ProjectionParameters

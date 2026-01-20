@@ -23,11 +23,8 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Portable;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite
 {
@@ -83,12 +80,13 @@ namespace ThinkGeo.MapSuite
         /// <summary>Create a new instance of the <strong>MapEngine</strong>.</summary>
         public MapEngine()
         {
-            backgroundFillBrush = new GeoSolidBrush(GeoColor.StandardColors.Transparent);
+            backgroundFillBrush = new GeoSolidBrush(GeoColors.Transparent);
             labeledFeaturesInLayers = new Collection<SimpleCandidate>();
             staticLayers = new GeoCollection<Layer>();
             dynamicLayers = new GeoCollection<Layer>();
             adornmentLayers = new GeoCollection<AdornmentLayer>();
-            canvas = GeoCanvas.CreatePlatformGeoCanvas();
+            //canvas = GeoCanvas.CreatePlatformGeoCanvas();
+            canvas = new SkiaGeoCanvas();
             currentExtent = new RectangleShape();
         }
 
@@ -407,7 +405,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.GetDrawingExtent(worldExtent, screenWidth, screenHeight);
+            return MapUtil.GetDrawingExtent(worldExtent, screenWidth, screenHeight);
         }
 
         //  This function allows you to open all of the layers (either static or dynamic)
@@ -477,7 +475,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.CenterAt(worldExtent, worldPoint, screenWidth, screenHeight);
+            return MapUtil.CenterAt(worldExtent, worldPoint, screenWidth, screenHeight);
         }
 
         /// <summary>This is a function that allows you to pass a world point to center on and a height
@@ -517,7 +515,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.CenterAt(worldExtent, centerFeature, screenWidth, screenHeight);
+            return MapUtil.CenterAt(worldExtent, centerFeature, screenWidth, screenHeight);
         }
 
         /// <summary>This is a function that allows you to pass in a feature to center on, as well as a height
@@ -556,7 +554,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.CenterAt(worldExtent, screenX, screenY, screenWidth, screenHeight);
+            return MapUtil.CenterAt(worldExtent, screenX, screenY, screenWidth, screenHeight);
         }
 
         /// <summary>This is a function that allows you to pass a screen point to center on and a height
@@ -594,7 +592,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.GetScreenDistanceBetweenTwoWorldPoints(worldExtent, worldPoint1, worldPoint2, screenWidth, screenHeight);
+            return MapUtil.GetScreenDistanceBetweenTwoWorldPoints(worldExtent, worldPoint1, worldPoint2, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns the number of pixels between two world points using the CurrentExtent as reference.</summary>
@@ -645,7 +643,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.GetScreenDistanceBetweenTwoWorldPoints(worldExtent, worldPointFeature1, worldPointFeature2, screenWidth, screenHeight);
+            return MapUtil.GetScreenDistanceBetweenTwoWorldPoints(worldExtent, worldPointFeature1, worldPointFeature2, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns the distance in world units between two screen points.</summary>
@@ -667,7 +665,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckGeographyUnitIsValid(worldExtentUnit, "worldExtentUnit");
             ValidatorHelper.CheckDistanceUnitIsValid(distanceUnit, "distanceUnit");
 
-            return ExtentHelper.GetWorldDistanceBetweenTwoScreenPoints(worldExtent, screenPoint1, screenPoint2, screenWidth, screenHeight, worldExtentUnit, distanceUnit);
+            return MapUtil.GetWorldDistanceBetweenTwoScreenPoints(worldExtent, screenPoint1, screenPoint2, screenWidth, screenHeight, worldExtentUnit, distanceUnit);
         }
 
         /// <summary>This method returns the distance in world units between two screen points by using the CurrentExtent as a reference.</summary>
@@ -710,7 +708,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckGeographyUnitIsValid(worldExtentUnit, "worldExtentUnit");
             ValidatorHelper.CheckDistanceUnitIsValid(distanceUnit, "distanceUnit");
 
-            return ExtentHelper.GetWorldDistanceBetweenTwoScreenPoints(worldExtent, screenPoint1X, screenPoint1Y, screenPoint2X, screenPoint2Y, screenWidth, screenHeight, worldExtentUnit, distanceUnit);
+            return MapUtil.GetWorldDistanceBetweenTwoScreenPoints(worldExtent, screenPoint1X, screenPoint1Y, screenPoint2X, screenPoint2Y, screenWidth, screenHeight, worldExtentUnit, distanceUnit);
         }
 
         /// <summary>Get the current Scale responding to the <strong>CurrentExtent</strong>.</summary>
@@ -748,7 +746,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckGeographyUnitIsValid(mapUnit, "mapUnit");
 
-            return ExtentHelper.GetScale(worldExtent, screenWidth, mapUnit);
+            return MapUtil.GetScale(worldExtent, screenWidth, mapUnit);
         }
 
         /// <summary>
@@ -760,7 +758,7 @@ namespace ThinkGeo.MapSuite
         {
             ValidatorHelper.CheckObjectIsNotNull(shapes, "shapes");
 
-            return ExtentHelper.GetBoundingBoxOfItems(shapes);
+            return MapUtil.GetBoundingBoxOfItems(shapes);
         }
 
         /// <summary>
@@ -772,7 +770,7 @@ namespace ThinkGeo.MapSuite
         {
             ValidatorHelper.CheckObjectIsNotNull(features, "features");
 
-            return ExtentHelper.GetBoundingBoxOfItems(features);
+            return MapUtil.GetBoundingBoxOfItems(features);
         }
 
         ///// <summary>
@@ -871,7 +869,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckGeographyUnitIsValid(mapUnit, "mapUnit");
             ValidatorHelper.CheckExtentIsValid(currentExtent, "currentExtent");
 
-            Draw(layers, image.NativeImage, mapUnit, false);
+            Draw(layers, image, mapUnit, false);
             return image;
         }
 
@@ -906,7 +904,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckGeographyUnitIsValid(mapUnit, "mapUnit");
             ValidatorHelper.CheckExtentIsValid(currentExtent, "currentExtent");
 
-            Draw(staticLayers, image.NativeImage, mapUnit, true);
+            Draw(staticLayers, image, mapUnit, true);
             return image;
         }
 
@@ -939,7 +937,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckObjectIsNotNull(image, "gdiPlusBitmap");
             ValidatorHelper.CheckExtentIsValid(currentExtent, "currentExtent");
 
-            Draw(adornmentLayers, image.NativeImage, mapUnit, false);
+            Draw(adornmentLayers, image, mapUnit, false);
             return image;
         }
 
@@ -1026,7 +1024,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckExtentIsValid(worldExtent, "worldExtent");
             ValidatorHelper.CheckInputValueIsInRange(percentage, "percentage", 0, RangeCheckingInclusion.ExcludeValue, 100, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomIn(worldExtent, percentage);
+            return MapUtil.ZoomIn(worldExtent, percentage);
         }
 
         /// <summary>This method returns an extent that is centered and zoomed in.</summary>
@@ -1052,7 +1050,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomIntoCenter(worldExtent, percentage, worldPoint, screenWidth, screenHeight);
+            return MapUtil.ZoomIntoCenter(worldExtent, percentage, worldPoint, screenWidth, screenHeight);
         }
 
         /// <summary>
@@ -1076,7 +1074,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomIntoCenter(worldExtent, percentage, centerFeature, screenWidth, screenHeight);
+            return MapUtil.ZoomIntoCenter(worldExtent, percentage, centerFeature, screenWidth, screenHeight);
         }
 
         /// <summary>This method will update the CurrentExtent by using the ZoomIntoCenter operation.</summary>
@@ -1153,7 +1151,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomIntoCenter(worldExtent, percentage, screenX, screenY, screenWidth, screenHeight);
+            return MapUtil.ZoomIntoCenter(worldExtent, percentage, screenX, screenY, screenWidth, screenHeight);
         }
 
         /// <summary>This method updates the CurrentExtent based on a calculated rectangle that is centered and zoomed in.</summary>
@@ -1199,7 +1197,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckExtentIsValid(worldExtent, "worldExtent");
             ValidatorHelper.CheckInputValueIsLargerThan(percentage, "percentage", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomOut(worldExtent, percentage);
+            return MapUtil.ZoomOut(worldExtent, percentage);
         }
 
         /// <summary>
@@ -1239,7 +1237,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomOutToCenter(worldExtent, percentage, worldPoint, screenWidth, screenHeight);
+            return MapUtil.ZoomOutToCenter(worldExtent, percentage, worldPoint, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns an extent that is centered and zoomed out.</summary>
@@ -1264,7 +1262,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomOutToCenter(worldExtent, percentage, centerFeature, screenWidth, screenHeight);
+            return MapUtil.ZoomOutToCenter(worldExtent, percentage, centerFeature, screenWidth, screenHeight);
         }
 
         /// <summary>This method updates the CurrentExtent by using the ZoomOutToCenter operation.</summary>
@@ -1339,7 +1337,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ZoomOutToCenter(worldExtent, percentage, screenX, screenY, screenWidth, screenHeight);
+            return MapUtil.ZoomOutToCenter(worldExtent, percentage, screenX, screenY, screenWidth, screenHeight);
         }
 
         /// <summary>This method updates the CurrentExtent by using the ZoomOutToCenter operation.</summary>
@@ -1384,7 +1382,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckPanDirectionIsValid(direction, "direction");
             ValidatorHelper.CheckInputValueIsLargerThan(percentage, "percentage", 0, RangeCheckingInclusion.IncludeValue);
 
-            return ExtentHelper.Pan(worldExtent, direction, percentage);
+            return MapUtil.Pan(worldExtent, direction, percentage);
         }
 
         /// <summary>Update the CurrentExtent by using a panning operation.</summary>
@@ -1421,7 +1419,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsInRange(degree, "degree", 0, RangeCheckingInclusion.IncludeValue, 360, RangeCheckingInclusion.IncludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(percentage, "percentage", 0, RangeCheckingInclusion.IncludeValue);
 
-            return ExtentHelper.Pan(worldExtent, degree, percentage);
+            return MapUtil.Pan(worldExtent, degree, percentage);
         }
 
         /// <summary>This method updates the CurrentExtent by using a panning operation.</summary>
@@ -1541,7 +1539,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ToScreenCoordinate(worldExtent, worldX, worldY, screenWidth, screenHeight);
+            return MapUtil.ToScreenCoordinate(worldExtent, worldX, worldY, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns screen coordinates from world coordinates.</summary>
@@ -1559,7 +1557,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ToScreenCoordinate(worldExtent, worldPoint, screenWidth, screenHeight);
+            return MapUtil.ToScreenCoordinate(worldExtent, worldPoint, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns screen coordinates from world coordinates.</summary>
@@ -1576,7 +1574,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ToScreenCoordinate(worldExtent, worldPointFeature, screenWidth, screenHeight);
+            return MapUtil.ToScreenCoordinate(worldExtent, worldPointFeature, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns world coordinates from screen coordinates.</summary>
@@ -1599,7 +1597,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ToWorldCoordinate(worldExtent, screenX, screenY, screenWidth, screenHeight);
+            return MapUtil.ToWorldCoordinate(worldExtent, screenX, screenY, screenWidth, screenHeight);
         }
 
         /// <summary>This method returns world coordinates from screen coordinates.</summary>
@@ -1615,7 +1613,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckInputValueIsLargerThan(screenWidth, "screenWidth", 0, RangeCheckingInclusion.ExcludeValue);
             ValidatorHelper.CheckInputValueIsLargerThan(screenHeight, "screenHeight", 0, RangeCheckingInclusion.ExcludeValue);
 
-            return ExtentHelper.ToWorldCoordinate(worldExtent, screenPoint, screenWidth, screenHeight);
+            return MapUtil.ToWorldCoordinate(worldExtent, screenPoint, screenWidth, screenHeight);
         }
 
         /// <summary>
@@ -1637,7 +1635,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckExtentIsValid(worldExtent, "worldExtent");
             ValidatorHelper.CheckGeographyUnitIsValid(worldExtentUnit, "worldExtentUnit");
 
-            return ExtentHelper.GetSnappedExtent(worldExtent, worldExtentUnit, screenWidth, screenHeight, zoomLevelSet);
+            return MapUtil.GetSnappedExtent(worldExtent, worldExtentUnit, screenWidth, screenHeight, zoomLevelSet);
         }
 
         /// <summary>
@@ -1674,7 +1672,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckGeographyUnitIsValid(worldExtentUnit, "worldExtentUnit");
             ValidatorHelper.CheckExtentIsValid(worldExtent, "worldExtent");
 
-            return ExtentHelper.ZoomToScale(targetScale, worldExtent, worldExtentUnit, screenWidth, screenHeight);
+            return MapUtil.ZoomToScale(targetScale, worldExtent, worldExtentUnit, screenWidth, screenHeight);
         }
 
         /// <summary>This method updates the CurrentExtent by zooming to a certain scale.</summary>
@@ -1698,9 +1696,10 @@ namespace ThinkGeo.MapSuite
         public static string GetVersion()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            IFileVersionInfo info = PclSystem.FileVersionInfoFactory.Create(PclSystem.Assembly.GetLocation(assembly));
+            //IFileVersionInfo info = PclSystem.FileVersionInfoFactory.Create(PclSystem.Assembly.GetLocation(assembly));
+            //return info.FileVersion;
+            return assembly.GetName().Version.ToString();
 
-            return info.FileVersion;
         }
 
         /// <summary>
@@ -1815,7 +1814,7 @@ namespace ThinkGeo.MapSuite
             ValidatorHelper.CheckGeographyUnitIsValid(mapUnit, "mapUnit");
             ValidatorHelper.CheckExtentIsValid(currentExtent, "currentExtent");
 
-            if (!(canvas is PlatformGeoCanvas)) { throw new ArgumentException("The GeoCanvas isn't right."); }
+
 
             AdornmentLayersDrawingEventArgs layersDrawingEventArgs = new AdornmentLayersDrawingEventArgs(adornmentLayers);
             OnAdornmentLayersDrawing(layersDrawingEventArgs);
@@ -1842,13 +1841,14 @@ namespace ThinkGeo.MapSuite
 
             labeledFeaturesInLayers.Clear();
 
-            if (!(canvas is PlatformGeoCanvas)) { throw new ArgumentException("The GeoCanvas isn't right."); }
+
             ZoomLevelSet zoomLevelSet = new ZoomLevelSet();
             if (mapUnit != GeographyUnit.DecimalDegree)
             {
                 zoomLevelSet = new SphericalMercatorZoomLevelSet();
             }
-            RectangleShape snappedExtent = ExtentHelper.SnapToZoomLevel(currentExtent, mapUnit, gdiPlusBitmap.Width, gdiPlusBitmap.Height, zoomLevelSet);
+            //RectangleShape snappedExtent = MapUtil.SnapToZoomLevel(currentExtent, mapUnit, gdiPlusBitmap.Width, gdiPlusBitmap.Height, zoomLevelSet);
+            RectangleShape snappedExtent = MapUtil.GetSnappedExtent(currentExtent, mapUnit, gdiPlusBitmap.Width, gdiPlusBitmap.Height, zoomLevelSet);
             currentExtent = snappedExtent;
 
             if (isToDrawBackground)
@@ -1947,7 +1947,8 @@ namespace ThinkGeo.MapSuite
                 LayersDrawnEventArgs layerslDrawnEventArgs = new LayersDrawnEventArgs(layers, currentExtent, tempGeoImage);
                 OnLayersDrawn(layerslDrawnEventArgs);
 
-                returningGeoImage = new GeoImage(PclSystem.Current.Resolve<INativeImage>().Clone(tempGeoImage.NativeImage));
+                //returningGeoImage = new GeoImage(PclSystem.Current.Resolve<INativeImage>().Clone(tempGeoImage.NativeImage));
+                returningGeoImage = new GeoImage(tempGeoImage.NativeImage);
             }
             finally
             {
@@ -1957,7 +1958,7 @@ namespace ThinkGeo.MapSuite
             return returningGeoImage;
         }
 
-        private void Draw(IEnumerable<Layer> layers, object image, GeographyUnit mapUnit, bool isToDrawBackground)
+        private void Draw(IEnumerable<Layer> layers, GeoImage image, GeographyUnit mapUnit, bool isToDrawBackground)
         {
             ValidatorHelper.CheckObjectIsNotNull(layers, "layers");
             ValidatorHelper.CheckObjectIsNotNull(image, "image");
@@ -1972,9 +1973,12 @@ namespace ThinkGeo.MapSuite
                 zoomLevelSet = new SphericalMercatorZoomLevelSet();
             }
 
-            float width = PclSystem.Current.Resolve<INativeImage>().GetWidth(image);
-            float height = PclSystem.Current.Resolve<INativeImage>().GetHeight(image);
-            RectangleShape snappedExtent = ExtentHelper.GetSnappedExtent(currentExtent, mapUnit, width, height, zoomLevelSet);
+            //float width = PclSystem.Current.Resolve<INativeImage>().GetWidth(image);
+            //float height = PclSystem.Current.Resolve<INativeImage>().GetHeight(image);
+
+            float width = image.Width;
+            float height = image.Height;
+            RectangleShape snappedExtent = MapUtil.GetSnappedExtent(currentExtent, mapUnit, width, height, zoomLevelSet);
             currentExtent = snappedExtent;
 
             if (isToDrawBackground)

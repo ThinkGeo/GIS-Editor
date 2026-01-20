@@ -24,9 +24,7 @@ using System.Collections.ObjectModel;
 using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -213,7 +211,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private static bool ValidateFeature(Feature feature, FilterStyle filterStyle)
         {
-            return filterStyle.Conditions.FirstOrDefault().GetMatchingFeatures(new Feature[] { feature }).Count > 0;
+            return filterStyle.Conditions.FirstOrDefault().GetMatchingFeatures(new Feature[] { feature }).Count() > 0;
         }
 
         private static bool ValidateFeature(Feature feature, ValueStyle valueStyle)

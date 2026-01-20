@@ -20,13 +20,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
     [Serializable]
-    internal class OutlineGdiPlusGeoCanvas : PlatformGeoCanvas
+    internal class OutlineGdiPlusGeoCanvas : SkiaGeoCanvas
     {
         private OutlineDrawMode outlineDrawMode;
 

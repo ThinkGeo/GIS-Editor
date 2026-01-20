@@ -23,9 +23,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -115,7 +113,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             Feature[] features = new Feature[1] { feature };
             IconTextStyle style = (IconTextStyle)CloneDeep();
             style.SuppressPartialLabels = false;
-            style.PointPlacement = PointPlacement.Center;
+            style.TextPlacement = TextPlacement.Center;
             style.IsLabelFunctionEnabled = false;
             style.Draw(features, canvas, new Collection<SimpleCandidate>(), new Collection<SimpleCandidate>());
         }
@@ -139,8 +137,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private RectangleShape ToWorldCoordinate(GeoCanvas canvas, DrawingRectangleF drawingRectangle)
         {
-            PointShape upperLeftPoint = ExtentHelper.ToWorldCoordinate(canvas.CurrentWorldExtent, drawingRectangle.CenterX - drawingRectangle.Width / 2, drawingRectangle.CenterY - drawingRectangle.Height / 2, canvas.Width, canvas.Height);
-            PointShape lowerRightPoint = ExtentHelper.ToWorldCoordinate(canvas.CurrentWorldExtent, drawingRectangle.CenterX + drawingRectangle.Width / 2, drawingRectangle.CenterY + drawingRectangle.Height / 2, canvas.Width, canvas.Height);
+            PointShape upperLeftPoint = MapUtil.ToWorldCoordinate(canvas.CurrentWorldExtent, drawingRectangle.CenterX - drawingRectangle.Width / 2, drawingRectangle.CenterY - drawingRectangle.Height / 2, canvas.Width, canvas.Height);
+            PointShape lowerRightPoint = MapUtil.ToWorldCoordinate(canvas.CurrentWorldExtent, drawingRectangle.CenterX + drawingRectangle.Width / 2, drawingRectangle.CenterY + drawingRectangle.Height / 2, canvas.Width, canvas.Height);
 
             RectangleShape worldRectangle = new RectangleShape(upperLeftPoint, lowerRightPoint);
             return worldRectangle;
@@ -647,7 +645,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private void Initialize()
         {
             DrawingLevel = DrawingLevel.LabelLevel;
-            HaloPen = new GeoPen(GeoColor.SimpleColors.White, 1f);
+            HaloPen = new GeoPen(GeoColors.White, 1f);
             labelFunctionColumnNames = new Dictionary<string, string>();
         }
 

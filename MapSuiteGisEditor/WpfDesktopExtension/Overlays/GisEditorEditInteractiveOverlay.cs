@@ -22,15 +22,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -68,8 +67,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         [NonSerialized]
         private InMemoryFeatureLayer snappingToleranceLayer;
 
-        [NonSerialized]
-        private LayerTile tile;
+        //[NonSerialized]
+        //private LayerTile tile;
 
         [NonSerialized]
         private double snappingDistance;
@@ -119,11 +118,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             {
                 if (e.Action == NotifyCollectionChangedAction.Add && ParentMap != null)
                 {
-                    ParentMap.Refresh(this);
+                    //ParentMap.Refresh(this);
                 }
             };
             editSnapshots = new Collection<EditSnapshot>();
-            OverlayCanvas.SetValue(Canvas.ZIndexProperty, editOverlayZIndex);
+            SetValue(Canvas.ZIndexProperty, editOverlayZIndex);
 
             editShapesLayer = new InMemoryFeatureLayer();
             associateControlPointsLayer = new InMemoryFeatureLayer();
@@ -134,14 +133,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             editCandidatesLayer = new InMemoryFeatureLayer();
 
             translateTransform = new TranslateTransform();
-            OverlayCanvas.RenderTransform = translateTransform;
-            RenderMode = RenderMode.DrawingVisual;
+            RenderTransform = translateTransform;
             CanRotate = true;
             CanResize = true;
 
             SetDefaultStyle();
-            tile = GetLayerTile();
-            OverlayCanvas.Children.Add(tile);
+           // tile = GetLayerTile();
+          //  OverlayCanvas.Children.Add(tile);
             SnappingDistance = 10;
             SnappingDistanceUnit = SnappingDistanceUnit.Pixel;
             if (Application.Current != null && Application.Current.MainWindow != null)
@@ -277,12 +275,17 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                 if (isEmpty)
                 {
-                    foreach (Wpf.Tile currentTile in OverlayCanvas.Children)
+                    // Tile implementation differs across ThinkGeo versions.
+                    // We only need to clear the overlay visuals here.
+                    foreach (var child in Children.OfType<UIElement>().ToList())
                     {
-                        currentTile.Dispose();
+                        if (child is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
                     }
 
-                    OverlayCanvas.Children.Clear();
+                    Children.Clear();
                 }
 
                 return isEmpty;
@@ -331,75 +334,69 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return features.Count != 0;
         }
 
-        protected override void DrawCore(RectangleShape targetExtent, OverlayRefreshType overlayRefreshType)
+        // ThinkGeo v14+ overlay drawing is asynchronous.
+        protected override Task DrawAsyncCore(RectangleShape targetExtent, OverlayRefreshType overlayRefreshType, CancellationToken cancellationToken)
         {
-            if (overlayRefreshType == OverlayRefreshType.Pan)
-            {
-                if (PreviousExtent != null)
-                {
-                    double resolution = MapArguments.CurrentResolution;
-                    double worldOffsetX = targetExtent.UpperLeftPoint.X - PreviousExtent.UpperLeftPoint.X;
-                    double worldOffsetY = targetExtent.UpperLeftPoint.Y - PreviousExtent.UpperLeftPoint.Y;
-                    double screenOffsetX = worldOffsetX / resolution;
-                    double screenOffsetY = worldOffsetY / resolution;
+            //if (overlayRefreshType == OverlayRefreshType.Pan)
+            //{
+            //    if (PreviousExtent != null)
+            //    {
+            //        double resolution = MapArguments.CurrentResolution;
+            //        double worldOffsetX = targetExtent.UpperLeftPoint.X - PreviousExtent.UpperLeftPoint.X;
+            //        double worldOffsetY = targetExtent.UpperLeftPoint.Y - PreviousExtent.UpperLeftPoint.Y;
+            //        double screenOffsetX = worldOffsetX / resolution;
+            //        double screenOffsetY = worldOffsetY / resolution;
 
-                    translateTransform.X -= screenOffsetX;
-                    translateTransform.Y += screenOffsetY;
-                }
-            }
-            else
+            //        translateTransform.X -= screenOffsetX;
+            //        translateTransform.Y += screenOffsetY;
+            //    }
+            //}
+            //else
             {
                 translateTransform.X = 0;
                 translateTransform.Y = 0;
 
                 snappingPointsLayer.InternalFeatures.Clear();
 
-                if (OverlayCanvas.Children.Count == 0)
-                {
-                    OverlayCanvas.Children.Add(tile);
-                }
+                //if (OverlayCanvas.Children.Count == 0)
+                //{
+                //    OverlayCanvas.Children.Add(tile);
+                //}
 
-                tile.TargetExtent = targetExtent;
-                tile.Width = MapArguments.ActualWidth;
-                tile.Height = MapArguments.ActualHeight;
-                tile.ZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(targetExtent);
-                RedrawTile(tile);
+                //tile.TargetExtent = targetExtent;
+                //tile.Width = MapArguments.MapWidth;
+                //tile.Height = MapArguments.MapHeight;
+                //tile.ZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(targetExtent);
+                //RedrawTile(tile);
             }
+
+            return Task.CompletedTask;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing && tile != null)
-            {
-                tile.Dispose();
-            }
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    base.Dispose(disposing);
+        //    if (disposing && tile != null)
+        //    {
+        //        tile.Dispose();
+        //    }
+        //}
 
-        private void RedrawTile(LayerTile layerTile)
-        {
-            int tileSW = (int)MapArguments.ActualWidth;
-            int tileSH = (int)MapArguments.ActualHeight;
+        //private void RedrawTile(LayerTile layerTile)
+        //{
+        //    int tileSW = (int)MapArguments.MapWidth;
+        //    int tileSH = (int)MapArguments.MapHeight;
 
-            GeoCanvas geoCanvas = null;
-            object nativeImage = null;
+        //    // v14 WPF rendering path: DrawingVisualGeoCanvas + RenderTargetBitmap.
+        //    GeoCanvas geoCanvas = new DrawingVisualGeoCanvas();
+        //    object nativeImage = new RenderTargetBitmap(tileSW, tileSH, geoCanvas.Dpi, geoCanvas.Dpi, PixelFormats.Pbgra32);
 
-            if (RenderMode == RenderMode.DrawingVisual)
-            {
-                geoCanvas = new DrawingVisualGeoCanvas();
-                nativeImage = new RenderTargetBitmap(tileSW, tileSH, geoCanvas.Dpi, geoCanvas.Dpi, PixelFormats.Pbgra32);
-            }
-            else
-            {
-                nativeImage = new System.Drawing.Bitmap(tileSW, tileSH);
-                geoCanvas = new PlatformGeoCanvas();
-            }
+        //    geoCanvas.BeginDrawing(nativeImage, layerTile.TargetExtent, MapArguments.MapUnit);
+        //    layerTile.Draw(geoCanvas);
+        //    geoCanvas.EndDrawing();
+        //    layerTile.CommitDrawing(geoCanvas, GetImageSourceFromNativeImage(nativeImage));
+        //}
 
-            geoCanvas.BeginDrawing(nativeImage, layerTile.TargetExtent, MapArguments.MapUnit);
-            layerTile.Draw(geoCanvas);
-            geoCanvas.EndDrawing();
-            layerTile.CommitDrawing(geoCanvas, GetImageSourceFromNativeImage(nativeImage));
-        }
 
         private LayerTile GetLayerTile()
         {
@@ -420,9 +417,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void SetDefaultStyle()
         {
-            var defaultPointStyle = PointStyles.CreateSimpleCircleStyle(GeoColor.FromArgb(102, 0, 0, 255), 10, GeoColor.FromArgb(100, 0, 0, 255), 2);
-            var defaultLineStyle = LineStyles.CreateSimpleLineStyle(GeoColor.FromArgb(100, 0, 0, 255), 2, true);
-            var defaultAreaStyle = AreaStyles.CreateSimpleAreaStyle(GeoColor.FromArgb(102, GeoColor.FromHtml("#EFFBD6")), GeoColor.FromArgb(255, 0, 0, 255), 2);
+            var defaultPointStyle = PointStyle.CreateSimpleCircleStyle(GeoColor.FromArgb(102, 0, 0, 255), 10, GeoColor.FromArgb(100, 0, 0, 255), 2);
+            var defaultLineStyle = LineStyle.CreateSimpleLineStyle(GeoColor.FromArgb(100, 0, 0, 255), 2, true);
+            var defaultAreaStyle = AreaStyle.CreateSimpleAreaStyle(GeoColor.FromArgb(102, GeoColor.FromHtml("#EFFBD6")), GeoColor.FromArgb(255, 0, 0, 255), 2);
 
             editShapesLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = defaultPointStyle;
             editShapesLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle = defaultLineStyle;
@@ -431,8 +428,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             ValueStyle valueStyle = new ValueStyle();
             valueStyle.ColumnName = existingFeatureColumnName;
-            valueStyle.ValueItems.Add(new ValueItem(string.Empty, PointStyles.CreateSimpleSquareStyle(GeoColor.StandardColors.White, 8, GeoColor.StandardColors.Black)));
-            valueStyle.ValueItems.Add(new ValueItem(existingFeatureColumnValue, PointStyles.CreateSimpleSquareStyle(GeoColor.StandardColors.Orange, 8, GeoColor.StandardColors.Black)));
+            valueStyle.ValueItems.Add(new ValueItem(string.Empty, PointStyle.CreateSimpleSquareStyle(GeoColors.White, 8, GeoColors.Black)));
+            valueStyle.ValueItems.Add(new ValueItem(existingFeatureColumnValue, PointStyle.CreateSimpleSquareStyle(GeoColors.Orange, 8, GeoColors.Black)));
 
             reshapeControlPointsLayer.Open();
             reshapeControlPointsLayer.Columns.Add(new FeatureSourceColumn(existingFeatureColumnName));
@@ -446,11 +443,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             snappingPointsLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
 
             snappingToleranceLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
-            snappingToleranceLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle = new AreaStyle(new GeoPen(GeoColor.SimpleColors.Black, 1));
+            snappingToleranceLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle = new AreaStyle(new GeoPen(GeoColors.Black, 1));
 
-            var unselectedPointStyle = PointStyles.CreateSimpleCircleStyle(GeoColor.StandardColors.LightGray, 10, GeoColor.StandardColors.LightGray, 2);
-            var unselectedLineStyle = LineStyles.CreateSimpleLineStyle(GeoColor.StandardColors.LightGray, 3, true);
-            var unselectedAreaStyle = AreaStyles.CreateSimpleAreaStyle(GeoColor.FromArgb(0, GeoColor.FromHtml("#EFFBD6")), GeoColor.StandardColors.LightGray, 3);
+            var unselectedPointStyle = PointStyle.CreateSimpleCircleStyle(GeoColors.LightGray, 10, GeoColors.LightGray, 2);
+            var unselectedLineStyle = LineStyle.CreateSimpleLineStyle(GeoColors.LightGray, 3, true);
+            var unselectedAreaStyle = AreaStyle.CreateSimpleAreaStyle(GeoColor.FromArgb(0, GeoColor.FromHtml("#EFFBD6")), GeoColors.LightGray, 3);
 
             editCandidatesLayer.Open();
             editCandidatesLayer.Columns.Add(new FeatureSourceColumn(existingFeatureColumnName));
@@ -461,21 +458,21 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             editCandidatesLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
         }
 
-        private static object GetImageSourceFromNativeImage(object nativeImage)
-        {
-            object imageSource = nativeImage;
-            if (nativeImage is System.Drawing.Bitmap)
-            {
-                System.Drawing.Bitmap bitmap = (System.Drawing.Bitmap)nativeImage;
-                MemoryStream memoryStream = new MemoryStream();
-                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                imageSource = memoryStream;
-                bitmap.Dispose();
-            }
+        //private static object GetImageSourceFromNativeImage(object nativeImage)
+        //{
+        //    object imageSource = nativeImage;
+        //    if (nativeImage is System.Drawing.Bitmap)
+        //    {
+        //        System.Drawing.Bitmap bitmap = (System.Drawing.Bitmap)nativeImage;
+        //        MemoryStream memoryStream = new MemoryStream();
+        //        bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+        //        memoryStream.Seek(0, SeekOrigin.Begin);
+        //        imageSource = memoryStream;
+        //        bitmap.Dispose();
+        //    }
 
-            return imageSource;
-        }
+        //    return imageSource;
+        //}
 
         private static GeoImage GetGeoImageFromResource(string path)
         {
@@ -524,7 +521,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         }
                         catch
                         {
-                            features.Add(SqlTypesGeometryHelper.MakeValid(feature));
+                            features.Add(feature.MakeValidUsingSqlTypes());
                         }
                     }
                 });

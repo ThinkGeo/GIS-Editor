@@ -30,9 +30,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -208,31 +207,31 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             get { return new PointShape(worldX, worldY); }
         }
 
-        public void Rollback()
+        public async Task Rollback()
         {
             if (CanRollback)
             {
                 LoadSnapshot(history.RollBack());
                 if (MapArguments != null)
                 {
-                    Refresh();
+                    await RefreshAsync();
                 }
             }
         }
 
-        public void Forward()
+        public async Task Forward()
         {
             if (CanFoward)
             {
                 LoadSnapshot(history.Forward());
                 if (MapArguments != null)
                 {
-                    Refresh();
+                    await RefreshAsync();
                 }
             }
         }
 
-        public void Cancel()
+        public async Task Cancel()
         {
             history.Clear();
             isEdited = false;
@@ -243,7 +242,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 EditingFeature = new Feature(),
                 OriginalPosition = new PointShape()
             });
-            Refresh();
+            await RefreshAsync();
         }
 
         public void TakeSnapshot()
@@ -307,14 +306,14 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             RemoveVertexCore(targetPointShape);
         }
 
-        public void RemoveFeatures()
+        public async Task RemoveFeatures()
         {
             editShapesLayer.InternalFeatures.Clear();
             editShapesLayer.BuildIndex();
             editingFeature = new Feature();
             ClearVertexControlPoints();
             TakeSnapshot();
-            Refresh();
+            await RefreshAsync();
         }
 
         protected virtual void OnFeatureTrackEnded(Collection<Feature> features)
@@ -410,7 +409,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 trackShape.Stroke = new SolidColorBrush(Colors.Red);
                 trackShape.Opacity = .5;
 
-                ParentMap.ToolsGrid.Children.Add(trackShape);
+                //ParentMap.ToolsGrid.Children.Add(trackShape);
             }
             return result;
         }
@@ -449,7 +448,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             //        var snappingDistance = SnappingDistance;
             //        var snappingDistanceUnit = SnappingDistanceUnit;
-            //        var snappingScreenPoint = ExtentHelper.ToScreenCoordinate(MapArguments.CurrentExtent, currentPosition.X, currentPosition.Y, (float)MapArguments.ActualWidth, (float)MapArguments.ActualHeight);
+            //        var snappingScreenPoint = MapUtil.ToScreenCoordinate(MapArguments.CurrentExtent, currentPosition.X, currentPosition.Y, (float)MapArguments.MapWidth, (float)MapArguments.MapHeight);
 
             //        try
             //        {
@@ -487,7 +486,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     ParentMap.Cursor = System.Windows.Input.Cursors.Cross;
                     ClearVertexControlPoints();
                     result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                    result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                    //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
 
                     double offsetX = interactionArguments.WorldX - originalPosition.X;
                     double offsetY = interactionArguments.WorldY - originalPosition.Y;
@@ -572,7 +571,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     }
 
                     result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                    result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                    //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
                 }
             }
             else if (currentEditMode == EditMode.ResizeOrRotate)
@@ -581,7 +580,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     ClearVertexControlPoints();
                     result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                    result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                    //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
                 }
                 originalPosition = new PointShape(interactionArguments.WorldX, interactionArguments.WorldY);
                 Feature newFeature = editingFeature;
@@ -658,7 +657,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             {
                 InteractiveOverlayHelper.ResetInProcessInteractiveOverlayImageSource(this);
                 result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
                 currentEditMode = EditMode.None;
 
                 if (CanResize || CanRotate)
@@ -691,10 +690,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 }
 
                 result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
                 currentEditMode = EditMode.None;
 
-                ParentMap.ToolsGrid.Children.Remove(trackShape);
+                //ParentMap.ToolsGrid.Children.Remove(trackShape);
                 trackShape = null;
             }
 
@@ -731,7 +730,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     ClearVertexControlPoints();
                     SetHighlightControlPoint(interactionArguments);
                     result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                    result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                    //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
                 }
                 else if ((focusedFeatures = editShapesLayer.QueryTools.GetFeaturesInsideBoundingBox(searchingArea, editShapesLayer.GetDistinctColumnNames())).Count != 0)
                 {
@@ -742,7 +741,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     currentEditMode = EditMode.None;
                     result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                    result.DrawThisOverlay = InteractiveOverlayDrawType.DoNotDraw;
+                    //result.DrawThisOverlay = InteractiveOverlayDrawType.DoNotDraw;
                     SelectFeatureOfEditShapesLayer(interactionArguments, result, focusedFeatures);
                 }
                 return result;
@@ -802,7 +801,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             if (!layer.IsOpen) layer.Open();
             var boundingBox = ParentMap.CurrentExtent;
-            var screenWidth = ParentMap.ActualWidth;
+            var screenWidth = ParentMap.MapWidth;
 
             if (cachedFeatureSourceInCurrentExtent == null)
             {
@@ -1092,7 +1091,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public bool CanAddVertex(PointShape targetPosition)
         {
             var targetWorldPosition = ParentMap.ToWorldCoordinate(targetPosition);
-            double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.ActualWidth, ParentMap.CurrentExtent.Height / ParentMap.ActualHeight);
+            double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.MapWidth, ParentMap.CurrentExtent.Height / ParentMap.MapHeight);
             RectangleShape searchingArea = new RectangleShape(targetWorldPosition.X - searchingTolerance, targetWorldPosition.Y + searchingTolerance, targetWorldPosition.X + searchingTolerance, targetWorldPosition.Y - searchingTolerance);
             foreach (var feature in EditShapesLayer.InternalFeatures)
             {
@@ -1170,7 +1169,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public bool CanRemoveVertex(PointShape targetPosition)
         {
             var targetWorldPosition = ParentMap.ToWorldCoordinate(targetPosition);
-            double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.ActualWidth, ParentMap.CurrentExtent.Height / ParentMap.ActualHeight);
+            double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.MapWidth, ParentMap.CurrentExtent.Height / ParentMap.MapHeight);
             RectangleShape searchingArea = new RectangleShape(targetWorldPosition.X - searchingTolerance, targetWorldPosition.Y + searchingTolerance, targetWorldPosition.X + searchingTolerance, targetWorldPosition.Y - searchingTolerance);
             foreach (var feature in ReshapeControlPointsLayer.InternalFeatures)
             {
@@ -1219,11 +1218,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             try
             {
                 Feature tempFeature = new Feature(wkb, editingFeature.Id, editingFeature.ColumnValues);
-                var isValid = SqlTypesGeometryHelper.IsValid(tempFeature);
+                var isValid = tempFeature.IsGeometryValid();
 
-                if (!isValid) { tempFeature = SqlTypesGeometryHelper.MakeValid(tempFeature); }
+                if (!isValid) { tempFeature = tempFeature.MakeValidUsingSqlTypes(); }
 
-                if (SqlTypesGeometryHelper.IsValid(tempFeature))
+                if (tempFeature.IsGeometryValid())
                 {
                     editingFeature = tempFeature;
                     foreach (string key in EditShapesLayer.InternalFeatures.GetKeys())
@@ -1758,7 +1757,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             bool result = false;
             if (reshapeControlPointsLayer.InternalFeatures.Count == 0) return result;
 
-            double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.ActualWidth, ParentMap.CurrentExtent.Height / ParentMap.ActualHeight);
+            double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.MapWidth, ParentMap.CurrentExtent.Height / ParentMap.MapHeight);
             foreach (string key in editShapesLayer.InternalFeatures.GetKeys())
             {
                 Feature currentFeature = AddVertex(editShapesLayer.InternalFeatures[key], targetPointShape, searchingTolerance);
@@ -2077,7 +2076,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             if (ReshapeControlPointsLayer.InternalFeatures.Count != 0)
             {
-                double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.ActualWidth, ParentMap.CurrentExtent.Height / ParentMap.ActualHeight);
+                double searchingTolerance = clickPointTolerance * Math.Max(ParentMap.CurrentExtent.Width / ParentMap.MapWidth, ParentMap.CurrentExtent.Height / ParentMap.MapHeight);
                 foreach (string key in EditShapesLayer.InternalFeatures.GetKeys())
                 {
                     Feature currentFeature = RemoveVertex(EditShapesLayer.InternalFeatures[key], targetPointShape, searchingTolerance);
@@ -2181,12 +2180,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         UpdateFeature(wkb);
                         CalculateVertexControlPoints();
                         TakeSnapshot();
-                        Refresh();
+                        _ = RefreshAsync();
                     }
                 }
                 else
                 {
-                    RemoveFeatures();
+                    _ = RemoveFeatures();
                 }
             }
         }

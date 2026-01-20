@@ -18,8 +18,8 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -52,12 +52,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             set { distanceUnit = value; }
         }
 
-        public static SnappingAdapter Convert(double snappingDistance, SnappingDistanceUnit snappingDistanceUnit, MapArguments mapArguments, Vertex worldCoordinate)
+        public static SnappingAdapter Convert(double snappingDistance, SnappingDistanceUnit snappingDistanceUnit, IMapArguments mapArguments, Vertex worldCoordinate)
         {
             return Convert(snappingDistance, snappingDistanceUnit, mapArguments, new PointShape(worldCoordinate));
         }
 
-        public static SnappingAdapter Convert(double snappingDistance, SnappingDistanceUnit snappingDistanceUnit, MapArguments mapArguments, PointShape worldCoordinate)
+        public static SnappingAdapter Convert(double snappingDistance, SnappingDistanceUnit snappingDistanceUnit, IMapArguments mapArguments, PointShape worldCoordinate)
         {
             DistanceUnit tempDistanceUnit = defaultDistanceUnit;
             if (snappingDistanceUnit != SnappingDistanceUnit.Pixel)

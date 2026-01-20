@@ -24,13 +24,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension.Properties;
+using System.Windows.Media;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -80,7 +80,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             this.targetFeatureLayers = new Collection<FeatureLayer>();
             this.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = null;
             this.FilteredLayers = new Collection<FeatureLayer>();
-            this.RenderMode = RenderMode.DrawingVisual;
+            //this.RenderMode = RenderMode.DrawingVisual;
             foreach (var featureLayer in featureLayersForSelecting)
             {
                 this.targetFeatureLayers.Add(featureLayer);
@@ -102,7 +102,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             get
             {
-                return this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.Advanced.FillCustomBrush;
+                return this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.FillBrush;
             }
             set
             {
@@ -153,7 +153,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 if (isEmpty)
                 {
                     RefreshHighlightTile(new RectangleShape());
-                    OverlayCanvas.Children.Clear();
+                    Children.Clear();
                 }
                 return isEmpty;
             }
@@ -264,7 +264,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             string newFeatureId = CreateHighlightFeatureId(sourceFeature, sourceFeatureLayer);
             try
             {
-                sourceFeature = SqlTypesGeometryHelper.MakeValid(sourceFeature);
+                sourceFeature = sourceFeature.MakeValidUsingSqlTypes();
             }
             catch { }
 
@@ -344,17 +344,19 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return groupedFeatures;
         }
 
-        protected override void DrawCore(RectangleShape targetExtent, OverlayRefreshType overlayRefreshType)
+        // ThinkGeo v14+ overlay drawing is asynchronous.
+        protected override async Task DrawAsyncCore(RectangleShape targetExtent, OverlayRefreshType overlayRefreshType, CancellationToken cancellationToken)
         {
-            base.DrawCore(targetExtent, overlayRefreshType);
+            await base.DrawAsyncCore(targetExtent, overlayRefreshType, cancellationToken).ConfigureAwait(false);
 
-            if (!OverlayCanvas.Children.Contains(highlightTile) && overlayRefreshType == OverlayRefreshType.Redraw)
+            if (!Children.Contains(highlightTile) && overlayRefreshType == OverlayRefreshType.Redraw)
             {
-                OverlayCanvas.Children.Add(highlightTile);
+                Children.Add(highlightTile);
             }
 
-            bool zoomLevelChanged = CheckZoomLevelChanged(targetExtent);
-            if (overlayRefreshType == OverlayRefreshType.Redraw && (!isTracking || Vertices.Count == 0 || zoomLevelChanged))
+            //bool zoomLevelChanged = CheckZoomLevelChanged(targetExtent);
+            if (overlayRefreshType == OverlayRefreshType.Redraw && (!isTracking || Vertices.Count == 0))
+            //if (overlayRefreshType == OverlayRefreshType.Redraw && (!isTracking || Vertices.Count == 0 || zoomLevelChanged))
             {
                 RefreshHighlightTile(targetExtent);
             }
@@ -363,7 +365,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         protected override InteractiveResult KeyDownCore(KeyEventInteractionArguments interactionArguments)
         {
             InteractiveResult result = base.KeyDownCore(interactionArguments);
-            if (interactionArguments.Key == System.Windows.Forms.Keys.Escape.ToString())
+            if (interactionArguments.Key ==  System.Windows.Input.Key.Escape)
             {
                 CancelLastestTracking(this);
                 if (TrackMode != TrackMode.None)
@@ -376,18 +378,18 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         protected override InteractiveResult MouseMoveCore(InteractionArguments interactionArguments)
         {
-            if (UnsafeHelper.IsKeyPressed(Keys.ControlKey))
-            {
-                this.selectionMode = SelectionMode.Subtract;
-            }
-            else if (UnsafeHelper.IsKeyPressed(Keys.ShiftKey))
-            {
-                this.selectionMode = SelectionMode.Added;
-            }
-            else
-            {
-                this.selectionMode = SelectionMode.None;
-            }
+            //if (UnsafeHelper.IsKeyPressed(Keys.ControlKey))
+            //{
+            //    this.selectionMode = SelectionMode.Subtract;
+            //}
+            //else if (UnsafeHelper.IsKeyPressed(Keys.ShiftKey))
+            //{
+            //    this.selectionMode = SelectionMode.Added;
+            //}
+            //else
+            //{
+            //    this.selectionMode = SelectionMode.None;
+            //}
 
             return base.MouseMoveCore(interactionArguments); ;
         }
@@ -412,9 +414,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     Feature currentTrackedFeature = trackedFeature;
 
-                    if (currentTrackedFeature.CanMakeValid && !currentTrackedFeature.IsValid())
+                    if (!currentTrackedFeature.IsGeometryValid())
                     {
-                        currentTrackedFeature = currentTrackedFeature.MakeValid();
+                        currentTrackedFeature = currentTrackedFeature.MakeValidUsingSqlTypes();
                     }
                     if (currentTrackedFeature.GetShape() != null && currentTrackedFeature.GetWellKnownType() == WellKnownType.Point)
                     {
@@ -468,7 +470,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                                     var featuresToProcessing = featuresInsideOfBBox.AsParallel().Where(featureToValidate =>
                                     {
-                                        if (featureToValidate.IsValid()) return true;
+                                        if (featureToValidate.IsGeometryValid()) return true;
                                         else
                                         {
                                             errorInfo.Add(new ErrorFeatureInfo { FeatureId = featureToValidate.Id, Message = "Invalid feature" });
@@ -487,10 +489,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                                         }
                                     }
 
-                                    return resultQueriedFeatures.GetVisibleFeatures(queryingFeatureLayer.ZoomLevelSet, MapArguments.CurrentExtent, MapArguments.ActualWidth, MapArguments.MapUnit);
+                                    return resultQueriedFeatures.GetVisibleFeatures(queryingFeatureLayer.ZoomLevelSet, MapArguments.CurrentExtent, MapArguments.MapWidth, MapArguments.MapUnit);
                                 });
 
-                                currentTrackedFeature = currentTrackedFeature.MakeValid();
+                                currentTrackedFeature = currentTrackedFeature.MakeValidUsingSqlTypes();
 
                                 switch (spatialQueryMode)
                                 {
@@ -537,10 +539,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     }
                 }
 
-                if (errorInfo.Count > 0)
-                {
-                    System.Windows.Forms.MessageBox.Show(Resources.InvalidFeatures, "Invalid Features", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                //if (errorInfo.Count > 0)
+                //{
+                //    System.Windows.Forms.MessageBox.Show(Resources.InvalidFeatures, "Invalid Features", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //}
 
                 TrackShapeLayer.InternalFeatures.Clear();
                 features = new Collection<Feature>(RenameFeatures(features).GroupBy(f => f.Id).Select(g => g.FirstOrDefault()).Where(f => f != null).ToList());
@@ -610,7 +612,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private static Feature MakeFeatureValidate(Feature feature)
         {
-            Feature validFeature = feature.MakeValid();
+            Feature validFeature = feature.MakeValidUsingSqlTypes();
 
             WellKnownType featureType = feature.GetWellKnownType();
             WellKnownType validatedType = validFeature.GetWellKnownType();
@@ -673,23 +675,23 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             if (fillColor != null)
             {
-                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.Advanced.FillCustomBrush = fillColor;
+                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.FillBrush = fillColor;
                 this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle.InnerPen.Brush = fillColor;
-                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.Advanced.CustomBrush = fillColor;
+                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.FillBrush= fillColor;
             }
 
             if (outlineColor != null)
             {
                 this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.OutlinePen.Brush = outlineColor;
                 this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle.OuterPen.Brush = outlineColor;
-                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.SymbolPen.Brush = outlineColor;
+                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.OutlinePen.Brush = outlineColor;
             }
 
             if (outlineThickness != null)
             {
                 this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.OutlinePen.Width = (float)outlineThickness;
                 this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle.OuterPen.Width = (float)outlineThickness;
-                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.SymbolPen.Width = (float)outlineThickness;
+                this.highlightFeatureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.OutlinePen.Width = (float)outlineThickness;
             }
         }
 
@@ -697,15 +699,15 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             this.highlightFeatureLayer = new InMemoryFeatureLayer(); // { MaxRecordsToDraw = 5000 };
 
-            GeoSolidBrush fillColor = new GeoSolidBrush(GeoColor.StandardColors.Transparent);
-            GeoSolidBrush outerColor = new GeoSolidBrush(new GeoColor(255, GeoColor.SimpleColors.Yellow));
+            GeoSolidBrush fillColor = new GeoSolidBrush(GeoColors.Transparent);
+            GeoSolidBrush outerColor = new GeoSolidBrush(new GeoColor(255, GeoColors.Yellow));
             GeoSolidBrush innerColor = new GeoSolidBrush(new GeoColor(255, GeoColor.FromHtml("#B0EBFF")));
             GeoSolidBrush centerColor = new GeoSolidBrush(new GeoColor(0, GeoColor.FromHtml("#FFFFFF")));
 
             ZoomLevel zoomLevel = this.HighlightFeatureLayer.ZoomLevelSet.ZoomLevel01;
             zoomLevel.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
 
-            zoomLevel.DefaultAreaStyle.Advanced.FillCustomBrush = fillColor;
+            zoomLevel.DefaultAreaStyle.FillBrush = fillColor;
             zoomLevel.DefaultAreaStyle.OutlinePen.Brush = outerColor;
             zoomLevel.DefaultAreaStyle.OutlinePen.Width = 2.0f;
 
@@ -716,11 +718,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             zoomLevel.DefaultLineStyle.CenterPen.Brush = centerColor;
             zoomLevel.DefaultLineStyle.CenterPen.Width = 1.0f;
 
-            zoomLevel.DefaultPointStyle.Advanced.CustomBrush = fillColor;
-            zoomLevel.DefaultPointStyle.SymbolPen.Brush = outerColor;
-            zoomLevel.DefaultPointStyle.SymbolPen.Width = 2.0f;
+            zoomLevel.DefaultPointStyle.FillBrush = fillColor;
+            zoomLevel.DefaultPointStyle.OutlinePen.Brush = outerColor;
+            zoomLevel.DefaultPointStyle.OutlinePen.Width = 2.0f;
 
-            zoomLevel.DefaultTextStyle.TextSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Yellow);
+            zoomLevel.DefaultTextStyle.TextBrush = new GeoSolidBrush(GeoColors.Yellow);
             zoomLevel.DefaultTextStyle.TextColumnName = FeatureIdColumnName;
             zoomLevel.DefaultTextStyle.Font = new GeoFont("Arial", 7, DrawingFontStyles.Bold);
 
@@ -744,9 +746,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             zoomLevel.DefaultAreaStyle.OutlinePen.Width = 4.0f;
             zoomLevel.DefaultLineStyle.OuterPen.Brush = outerColor;
             zoomLevel.DefaultLineStyle.OuterPen.Width = 4.0f;
-            zoomLevel.DefaultPointStyle.Advanced.CustomBrush = outerColor;
-            zoomLevel.DefaultPointStyle.SymbolPen.Brush = outerColor;
-            zoomLevel.DefaultPointStyle.SymbolPen.Width = 4.0f;
+            zoomLevel.DefaultPointStyle.FillBrush = outerColor;
+            zoomLevel.DefaultPointStyle.OutlinePen.Brush = outerColor;
+            zoomLevel.DefaultPointStyle.OutlinePen.Width = 4.0f;
         }
 
         private bool IsMultiPointLayer(FeatureLayer queryingFeatureLayer)
@@ -796,43 +798,51 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return results;
         }
 
+
         private void RefreshHighlightTile(RectangleShape targetExtent)
         {
-            highlightTile.TargetExtent = targetExtent;
-            highlightTile.DrawingLayers.Clear();
-            highlightTile.DrawingLayers.Add(highlightFeatureLayer);
-            highlightTile.DrawingLayers.Add(standOutHighlightFeatureLayer);
-            if (MapArguments != null)
-            {
-                highlightTile.Width = MapArguments.ActualWidth;
-                highlightTile.Height = MapArguments.ActualHeight;
-                highlightTile.ZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(targetExtent);
-                using (System.Drawing.Bitmap nativeImage = new System.Drawing.Bitmap((int)highlightTile.Width, (int)highlightTile.Height))
-                {
-                    PlatformGeoCanvas geoCanvas = new PlatformGeoCanvas();
-                    geoCanvas.BeginDrawing(nativeImage, targetExtent, MapArguments.MapUnit);
-                    highlightTile.Draw(geoCanvas);
-                    geoCanvas.EndDrawing();
-                    highlightTile.CommitDrawing(geoCanvas, GetImageSourceFromNativeImage(nativeImage));
-                }
-            }
+            //highlightTile.TargetExtent = targetExtent;
+            //highlightTile.DrawingLayers.Clear();
+            //highlightTile.DrawingLayers.Add(highlightFeatureLayer);
+            //highlightTile.DrawingLayers.Add(standOutHighlightFeatureLayer);
+
+            //if (MapArguments == null) return;
+
+            //highlightTile.Width = MapArguments.MapWidth;
+            //highlightTile.Height = MapArguments.MapHeight;
+            //highlightTile.ZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(targetExtent);
+
+            //// v14: Render highlight tiles with the WPF DrawingVisualGeoCanvas.
+            //var geoCanvas = new DrawingVisualGeoCanvas();
+            //object nativeImage = new RenderTargetBitmap(
+            //    (int)highlightTile.Width,
+            //    (int)highlightTile.Height,
+            //    geoCanvas.Dpi,
+            //    geoCanvas.Dpi,
+            //    PixelFormats.Pbgra32);
+
+            //geoCanvas.BeginDrawing(nativeImage, targetExtent, MapArguments.MapUnit);
+            //highlightTile.Draw(geoCanvas);
+            //geoCanvas.EndDrawing();
+            ////highlightTile.CommitDrawing(geoCanvas, GetImageSourceFromNativeImage(nativeImage));
+            //highlightTile.CommitDrawing(geoCanvas, (ImageSource)nativeImage);
         }
 
-        private bool CheckZoomLevelChanged(RectangleShape targetExtent)
-        {
-            bool zoomLevelChanged = false;
-            if (MapArguments != null && PreviousExtent != null)
-            {
-                int targetZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(targetExtent);
-                int currentZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(PreviousExtent);
-                if (currentZoomLevelIndex != targetZoomLevelIndex)
-                {
-                    zoomLevelChanged = true;
-                }
-            }
+        //private bool CheckZoomLevelChanged(RectangleShape targetExtent)
+        //{
+        //    bool zoomLevelChanged = false;
+        //    if (MapArguments != null && PreviousExtent != null)
+        //    {
+        //        int targetZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(targetExtent);
+        //        int currentZoomLevelIndex = MapArguments.GetSnappedZoomLevelIndex(PreviousExtent);
+        //        if (currentZoomLevelIndex != targetZoomLevelIndex)
+        //        {
+        //            zoomLevelChanged = true;
+        //        }
+        //    }
 
-            return zoomLevelChanged;
-        }
+        //    return zoomLevelChanged;
+        //}
 
         private static object GetImageSourceFromNativeImage(object nativeImage)
         {
@@ -877,7 +887,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (trackOverlay != null && trackOverlay.TrackMode != TrackMode.None && trackOverlay.TrackShapeLayer.InternalFeatures.Count > 0)
             {
                 trackOverlay.TrackShapeLayer.InternalFeatures.RemoveAt(trackOverlay.TrackShapeLayer.InternalFeatures.Count - 1);
-                trackOverlay.Refresh();
+                //trackOverlay.Refresh();
                 if (trackOverlay.TrackMode == TrackMode.Polygon ||
                     trackOverlay.TrackMode == TrackMode.Line)
                 {

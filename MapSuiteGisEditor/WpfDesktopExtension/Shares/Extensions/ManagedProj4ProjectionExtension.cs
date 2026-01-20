@@ -19,7 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {

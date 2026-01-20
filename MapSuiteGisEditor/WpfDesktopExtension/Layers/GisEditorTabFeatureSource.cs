@@ -21,9 +21,9 @@ using Microsoft.SqlServer.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Data.SqlTypes;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -35,10 +35,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         { }
 
         public GisEditorTabFeatureLayer(string tabPathFilename)
-            : this(tabPathFilename, GeoFileReadWriteMode.Read)
+            : this(tabPathFilename, FileAccess.Read)
         { }
 
-        public GisEditorTabFeatureLayer(string tabPathFilename, GeoFileReadWriteMode readWriteMode)
+        public GisEditorTabFeatureLayer(string tabPathFilename, FileAccess readWriteMode)
             : base(tabPathFilename, readWriteMode)
         {
             FeatureSource = new GisEditorTabFeatureSource(tabPathFilename, readWriteMode);
@@ -48,7 +48,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
     [Serializable]
     public class GisEditorTabFeatureSource : TabFeatureSource
     {
-        public GisEditorTabFeatureSource(string tabPathFilename, GeoFileReadWriteMode readWriteMode)
+        public GisEditorTabFeatureSource(string tabPathFilename, FileAccess readWriteMode)
             : base(tabPathFilename, readWriteMode)
         { }
 

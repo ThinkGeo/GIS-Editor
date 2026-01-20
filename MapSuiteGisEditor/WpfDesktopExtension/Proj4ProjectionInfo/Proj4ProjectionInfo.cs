@@ -17,20 +17,20 @@
 */
 
 
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
     public abstract class Proj4ProjectionInfo
     {
-        private Projection projection;
+        private ProjectionConverter projection;
 
-        protected Proj4ProjectionInfo(Projection projection)
+        protected Proj4ProjectionInfo(ProjectionConverter projection)
         {
             this.projection = projection;
         }
 
-        public static Proj4ProjectionInfo CreateInstance(Projection projection)
+        public static Proj4ProjectionInfo CreateInstance(ProjectionConverter projection)
         {
             Proj4Projection unManagedProjection = projection as Proj4Projection;
             Proj4Projection managedProjection = projection as Proj4Projection;
@@ -45,7 +45,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             else return null;
         }
 
-        public Projection Projection
+        public ProjectionConverter Projection
         {
             get { return projection; }
         }
@@ -86,7 +86,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public GeographyUnit GetInternalGeographyUnit()
         {
-            return projection.GetInternalGeographyUnit();
+            return projection.InternalProjection.GetUnit();
         }
 
         public void Open()

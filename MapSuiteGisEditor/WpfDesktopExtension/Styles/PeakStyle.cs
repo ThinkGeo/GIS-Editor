@@ -19,9 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -37,7 +35,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     foreach (var point in CollectPoints(shape))
                     {
-                        canvas.DrawEllipse(point, 6f, 6f, new GeoPen(GeoColor.StandardColors.Gray, 1), new GeoSolidBrush(GeoColor.StandardColors.White), DrawingLevel.LevelThree);
+                        canvas.DrawEllipse(point, 6f, 6f, new GeoPen(GeoColors.Gray, 1), new GeoSolidBrush(GeoColors.White), DrawingLevel.LevelThree);
                     }
                 }
             }

@@ -18,7 +18,7 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -28,7 +28,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public NoaaWeatherOverlay()
         {
             this.Name = "Noaa Weather";
-            this.TileType = TileType.HybridTile;
+            this.TileType = TileType.PreloadDataMultiTile;
         }
     }
 }

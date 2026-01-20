@@ -118,14 +118,14 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to //The code below shows how to write C# Script for MapSuite Explorer
-        /////You can use &quot;map&quot; to access the WpfMap control
+        /////You can use &quot;map&quot; to access the MapView control
         ///using System;
         ///using System.Windows.Forms;
         ///using ThinkGeo.MapSuite.WpfDesktopEdition;
         ///
         ///public class Script
         ///{
-        ///    public static void ScriptMain(WpfMap map)
+        ///    public static void ScriptMain(MapView map)
         ///    {
         ///        int count = 0;
         ///
@@ -135,7 +135,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         ///        {
         ///            count++;
         ///            if (count == 12)
-        ///            {        /// [rest of string was truncated]&quot;;.
+        ///            {
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CSharpSampleCode {
             get {
@@ -203,7 +204,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to #The code below shows how to write Python Script for MapSuite Explorer
-        ///#You can use &quot;Map&quot; to access the WpfMap control
+        ///#You can use &quot;Map&quot; to access the MapView control
         ///import clr
         ///clr.AddReference(&apos;System.Windows.Forms&apos;)
         ///from System.Windows.Forms import *
@@ -275,7 +276,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to #The code below shows how to write Ruby Script for MapSuite Explorer
-        ///#You can use &quot;Map&quot; to access the WpfMap control
+        ///#You can use &quot;Map&quot; to access the MapView control
         ///
         ///load_assembly(&quot;System.Windows.Forms&quot;)
         ///

@@ -22,9 +22,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -74,7 +72,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                             if (valueItem.DefaultTextStyle.Name == "FileLinkStyle" && valueItem.DefaultPointStyle.Name == "FileLinkStyle")
                             {
                                 TextStyle textStyle = valueItem.DefaultTextStyle;
-                                textStyle.PointPlacement = PointPlacement.LowerCenter;
+                                textStyle.TextPlacement = TextPlacement.Lower;
                                 if (valueItem.DefaultPointStyle.CustomPointStyles.Count > 0)
                                 {
                                     textStyle.YOffsetInPixel = -(valueItem.DefaultPointStyle.CustomPointStyles.FirstOrDefault().SymbolSize / 2);
@@ -84,13 +82,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                                     textStyle.YOffsetInPixel = -(valueItem.DefaultPointStyle.SymbolSize / 2);
                                 }
 
-                                if (textStyle.CustomTextStyles.Count > 0)
-                                {
-                                    foreach (var item in textStyle.CustomTextStyles)
-                                    {
-                                        item.YOffsetInPixel = textStyle.YOffsetInPixel;
-                                    }
-                                }
+                                //if (textStyle.CustomTextStyles.Count > 0)
+                                //{
+                                //    foreach (var item in textStyle.CustomTextStyles)
+                                //    {
+                                //        item.YOffsetInPixel = textStyle.YOffsetInPixel;
+                                //    }
+                                //}
 
                                 Feature cloneFeature = feature.CloneDeep();
                                 string path = cloneFeature.ColumnValues["LinkFileName"];

@@ -23,9 +23,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -162,9 +161,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (!isShiftKeyDown && trackShape != null && (TrackMode == TrackMode.Polygon || TrackMode == TrackMode.Line)
                 && editOverlay != null && editOverlay.SnappingLayers.Count > 0)
             {
-                lock (OverlayCanvas.Children)
+                lock (Children)
                 {
-                    var snappingCircle = OverlayCanvas.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
+                    var snappingCircle = Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
                     if (snappingCircle == null)
                     {
                         snappingCircle = new System.Windows.Shapes.Ellipse();
@@ -173,12 +172,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         snappingCircle.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                         snappingCircle.Stroke = new SolidColorBrush(Colors.Black);
                         snappingCircle.StrokeThickness = 1;
-                        OverlayCanvas.Children.Add(snappingCircle);
+                        Children.Add(snappingCircle);
                     }
 
                     var snappingDistance = editOverlay.SnappingDistance;
                     var snappingDistanceUnit = editOverlay.SnappingDistanceUnit;
-                    var snappingScreenPoint = ExtentHelper.ToScreenCoordinate(MapArguments.CurrentExtent, e.MovedVertex.X, e.MovedVertex.Y, (float)MapArguments.ActualWidth, (float)MapArguments.ActualHeight);
+                    var snappingScreenPoint = MapUtil.ToScreenCoordinate(MapArguments.CurrentExtent, e.MovedVertex.X, e.MovedVertex.Y, (float)MapArguments.MapWidth, (float)MapArguments.MapHeight);
 
                     try
                     {
@@ -216,7 +215,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                 //        var snappingDistance = editOverlay.SnappingDistance;
                 //        var snappingDistanceUnit = editOverlay.SnappingDistanceUnit;
-                //        var snappingScreenPoint = ExtentHelper.ToScreenCoordinate(MapArguments.CurrentExtent, snappedPoint, (float)MapArguments.ActualWidth, (float)MapArguments.ActualHeight);
+                //        var snappingScreenPoint = MapUtil.ToScreenCoordinate(MapArguments.CurrentExtent, snappedPoint, (float)MapArguments.MapWidth, (float)MapArguments.MapHeight);
 
                 //        SnappingAdapter calc = SnappingAdapter.Convert(snappingDistance, snappingDistanceUnit, MapArguments, e.MovedVertex);
                 //        var snappingArea = snappedPoint.Buffer(calc.Distance, editOverlay.MapArguments.MapUnit, calc.DistanceUnit).GetBoundingBox();
@@ -240,7 +239,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             #endregion
 
-            OverlayCanvas.Children.Clear();
+            Children.Clear();
         }
 
         protected override InteractiveResult KeyDownCore(KeyEventInteractionArguments interactionArguments)
@@ -253,13 +252,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             var result = base.KeyDownCore(interactionArguments);
 
-            if (interactionArguments.Key.Equals(Keys.Escape.ToString(), StringComparison.Ordinal))
+            if (interactionArguments.Key == System.Windows.Input.Key.Escape)
             {
                 MouseDownCount = 0;
                 Vertices.Clear();
                 TrackShapeLayer.InternalFeatures.Clear();
                 TrackShapesInProcessLayer.InternalFeatures.Clear();
-                result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                //result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
                 result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
             }
 
@@ -278,9 +277,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             if (isShiftKeyDown)
             {
-                var circle = OverlayCanvas.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
+                var circle = Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
                 if (circle != null)
-                    OverlayCanvas.Children.Remove(circle);
+                    Children.Remove(circle);
             }
 
             if (IsDirty && TrackMode != TrackMode.None)
@@ -294,11 +293,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
               && MouseDownCount < 1
               && SnappingLayers.Count > 0)
             {
-                lock (OverlayCanvas.Children)
+                lock (Children)
                 {
                     Vertex currentPosition = new Vertex(interactionArguments.WorldX, interactionArguments.WorldY);
 
-                    var snappingCircle = OverlayCanvas.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
+                    var snappingCircle = Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
                     if (snappingCircle == null)
                     {
                         snappingCircle = new System.Windows.Shapes.Ellipse();
@@ -307,12 +306,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         snappingCircle.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                         snappingCircle.Stroke = new SolidColorBrush(Colors.Black);
                         snappingCircle.StrokeThickness = 1;
-                        OverlayCanvas.Children.Add(snappingCircle);
+                        Children.Add(snappingCircle);
                     }
 
                     var snappingDistance = SnappingDistance;
                     var snappingDistanceUnit = SnappingDistanceUnit;
-                    var snappingScreenPoint = ExtentHelper.ToScreenCoordinate(MapArguments.CurrentExtent, currentPosition.X, currentPosition.Y, (float)MapArguments.ActualWidth, (float)MapArguments.ActualHeight);
+                    var snappingScreenPoint = MapUtil.ToScreenCoordinate(MapArguments.CurrentExtent, currentPosition.X, currentPosition.Y, (float)MapArguments.MapWidth, (float)MapArguments.MapHeight);
 
                     try
                     {
@@ -332,11 +331,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
             else
             {
-                lock (OverlayCanvas.Children)
+                lock (Children)
                 {
-                    var circle = OverlayCanvas.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
+                    var circle = Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
                     if (circle != null)
-                        OverlayCanvas.Children.Remove(circle);
+                        Children.Remove(circle);
                 }
             }
 
@@ -372,7 +371,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             if (interactionArguments.MouseButton == MapMouseButton.Right && TrackMode != TrackMode.None)
             {
-                interactiveResult.DrawThisOverlay = InteractiveOverlayDrawType.DoNotDraw;
+                // interactiveResult.DrawThisOverlay = InteractiveOverlayDrawType.DoNotDraw;
                 interactiveResult = MouseClickCore(interactionArguments);
                 interactiveResult.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
             }
@@ -380,35 +379,35 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return interactiveResult;
         }
 
-        public void RemoveLastVertex()
-        {
-            if (TrackMode == TrackMode.Line)
-            {
-                if (Vertices.Count < 3)
-                {
-                    CleanTrackingShapes();
-                }
-                else
-                {
-                    Vertices.RemoveAt(Vertices.Count - 2);
-                    MouseDownCount--;
-                }
-            }
-            else if (TrackMode == TrackMode.Freehand || TrackMode == TrackMode.Polygon)
-            {
-                if (Vertices.Count < 5)
-                {
-                    CleanTrackingShapes();
-                }
-                else
-                {
-                    Vertices.RemoveAt(Vertices.Count - 3);
-                    MouseDownCount--;
-                }
-            }
+        //public void RemoveLastVertex()
+        //{
+        //    if (TrackMode == TrackMode.Line)
+        //    {
+        //        if (Vertices.Count < 3)
+        //        {
+        //            CleanTrackingShapes();
+        //        }
+        //        else
+        //        {
+        //            Vertices.RemoveAt(Vertices.Count - 2);
+        //            MouseDownCount--;
+        //        }
+        //    }
+        //    else if (TrackMode == TrackMode.Freehand || TrackMode == TrackMode.Polygon)
+        //    {
+        //        if (Vertices.Count < 5)
+        //        {
+        //            CleanTrackingShapes();
+        //        }
+        //        else
+        //        {
+        //            Vertices.RemoveAt(Vertices.Count - 3);
+        //            MouseDownCount--;
+        //        }
+        //    }
 
-            DrawCore(MapArguments.CurrentExtent, OverlayRefreshType.Redraw);
-        }
+        //    DrawCore(MapArguments.CurrentExtent, OverlayRefreshType.Redraw);
+        //}
 
         protected override InteractiveResult MouseClickCore(InteractionArguments interactionArguments)
         {
@@ -455,7 +454,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         }
 
                         var boundingBox = MapArguments.CurrentExtent;
-                        var screenWidth = MapArguments.ActualWidth;
+                        var screenWidth = MapArguments.MapWidth;
                         Feature snappingFeature = null;
                         try
                         {
@@ -640,7 +639,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     interactionArguments.WorldX = vertex.X;
                     interactionArguments.WorldY = vertex.Y;
 
-                    ScreenPointF screen = ExtentHelper.ToScreenCoordinate(interactionArguments.CurrentExtent, new PointShape(vertex), interactionArguments.MapWidth, interactionArguments.MapHeight);
+                    ScreenPointF screen = MapUtil.ToScreenCoordinate(interactionArguments.CurrentExtent, new PointShape(vertex), (float)interactionArguments.MapWidth, (float)interactionArguments.MapHeight);
                     interactionArguments.ScreenX = screen.X;
                     interactionArguments.ScreenY = screen.Y;
                 }

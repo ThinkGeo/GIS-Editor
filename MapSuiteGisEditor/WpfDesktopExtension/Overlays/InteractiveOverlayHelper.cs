@@ -24,9 +24,8 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -38,7 +37,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private static BitmapImage blankImageSource = new BitmapImage();
 
         public static bool UpdateInProcessInteractiveOverlayImageSource(InteractiveOverlay overlay
-            , MapArguments mapArguments
+            , IMapArguments mapArguments
             , IEnumerable<InMemoryFeatureLayer> inProcessLayers
             , Collection<SimpleCandidate> simpleCandidates
             , RenderMode renderMode, PolygonTrackMode polygonTrackMode = PolygonTrackMode.Default, bool refreshAll = false, bool isTrackingPolygon = false)
@@ -80,21 +79,16 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return isUpdated;
         }
 
-        private static void UpdateImageSource(MapArguments mapArguments, Collection<SimpleCandidate> simpleCandidates, RenderMode renderMode, InMemoryFeatureLayer inProcessLayer, Image defaultImage, OutlineDrawMode outlineDrawMode = OutlineDrawMode.LineWithFill)
+        private static void UpdateImageSource(IMapArguments mapArguments, Collection<SimpleCandidate> simpleCandidates, RenderMode renderMode, InMemoryFeatureLayer inProcessLayer, Image defaultImage, OutlineDrawMode outlineDrawMode = OutlineDrawMode.LineWithFill)
         {
-            if (renderMode == RenderMode.DrawingVisual)
-            {
-                defaultImage.Source = GetEditTraceLineImageSourceWithDrawingVisualGeoCanvas(mapArguments, inProcessLayer, simpleCandidates, outlineDrawMode);
-            }
-            else
-            {
-                defaultImage.Source = GetEditTraceLineImageSourceWithGdiPlusGeoCanvas(mapArguments, inProcessLayer, simpleCandidates, outlineDrawMode);
-            }
+            // The legacy GIS Editor had an optional GDI+ rendering path. In ThinkGeo v14 the WPF
+            // DrawingVisualGeoCanvas path is the supported rendering target for interactive overlays.
+            defaultImage.Source = GetEditTraceLineImageSourceWithDrawingVisualGeoCanvas(mapArguments, inProcessLayer, simpleCandidates, outlineDrawMode);
         }
 
-        private static Image GetTileImage(InteractiveOverlay overlay, MapArguments mapArguments, string tileName = defaultLayerTileName, int zIndex = 1)
+        private static Image GetTileImage(InteractiveOverlay overlay, IMapArguments mapArguments, string tileName = defaultLayerTileName, int zIndex = 1)
         {
-            LayerTile layerTile = overlay.OverlayCanvas.Children.OfType<LayerTile>().FirstOrDefault(tmpTile
+            LayerTile layerTile = overlay.Children.OfType<LayerTile>().FirstOrDefault(tmpTile
                => tmpTile.GetValue(Canvas.NameProperty).Equals(tileName));
 
             if (layerTile == null)
@@ -103,7 +97,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 layerTile.IsAsync = false;
                 layerTile.SetValue(Canvas.NameProperty, tileName);
                 layerTile.SetValue(Canvas.ZIndexProperty, zIndex);
-                overlay.OverlayCanvas.Children.Add(layerTile);
+                overlay.Children.Add(layerTile);
             }
 
             Image image = layerTile.Content as Image;
@@ -113,16 +107,16 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 layerTile.Content = image;
             }
 
-            image.Width = mapArguments.ActualWidth;
-            image.Height = mapArguments.ActualHeight;
+            image.Width = mapArguments.MapWidth;
+            image.Height = mapArguments.MapHeight;
             return image;
         }
 
         public static void ResetInProcessInteractiveOverlayImageSource(InteractiveOverlay overlay)
         {
-            var defaultLayerTiles = overlay.OverlayCanvas.Children.OfType<LayerTile>().Where(tmpTile
+            var defaultLayerTiles = overlay.Children.OfType<LayerTile>().Where(tmpTile
                     => tmpTile.GetValue(Canvas.NameProperty).Equals(defaultLayerTileName)).Concat(
-                    overlay.OverlayCanvas.Children.OfType<LayerTile>().Where(tmpTile
+                    overlay.Children.OfType<LayerTile>().Where(tmpTile
                         => tmpTile.GetValue(Canvas.NameProperty).Equals(tracksInProcessLineName)));
 
             foreach (var tile in defaultLayerTiles)
@@ -132,40 +126,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private static ImageSource GetEditTraceLineImageSourceWithGdiPlusGeoCanvas(MapArguments mapArguments, InMemoryFeatureLayer inProcessLayer, Collection<SimpleCandidate> simpleCandidates, OutlineDrawMode outlineDrawMode)
-        {
-            MemoryStream streamSource = null;
-            OutlineGdiPlusGeoCanvas geoCanvas = new OutlineGdiPlusGeoCanvas();
-            geoCanvas.OutlineDrawMode = outlineDrawMode;
-            using (var nativeImage = new System.Drawing.Bitmap((int)mapArguments.ActualWidth, (int)mapArguments.ActualHeight))
-            {
-                geoCanvas.BeginDrawing(nativeImage, mapArguments.CurrentExtent, mapArguments.MapUnit);
-                lock (inProcessLayer)
-                {
-                    if (!inProcessLayer.IsOpen) inProcessLayer.Open();
-                    inProcessLayer.Draw(geoCanvas, simpleCandidates);
-                }
-                geoCanvas.EndDrawing();
-
-                streamSource = new MemoryStream();
-                nativeImage.Save(streamSource, System.Drawing.Imaging.ImageFormat.Png);
-                streamSource.Seek(0, SeekOrigin.Begin);
-            }
-
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = streamSource;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-
-            return bitmapImage;
-        }
-
-        private static ImageSource GetEditTraceLineImageSourceWithDrawingVisualGeoCanvas(MapArguments mapArguments, InMemoryFeatureLayer inProcessLayer, Collection<SimpleCandidate> simpleCandidates, OutlineDrawMode outlineDrawMode)
+        private static ImageSource GetEditTraceLineImageSourceWithDrawingVisualGeoCanvas(
+            IMapArguments mapArguments, InMemoryFeatureLayer inProcessLayer, Collection<SimpleCandidate> simpleCandidates, OutlineDrawMode outlineDrawMode)
         {
             OutlineDrawingVisualGeoCanvas geoCanvas = new OutlineDrawingVisualGeoCanvas();
             geoCanvas.OutlineDrawMode = outlineDrawMode;
-            RenderTargetBitmap nativeImage = new RenderTargetBitmap((int)mapArguments.ActualWidth, (int)mapArguments.ActualHeight, geoCanvas.Dpi, geoCanvas.Dpi, PixelFormats.Pbgra32);
+            RenderTargetBitmap nativeImage = new RenderTargetBitmap((int)mapArguments.MapWidth, (int)mapArguments.MapHeight, geoCanvas.Dpi, geoCanvas.Dpi, PixelFormats.Pbgra32);
             geoCanvas.BeginDrawing(nativeImage, mapArguments.CurrentExtent, mapArguments.MapUnit);
             lock (inProcessLayer)
             {

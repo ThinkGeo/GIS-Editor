@@ -18,7 +18,7 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -28,7 +28,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public SymbolPointStyle()
             : base()
         {
-            PointType = PointType.Bitmap; 
+            PointType = PointType.Image; 
         }
     }
 }

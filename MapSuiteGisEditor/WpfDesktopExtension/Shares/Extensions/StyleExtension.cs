@@ -25,11 +25,10 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -57,7 +56,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             using (var bitmap = new Bitmap(width, height))
             {
-                var canvas = new PlatformGeoCanvas();
+                var canvas = new SkiaGeoCanvas();
                 canvas.BeginDrawing(bitmap, new RectangleShape(-10, 10, 10, -10), GeographyUnit.DecimalDegree);
                 DrawStyleSamples(style, width, height, canvas);
                 canvas.EndDrawing();
@@ -225,7 +224,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return text;
         }
 
-        private static void DrawStyleSamples(Style style, int width, int height, PlatformGeoCanvas canvas)
+        private static void DrawStyleSamples(Style style, int width, int height, GeoCanvas canvas)
         {
             var drawingRectangleF = new DrawingRectangleF(width * .5f, height * .5f, width, height);
             if (style is CompositeStyle)
@@ -256,7 +255,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private static void DrawStaticImage(PlatformGeoCanvas canvas, string uri, DrawingRectangleF drawingRectangleF)
+        private static void DrawStaticImage(GeoCanvas canvas, string uri, DrawingRectangleF drawingRectangleF)
         {
             var streamInfo = System.Windows.Application.GetResourceStream(new Uri(uri, UriKind.RelativeOrAbsolute));
             if (streamInfo != null && streamInfo.Stream != null)
@@ -280,7 +279,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             int loopCount = styles.Count() > 4 ? 4 : styles.Count();
             using (Bitmap bitmap = new Bitmap(width, height))
             {
-                PlatformGeoCanvas canvas = new PlatformGeoCanvas();
+                GeoCanvas canvas = new SkiaGeoCanvas();
                 canvas.BeginDrawing(bitmap, new RectangleShape(-180, 90, 180, -90), GeographyUnit.DecimalDegree);
 
                 Collection<Tuple<int, int>> tuples = new Collection<Tuple<int, int>>() { new Tuple<int, int>(1, 1), new Tuple<int, int>(3, 1), new Tuple<int, int>(1, 3), new Tuple<int, int>(3, 3) };
@@ -310,79 +309,87 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private static void DrawDotDensityStyle(PointStyle pointStyle, PlatformGeoCanvas canvas, DrawingRectangleF drawingRectangleF)
+
+        private static void DrawDotDensityStyle(PointStyle pointStyle, GeoCanvas canvas, DrawingRectangleF drawingRectangleF)
         {
             if (pointStyle == null) return;
 
             var tmpSymbolSize = pointStyle.SymbolSize;
-            var tmpSymbolPenWidth = pointStyle.SymbolPen.Width;
-            var tmpFontSize = pointStyle.CharacterFont.Size;
+            var tmpSymbolPenWidth = pointStyle.OutlinePen.Width;
+            var tmpFontSize = pointStyle.GlyphFont.Size;
+
             Bitmap originalBitmap = null;
             Bitmap newBitmap = null;
 
             try
             {
                 var customerSymbolStyle = pointStyle as SymbolPointStyle;
+                bool usedImageScaling = false;
+
                 if (customerSymbolStyle != null)
                 {
-                    originalBitmap = canvas.ToNativeImage(customerSymbolStyle.Image) as Bitmap;
-                    newBitmap = new Bitmap(originalBitmap, 9, 9);
-                    customerSymbolStyle.Image = canvas.ToGeoImage(newBitmap);
+                    originalBitmap = TryToNativeBitmap(canvas, customerSymbolStyle.Image);
+                    if (originalBitmap != null)
+                    {
+                        newBitmap = new Bitmap(originalBitmap, 9, 9);
+                        var scaledGeoImage = TryToGeoImage(canvas, newBitmap);
+                        if (scaledGeoImage != null)
+                        {
+                            customerSymbolStyle.Image = scaledGeoImage;
+                            usedImageScaling = true;
+                        }
+                    }
+
+                    // If we can't convert/scale the image, fall back to the legacy sizing tweaks.
+                    if (!usedImageScaling)
+                    {
+                        pointStyle.SymbolSize = 3;
+                        pointStyle.OutlinePen.Width = 1;
+                        pointStyle.GlyphFont = new GeoFont(pointStyle.GlyphFont.FontName, 6, pointStyle.GlyphFont.Style);
+                    }
                 }
                 else
                 {
                     pointStyle.SymbolSize = 3;
-                    pointStyle.SymbolPen.Width = 1;
-                    pointStyle.CharacterFont = new GeoFont(pointStyle.CharacterFont.FontName, 6, pointStyle.CharacterFont.Style);
+                    pointStyle.OutlinePen.Width = 1;
+                    pointStyle.GlyphFont = new GeoFont(pointStyle.GlyphFont.FontName, 6, pointStyle.GlyphFont.Style);
                 }
 
                 var halfWidth = drawingRectangleF.Width * 0.5f;
                 var halfHeight = drawingRectangleF.Height * 0.5f;
-                float[] centersX = new float[7];
-                float[] centersY = new float[7];
-                centersX[0] = halfWidth * 0.5f - 1;
-                centersY[0] = halfHeight * 0.5f - 1;
-                centersX[1] = centersX[0] + 2;
-                centersY[1] = centersY[0] + 2;
-                centersX[2] = halfWidth;
-                centersY[2] = halfHeight;
-                centersX[3] = halfWidth + halfWidth * 0.5f;
-                centersY[3] = halfHeight;
-                centersX[4] = halfWidth + halfWidth * 0.5f;
-                centersY[4] = halfHeight + halfHeight * 0.5f;
-                centersX[5] = centersX[4] - 1;
-                centersY[5] = centersY[4] - 1;
-                centersX[6] = centersX[4] + 1;
-                centersY[6] = centersY[4] + 1;
+
                 for (int i = 0; i < 7; i++)
                 {
-                    float centerX = centersX[i];
-                    float centerY = centersY[i];
-                    if (pointStyle != null)
-                    {
-                        pointStyle.DrawSample(canvas, new DrawingRectangleF(centerX, centerY, 11, 11));
-                    }
-                }
+                    float centerX = drawingRectangleF.CenterX + (i % 3 - 1) * halfWidth * 0.75f;
+                    float centerY = drawingRectangleF.CenterY + (i / 3 - 1) * halfHeight * 0.75f;
 
-                if (originalBitmap != null)
+                    pointStyle.DrawSample(canvas, new DrawingRectangleF(centerX, centerY, halfWidth * 0.5f, halfHeight * 0.5f));
+                }
+            }
+            catch
+            {
+                // Keep preview drawing resilient - failures here shouldn't crash the editor.
+            }
+            finally
+            {
+                var customerSymbolStyle = pointStyle as SymbolPointStyle;
+                if (customerSymbolStyle != null && originalBitmap != null)
                 {
-                    customerSymbolStyle.Image = canvas.ToGeoImage(originalBitmap);
+                    customerSymbolStyle.Image = TryToGeoImage(canvas, originalBitmap) ?? customerSymbolStyle.Image;
                 }
                 else
                 {
                     pointStyle.SymbolSize = tmpSymbolSize;
-                    pointStyle.SymbolPen.Width = tmpSymbolPenWidth;
-                    pointStyle.CharacterFont = new GeoFont(pointStyle.CharacterFont.FontName, tmpFontSize, pointStyle.CharacterFont.Style);
+                    pointStyle.OutlinePen.Width = tmpSymbolPenWidth;
+                    pointStyle.GlyphFont = new GeoFont(pointStyle.GlyphFont.FontName, tmpFontSize, pointStyle.GlyphFont.Style);
                 }
-            }
-            finally
-            {
-                if (originalBitmap != null) originalBitmap.Dispose();
-                if (newBitmap != null) newBitmap.Dispose();
+
+                newBitmap?.Dispose();
+                originalBitmap?.Dispose();
             }
         }
 
-        private static void DrawNormalStyle(this Style style, PlatformGeoCanvas canvas, DrawingRectangleF drawingRectangleF)
+        private static void DrawNormalStyle(this Style style, GeoCanvas canvas, DrawingRectangleF drawingRectangleF)
         {
             try
             {
@@ -410,12 +417,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 else if (style is FontPointStyle)
                 {
                     var fontStyle = (FontPointStyle)style;
-                    var tmpsize = fontStyle.CharacterFont.Size;
+                    var tmpsize = fontStyle.GlyphFont.Size;
                     if (tmpsize > 26)
-                        fontStyle.CharacterFont = new GeoFont(fontStyle.CharacterFont.FontName, 26, fontStyle.CharacterFont.Style);
+                        fontStyle.GlyphFont = new GeoFont(fontStyle.GlyphFont.FontName, 26, fontStyle.GlyphFont.Style);
                     fontStyle.DrawSample(canvas, drawingRectangleF);
                     if (tmpsize > 26)
-                        fontStyle.CharacterFont = new GeoFont(fontStyle.CharacterFont.FontName, tmpsize, fontStyle.CharacterFont.Style);
+                        fontStyle.GlyphFont = new GeoFont(fontStyle.GlyphFont.FontName, tmpsize, fontStyle.GlyphFont.Style);
                 }
                 else if (style is PointStyle)
                 {
@@ -447,6 +454,78 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             line.Vertices.Add(rightVertex);
 
             return line;
+        }
+
+
+
+        private static Bitmap TryToNativeBitmap(GeoCanvas canvas, GeoImage geoImage)
+        {
+            if (canvas == null || geoImage == null) return null;
+
+            try
+            {
+                var mi = canvas.GetType().GetMethod(
+                    "ToNativeImage",
+                    BindingFlags.Instance | BindingFlags.Public,
+                    binder: null,
+                    types: new[] { typeof(GeoImage) },
+                    modifiers: null);
+
+                if (mi != null)
+                {
+                    return mi.Invoke(canvas, new object[] { geoImage }) as Bitmap;
+                }
+            }
+            catch
+            {
+                // Ignore and fall back.
+            }
+
+            return null;
+        }
+
+        private static GeoImage TryToGeoImage(GeoCanvas canvas, Bitmap bitmap)
+        {
+            if (bitmap == null) return null;
+
+            try
+            {
+                if (canvas != null)
+                {
+                    // Look for any public instance method named "ToGeoImage" that can accept a Bitmap.
+                    foreach (var mi in canvas.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public))
+                    {
+                        if (!string.Equals(mi.Name, "ToGeoImage", StringComparison.Ordinal)) continue;
+
+                        var parameters = mi.GetParameters();
+                        if (parameters.Length != 1) continue;
+
+                        if (parameters[0].ParameterType.IsInstanceOfType(bitmap))
+                        {
+                            return mi.Invoke(canvas, new object[] { bitmap }) as GeoImage;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore and fall back.
+            }
+
+            // Fallback: encode the bitmap to PNG and wrap it in a GeoImage.
+            try
+            {
+                using (var ms = new MemoryStream())
+                {
+                    bitmap.Save(ms, ImageFormat.Png);
+                    ms.Position = 0;
+                    return new GeoImage(ms);
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static void ParseSegments(string content, char start, char end, Action<string> oneParsed)

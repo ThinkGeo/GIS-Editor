@@ -19,8 +19,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -37,9 +36,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 foreach (Feature feature in allPossibleFeatures)
                 {
                     BaseShape sourceShape = feature.GetShape();
-                    sourceShape = SqlTypesGeometryHelper.MakeValid(sourceShape);
-                    targetShape = SqlTypesGeometryHelper.MakeValid(targetShape);
-                    bool intersects = SqlTypesGeometryHelper.Intersects(sourceShape, targetShape);
+                    //sourceShape = SqlTypesGeometryHelper.MakeValid(sourceShape);
+                    //targetShape = SqlTypesGeometryHelper.MakeValid(targetShape);
+                    //bool intersects = SqlTypesGeometryHelper.Intersects(sourceShape, targetShape);
+                    var intersects = feature.Intersects(new Feature(targetShape));
                     if (intersects)
                     {
                         returnFeatures.Add(feature);

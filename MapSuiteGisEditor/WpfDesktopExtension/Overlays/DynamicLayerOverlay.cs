@@ -18,8 +18,10 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using System.Threading;
+using System.Threading.Tasks;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -29,12 +31,15 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public DynamicLayerOverlay()
         { }
 
-        protected override void DrawCore(RectangleShape targetExtent, OverlayRefreshType refreshType)
+        protected override Task DrawAsyncCore(RectangleShape targetExtent, OverlayRefreshType refreshType, CancellationToken cancellationToken)
         {
+            // ThinkGeo v14+ overlay drawing is asynchronous.
+            // Keep the v10 behavior: force a single tile and no cache for “dynamic” overlays.
             TileCache = null;
             TileType = TileType.SingleTile;
             TileBuffer = 0;
-            base.DrawCore(targetExtent, refreshType);
+
+            return base.DrawAsyncCore(targetExtent, refreshType, cancellationToken);
         }
     }
 }

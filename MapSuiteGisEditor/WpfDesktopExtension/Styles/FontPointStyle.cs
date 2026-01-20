@@ -18,8 +18,8 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using System.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -29,8 +29,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public FontPointStyle()
             : base()
         {
-            PointType = PointType.Character;
-            CharacterSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Black);
+            PointType = PointType.Glyph;
+            this.FillBrush = new GeoSolidBrush(GeoColors.Black);
         }
     }
 }

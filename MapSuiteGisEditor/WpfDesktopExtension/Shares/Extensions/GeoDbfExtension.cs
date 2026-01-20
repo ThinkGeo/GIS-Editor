@@ -18,7 +18,7 @@
 
 
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {

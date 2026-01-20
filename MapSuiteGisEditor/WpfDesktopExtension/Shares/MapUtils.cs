@@ -24,8 +24,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -82,16 +81,18 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     maxExtent = new RectangleShape(-180, 90, 180, -90);
                     break;
                 case GeographyUnit.Meter:
-                    BitmapTileCache meterCache = new FileBitmapTileCache();
-                    meterCache.TileMatrix.BoundingBoxUnit = GeographyUnit.Meter;
-                    meterCache.TileMatrix.BoundingBox = new RectangleShape(-1000000000, 1000000000, 1000000000, -1000000000);
-                    maxExtent = meterCache.TileMatrix.BoundingBox;
+                    RasterTileCache meterCache = new FileRasterTileCache();
+                    //meterCache.TileMatrix.BoundingBoxUnit = GeographyUnit.Meter;
+                    //meterCache.TileMatrix.BoundingBox = new RectangleShape(-1000000000, 1000000000, 1000000000, -1000000000);
+                    //maxExtent = meterCache.TileMatrix.BoundingBox;
+                    maxExtent = MaxExtents.SphericalMercator;
                     break;
                 case GeographyUnit.Feet:
-                    BitmapTileCache feetCache = new FileBitmapTileCache();
-                    feetCache.TileMatrix.BoundingBoxUnit = GeographyUnit.Feet;
-                    feetCache.TileMatrix.BoundingBox = new RectangleShape(-1000000000, 1000000000, 1000000000, -1000000000);
-                    maxExtent = feetCache.TileMatrix.BoundingBox;
+                    RasterTileCache feetCache = new FileRasterTileCache();
+                    //feetCache.TileMatrix.BoundingBoxUnit = GeographyUnit.Feet;
+                    //feetCache.TileMatrix.BoundingBox = new RectangleShape(-1000000000, 1000000000, 1000000000, -1000000000);
+                    //maxExtent = feetCache.TileMatrix.BoundingBox;
+                    maxExtent = MaxExtents.Feet;
                     break;
                 default:
                     break;

@@ -27,23 +27,20 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
     [Serializable]
-    public sealed partial class GisEditorWpfMap : WpfMap
+    public sealed partial class GisEditorWpfMap : MapView
     {
         private const int panPercentage = 10;
         private const string overlayNamePattern = "(?<=Layer Group) \\d+";
@@ -164,20 +161,24 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             ResetMapVersion();
             mapNextExtents = new Collection<RectangleShape>();
             bingMapsApplicationIds = new Dictionary<BingMapsOverlay, string>();
-            ZoomLevelSet = new GoogleMapsZoomLevelSet();
-            foreach (var item in ZoomLevelSet.GetZoomLevels())
-            {
-                item.Scale = Math.Round(item.Scale, 6);
-                ZoomLevelSet.CustomZoomLevels.Add(item);
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                var scale = ZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale * 0.5;
-                var zoomLevel = new ZoomLevel(Math.Round(scale, 6));
-                ZoomLevelSet.CustomZoomLevels.Add(zoomLevel);
-            }
-            MinimumScale = ZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale;
+            //ZoomLevelSet = new GoogleMapsZoomLevelSet();
+            //foreach (var item in ZoomLevelSet.GetZoomLevels())
+            //{
+            //    item.Scale = Math.Round(item.Scale, 6);
+            //    ZoomLevelSet.CustomZoomLevels.Add(item);
+            //}
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    var scale = ZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale * 0.5;
+            //    var zoomLevel = new ZoomLevel(Math.Round(scale, 6));
+            //    ZoomLevelSet.CustomZoomLevels.Add(zoomLevel);
+            //}
+            //MinimumScale = ZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale;
+
+            MinimumScale = ZoomScales.LastOrDefault();
+
             FlowDirection = FlowDirection.LeftToRight;
+
             Name = name;
             ContextMenu = new ContextMenu();
             InitializeProgressBar();
@@ -205,13 +206,16 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             fixedAdornmentOverlay = new AdornmentOverlay();
             fixedAdornmentOverlay.Layers.Add(defaultScaleLineAdornmentLayer);
 
+            // MapView (v14) renders the AdornmentOverlay automatically; keep a dedicated overlay for
+            // the GIS Editor's fixed adornments (scale line, etc.).
+            this.AdornmentOverlay = fixedAdornmentOverlay;
+
             selectOverlay = new SelectionTrackInteractiveOverlay();
             InteractiveOverlays.Insert(0, selectOverlay);
             KeyDown += new KeyEventHandler(GisEditorWpfMap_KeyDown);
-            GCCollectionMode = GCCollectionMode.Optimized;
         }
 
-        protected override void OnCurrentExtentChanged(CurrentExtentChangedWpfMapEventArgs e)
+        protected override void OnCurrentExtentChanged(CurrentExtentChangedMapViewEventArgs e)
         {
             if (raiseCurrentExtentChangedTimer == null)
             {
@@ -287,7 +291,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             base.OnApplyTemplate();
 
-            ToolsGrid.Children.Add(progressGrid);
+           // ToolsGrid.Children.Add(progressGrid);
             fixedAdornmentCanvas = (Canvas)GetTemplateChild("AdornmentCanvas");
             mapCanvas = EventCanvas;
         }
@@ -328,45 +332,27 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return new Collection<FeatureLayer>(featureLayers.ToList());
         }
 
-        [Obsolete("This method will be obsoleted soon. Please use AddLayerToActiveOverlay(Layer) instead")]
-        public void AddLayersToActiveOverlay(Layer layer)
+           public async Task AddLayerToActiveOverlay(Layer layer)
         {
-            AddLayerToActiveOverlay(layer);
+            await AddLayersToActiveOverlay(new Collection<Layer>() { layer }, TargetLayerOverlayType.Static);
         }
 
-        public void AddLayerToActiveOverlay(Layer layer)
+        public async Task AddLayerToActiveOverlay(Layer layer, TileType tileType)
         {
-            AddLayersToActiveOverlay(new Collection<Layer>() { layer }, TargetLayerOverlayType.Static);
+            await AddLayersToActiveOverlay(new Collection<Layer> { layer }, tileType);
         }
 
-        public void AddLayerToActiveOverlay(Layer layer, TileType tileType)
+        public async Task AddLayerToActiveOverlay(Layer layer, TargetLayerOverlayType targetLayerOverlayType)
         {
-            AddLayersToActiveOverlay(new Collection<Layer> { layer }, tileType);
+            await AddLayersToActiveOverlay(new Collection<Layer> { layer }, targetLayerOverlayType);
         }
 
-        [Obsolete("This method will be obsoleted soon. Please use AddLayerToActiveOverlay(Layer, TargetLayerOverlayType) instead")]
-        public void AddLayersToActiveOverlay(Layer layer, bool isDynamic)
+        public async Task AddLayersToActiveOverlay(IEnumerable<Layer> layers)
         {
-            AddLayerToActiveOverlay(layer, isDynamic ? TargetLayerOverlayType.Dynamic : TargetLayerOverlayType.Static);
+            await AddLayersToActiveOverlay(layers, TargetLayerOverlayType.Static);
         }
 
-        [Obsolete("This method will be obsoleted soon. Please use AddLayerToActiveOverlay(Layers, TargetLayerOverlayType) instead")]
-        public void AddLayersToActiveOverlay(IEnumerable<Layer> layers, bool isDynamic)
-        {
-            AddLayersToActiveOverlay(layers, isDynamic ? TargetLayerOverlayType.Dynamic : TargetLayerOverlayType.Static);
-        }
-
-        public void AddLayerToActiveOverlay(Layer layer, TargetLayerOverlayType targetLayerOverlayType)
-        {
-            AddLayersToActiveOverlay(new Collection<Layer> { layer }, targetLayerOverlayType);
-        }
-
-        public void AddLayersToActiveOverlay(IEnumerable<Layer> layers)
-        {
-            AddLayersToActiveOverlay(layers, TargetLayerOverlayType.Static);
-        }
-
-        public void AddLayersToActiveOverlay(IEnumerable<Layer> layers, TileType tileType)
+        public async Task AddLayersToActiveOverlay(IEnumerable<Layer> layers, TileType tileType)
         {
             AddLayersParameters parameters = new AddLayersParameters();
             parameters.TileType = tileType;
@@ -375,10 +361,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 parameters.LayersToAdd.Add(layer);
             }
 
-            AddLayersToActiveOverlay(parameters);
+            await AddLayersToActiveOverlay(parameters);
         }
 
-        public void AddLayersToActiveOverlay(IEnumerable<Layer> layers, TargetLayerOverlayType targetLayerOverlayType)
+        public async Task AddLayersToActiveOverlay(IEnumerable<Layer> layers, TargetLayerOverlayType targetLayerOverlayType)
         {
             AddLayersParameters parameters = new AddLayersParameters();
             parameters.TargetLayerOverlayType = targetLayerOverlayType;
@@ -387,10 +373,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 parameters.LayersToAdd.Add(layer);
             }
 
-            AddLayersToActiveOverlay(parameters);
+            await AddLayersToActiveOverlay(parameters);
         }
 
-        public void AddLayersToActiveOverlay(AddLayersParameters parameters)
+        public async Task AddLayersToActiveOverlay(AddLayersParameters parameters)
         {
             if (parameters.LayersToAdd.Count() == 0) return;
 
@@ -468,7 +454,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 }
             });
 
-            RefreshCachesAndZoomToExtent(isFirstLayer, isFirstLayerAfterBase, worldExtent, newLayersInSight, parameters);
+            await RefreshCachesAndZoomToExtent(isFirstLayer, isFirstLayerAfterBase, worldExtent, newLayersInSight, parameters);
         }
 
         protected void OnAddingLayersToActiveOverlay(AddLayersParameters parameters)
@@ -489,7 +475,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private void RefreshCachesAndZoomToExtent(bool isFirstAdded, bool isFirstAddedAfterBase, RectangleShape worldExtent, bool needToRedraw, AddLayersParameters parameters)
+        private async Task RefreshCachesAndZoomToExtent(bool isFirstAdded, bool isFirstAddedAfterBase, RectangleShape worldExtent, bool needToRedraw, AddLayersParameters parameters)
         {
             bool useCache = parameters.IsCacheEnabled;
             bool zoomToExtentOfNewlyAddedLayer = parameters.ZoomToExtentAutomatically;
@@ -517,12 +503,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                 if (isFirstAdded || needToRedraw)
                 {
-                    Refresh(TileOverlayExtension.RefreshBufferTime, RequestDrawingBufferTimeType.ResetDelay);
+                    //Refresh(TileOverlayExtension.RefreshBufferTime, RequestDrawingBufferTimeType.ResetDelay);
+                    await RefreshAsync();
                 }
             }
         }
 
-        private void AddLayersToLayerOverlay(AddLayersParameters arguments)
+        private async Task AddLayersToLayerOverlay(AddLayersParameters arguments)
         {
             if (arguments.TargetLayerOverlayType == TargetLayerOverlayType.Dynamic)
             {
@@ -530,7 +517,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
             else
             {
-                AddLayersToStaticLayerOverlay(arguments);
+                await AddLayersToStaticLayerOverlay(arguments);
             }
         }
 
@@ -562,7 +549,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private LayerOverlay GetActivateLayerOverlay(AddLayersParameters arguments)
+        private async Task<LayerOverlay> GetActivateLayerOverlay(AddLayersParameters arguments)
         {
             LayerOverlay layerOverlay = ActiveOverlay as LayerOverlay;
             if (layerOverlay == null
@@ -573,7 +560,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 layerOverlay = new GisEditorLayerOverlay
                 {
                     Name = GetLayerOverlayName(),
-                    LockLayerMode = LockLayerMode.Lock,
+                    //LockLayerMode = LockLayerMode.Lock,
                     TileBuffer = 0,
                     TileType = arguments.TileType,
                     DrawingExceptionMode = DrawingExceptionMode.DrawException,
@@ -585,7 +572,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                 Overlays.Add(layerOverlay);
 
-                Refresh(layerOverlay, TileOverlayExtension.RefreshBufferTime, RequestDrawingBufferTimeType.ResetDelay);
+                //Refresh(layerOverlay, TileOverlayExtension.RefreshBufferTime, RequestDrawingBufferTimeType.ResetDelay);
+                await RefreshAsync(layerOverlay);
                 ActiveOverlay = layerOverlay;
             }
 
@@ -608,10 +596,10 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return string.Format(CultureInfo.InvariantCulture, overlayName, maxValue + 1);
         }
 
-        private void AddLayersToStaticLayerOverlay(AddLayersParameters arguments)
+        private async Task AddLayersToStaticLayerOverlay(AddLayersParameters arguments)
         {
             IEnumerable<Layer> layers = arguments.LayersToAdd;
-            LayerOverlay layerOverlay = GetActivateLayerOverlay(arguments);
+            LayerOverlay layerOverlay = await GetActivateLayerOverlay(arguments);
             if (layers.Count() > 0) layerOverlay.IsVisible = true;
 
             foreach (var layer in layers)
@@ -634,7 +622,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     RasterLayer rasterLayer = (RasterLayer)layer;
                     string proj4 = string.Empty;
-                    Proj4Projection projection = rasterLayer.ImageSource.Projection as Proj4Projection;
+                    Proj4Projection projection = rasterLayer.ImageSource.ProjectionConverter as Proj4Projection;
                     if (projection != null)
                     {
                         proj4 = projection.InternalProjectionParametersString;
@@ -658,7 +646,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
                 if (layerOverlay != null)
                 {
-                    FileBitmapTileCache tileCache = layerOverlay.TileCache as FileBitmapTileCache;
+                    FileRasterTileCache tileCache = layerOverlay.TileCache as FileRasterTileCache;
                     if (arguments.IsCacheEnabled)
                     {
                         layerOverlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
@@ -671,14 +659,14 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        public void RefreshActiveOverlay()
+        public async Task RefreshActiveOverlay()
         {
             if (ActiveOverlay != null)
             {
                 TileOverlay overlay = ActiveOverlay as TileOverlay;
                 if (overlay != null)
                 {
-                    overlay.Invalidate();
+                    await overlay.Invalidate();
                 }
             }
         }
@@ -698,17 +686,17 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     if (l is FeatureLayer)
                     {
                         FeatureLayer featureLayer = (FeatureLayer)l;
-                        if (featureLayer.FeatureSource.Projection != null && !featureLayer.FeatureSource.Projection.IsOpen)
+                        if (featureLayer.FeatureSource.ProjectionConverter != null && !featureLayer.FeatureSource.ProjectionConverter.IsOpen)
                         {
-                            featureLayer.FeatureSource.Projection.Open();
+                            featureLayer.FeatureSource.ProjectionConverter.Open();
                         }
                     }
                     else if (l is RasterLayer)
                     {
                         RasterLayer rasterLayer = (RasterLayer)l;
-                        if (rasterLayer.ImageSource.Projection != null && !rasterLayer.ImageSource.Projection.IsOpen)
+                        if (rasterLayer.ImageSource.ProjectionConverter != null && !rasterLayer.ImageSource.ProjectionConverter.IsOpen)
                         {
-                            rasterLayer.ImageSource.Projection.Open();
+                            rasterLayer.ImageSource.ProjectionConverter.Open();
                         }
                     }
                 });
@@ -766,9 +754,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     compositeStyle.Styles.Add(GetDefaultLineStyle());
                     compositeStyle.Styles.Add(GetDefaultPointStyle());
 
-                    foreach (var zoomLevel in this.ZoomLevelSet.GetZoomLevels())
+                    foreach (var zoomLevel in this.ZoomScales)
                     {
-                        ZoomLevel newZoomLevel = new ZoomLevel(zoomLevel.Scale);
+                        ZoomLevel newZoomLevel = new ZoomLevel(zoomLevel);
                         newZoomLevel.CustomStyles.Add(compositeStyle);
                         featureLayer.ZoomLevelSet.CustomZoomLevels.Add(newZoomLevel);
                     }
@@ -807,8 +795,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             defaultPointStyle.Name = "Point Style";
             defaultPointStyle.SymbolType = PointSymbolType.Circle;
             defaultPointStyle.SymbolSize = 6;
-            defaultPointStyle.SymbolSolidBrush = new GeoSolidBrush(GeoColor.FromHtml("#FF4500"));
-            defaultPointStyle.SymbolPen = new GeoPen(GeoColor.StandardColors.Black, 1);
+            defaultPointStyle.FillBrush = new GeoSolidBrush(GeoColor.FromHtml("#FF4500"));
+            defaultPointStyle.OutlinePen = new GeoPen(GeoColors.Black, 1);
             return defaultPointStyle;
         }
 
@@ -816,14 +804,14 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             AreaStyle defaultAreaStyle = new AreaStyle();
             defaultAreaStyle.Name = "Area Style";
-            defaultAreaStyle.FillSolidBrush = new GeoSolidBrush(GeoColor.FromHtml("#C0C0C0"));
+            defaultAreaStyle.FillBrush = new GeoSolidBrush(GeoColor.FromHtml("#C0C0C0"));
             defaultAreaStyle.OutlinePen = new GeoPen(GeoColor.FromHtml("#808080"), 1);
             return defaultAreaStyle;
         }
 
         private LineStyle GetDefaultLineStyle()
         {
-            LineStyle lineStyle = new LineStyle(new GeoPen(GeoColor.SimpleColors.Black, 1), new GeoPen(GeoColor.StandardColors.Transparent, 1), new GeoPen(GeoColor.StandardColors.Transparent, 1));
+            LineStyle lineStyle = new LineStyle(new GeoPen(GeoColors.Black, 1), new GeoPen(GeoColors.Transparent, 1), new GeoPen(GeoColors.Transparent, 1));
             lineStyle.Name = "Line Style";
             return lineStyle;
         }
@@ -844,7 +832,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     scale = MinimumScale;
                 }
-                List<double> scales = ZoomLevelSet.GetZoomLevels().Where(z => z.GetType() == typeof(ZoomLevel)).Select(z => z.Scale).ToList();
+                List<double> scales = ZoomScales.ToList();
                 return MapUtils.GetSnappedZoomLevelIndex(scale, new Collection<double>(scales));
             }
         }
@@ -856,39 +844,104 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                    select overlay;
         }
 
-        protected override void DrawCore(RectangleShape targetExtent, OverlayRefreshType overlayRefreshType)
+        public async Task ZoomToNextExtent()
         {
-            if (fixedAdornmentCanvas != null && !fixedAdornmentCanvas.Children.Contains(fixedAdornmentOverlay.OverlayCanvas))
+            // v10 kept a separate stack for "next" extents by intercepting ZoomToPreviousExtentCore.
+            // In v14 the map maintains a built-in history. Use it if available, with a fallback
+            // to the legacy stack.
+
+            // 1) Prefer a native MapView.ZoomToNextExtent (if present).
+            var zoomNext = typeof(MapView).GetMethod("ZoomToNextExtent", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            if (zoomNext != null)
             {
-                Canvas.SetZIndex(fixedAdornmentOverlay.OverlayCanvas, 999);
-                fixedAdornmentCanvas.Children.Add(fixedAdornmentOverlay.OverlayCanvas);
+                zoomNext.Invoke(this, null);
+                return;
             }
 
-            base.DrawCore(targetExtent, overlayRefreshType);
-
-            var arguments = GetMapArguments();
-            if (overlayRefreshType == OverlayRefreshType.Redraw)
+            // 2) Try HistoryExtents / HistoryExtentsCurrentIndex (common in ThinkGeo UI v12+).
+            var historyProp = typeof(MapView).GetProperty("HistoryExtents", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            var indexProp = typeof(MapView).GetProperty("HistoryExtentsCurrentIndex", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            if (historyProp != null && indexProp != null && indexProp.CanRead)
             {
-                fixedAdornmentOverlay.Initialize(arguments);
-                fixedAdornmentOverlay.Draw(targetExtent, overlayRefreshType);
+                var historyObj = historyProp.GetValue(this);
+                if (historyObj is System.Collections.IList history && history.Count > 0)
+                {
+                    int index;
+                    try
+                    {
+                        index = System.Convert.ToInt32(indexProp.GetValue(this));
+                    }
+                    catch
+                    {
+                        index = 0;
+                    }
+
+                    if (index < history.Count - 1)
+                    {
+                        // If the index is settable, advance the history pointer.
+                        if (indexProp.CanWrite)
+                        {
+                            indexProp.SetValue(this, index + 1);
+                        }
+                        else
+                        {
+                            // Otherwise, set the next extent directly.
+                            if (history[index + 1] is RectangleShape nextExtent)
+                            {
+                                CurrentExtent = nextExtent;
+                            }
+                        }
+
+                        await Draw(CurrentExtent, OverlayRefreshType.Redraw);
+                        return;
+                    }
+                }
+            }
+
+            // 3) Legacy fallback.
+            if (mapNextExtents != null && mapNextExtents.Count > 0)
+            {
+                CurrentExtent = mapNextExtents.Last();
+                mapNextExtents.RemoveAt(mapNextExtents.Count - 1);
+                await  Draw(CurrentExtent, OverlayRefreshType.Redraw);
             }
         }
 
-        protected override void ZoomToPreviousExtentCore()
-        {
-            mapNextExtents.Add(CurrentExtent);
-            base.ZoomToPreviousExtentCore();
-        }
 
-        public void ZoomToNextExtent()
+        /// <summary>
+        /// Backward-compatible draw helper.
+        ///
+        /// In some ThinkGeo versions the map control exposes a dedicated Draw method,
+        /// while in others drawing is driven by Refresh/RefreshAsync. This helper tries
+        /// to invoke the underlying draw method if it exists, and falls back to setting
+        /// CurrentExtent + Refresh.
+        /// </summary>
+        private async Task Draw(RectangleShape targetExtent, OverlayRefreshType refreshType)
         {
-            if (MapNextExtents.Count > 0)
+            // Try calling base.MapView.Draw(RectangleShape, OverlayRefreshType) if available.
+            try
             {
-                RectangleShape nextExtent = (RectangleShape)MapNextExtents[MapNextExtents.Count - 1].CloneDeep();
-                Draw(nextExtent, OverlayRefreshType.Redraw);
+                var mi = typeof(MapView).GetMethod(
+                    "Draw",
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    null,
+                    new[] { typeof(RectangleShape), typeof(OverlayRefreshType) },
+                    null);
 
-                MapNextExtents.RemoveAt(MapNextExtents.Count - 1);
+                if (mi != null && mi.DeclaringType != typeof(GisEditorWpfMap))
+                {
+                    mi.Invoke(this, new object[] { targetExtent, refreshType });
+                    return;
+                }
             }
+            catch
+            {
+                // Best-effort only; fall back below.
+            }
+
+            // Fallback: set extent and refresh.
+            CurrentExtent = (RectangleShape)targetExtent.CloneDeep();
+            await RefreshAsync();
         }
 
         public RectangleShape GetClosestExtent(RectangleShape extent, double screenWidth, double screenHeight)
@@ -912,14 +965,15 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 scale = MinimumScale;
             }
 
-            return MapUtils.GetClosestScale(scale, ZoomLevelSet);
+            //return MapUtils.GetClosestScale(scale, ZoomScales);
+            return scale;
         }
 
         public static GeographyUnit GetGeographyUnit(string projectionString)
         {
             Proj4Projection proj4 = new Proj4Projection();
             proj4.ExternalProjectionParametersString = projectionString;
-            return proj4.GetExternalGeographyUnit();
+            return proj4.ExternalProjection.GetUnit();
         }
 
         private RectangleShape GetRectangle(PointShape center, double scale)
@@ -944,40 +998,60 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private double GetZoomLevelScale(int index)
         {
-            double scale;
-            if (ZoomLevelSet.CustomZoomLevels.Count == 0)
-            {
-                Collection<ZoomLevel> zoomLevels = ZoomLevelSet.GetZoomLevels();
-                if (zoomLevels.Count <= index)
-                {
-                    scale = zoomLevels.Min(z => z.Scale);
-                }
-                else
-                {
-                    scale = zoomLevels[index].Scale;
-                }
-            }
-            else
-            {
-                if (index >= ZoomLevelSet.CustomZoomLevels.Count)
-                {
-                    index = ZoomLevelSet.CustomZoomLevels.Count - 1;
-                }
+            return ZoomScales[index];
 
-                scale = ZoomLevelSet.CustomZoomLevels[index].Scale;
-            }
+            //double scale;
+            //if (ZoomLevelSet.CustomZoomLevels.Count == 0)
+            //{
+            //    Collection<ZoomLevel> zoomLevels = ZoomLevelSet.GetZoomLevels();
+            //    if (zoomLevels.Count <= index)
+            //    {
+            //        scale = zoomLevels.Min(z => z.Scale);
+            //    }
+            //    else
+            //    {
+            //        scale = zoomLevels[index].Scale;
+            //    }
+            //}
+            //else
+            //{
+            //    if (index >= ZoomLevelSet.CustomZoomLevels.Count)
+            //    {
+            //        index = ZoomLevelSet.CustomZoomLevels.Count - 1;
+            //    }
 
-            return scale;
+            //    scale = ZoomLevelSet.CustomZoomLevels[index].Scale;
+            //}
+
+            //return scale;
         }
 
         private static int GetDrawingProgress(TileOverlay tileOverlay)
         {
-            Canvas drawingCanvas = ((Canvas)tileOverlay.OverlayCanvas.Children[0]);
+            Canvas drawingCanvas = ((Canvas)tileOverlay.Children[0]);
             int total = drawingCanvas.Children.Count;
             int drawn = 0;
-            foreach (Wpf.Tile tile in drawingCanvas.Children)
+            foreach (UIElement child in drawingCanvas.Children)
             {
-                if (tile.IsOpened) drawn++;
+                // Tile view types and "opened" state members vary between ThinkGeo versions.
+                // We count tiles best-effort via reflection.
+                bool isOpened = false;
+
+                try
+                {
+                    var childType = child.GetType();
+                    var prop = childType.GetProperty("IsOpened") ?? childType.GetProperty("IsOpen") ?? childType.GetProperty("IsLoaded");
+                    if (prop != null && prop.PropertyType == typeof(bool))
+                    {
+                        isOpened = (bool)prop.GetValue(child, null);
+                    }
+                }
+                catch
+                {
+                    // Ignore and treat as not opened.
+                }
+
+                if (isOpened) drawn++;
             }
 
             if (total != 0)
@@ -990,30 +1064,30 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        public MapArguments GetMapArguments()
-        {
-            MapArguments mapArgs = null;
-            if (InteractiveOverlays.Count > 0 && InteractiveOverlays[0].MapArguments != null)
-                mapArgs = InteractiveOverlays[0].MapArguments;
-            else
-                mapArgs = new MapArguments();
-            mapArgs.ActualHeight = ActualHeight;
-            mapArgs.ActualWidth = ActualWidth;
-            mapArgs.CurrentExtent = (RectangleShape)CurrentExtent.CloneDeep();
-            mapArgs.CurrentResolution = CurrentResolution;
-            mapArgs.CurrentScale = CurrentScale;
-            mapArgs.MapUnit = MapUnit;
-            mapArgs.MaximumScale = MaximumScale;
-            mapArgs.MinimumScale = MinimumScale;
-            mapArgs.MaxExtent = MaxExtent;
-            mapArgs.ZoomLevelScales.Clear();
-            foreach (var zoomLevel in ZoomLevelSet.GetZoomLevels())
-            {
-                mapArgs.ZoomLevelScales.Add(zoomLevel.Scale);
-            }
+        //public MapArguments GetMapArguments()
+        //{
+        //    MapArguments mapArgs = null;
+        //    if (InteractiveOverlays.Count > 0 && InteractiveOverlays[0].MapArguments != null)
+        //        mapArgs = InteractiveOverlays[0].MapArguments;
+        //    else
+        //        mapArgs = new MapArguments();
+        //    mapArgs.MapHeight = ActualHeight;
+        //    mapArgs.MapWidth = ActualWidth;
+        //    mapArgs.CurrentExtent = (RectangleShape)CurrentExtent.CloneDeep();
+        //    mapArgs.CurrentResolution = CurrentResolution;
+        //    mapArgs.CurrentScale = CurrentScale;
+        //    mapArgs.MapUnit = MapUnit;
+        //    mapArgs.MaximumScale = MaximumScale;
+        //    mapArgs.MinimumScale = MinimumScale;
+        //    mapArgs.MaxExtent = MaxExtent;
+        //    mapArgs.ZoomLevelScales.Clear();
+        //    foreach (var zoomLevel in ZoomLevelSet.GetZoomLevels())
+        //    {
+        //        mapArgs.ZoomLevelScales.Add(zoomLevel.Scale);
+        //    }
 
-            return mapArgs;
-        }
+        //    return mapArgs;
+        //}
 
         private void RemovedUnExistsShapeFileLayers()
         {
@@ -1166,7 +1240,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void CancelImage_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Overlays.OfType<TileOverlay>().ForEach(tempOverlay => { tempOverlay.Close(); });
+            Overlays.OfType<TileOverlay>().ForEach(tempOverlay => { tempOverlay.CloseAsync(); });
         }
 
         private void SetProgressVisible(bool visible = false)
@@ -1187,69 +1261,69 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void ExtentOverlay_MapMouseUp(object sender, MapMouseUpInteractiveOverlayEventArgs e)
         {
-            if (e.InteractionArguments.MouseButton == MapMouseButton.Right && ExtentOverlay.ExtentChangedType == ExtentChangedType.TrackZoomIn)
-            {
-                IEnumerable<ZoomLevel> deleteZoomLevels = ZoomLevelSet.CustomZoomLevels.Where(c => c is PreciseZoomLevel).ToArray();
-                foreach (var item in deleteZoomLevels)
-                {
-                    ZoomLevelSet.CustomZoomLevels.Remove(item);
-                }
+            //if (e.InteractionArguments.MouseButton == MapMouseButton.Right && ExtentOverlay.ExtentChangedType == ExtentChangedType.TrackZoomIn)
+            //{
+            //    IEnumerable<ZoomLevel> deleteZoomLevels = ZoomLevelSet.CustomZoomLevels.Where(c => c is PreciseZoomLevel).ToArray();
+            //    foreach (var item in deleteZoomLevels)
+            //    {
+            //        ZoomLevelSet.CustomZoomLevels.Remove(item);
+            //    }
 
-                PointShape mouseUpPoint = new PointShape(e.InteractionArguments.ScreenX, e.InteractionArguments.ScreenY);
-                double trackWidth = Math.Abs(mouseUpPoint.X - mouseDownPoint.X);
-                double trackHeight = e.InteractionArguments.MapHeight * trackWidth / e.InteractionArguments.MapWidth;
+            //    PointShape mouseUpPoint = new PointShape(e.InteractionArguments.ScreenX, e.InteractionArguments.ScreenY);
+            //    double trackWidth = Math.Abs(mouseUpPoint.X - mouseDownPoint.X);
+            //    double trackHeight = e.InteractionArguments.MapHeight * trackWidth / e.InteractionArguments.MapWidth;
 
-                if (mouseUpPoint.Y < mouseDownPoint.Y)
-                {
-                    mouseUpPoint = new PointShape(mouseUpPoint.X, mouseDownPoint.Y - trackHeight);
-                }
-                else
-                {
-                    mouseUpPoint = new PointShape(mouseUpPoint.X, mouseDownPoint.Y + trackHeight);
-                }
+            //    if (mouseUpPoint.Y < mouseDownPoint.Y)
+            //    {
+            //        mouseUpPoint = new PointShape(mouseUpPoint.X, mouseDownPoint.Y - trackHeight);
+            //    }
+            //    else
+            //    {
+            //        mouseUpPoint = new PointShape(mouseUpPoint.X, mouseDownPoint.Y + trackHeight);
+            //    }
 
-                PointShape mouseDownWorldPoint = ToWorldCoordinate(mouseDownPoint);
-                PointShape mouseUpWorldPoint = ToWorldCoordinate(mouseUpPoint);
+            //    PointShape mouseDownWorldPoint = ToWorldCoordinate(mouseDownPoint);
+            //    PointShape mouseUpWorldPoint = ToWorldCoordinate(mouseUpPoint);
 
-                double minX = Math.Min(mouseUpWorldPoint.X, mouseDownWorldPoint.X);
-                double minY = Math.Min(mouseUpWorldPoint.Y, mouseDownWorldPoint.Y);
-                double maxX = Math.Max(mouseUpWorldPoint.X, mouseDownWorldPoint.X);
-                double maxY = Math.Max(mouseUpWorldPoint.Y, mouseDownWorldPoint.Y);
-                RectangleShape boundingBox = new RectangleShape(minX, maxY, maxX, minY);
-                //double scale = MapUtils.GetScale(MapUnit, boundingBox, e.InteractionArguments.MapWidth, e.InteractionArguments.MapHeight);
-                double scale = ExtentHelper.GetScale(boundingBox, e.InteractionArguments.MapWidth, MapUnit);
-                PreciseZoomLevel zoomLevel = new PreciseZoomLevel(scale);
+            //    double minX = Math.Min(mouseUpWorldPoint.X, mouseDownWorldPoint.X);
+            //    double minY = Math.Min(mouseUpWorldPoint.Y, mouseDownWorldPoint.Y);
+            //    double maxX = Math.Max(mouseUpWorldPoint.X, mouseDownWorldPoint.X);
+            //    double maxY = Math.Max(mouseUpWorldPoint.Y, mouseDownWorldPoint.Y);
+            //    RectangleShape boundingBox = new RectangleShape(minX, maxY, maxX, minY);
+            //    //double scale = MapUtils.GetScale(MapUnit, boundingBox, e.InteractionArguments.MapWidth, e.InteractionArguments.MapHeight);
+            //    double scale = MapUtil.GetScale(boundingBox, e.InteractionArguments.MapWidth, MapUnit);
+            //    PreciseZoomLevel zoomLevel = new PreciseZoomLevel(scale);
 
-                int index = 0;
-                if (scale < ZoomLevelSet.CustomZoomLevels.Last().Scale)
-                {
-                    index = ZoomLevelSet.CustomZoomLevels.Count;
-                }
-                else
-                {
-                    foreach (var item in ZoomLevelSet.CustomZoomLevels)
-                    {
-                        if (item.Scale < scale)
-                        {
-                            index = ZoomLevelSet.CustomZoomLevels.IndexOf(item);
-                            break;
-                        }
-                    }
-                }
+            //    int index = 0;
+            //    if (scale < zoomscal.CustomZoomLevels.Last().Scale)
+            //    {
+            //        index = ZoomLevelSet.CustomZoomLevels.Count;
+            //    }
+            //    else
+            //    {
+            //        foreach (var item in ZoomLevelSet.CustomZoomLevels)
+            //        {
+            //            if (item.Scale < scale)
+            //            {
+            //                index = ZoomLevelSet.CustomZoomLevels.IndexOf(item);
+            //                break;
+            //            }
+            //        }
+            //    }
 
-                ZoomLevelSet.CustomZoomLevels.Insert(index, zoomLevel);
-                ExtentOverlay.MapArguments.ZoomLevelScales.Clear();
-                foreach (var tempScale in ZoomLevelSet.CustomZoomLevels.Select(z => z.Scale))
-                {
-                    ExtentOverlay.MapArguments.ZoomLevelScales.Add(tempScale);
-                }
-            }
+            //    ZoomLevelSet.CustomZoomLevels.Insert(index, zoomLevel);
+            //    ExtentOverlay.MapArguments.ZoomLevelScales.Clear();
+            //    foreach (var tempScale in ZoomLevelSet.CustomZoomLevels.Select(z => z.Scale))
+            //    {
+            //        ExtentOverlay.MapArguments.ZoomLevelScales.Add(tempScale);
+            //    }
+            //}
 
-            if (previousCursor != null)
-            {
-                Cursor = previousCursor;
-                previousCursor = null;
-            }
+            //if (previousCursor != null)
+            //{
+            //    Cursor = previousCursor;
+            //    previousCursor = null;
+            //}
         }
 
         private void ExtentOverlay_MapMouseDown(object sender, MapMouseDownInteractiveOverlayEventArgs e)
@@ -1273,24 +1347,24 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void GisEditorWpfMap_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                case Key.Left:
-                    Pan(PanDirection.Left, panPercentage);
-                    break;
+            //switch (e.Key)
+            //{
+            //    case Key.Left:
+            //        Pan(PanDirection.Left, panPercentage);
+            //        break;
 
-                case Key.Right:
-                    Pan(PanDirection.Right, panPercentage);
-                    break;
+            //    case Key.Right:
+            //        Pan(PanDirection.Right, panPercentage);
+            //        break;
 
-                case Key.Up:
-                    Pan(PanDirection.Up, panPercentage);
-                    break;
+            //    case Key.Up:
+            //        Pan(PanDirection.Up, panPercentage);
+            //        break;
 
-                case Key.Down:
-                    Pan(PanDirection.Down, panPercentage);
-                    break;
-            }
+            //    case Key.Down:
+            //        Pan(PanDirection.Down, panPercentage);
+            //        break;
+            //}
         }
 
         [OnGeoserializing]
@@ -1359,7 +1433,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             FixWrongIndexFilePathIssue();
             FixZoomLevelIssue();
-            FixBaseMaps();
+            // In ThinkGeo v14+ the base map overlay types have changed.
+            // Older migration logic (FixBaseMaps) is intentionally skipped.
             FixLoadingTiffLibrary();
             FixUnExistCaches();
             FixUnClosedInstance();
@@ -1399,9 +1474,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     {
                         featureLayer.FeatureSource.Close();
                     }
-                    if (featureLayer.FeatureSource.Projection != null && featureLayer.FeatureSource.Projection.IsOpen)
+                    if (featureLayer.FeatureSource.ProjectionConverter != null && featureLayer.FeatureSource.ProjectionConverter.IsOpen)
                     {
-                        featureLayer.FeatureSource.Projection.Close();
+                        featureLayer.FeatureSource.ProjectionConverter.Close();
                     }
                 });
             }
@@ -1411,7 +1486,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             foreach (var overlay in Overlays.OfType<TileOverlay>())
             {
-                FileBitmapTileCache tileCache = overlay.TileCache as FileBitmapTileCache;
+                FileRasterTileCache tileCache = overlay.TileCache as FileRasterTileCache;
                 if (tileCache != null && !Directory.Exists(tileCache.CacheDirectory))
                 {
                     overlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
@@ -1472,44 +1547,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         /// </summary>
         private void FixBaseMaps()
         {
-            var oldWmkOverlay = Overlays.OfType<WorldMapKitWmsWpfOverlay>().FirstOrDefault();
-            if (oldWmkOverlay != null)
-            {
-                var newWmkOverlay = new WorldMapKitMapOverlay(oldWmkOverlay.ClientId, oldWmkOverlay.PrivateKey);
-                newWmkOverlay.TileType = oldWmkOverlay.TileType;
-                newWmkOverlay.Name = oldWmkOverlay.Name;
-                newWmkOverlay.DrawingExceptionMode = oldWmkOverlay.DrawingExceptionMode;
-                newWmkOverlay.TileBuffer = oldWmkOverlay.TileBuffer;
-                newWmkOverlay.TileCache = oldWmkOverlay.TileCache;
-                newWmkOverlay.Projection = (Layers.WorldMapKitProjection)oldWmkOverlay.Projection;
-                newWmkOverlay.MapArguments = oldWmkOverlay.MapArguments;
-
-                var index = Overlays.IndexOf(oldWmkOverlay);
-                Overlays.Insert(index, newWmkOverlay);
-                Overlays.RemoveAt(index + 1);
-            }
-
-            var oldBingMapsTileOverlay = Overlays.OfType<BingMapsTileOverlay>().FirstOrDefault();
-            if (oldBingMapsTileOverlay != null)
-            {
-                var newBingMapsOverlay = new BingMapsOverlay(oldBingMapsTileOverlay.ApplicationId, oldBingMapsTileOverlay.MapStyle);
-                newBingMapsOverlay.Logo = null;
-                newBingMapsOverlay.Name = oldBingMapsTileOverlay.Name;
-                newBingMapsOverlay.TileType = oldBingMapsTileOverlay.TileType;
-                newBingMapsOverlay.DrawingExceptionMode = oldBingMapsTileOverlay.DrawingExceptionMode;
-                newBingMapsOverlay.TileCache = oldBingMapsTileOverlay.TileCache;
-                newBingMapsOverlay.MapArguments = oldBingMapsTileOverlay.MapArguments;
-
-                var index = Overlays.IndexOf(newBingMapsOverlay);
-                Overlays.Insert(index, newBingMapsOverlay);
-                Overlays.RemoveAt(index + 1);
-            }
-
-            var oldBingMapsOverlays = Overlays.OfType<BingMapsOverlay>();
-            foreach (var bingMapsOverlay in oldBingMapsOverlays)
-            {
-                bingMapsOverlay.Logo = null;
-            }
+            // Intentionally left blank.
+            //
+            // This method existed in the v10 extension to migrate legacy overlay types
+            // (e.g. WorldMapKitWmsWpfOverlay, BingMapsTileOverlay) to newer ones.
+            // Those legacy types are not part of ThinkGeo v14+.
         }
 
         private void FixZoomLevelIssue()
@@ -1517,13 +1559,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             var allFeatureLayers = GetFeatureLayers(false);
             foreach (var featureLayer in allFeatureLayers)
             {
-                if (ZoomLevelSet.CustomZoomLevels.Count > featureLayer.ZoomLevelSet.CustomZoomLevels.Count)
+                if (ZoomScales.Count > featureLayer.ZoomLevelSet.CustomZoomLevels.Count)
                 {
                     var minScale = featureLayer.ZoomLevelSet.CustomZoomLevels[featureLayer.ZoomLevelSet.CustomZoomLevels.Count - 1].Scale;
-                    var missingZoomLevels = ZoomLevelSet.CustomZoomLevels.Skip(featureLayer.ZoomLevelSet.CustomZoomLevels.Count).ToArray();
+                    var missingZoomLevels = ZoomScales.Skip(featureLayer.ZoomLevelSet.CustomZoomLevels.Count).ToArray();
                     foreach (var missingZoomLevel in missingZoomLevels)
                     {
-                        featureLayer.ZoomLevelSet.CustomZoomLevels.Add(missingZoomLevel);
+                        featureLayer.ZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel( missingZoomLevel));
                     }
                 }
 
@@ -1534,9 +1576,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 }
                 if (customZoomLevels.Count == 0) continue;
                 featureLayer.ZoomLevelSet.CustomZoomLevels.Clear();
-                foreach (var item in ZoomLevelSet.GetZoomLevels())
+                foreach (var item in ZoomScales)
                 {
-                    featureLayer.ZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(item.Scale));
+                    featureLayer.ZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(item));
                 }
                 foreach (var item in customZoomLevels)
                 {

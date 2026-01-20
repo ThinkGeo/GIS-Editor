@@ -29,8 +29,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -258,29 +258,29 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void CurrentMap_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WpfMap wpfMap = (WpfMap)sender;
-            bool boxIsOffRight = (Margin.Left + Width) > wpfMap.ActualWidth;
-            bool boxIsOffBottom = (Margin.Top + Height) > wpfMap.ActualHeight;
+            MapView wpfMap = (MapView)sender;
+            bool boxIsOffRight = (Margin.Left + Width) > wpfMap.MapWidth;
+            bool boxIsOffBottom = (Margin.Top + Height) > wpfMap.MapHeight;
             if (boxIsOffRight || boxIsOffBottom)
             {
                 double leftMargin = Margin.Left;
                 double topMargin = Margin.Top;
                 if (boxIsOffRight)
                 {
-                    leftMargin = wpfMap.ActualWidth - Width;
+                    leftMargin = wpfMap.MapWidth - Width;
                     if (leftMargin < 0)
                     {
                         leftMargin = 0;
-                        Width = wpfMap.ActualWidth;
+                        Width = wpfMap.MapWidth;
                     }
                 }
                 if (boxIsOffBottom)
                 {
-                    topMargin = wpfMap.ActualHeight - Height;
+                    topMargin = wpfMap.MapHeight - Height;
                     if (topMargin < 0)
                     {
                         topMargin = 0;
-                        Height = wpfMap.ActualHeight;
+                        Height = wpfMap.MapHeight;
                     }
                 }
                 Margin = new Thickness(leftMargin, topMargin, 0, 0);
@@ -299,9 +299,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             scaleComboBox.Items.Clear();
             DistanceUnit unit = ((Tuple<DistanceUnit, string>)unitComboBox.SelectedItem).Item1;
-            foreach (var zoomLevel in CurrentMap.ZoomLevelSet.GetZoomLevels())
+            foreach (var zoomLevel in CurrentMap.ZoomScales)
             {
-                double tempScale = Conversion.ConvertMeasureUnits(zoomLevel.Scale, DistanceUnit.Inch, unit);
+                double tempScale = Conversion.ConvertMeasureUnits(zoomLevel, DistanceUnit.Inch, unit);
                 scaleComboBox.Items.Add(new ScaleWrapper(tempScale, GetSimplifiedNumber(tempScale)));
             }
             double currentScale = Conversion.ConvertMeasureUnits(CurrentMap.CurrentScale, DistanceUnit.Inch, unit);
@@ -329,12 +329,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        private void CurrentMap_CurrentScaleChanged(object sender, CurrentScaleChangedWpfMapEventArgs e)
+        private void CurrentMap_CurrentScaleChanged(object sender, CurrentScaleChangedMapViewEventArgs e)
         {
             if (scaleComboBox.Visibility == Visibility.Visible)
             {
                 DistanceUnit unit = ((Tuple<DistanceUnit, string>)unitComboBox.SelectedItem).Item1;
-                double currentScale = Conversion.ConvertMeasureUnits(e.CurrentScale, DistanceUnit.Inch, unit);
+                double currentScale = Conversion.ConvertMeasureUnits(e.NewScale, DistanceUnit.Inch, unit);
                 scaleComboBox.SelectedItem = scaleComboBox.Items.OfType<ScaleWrapper>().FirstOrDefault(s => Math.Abs(s.Scale - currentScale) < 1);
             }
         }
@@ -352,8 +352,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public void AdjustSizeRatio()
         {
-            double maxWidth = CurrentMap.ActualWidth * sizeRatio;
-            double maxHeight = CurrentMap.ActualHeight * sizeRatio;
+            double maxWidth = CurrentMap.MapWidth * sizeRatio;
+            double maxHeight = CurrentMap.MapHeight * sizeRatio;
             double resizeRatio = 1;
             if (Width > maxWidth || Height > maxHeight)
             {
@@ -379,40 +379,42 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (handler != null) handler(this, e);
         }
 
-        public static byte[] GetCroppedMapPreviewImage(WpfMap wpfMap, Int32Rect drawingRect)
+        public static byte[] GetCroppedMapPreviewImage(MapViewBase wpfMap, Int32Rect drawingRect)
         {
-            Canvas rootCanvas = wpfMap.ToolsGrid.Parent as Canvas;
-            byte[] imageBytes = null;
-            if (rootCanvas != null)
-            {
-                Canvas eventCanvas = rootCanvas.FindName("EventCanvas") as Canvas;
-                if (eventCanvas != null)
-                {
-                    Canvas overlayCanvas = eventCanvas.FindName("OverlayCanvas") as Canvas;
-                    if (overlayCanvas != null)
-                    {
-                        RenderTargetBitmap imageSource = new RenderTargetBitmap((int)wpfMap.RenderSize.Width, (int)wpfMap.RenderSize.Height, 96, 96, PixelFormats.Pbgra32);
-                        imageSource.Render(overlayCanvas);
+           return Array.Empty<byte>();
 
-                        Canvas popupCanvas = eventCanvas.FindName("PopupCanvas") as Canvas;
-                        if (popupCanvas != null) imageSource.Render(popupCanvas);
+            //Canvas rootCanvas = wpfMap.ToolsGrid.Parent as Canvas;
+            //byte[] imageBytes = null;
+            //if (rootCanvas != null)
+            //{
+            //    Canvas eventCanvas = rootCanvas.FindName("EventCanvas") as Canvas;
+            //    if (eventCanvas != null)
+            //    {
+            //        Canvas overlayCanvas = eventCanvas.FindName("OverlayCanvas") as Canvas;
+            //        if (overlayCanvas != null)
+            //        {
+            //            RenderTargetBitmap imageSource = new RenderTargetBitmap((int)wpfMap.RenderSize.Width, (int)wpfMap.RenderSize.Height, 96, 96, PixelFormats.Pbgra32);
+            //            imageSource.Render(overlayCanvas);
 
-                        Canvas adornmentCanvas = eventCanvas.FindName("AdornmentCanvas") as Canvas;
-                        if (adornmentCanvas != null) imageSource.Render(adornmentCanvas);
+            //            Canvas popupCanvas = eventCanvas.FindName("PopupCanvas") as Canvas;
+            //            if (popupCanvas != null) imageSource.Render(popupCanvas);
 
-                        CroppedBitmap croppedSource = new CroppedBitmap(imageSource, drawingRect);
-                        PngBitmapEncoder encoder = new PngBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(croppedSource));
-                        using (var streamSource = new MemoryStream())
-                        {
-                            encoder.Save(streamSource);
-                            imageBytes = streamSource.ToArray();
-                        }
-                    }
-                }
-            }
+            //            Canvas adornmentCanvas = eventCanvas.FindName("AdornmentCanvas") as Canvas;
+            //            if (adornmentCanvas != null) imageSource.Render(adornmentCanvas);
 
-            return imageBytes;
+            //            CroppedBitmap croppedSource = new CroppedBitmap(imageSource, drawingRect);
+            //            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            //            encoder.Frames.Add(BitmapFrame.Create(croppedSource));
+            //            using (var streamSource = new MemoryStream())
+            //            {
+            //                encoder.Save(streamSource);
+            //                imageBytes = streamSource.ToArray();
+            //            }
+            //        }
+            //    }
+            //}
+
+            //return imageBytes;
         }
 
         private void DoneButton_Click(object sender, RoutedEventArgs e)
@@ -534,7 +536,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 if (newWidth > 120)
                 {
                     var newHeight = Math.Abs(Height + (isTop ? -1 : 1) * offsetY);
-                    if (newHeight > 120 && Margin.Left + newWidth <= CurrentMap.ActualWidth && Margin.Top + newHeight <= CurrentMap.ActualHeight)
+                    if (newHeight > 120 && Margin.Left + newWidth <= CurrentMap.MapWidth && Margin.Top + newHeight <= CurrentMap.MapHeight)
                     {
                         Width = newWidth;
                         Height = newHeight;
@@ -547,18 +549,18 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         var newTopMargin = Margin.Top + offsetY;
                         if (isLeft && isTop && newLeftMargin >= 0 && newTopMargin >= 0)
                         {
-                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.ActualWidth;
-                            var heightOutOfRange = newTopMargin + Height >= CurrentMap.ActualHeight;
+                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.MapWidth;
+                            var heightOutOfRange = newTopMargin + Height >= CurrentMap.MapHeight;
                             Margin = new Thickness(widthOutOfRange ? Margin.Left : newLeftMargin, heightOutOfRange ? Margin.Left : newTopMargin, 0, 0);
                         }
                         else if (isLeft && !isTop && newLeftMargin >= 0 && Margin.Top >= 0)
                         {
-                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.ActualWidth;
+                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.MapWidth;
                             Margin = new Thickness(widthOutOfRange ? Margin.Left : newLeftMargin, Margin.Top, 0, 0);
                         }
                         else if (!isLeft && isTop && Margin.Left >= 0 && newTopMargin >= 0)
                         {
-                            var heightOutOfRange = Margin.Top + Height >= CurrentMap.ActualHeight;
+                            var heightOutOfRange = Margin.Top + Height >= CurrentMap.MapHeight;
                             Margin = new Thickness(Margin.Left, heightOutOfRange ? Margin.Left : newTopMargin, 0, 0);
                         }
                         SyncCornerHandlers();
@@ -590,7 +592,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 if (newWidth > 175)
                 {
                     var newHeight = Math.Abs(Height + (isTop ? -1 : 1) * offsetY);
-                    if (Margin.Left + newWidth <= CurrentMap.ActualWidth && Margin.Top + newHeight <= CurrentMap.ActualHeight)
+                    if (Margin.Left + newWidth <= CurrentMap.MapWidth && Margin.Top + newHeight <= CurrentMap.MapHeight)
                     {
                         Width = newWidth;
                         Height = newHeight;
@@ -603,18 +605,18 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         var newTopMargin = Margin.Top + offsetY;
                         if (isLeft && isTop && newLeftMargin >= 0 && newTopMargin >= 0)
                         {
-                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.ActualWidth;
-                            var heightOutOfRange = newTopMargin + Height >= CurrentMap.ActualHeight;
+                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.MapWidth;
+                            var heightOutOfRange = newTopMargin + Height >= CurrentMap.MapHeight;
                             Margin = new Thickness(widthOutOfRange ? Margin.Left : newLeftMargin, heightOutOfRange ? Margin.Left : newTopMargin, 0, 0);
                         }
                         else if (isLeft && !isTop && newLeftMargin >= 0 && Margin.Top >= 0)
                         {
-                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.ActualWidth;
+                            var widthOutOfRange = newLeftMargin + Width >= CurrentMap.MapWidth;
                             Margin = new Thickness(widthOutOfRange ? Margin.Left : newLeftMargin, Margin.Top, 0, 0);
                         }
                         else if (!isLeft && isTop && Margin.Left >= 0 && newTopMargin >= 0)
                         {
-                            var heightOutOfRange = Margin.Top + Height >= CurrentMap.ActualHeight;
+                            var heightOutOfRange = Margin.Top + Height >= CurrentMap.MapHeight;
                             Margin = new Thickness(Margin.Left, heightOutOfRange ? Margin.Left : newTopMargin, 0, 0);
                         }
                         SyncCornerHandlers();
@@ -662,9 +664,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 var currentX = Margin.Left + offsetX;
                 var currentY = Margin.Top + offsetY;
 
-                if (currentX >= 0 && currentX + Width <= CurrentMap.ActualWidth)
+                if (currentX >= 0 && currentX + Width <= CurrentMap.MapWidth)
                     Margin = new Thickness(currentX, Margin.Top, 0, 0);
-                if (currentY >= 0 && currentY + Height <= CurrentMap.ActualHeight)
+                if (currentY >= 0 && currentY + Height <= CurrentMap.MapHeight)
                     Margin = new Thickness(Margin.Left, currentY, 0, 0);
                 e.Handled = true;
             }

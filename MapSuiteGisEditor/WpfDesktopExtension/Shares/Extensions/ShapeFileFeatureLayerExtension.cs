@@ -20,8 +20,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -138,7 +137,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
             else
             {
-                int recordCount = featureLayer.QueryTools.GetCount();
+                int recordCount = (int)featureLayer.QueryTools.GetCount();
                 string shxFilePath = Path.ChangeExtension(featureLayer.ShapePathFilename, "shx");
                 FileStream shxFileStream = File.OpenRead(shxFilePath);
                 BinaryReader shxReader = new BinaryReader(shxFileStream);

@@ -17,8 +17,7 @@
 */
 
 
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -39,7 +38,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 FeatureLayer featureLayer = layer as FeatureLayer;
                 if (rasterLayer != null)
                 {
-                    Proj4Projection projection = rasterLayer.ImageSource.Projection as Proj4Projection;
+                    Proj4Projection projection = rasterLayer.ImageSource.ProjectionConverter as Proj4Projection;
                     if (projection != null)
                     {
                         proj4Parameter = projection.InternalProjectionParametersString;
@@ -51,13 +50,13 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 }
                 else if (featureLayer != null)
                 {
-                    Proj4Projection projection = (featureLayer.FeatureSource.Projection) as Proj4Projection;
+                    Proj4Projection projection = (featureLayer.FeatureSource.ProjectionConverter) as Proj4Projection;
                     if (projection == null)
                     {
                         string projection4326String = Proj4Projection.GetEpsgParametersString(4326);
                         projection = new Proj4Projection(projection4326String, projection4326String);
                         projection.SyncProjectionParametersString();
-                        featureLayer.FeatureSource.Projection = projection;
+                        featureLayer.FeatureSource.ProjectionConverter = projection;
                         projection.Open();
                     }
 

@@ -20,9 +20,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -45,17 +45,17 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             ShapeFileFeatureLayer shapeFileFeatureLayer = featureLayer as ShapeFileFeatureLayer;
             if (shapeFileFeatureLayer != null)
             {
-                GeoFileReadWriteMode readWriteMode = GeoFileReadWriteMode.Read;
+                FileAccess readWriteMode = FileAccess.Read;
                 switch (layerAccessMode)
                 {
                     case LayerAccessMode.Write:
                     case LayerAccessMode.ReadWrite:
-                        readWriteMode = GeoFileReadWriteMode.ReadWrite;
+                        readWriteMode = FileAccess.ReadWrite;
                         break;
 
                     case LayerAccessMode.Read:
                     default:
-                        readWriteMode = GeoFileReadWriteMode.Read;
+                        readWriteMode = FileAccess.Read;
                         break;
                 }
                 shapeFileFeatureLayer.ReadWriteMode = readWriteMode;
@@ -96,9 +96,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (isClosed)
             {
                 featureLayer.Close();
-                if (featureLayer.FeatureSource.Projection != null)
+                if (featureLayer.FeatureSource.ProjectionConverter != null)
                 {
-                    featureLayer.FeatureSource.Projection.Close();
+                    featureLayer.FeatureSource.ProjectionConverter.Close();
                 }
             }
         }
@@ -117,9 +117,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (isClosed)
             {
                 featureSource.Close();
-                if (featureSource.Projection != null)
+                if (featureSource.ProjectionConverter != null)
                 {
-                    featureSource.Projection.Close();
+                    featureSource.ProjectionConverter.Close();
                 }
             }
         }
@@ -131,8 +131,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             RasterLayer rasterLayer = layer as RasterLayer;
             if (featureLayer != null)
             {
-                Proj4Projection proj4Projection = featureLayer.FeatureSource.Projection as Proj4Projection;
-                Proj4Projection managedProj4Projection = featureLayer.FeatureSource.Projection as Proj4Projection;
+                Proj4Projection proj4Projection = featureLayer.FeatureSource.ProjectionConverter as Proj4Projection;
+                Proj4Projection managedProj4Projection = featureLayer.FeatureSource.ProjectionConverter as Proj4Projection;
 
                 if (proj4Projection != null)
                 {
@@ -145,8 +145,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
             else if (rasterLayer != null)
             {
-                Proj4Projection proj4Projection = rasterLayer.ImageSource.Projection as Proj4Projection;
-                Proj4Projection managedProj4Projection = rasterLayer.ImageSource.Projection as Proj4Projection;
+                Proj4Projection proj4Projection = rasterLayer.ImageSource.ProjectionConverter as Proj4Projection;
+                Proj4Projection managedProj4Projection = rasterLayer.ImageSource.ProjectionConverter as Proj4Projection;
 
                 if (proj4Projection != null)
                 {

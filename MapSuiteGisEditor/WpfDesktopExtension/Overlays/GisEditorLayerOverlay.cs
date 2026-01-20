@@ -20,12 +20,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Text;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
@@ -53,7 +53,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             delayRefreshingTimer.Tick += (s, e) =>
             {
                 delayRefreshingTimer.Stop();
-                base.RefreshCore();
+                InvokeBaseRefresh();
             };
 
             DrawingExceptionMode = DrawingExceptionMode.DrawException;
@@ -66,35 +66,75 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private void GisEditorLayerOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
         {
             e.Cancel = true;
-            e.Canvas.Clear(new GeoSolidBrush(GeoColor.StandardColors.Transparent));
+            e.Canvas.Clear(new GeoSolidBrush(GeoColors.Transparent));
             string text = GetWrappedText(e.Exception.Message, TileWidth);
             if (text.Length > 0)
             {
                 DrawingQuality tempDrawingQuality = e.Canvas.DrawingQuality;
                 e.Canvas.DrawingQuality = DrawingQuality.HighQuality;
-                e.Canvas.DrawTextWithScreenCoordinate(text, new GeoFont("Arial", 10), new GeoSolidBrush(GeoColor.StandardColors.Black), e.Canvas.Width / 2, e.Canvas.Height / 2, DrawingLevel.LabelLevel);
+                e.Canvas.DrawTextWithScreenCoordinate(text, new GeoFont("Arial", 10), new GeoSolidBrush(GeoColors.Black), e.Canvas.Width / 2, e.Canvas.Height / 2, DrawingLevel.LabelLevel);
                 e.Canvas.DrawingQuality = tempDrawingQuality;
             }
         }
 
-        protected override void RefreshCore()
+        
+        /// <summary>
+        /// Requests a refresh using a short debounce so multiple rapid refresh requests collapse into a single draw.
+        /// </summary>
+        public new void Refresh()
         {
-            //base.RefreshCore();
+            RequestDelayedRefresh();
+        }
+
+        /// <summary>
+        /// Requests a refresh asynchronously using a short debounce so multiple rapid refresh requests collapse into a single draw.
+        /// </summary>
+        public new Task RefreshAsync()
+        {
+            RequestDelayedRefresh();
+            return Task.CompletedTask;
+        }
+
+        private void RequestDelayedRefresh()
+        {
             delayRefreshingTimer.Stop();
             delayRefreshingTimer.Start();
         }
 
-        protected override RectangleShape GetBoundingBoxCore()
+        private void InvokeBaseRefresh()
+        {
+            // ThinkGeo v14 removed RefreshCore; prefer the public RefreshAsync/Refresh methods when present.
+            var type = typeof(LayerOverlay);
+
+            try
+            {
+                var refreshAsync = type.GetMethod("RefreshAsync", BindingFlags.Instance | BindingFlags.Public);
+                if (refreshAsync != null)
+                {
+                    refreshAsync.Invoke(this, null);
+                    return;
+                }
+
+                var refresh = type.GetMethod("Refresh", BindingFlags.Instance | BindingFlags.Public);
+                refresh?.Invoke(this, null);
+            }
+            catch
+            {
+                // Swallow any reflection errors; worst-case we just skip a debounced refresh.
+            }
+        }
+
+protected override RectangleShape GetBoundingBoxCore()
         {
             double left = double.MaxValue;
             double right = double.MinValue;
             double top = double.MinValue;
             double bottom = double.MaxValue;
 
-            Layer[] layersToGet = null;
+            LayerBase[] layersToGet = null;
             lock (Layers)
             {
-                layersToGet = Layers.ToArray();
+                layersToGet = this.Layers.ToArray();
             }
 
             foreach (Layer layer in layersToGet)
@@ -146,12 +186,12 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void Layers_ClearingItems(object sender, ClearingItemsGeoCollectionEventArgs e)
         {
-            Close();
+            _ = CloseAsync();
         }
 
         private void Layers_Removing(object sender, RemovingGeoCollectionEventArgs e)
         {
-            Close();
+            _ = CloseAsync();
         }
     }
 }
