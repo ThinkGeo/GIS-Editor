@@ -19,7 +19,7 @@
 
 using System;
 using System.Reflection;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -47,12 +47,12 @@ namespace ThinkGeo.MapSuite.GisEditor
             set { extensionFilter = value; }
         }
 
-        public bool IsDataSourceAvailable(Layer layer)
+        public bool IsDataSourceAvailable(LayerBase layer)
         {
             return IsDataSourceAvailableCore(layer);
         }
 
-        protected virtual bool IsDataSourceAvailableCore(Layer layer)
+        protected virtual bool IsDataSourceAvailableCore(LayerBase layer)
         {
             return true;
         }

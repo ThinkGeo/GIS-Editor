@@ -26,8 +26,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -149,34 +149,34 @@ namespace ThinkGeo.MapSuite.GisEditor
                             }
                             else
                             {
-                                var highlightOverlay = GisEditor.SelectionManager.GetSelectionOverlay();
-                                if (highlightOverlay != null)
-                                {
-                                    highlightOverlay.AddHighlightFeatures(ResultFeatures, HighlightMode);
-                                    InMemoryFeatureLayer highlightLayer = highlightOverlay.HighlightFeatureLayer;
-                                    RectangleShape resultExtent = ExtentHelper.GetBoundingBoxOfItems(highlightLayer.InternalFeatures);
+                                //var highlightOverlay = GisEditor.SelectionManager.GetSelectionOverlay();
+                                //if (highlightOverlay != null)
+                                //{
+                                //    highlightOverlay.AddHighlightFeatures(ResultFeatures, HighlightMode);
+                                //    InMemoryFeatureLayer highlightLayer = highlightOverlay.HighlightFeatureLayer;
+                                //    RectangleShape resultExtent = MapUtil.GetBoundingBoxOfItems(highlightLayer.InternalFeatures);
 
-                                    if (resultExtent != null)
-                                    {
-                                        var scale = ExtentHelper.GetScale(resultExtent, (float)GisEditor.ActiveMap.ActualWidth, GisEditor.ActiveMap.MapUnit);
-                                        GisEditor.ActiveMap.ZoomTo(resultExtent.GetCenterPoint(), scale);
-                                    }
-                                    else
-                                    {
-                                        System.Windows.Forms.MessageBox.Show(GisEditor.LanguageManager.GetStringResource("GeneralErrorInfo"));
-                                        GisEditor.ActiveMap.Refresh(highlightOverlay);
-                                    }
-                                    if (notExistConditions.Count() > 0)
-                                    {
-                                        StringBuilder sb = new StringBuilder();
-                                        foreach (var item in notExistConditions)
-                                        {
-                                            sb.Append(item.Layer.Name + ",");
-                                        }
-                                        DialogMessage dm = new DialogMessage(string.Format(removeConditionsMessage, sb.ToString()), null) { Caption = "Alert" };
-                                        MessengerInstance.Send(dm, this);
-                                    }
-                                }
+                                //    if (resultExtent != null)
+                                //    {
+                                //        var scale = MapUtil.GetScale(resultExtent, (float)GisEditor.ActiveMap.ActualWidth, GisEditor.ActiveMap.MapUnit);
+                                //        GisEditor.ActiveMap.ZoomTo(resultExtent.GetCenterPoint(), scale);
+                                //    }
+                                //    else
+                                //    {
+                                //        System.Windows.Forms.MessageBox.Show(GisEditor.LanguageManager.GetStringResource("GeneralErrorInfo"));
+                                //        GisEditor.ActiveMap.Refresh(highlightOverlay);
+                                //    }
+                                //    if (notExistConditions.Count() > 0)
+                                //    {
+                                //        StringBuilder sb = new StringBuilder();
+                                //        foreach (var item in notExistConditions)
+                                //        {
+                                //            sb.Append(item.Layer.Name + ",");
+                                //        }
+                                //        DialogMessage dm = new DialogMessage(string.Format(removeConditionsMessage, sb.ToString()), null) { Caption = "Alert" };
+                                //        MessengerInstance.Send(dm, this);
+                                //    }
+                                //}
                             }
                         }
                     });

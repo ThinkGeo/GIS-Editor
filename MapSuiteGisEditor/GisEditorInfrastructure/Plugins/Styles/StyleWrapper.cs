@@ -18,7 +18,8 @@
 
 
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

@@ -23,8 +23,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -177,7 +179,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="style">The style.</param>
         /// <returns></returns>
-        public StylePlugin GetStylePluginByStyle(Style style)
+        public StylePlugin GetStylePluginByStyle(ThinkGeo.Core.Style style)
         {
             return GetStylePluginByStyleCore(style);
         }
@@ -187,7 +189,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="style">The style.</param>
         /// <returns></returns>
-        protected virtual StylePlugin GetStylePluginByStyleCore(Style style)
+        protected virtual StylePlugin GetStylePluginByStyleCore(ThinkGeo.Core.Style style)
         {
             var pluginsToGet = GetActiveStylePlugins();
 
@@ -291,7 +293,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="style">The style.</param>
         /// <returns></returns>
-        public StyleLayerListItem GetStyleLayerListItem(Style style)
+        public StyleLayerListItem GetStyleLayerListItem(ThinkGeo.Core.Style style)
         {
             if (style is CompositeStyle)
             {
@@ -305,7 +307,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         componentStyle.Styles.Clear();
                         foreach (var item in (s as StyleLayerListItem).Children)
                         {
-                            componentStyle.Styles.Insert(0, item.ConcreteObject as Style);
+                            componentStyle.Styles.Insert(0, item.ConcreteObject as ThinkGeo.Core.Style);
                         }
                     }
                 };
@@ -320,7 +322,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="style">The style.</param>
         /// <returns></returns>
-        protected virtual StyleLayerListItem GetStyleLayerListItemCore(Style style)
+        protected virtual StyleLayerListItem GetStyleLayerListItemCore(ThinkGeo.Core.Style style)
         {
             StylePlugin stylePlugin = GetStylePluginByStyle(style);
             if (stylePlugin != null)

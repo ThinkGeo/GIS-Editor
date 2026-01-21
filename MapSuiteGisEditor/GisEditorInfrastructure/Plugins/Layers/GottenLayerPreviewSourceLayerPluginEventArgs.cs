@@ -19,26 +19,26 @@
 
 using System;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
     public class GottenLayerPreviewSourceLayerPluginEventArgs : EventArgs
     {
-        private Layer layer;
+        private LayerBase layer;
         private ImageSource imageSource;
 
         public GottenLayerPreviewSourceLayerPluginEventArgs()
             : this(null, null)
         { }
 
-        public GottenLayerPreviewSourceLayerPluginEventArgs(ImageSource imageSource, Layer layer)
+        public GottenLayerPreviewSourceLayerPluginEventArgs(ImageSource imageSource, LayerBase layer)
         {
             this.layer = layer;
             this.imageSource = imageSource;
         }
 
-        public Layer Layer
+        public LayerBase Layer
         {
             get { return layer; }
             set { layer = value; }

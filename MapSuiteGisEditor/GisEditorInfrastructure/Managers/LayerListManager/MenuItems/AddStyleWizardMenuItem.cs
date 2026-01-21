@@ -21,8 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -110,9 +110,9 @@ namespace ThinkGeo.MapSuite.GisEditor
             return addedStyle;
         }
 
-        private static void AddNewStyleToLayer(FeatureLayer featureLayer, Styles.Style style, int from, int to)
+        private static void AddNewStyleToLayer(FeatureLayer featureLayer, Style style, int from, int to)
         {
-            for (int i = 0; i < GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count; i++)
+            for (int i = 0; i < GisEditor.ActiveMap.ZoomScales.Count; i++)
             {
                 var tmpZoomLevel = featureLayer.ZoomLevelSet.CustomZoomLevels[i];
                 if (i >= from - 1 && i <= to - 1)

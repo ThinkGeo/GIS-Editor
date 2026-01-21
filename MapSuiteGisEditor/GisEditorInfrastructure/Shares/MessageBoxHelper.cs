@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -45,7 +45,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             bool isContinue = true;
             featureLayers.ForEach(f => f.Open());
-            int sum = featureLayers.Where(f => f.FeatureSource.CanGetCountQuickly()).Sum(s => s.FeatureSource.GetCount());
+            int sum = featureLayers.Where(f => f.FeatureSource.CanGetCountQuickly()).Sum(s => (int)s.FeatureSource.GetCount());
 
             if (sum > 50000)
             {
@@ -67,7 +67,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 if (featureLayer.FeatureSource.CanGetCountQuickly())
                 {
-                    int count = featureLayer.FeatureSource.GetCount();
+                    int count = (int)featureLayer.FeatureSource.GetCount();
                     if (count > 50000)
                     {
                         //MessageBoxResult result = MessageBox.Show(string.Format("{0} contains a large amount of records, it might spend too much time to process. Do you want to continue?", featureLayer.Name), "Info", MessageBoxButton.YesNo, MessageBoxImage.Information);

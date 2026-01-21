@@ -29,9 +29,10 @@ using System.Text;
 using System.Threading;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -1911,14 +1912,17 @@ namespace ThinkGeo.MapSuite.GisEditor
             documentsElement.Add(documentElement);
         }
 
-        private static void SaveMapState(DocumentWindow item, string mapFileName)
+        private static async Task SaveMapState(DocumentWindow item, string mapFileName)
         {
-            WpfMap currentMap = item.Content as WpfMap;
+            MapView currentMap = item.Content as MapView;
             if (currentMap != null)
             {
-                currentMap.Overlays.ForEach(o => o.Close());
+                foreach (var overlay in currentMap.Overlays)
+                    await overlay.CloseAsync();
                 GisEditor.Serializer.Serialize(item.Content, mapFileName);
-                currentMap.Overlays.ForEach(o => o.Open());
+
+                foreach (var overlay in currentMap.Overlays)
+                    await overlay.OpenAsync();
             }
         }
 
@@ -1952,7 +1956,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             rootElement.Save(Path.ChangeExtension(path, "proj"));
         }
 
-        private static void CollectDataPathFileNames(List<string> layerFilePathList, WpfMap wpfMap)
+        private static void CollectDataPathFileNames(List<string> layerFilePathList, MapView wpfMap)
         {
             var layers = wpfMap.Overlays.OfType<LayerOverlay>()
                 .SelectMany(overlay => overlay.Layers.OfType<Layer>());
@@ -2093,7 +2097,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private void ResetProjectState()
+        private async Task ResetProjectState()
         {
             var currentMaps = GisEditor.DockWindowManager.DocumentWindows.Select(w => w.Content).OfType<GisEditorWpfMap>().ToArray();
             GisEditor.UIManager.GetUIPlugins().ForEach(p =>
@@ -2108,7 +2112,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 foreach (var overlay in GisEditor.ActiveMap.Overlays)
                 {
-                    overlay.Close();
+                    await overlay.CloseAsync();
                 }
                 GisEditor.ActiveMap.ActiveLayer = null;
                 GisEditor.ActiveMap.ActiveOverlay = null;

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,15 +10,17 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ThinkGeo.MapSuite.GisEditor</RootNamespace>
     <AssemblyName>GisEditorInfrastructure</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>false</EnableDefaultItems>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -156,7 +158,13 @@
       <HintPath>..\..\Dependencies\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.4\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Sqlite, Version=9.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.Sqlite.Core.9.0.4\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -165,8 +173,8 @@
     <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MapSuiteDependency-MicrosoftSqlServerTypes.10.6.0\lib\net45\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
-    <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.6.0\lib\net45\NetTopologySuite.dll</HintPath>
+    <Reference Include="NetTopologySuite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NetTopologySuite.2.6.0\lib\netstandard2.0\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MapSuiteDependency-NewtonsoftJson.10.6.0\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -185,10 +193,22 @@
       <HintPath>..\..\Dependencies\RibbonControlsLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\lib\net45\SkiaSharp.dll</HintPath>
+    <Reference Include="SkiaSharp, Version=3.119.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SkiaSharp.3.119.0\lib\net462\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.1.10.2445, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.bundle_e_sqlite3.2.1.10\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core, Version=2.1.10.2445, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.core.2.1.10\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.dynamic_cdecl, Version=2.1.10.2445, Culture=neutral, PublicKeyToken=b68184102cba0b3b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SQLitePCLRaw.provider.dynamic_cdecl.2.1.10\lib\netstandard2.0\SQLitePCLRaw.provider.dynamic_cdecl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -196,8 +216,33 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Pipelines.9.0.4\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encodings.Web.9.0.4\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Json.9.0.4\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\Dependencies\System.Windows.Interactivity.dll</HintPath>
@@ -207,50 +252,11 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="ThinkGeo.Cloud.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.Cloud.Client.10.6.0\lib\net45\ThinkGeo.Cloud.Client.dll</HintPath>
+    <Reference Include="ThinkGeo.Core, Version=14.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.Core.14.4.3\lib\net462\ThinkGeo.Core.dll</HintPath>
     </Reference>
-    <Reference Include="ThinkGeo.MapSuite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.10.6.5\lib\net45\ThinkGeo.MapSuite.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Layers.CloudFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.CloudFile.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.CloudFile.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Layers.ShapeFile, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.ShapeFile.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.ShapeFile.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Layers.TinyGeo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Layers.TinyGeo.10.6.0\lib\net45\ThinkGeo.MapSuite.Layers.TinyGeo.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.ProductCenter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.ProductCenter.10.6.0\lib\net45\ThinkGeo.MapSuite.ProductCenter.exe</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.10.6.0\lib\net45\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.ClassBreak, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.ClassBreak.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.ClassBreak.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.Composite, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Composite.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Composite.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.DotDensity, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.DotDensity.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.DotDensity.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.Filter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Filter.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.Icon, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Icon.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Icon.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.Regex, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Regex.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Regex.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Styles.Value, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ThinkGeo.MapSuite.Styles.Value.10.6.0\lib\net45\ThinkGeo.MapSuite.Styles.Value.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinkGeo.MapSuite.Wpf, Version=10.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDesktopForWpf-BareBone.10.6.9\lib\net45\ThinkGeo.MapSuite.Wpf.dll</HintPath>
+    <Reference Include="ThinkGeo.UI.Wpf, Version=14.0.0.0, Culture=neutral, PublicKeyToken=0828af5241fb4207, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ThinkGeo.UI.Wpf.14.4.3\lib\net462\ThinkGeo.UI.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -884,7 +890,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -894,6 +899,10 @@
     <Error Condition="!Exists('..\..\packages\MapSuiteDependency-UnmanagedProj4Projection.10.6.0\build\net45\MapSuiteDependency-UnmanagedProj4Projection.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-UnmanagedProj4Projection.10.6.0\build\net45\MapSuiteDependency-UnmanagedProj4Projection.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.10.6.0\build\net45\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.10.6.0\build\net45\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.targets'))" />
     <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.10.6.5\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.10.6.5\build\net45\ThinkGeo.MapSuite.targets'))" />
+    <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.0\build\net462\SkiaSharp.NativeAssets.Linux.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.0\build\net462\SkiaSharp.NativeAssets.Linux.targets'))" />
+    <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.0\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.0\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
+    <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.0\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.0\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets'))" />
   </Target>
   <Import Project="..\..\packages\MapSuiteDependency-UnmanagedProj4Projection.10.6.0\build\net45\MapSuiteDependency-UnmanagedProj4Projection.targets" Condition="Exists('..\..\packages\MapSuiteDependency-UnmanagedProj4Projection.10.6.0\build\net45\MapSuiteDependency-UnmanagedProj4Projection.targets')" />
   <Import Project="..\..\packages\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.10.6.0\build\net45\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.10.6.0\build\net45\ThinkGeo.MapSuite.Shapes.UnmanagedProj4Projection.targets')" />
@@ -905,4 +914,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.0\build\net462\SkiaSharp.NativeAssets.Linux.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.0\build\net462\SkiaSharp.NativeAssets.Linux.targets')" />
+  <Import Project="..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.0\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.0\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />
+  <Import Project="..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.0\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.0\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
+  <Import Project="..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets" Condition="Exists('..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets')" />
 </Project>

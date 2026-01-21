@@ -26,7 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -35,7 +35,7 @@ namespace ThinkGeo.MapSuite.GisEditor
     /// </summary>
     public partial class DataRepositoryContentUserControl : UserControl
     {
-        private static List<WpfMap> hookedMaps = new List<WpfMap>();
+        private static List<MapView> hookedMaps = new List<MapView>();
         private ICommand tmpRelayCommand;
         private bool isDesending;
         private Collection<GridViewColumn> columns;

@@ -20,8 +20,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -44,7 +44,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             AvailableUIElements = StyleBuilderUIElements.ZoomLevelPicker | StyleBuilderUIElements.StyleList;
             AvailableStyleCategories = StyleCategories.Area | StyleCategories.Line | StyleCategories.Point;
             FromZoomLevelIndex = 1;
-            if (GisEditor.ActiveMap != null) ToZoomLevelIndex = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count;
+            if (GisEditor.ActiveMap != null) ToZoomLevelIndex = GisEditor.ActiveMap.ZoomScales.Count;
             else ToZoomLevelIndex = 25;
         }
 

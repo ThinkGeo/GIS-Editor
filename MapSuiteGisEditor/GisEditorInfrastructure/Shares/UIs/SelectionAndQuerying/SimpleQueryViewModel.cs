@@ -25,9 +25,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -36,7 +36,7 @@ namespace ThinkGeo.MapSuite.GisEditor
     [Serializable]
     internal class SimpleQueryViewModel : ViewModelBase
     {
-        private static Dictionary<WpfMap, Collection<FeatureLayer>> checkedFeatureLayers;
+        private static Dictionary<MapView, Collection<FeatureLayer>> checkedFeatureLayers;
         private ObservableCollection<CheckableItemViewModel<FeatureLayer>> availableFeatureLayers;
         private string addressToSearch;
 
@@ -53,7 +53,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         public SimpleQueryViewModel()
         {
             generateNameFunc = (featureLayer) => featureLayer != null ? featureLayer.Name : GisEditor.LanguageManager.GetStringResource("SelectFeaturesPluginNoSelection");
-            checkedFeatureLayers = new Dictionary<WpfMap, Collection<FeatureLayer>>();
+            checkedFeatureLayers = new Dictionary<MapView, Collection<FeatureLayer>>();
             availableFeatureLayers = new ObservableCollection<CheckableItemViewModel<FeatureLayer>>();
             CollectFeatureLayers();
         }
@@ -129,8 +129,8 @@ namespace ThinkGeo.MapSuite.GisEditor
                                 else return tmpFeature.GetBoundingBox();
                             });
 
-                            GisEditor.ActiveMap.CurrentExtent = ExtentHelper.GetBoundingBoxOfItems(bboxes);
-                            GisEditor.ActiveMap.Refresh();
+                            GisEditor.ActiveMap.CurrentExtent = MapUtil.GetBoundingBoxOfItems(bboxes);
+                            _ =  GisEditor.ActiveMap.RefreshAsync();
                         }
 
                         //make the features highlighted
@@ -140,7 +140,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                             highlightOverlay.HighlightFeatureLayer.InternalFeatures.Clear();
                             features.ForEach(feature => highlightOverlay.HighlightFeatureLayer.InternalFeatures.Add(feature));
                             highlightOverlay.HighlightFeatureLayer.BuildIndex();
-                            highlightOverlay.Refresh();
+                            _ = highlightOverlay.RefreshAsync();
                         }
                     }, () => GisEditor.ActiveMap != null && !string.IsNullOrEmpty(AddressToSearch));
                 }

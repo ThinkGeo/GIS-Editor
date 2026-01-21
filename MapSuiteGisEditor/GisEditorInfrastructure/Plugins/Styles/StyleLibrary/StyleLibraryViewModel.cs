@@ -25,7 +25,7 @@ using System.Reflection;
 using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor

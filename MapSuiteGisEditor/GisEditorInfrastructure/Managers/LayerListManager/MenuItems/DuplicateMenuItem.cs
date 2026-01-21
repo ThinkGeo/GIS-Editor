@@ -18,9 +18,9 @@
 
 
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor

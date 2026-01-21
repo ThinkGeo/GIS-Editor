@@ -23,7 +23,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -130,9 +130,9 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         private int GetClosestZoomLevelIndex(double scale)
         {
-            ZoomLevelSet zoomLevelSet = GisEditor.ActiveMap.ZoomLevelSet;
-            var zoomLevel = zoomLevelSet.CustomZoomLevels.OrderBy(z => Math.Abs(z.Scale - scale)).FirstOrDefault();
-            return zoomLevelSet.CustomZoomLevels.IndexOf(zoomLevel) + 1;
+            //ZoomLevelSet zoomLevelSet = GisEditor.ActiveMap.ZoomLevelSet;
+            var zoomLevel = GisEditor.ActiveMap.ZoomScales.OrderBy(z => Math.Abs(z - scale)).FirstOrDefault();
+            return GisEditor.ActiveMap.ZoomScales.IndexOf(zoomLevel) + 1;
         }
     }
 }

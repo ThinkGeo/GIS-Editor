@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using System.Windows;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

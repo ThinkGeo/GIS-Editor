@@ -25,6 +25,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -37,10 +38,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -989,9 +989,9 @@ namespace ThinkGeo.MapSuite.GisEditor
                         var overlays = DataViewerViewModel.FindLayerOverlayContaining((Tag as GisEditorWpfMap), viewModel.SelectedLayer);
                         foreach (var overlay in overlays)
                         {
-                            overlay.Close();
+                            _ = overlay.CloseAsync();
                         }
-                        viewModel.ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode.ReadWrite);
+                        viewModel.ChangeCurrentLayerReadWriteMode(FileAccess.ReadWrite);
                         viewModel.OpenFeatureLayer();
                         Collection<Feature> features = viewModel.SelectedLayer.QueryTools.GetFeaturesByIds(ids, viewModel.SelectedLayer.GetDistinctColumnNames());
                         var columns = viewModel.SelectedLayer.QueryTools.GetColumns();
@@ -1084,7 +1084,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 finally
                 {
                     viewModel.CloseFeatureLayer();
-                    viewModel.ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode.Read);
+                    viewModel.ChangeCurrentLayerReadWriteMode(FileAccess.Read);
                 }
                 viewModel.EditDataChanges.Clear();
             }

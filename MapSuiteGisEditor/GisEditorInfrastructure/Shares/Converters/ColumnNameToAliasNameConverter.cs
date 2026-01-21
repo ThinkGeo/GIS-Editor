@@ -20,7 +20,7 @@
 using System;
 using System.Reflection;
 using System.Windows.Data;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor

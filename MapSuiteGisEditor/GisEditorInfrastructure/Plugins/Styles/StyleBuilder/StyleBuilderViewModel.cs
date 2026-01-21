@@ -28,8 +28,8 @@ using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -166,7 +166,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             get
             {
                 componentStyle.Styles.Clear();
-                foreach (var innerStyle in StyleItems.Select(item => item.StyleItem.ConcreteObject).OfType<Styles.Style>().Reverse())
+                foreach (var innerStyle in StyleItems.Select(item => item.StyleItem.ConcreteObject).OfType< ThinkGeo.Core.Style >().Reverse())
                 {
                     componentStyle.Styles.Add(innerStyle);
                 }
@@ -369,12 +369,12 @@ namespace ThinkGeo.MapSuite.GisEditor
             get { return rootStyleItem.StyleItemViewModels; }
         }
 
-        public ReadOnlyCollection<Styles.Style> Styles
+        public ReadOnlyCollection<ThinkGeo.Core.Style> Styles
         {
             get
             {
-                var styles = StyleItems.Select(s => s.StyleItem.ConcreteObject).OfType<Styles.Style>();
-                return new ReadOnlyCollection<Styles.Style>(styles.ToList());
+                var styles = StyleItems.Select(s => s.StyleItem.ConcreteObject).OfType<ThinkGeo.Core.Style>();
+                return new ReadOnlyCollection<ThinkGeo.Core.Style>(styles.ToList());
             }
         }
 
@@ -511,7 +511,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
             saveToLibraryCommand = new RelayCommand(() =>
             {
-                var innerStyles = StyleItems.Select(s => s.StyleItem.ConcreteObject).Reverse().OfType<Styles.Style>();
+                var innerStyles = StyleItems.Select(s => s.StyleItem.ConcreteObject).Reverse().OfType< ThinkGeo.Core.Style >();
                 CompositeStyle componentStyle = new CompositeStyle(innerStyles) { Name = Name };
                 GisEditor.StyleManager.SaveStyleToLibrary(componentStyle, SelectedToZoomLevelModel.Scale, SelectedFromZoomLevelModel.Scale);
             });
@@ -570,7 +570,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     UpdatePreviewSource();
                     SelectRootNodeIfEmpty();
                 }
-            }, () => !styleArguments.IsSubStyleReadonly && SelectedStyleItem != null && SelectedStyleItem.StyleItem.Parent != null && SelectedStyleItem.StyleItem.ConcreteObject is Styles.Style);
+            }, () => !styleArguments.IsSubStyleReadonly && SelectedStyleItem != null && SelectedStyleItem.StyleItem.Parent != null && SelectedStyleItem.StyleItem.ConcreteObject is ThinkGeo.Core.Style);
 
             #endregion delete style
 
@@ -599,7 +599,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private void LoadStyle(Styles.Style s)
+        private void LoadStyle(ThinkGeo.Core.Style s)
         {
             //s.Name = GisEditor.StyleManager.GetStylePluginByStyle(s).Name;
             var styleItem = GisEditor.StyleManager.GetStyleLayerListItem(s);
@@ -613,10 +613,10 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             if (GisEditor.ActiveMap != null)
             {
-                var allZoomLevels = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Where(z => z.GetType() == typeof(ZoomLevel)).ToList();
+                var allZoomLevels = GisEditor.ActiveMap.ZoomScales.ToList();
                 for (int i = 0; i < allZoomLevels.Count; i++)
                 {
-                    zoomLevelModels.Add(new ZoomLevelModel(i + 1, allZoomLevels[i].Scale));
+                    zoomLevelModels.Add(new ZoomLevelModel(i + 1, allZoomLevels[i]));
                 }
             }
         }

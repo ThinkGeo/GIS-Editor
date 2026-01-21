@@ -18,7 +18,8 @@
 
 
 using System.Linq;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -33,7 +34,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         private static void RemoveSubStyle()
         {
             if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
-            Styles.Style style = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Styles.Style;
+            ThinkGeo.Core.Style style = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as ThinkGeo.Core.Style;
             object parentActualObject = GisEditor.LayerListManager.SelectedLayerListItem.Parent.ConcreteObject;
             if (style != null)
             {

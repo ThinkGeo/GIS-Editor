@@ -17,7 +17,7 @@
 */
 
 
-using ThinkGeo.MapSuite.Serialize;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

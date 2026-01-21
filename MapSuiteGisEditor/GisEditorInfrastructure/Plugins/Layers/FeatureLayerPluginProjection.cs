@@ -23,8 +23,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -54,7 +55,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     string prjWkt = File.ReadAllText(prjPathFileName);
                     try
                     {
-                        result = Proj4Projection.ConvertPrjToProj4(prjWkt);
+                        result = Projection.ConvertProjStringToWkt(prjWkt);
                     }
                     catch (Exception e)
                     {
@@ -86,7 +87,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     string proj4PathFileName = uri.LocalPath;
                     proj4PathFileName = Path.ChangeExtension(proj4PathFileName, ".prj");
-                    string internalProj = Proj4Projection.ConvertProj4ToPrj(proj4ProjectionParameters);
+                    string internalProj = Projection.ConvertProjStringToWkt(proj4ProjectionParameters);
                     File.WriteAllText(proj4PathFileName, internalProj);
                 }
             }
@@ -118,7 +119,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             Collection<FeatureLayer> undefinedProjectionLayers = new Collection<FeatureLayer>();
             foreach (var featureLayer in featureLayers)
             {
-                Proj4Projection proj4 = featureLayer.FeatureSource.Projection as Proj4Projection;
+                Proj4Projection proj4 = featureLayer.FeatureSource.ProjectionConverter as Proj4Projection;
                 if (proj4 == null
                     || string.IsNullOrEmpty(proj4.InternalProjectionParametersString)
                     || string.IsNullOrEmpty(proj4.ExternalProjectionParametersString))
@@ -142,7 +143,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     }
 
                     proj4.SyncProjectionParametersString();
-                    featureLayer.FeatureSource.Projection = proj4;
+                    featureLayer.FeatureSource.ProjectionConverter = proj4;
                 }
             }
 
@@ -187,7 +188,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 GisEditorWpfMap wpfMap = GisEditor.ActiveMap;
                 foreach (FeatureLayer layer in featureLayers)
                 {
-                    Proj4Projection proj4 = (Proj4Projection)layer.FeatureSource.Projection;
+                    Proj4Projection proj4 = (Proj4Projection)layer.FeatureSource.ProjectionConverter;
                     if (wpfMap != null)
                     {
                         if (String.IsNullOrEmpty(wpfMap.DisplayProjectionParameters))

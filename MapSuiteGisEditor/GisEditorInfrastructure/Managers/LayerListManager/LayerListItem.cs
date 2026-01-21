@@ -26,10 +26,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -593,9 +594,9 @@ namespace ThinkGeo.MapSuite.GisEditor
                 TryChangeIsVisiblePropertyOfMapElement();
             }
 
-            if (ConcreteObject is Styles.Style)
+            if (ConcreteObject is ThinkGeo.Core.Style)
             {
-                Styles.Style concreteStyle = (Styles.Style)ConcreteObject;
+                ThinkGeo.Core.Style concreteStyle = (ThinkGeo.Core.Style)ConcreteObject;
                 concreteStyle.IsActive = value;
                 Layer layer = LayerListHelper.FindMapElementInTree<Layer>(this);
                 if (layer != null && layer.IsVisible)
@@ -652,18 +653,20 @@ namespace ThinkGeo.MapSuite.GisEditor
             OnPropertyChanged("IsChecked");
         }
 
-        private static void RefreshOverlay(TileOverlay tileOverlay)
+        private static async Task RefreshOverlay(TileOverlay tileOverlay)
         {
             if (Application.Current != null)
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action<TileOverlay>(tmpOverlay =>
+                await Application.Current.Dispatcher.BeginInvoke(new Action<TileOverlay>(tmpOverlay =>
                 {
-                    tmpOverlay.RefreshWithBufferSettings();
+                    //tmpOverlay.RefreshWithBufferSettings();
+                    _ = tmpOverlay.RefreshAsync();
                 }), tileOverlay);
             }
             else
             {
-                tileOverlay.RefreshWithBufferSettings();
+                //tileOverlay.RefreshWithBufferSettings();
+                await tileOverlay.RefreshAsync();
             }
         }
     }

@@ -23,9 +23,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -77,7 +77,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             if (styleItem != null && GisEditor.LayerListManager.SelectedLayerListItem is StyleLayerListItem)
             {
                 int from = 1;
-                int to = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Where(z => z.GetType() == typeof(ZoomLevel)).Count();
+                int to = GisEditor.ActiveMap.ZoomScales.Count();
                 string range = ((StyleLayerListItem)GisEditor.LayerListManager.SelectedLayerListItem).ZoomLevelRange;
                 if (!string.IsNullOrEmpty(range))
                 {
@@ -88,11 +88,11 @@ namespace ThinkGeo.MapSuite.GisEditor
                         int.TryParse(array[1].Replace(")", "").Trim(), out to);
                     }
                 }
-                var count = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count;
+                var count = GisEditor.ActiveMap.ZoomScales.Count;
                 if (count > from - 1 && count > to - 1)
                 {
-                    var upperScale = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[from - 1].Scale;
-                    var lowerScale = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[to - 1].Scale;
+                    var upperScale = GisEditor.ActiveMap.ZoomScales[from - 1];
+                    var lowerScale = GisEditor.ActiveMap.ZoomScales[to - 1];
                     GisEditor.StyleManager.SaveStyleToLibrary(styleItem, lowerScale, upperScale);
                 }
             }

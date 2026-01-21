@@ -20,7 +20,8 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Serialize;
+using ThinkGeo.Core;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor

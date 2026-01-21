@@ -19,7 +19,7 @@
 
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -39,12 +39,12 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 SimpleMarkerOverlay markerOverlay = GetMarkerOverlayByMarker(GisEditor.ActiveMap, marker);
                 markerOverlay.Markers.Remove(marker);
-                GisEditor.ActiveMap.Refresh(markerOverlay);
                 GisEditor.UIManager.InvokeRefreshPlugins(new RefreshArgs(markerOverlay.Markers, RefreshArgsDescriptions.RemoveMarkerDescription));
+                GisEditor.ActiveMap.RefreshAsync(markerOverlay);
             }
         }
 
-        private static SimpleMarkerOverlay GetMarkerOverlayByMarker(WpfMap map, Marker marker)
+        private static SimpleMarkerOverlay GetMarkerOverlayByMarker(MapView map, Marker marker)
         {
             return map.Overlays.OfType<SimpleMarkerOverlay>()
                                .Where(overlay => overlay.Markers.Contains(marker))

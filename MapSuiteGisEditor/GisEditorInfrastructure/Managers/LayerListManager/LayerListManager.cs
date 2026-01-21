@@ -28,11 +28,13 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+//using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -255,9 +257,9 @@ namespace ThinkGeo.MapSuite.GisEditor
                     }
                 }
             }
-            else if (layerListItem.ConcreteObject is Styles.Style)
+            else if (layerListItem.ConcreteObject is ThinkGeo.Core.Style)
             {
-                var stylePlugin = GisEditor.StyleManager.GetStylePluginByStyle((Styles.Style)layerListItem.ConcreteObject);
+                var stylePlugin = GisEditor.StyleManager.GetStylePluginByStyle((ThinkGeo.Core.Style)layerListItem.ConcreteObject);
                 if (stylePlugin != null)
                 {
                     foreach (var item in stylePlugin.GetLayerListItemContextMenuItems(args))
@@ -265,7 +267,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         menuItems.Add(item);
                     }
                 }
-                Styles.Style style = (Styles.Style)layerListItem.ConcreteObject;
+                ThinkGeo.Core.Style style = (ThinkGeo.Core.Style)layerListItem.ConcreteObject;
                 if (style is CompositeStyle)
                 {
                     CompositeStyle compositeStyle = (CompositeStyle)style;
@@ -344,9 +346,9 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 selectedLayer.Open();
                 RectangleShape bbox = selectedLayer.GetBoundingBox();
-                Collection<string> filters = ((Styles.Style)layerListItem.ConcreteObject).Filters;
+                Collection<string> filters = ((ThinkGeo.Core.Style)layerListItem.ConcreteObject).Filters;
 
-                Collection<string> returningColumnNames = ((Styles.Style)layerListItem.ConcreteObject).GetRequiredColumnNames();
+                Collection<string> returningColumnNames = ((ThinkGeo.Core.Style)layerListItem.ConcreteObject).GetRequiredColumnNames();
                 returningColumnNames = GetRequiredColumnNamesForLink(returningColumnNames, selectedLayer.FeatureSource);
 
                 Collection<FeatureSourceColumn> featureColumns = selectedLayer.FeatureSource.GetColumns();
@@ -375,7 +377,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private void ExportToShapeFile(Collection<Feature> resultFeatures, Collection<FeatureSourceColumn> columns, FeatureLayerPlugin sourceLayerPlugin, WellKnownType type)
+        private async Task ExportToShapeFile(Collection<Feature> resultFeatures, Collection<FeatureSourceColumn> columns, FeatureLayerPlugin sourceLayerPlugin, WellKnownType type)
         {
             int count = resultFeatures.Count;
 
@@ -465,7 +467,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         }
 
                         resultLayer = targetLayerPlugin.CreateFeatureLayer(parameters);
-                        resultLayer.FeatureSource.Projection = proj4;
+                        resultLayer.FeatureSource.ProjectionConverter = proj4;
                         resultLayer = targetLayerPlugin.GetLayers(getLayerParameters).FirstOrDefault() as FeatureLayer;
                     }
                 }
@@ -480,11 +482,11 @@ namespace ThinkGeo.MapSuite.GisEditor
                     messageBox.ErrorMessage = string.Empty;
                     if (messageBox.ShowDialog().Value)
                     {
-                        GisEditor.ActiveMap.AddLayerToActiveOverlay(resultLayer);
-                        GisEditor.ActiveMap.RefreshActiveOverlay();
+                        await GisEditor.ActiveMap.AddLayerToActiveOverlay(resultLayer);
+                        await GisEditor.ActiveMap.RefreshActiveOverlay();
                         RefreshArgs refreshArgs = new RefreshArgs(this, "LoadToMapCore");
                         InvokeRefreshPlugins(GisEditor.UIManager, refreshArgs);
-                        GisEditor.ActiveMap.Refresh();
+                        await GisEditor.ActiveMap.RefreshAsync();
                     }
                 }
             }
@@ -532,9 +534,9 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 selectedLayer.Open();
                 RectangleShape bbox = selectedLayer.GetBoundingBox();
-                Collection<string> filters = ((Styles.Style)layerListItem.ConcreteObject).Filters;
+                Collection<string> filters = ((ThinkGeo.Core.Style)layerListItem.ConcreteObject).Filters;
 
-                Collection<string> returningColumnNames = ((Styles.Style)layerListItem.ConcreteObject).GetRequiredColumnNames();
+                Collection<string> returningColumnNames = ((ThinkGeo.Core.Style)layerListItem.ConcreteObject).GetRequiredColumnNames();
                 returningColumnNames = GetRequiredColumnNamesForLink(returningColumnNames, selectedLayer.FeatureSource);
 
 //                IEnumerable<string> allColumns = selectedLayer.FeatureSource.GetColumns().Select(c => c.ColumnName);
@@ -555,9 +557,9 @@ GisEditor.ActiveMap.Height, returningColumnNames);
 
                 if (resultFeatures.Count > 0)
                 {
-                    RectangleShape boundingBox = ExtentHelper.GetBoundingBoxOfItems(resultFeatures);
+                    RectangleShape boundingBox = MapUtil.GetBoundingBoxOfItems(resultFeatures);
                     GisEditor.ActiveMap.CurrentExtent = boundingBox;
-                    GisEditor.ActiveMap.Refresh();
+                    _ = GisEditor.ActiveMap.RefreshAsync();
                 }
             }
         }
@@ -577,9 +579,9 @@ GisEditor.ActiveMap.Height, returningColumnNames);
             {
                 selectedLayer.Open();
                 RectangleShape bbox = selectedLayer.GetBoundingBox();
-                Collection<string> filters = ((Styles.Style)layerListItem.ConcreteObject).Filters;
+                Collection<string> filters = ((ThinkGeo.Core.Style)layerListItem.ConcreteObject).Filters;
 
-                Collection<string> returningColumnNames = ((Styles.Style)layerListItem.ConcreteObject).GetRequiredColumnNames();
+                Collection<string> returningColumnNames = ((ThinkGeo.Core.Style)layerListItem.ConcreteObject).GetRequiredColumnNames();
                 returningColumnNames = GetRequiredColumnNamesForLink(returningColumnNames, selectedLayer.FeatureSource);
 
 //                IEnumerable<string> allColumns = selectedLayer.FeatureSource.GetColumns().Select(c => c.ColumnName);
@@ -818,7 +820,7 @@ GisEditor.ActiveMap.Height, returningColumnNames);
             return overlayListItem;
         }
 
-        private LayerListItem GetLayerListItemForLayer(Layer layer)
+        private LayerListItem GetLayerListItemForLayer(LayerBase layer)
         {
             var layerListItem = GisEditor.LayerManager.GetLayerListItem(layer);
             if (layerListItem == null) layerListItem = GetLayerListItemFromUIPlugins(layer);

@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

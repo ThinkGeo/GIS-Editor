@@ -20,8 +20,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Styles;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -37,7 +38,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         private bool useRandomColor;
         private bool isDefaultCore;
         private bool requireColumnNames;
-        private ObservableCollection<Style> styleCandidates;
+        private ObservableCollection<ThinkGeo.Core.Style> styleCandidates;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StylePlugin" /> class.
@@ -46,11 +47,11 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             UseRandomColor = true;
             styleCategories = StyleCategories.Point | StyleCategories.Line | StyleCategories.Area | StyleCategories.Label;
-            styleCandidates = new ObservableCollection<Style>();
+            styleCandidates = new ObservableCollection<ThinkGeo.Core.Style>();
             styleCandidatesIndex = 0;
         }
 
-        public ObservableCollection<Style> StyleCandidates
+        public ObservableCollection<ThinkGeo.Core.Style> StyleCandidates
         {
             get { return styleCandidates; }
         }
@@ -114,9 +115,9 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// Gets the default style.
         /// </summary>
         /// <returns>Default style</returns>
-        public Style GetDefaultStyle()
+        public ThinkGeo.Core.Style GetDefaultStyle()
         {
-            Style style = null;
+            ThinkGeo.Core.Style style = null;
             if (!UseRandomColor && IsDefault && StyleCandidates.Count > 0)
             {
                 if (StyleCandidatesIndex < 0) StyleCandidatesIndex = 0;
@@ -143,7 +144,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// Gets the default style core.
         /// </summary>
         /// <returns>Default style</returns>
-        protected abstract Style GetDefaultStyleCore();
+        protected abstract ThinkGeo.Core.Style GetDefaultStyleCore();
 
         //public StyleEditResult EditStyle(Style style, StyleArguments arguments)
         //{
@@ -165,7 +166,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="style">The style.</param>
         /// <returns>a list item for style layer</returns>
-        public StyleLayerListItem GetStyleLayerListItem(Style style)
+        public StyleLayerListItem GetStyleLayerListItem(ThinkGeo.Core.Style style)
         {
             if (style != null && string.IsNullOrEmpty(style.Name))
             {
@@ -179,7 +180,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="style">The style.</param>
         /// <returns>a list item for style layer</returns>
-        protected virtual StyleLayerListItem GetStyleLayerListItemCore(Style style)
+        protected virtual StyleLayerListItem GetStyleLayerListItemCore(ThinkGeo.Core.Style style)
         {
             return new StyleLayerListItem(style);
         }

@@ -30,10 +30,12 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -424,12 +426,12 @@ namespace ThinkGeo.MapSuite.GisEditor
                         if (ShowMessageBox(deleteMessenger) == MessageBoxResult.Yes)
                         {
                             var selectedFeatureIds = SelectedLayerAdapter.SelectedFeatures.Keys.ToArray();
-                            if (DeleteFeatures(null, selectedFeatureIds))
-                            {
-                                RowCount = RowCount - selectedFeatureIds.Length;
-                                SelectedCount = SelectedCount - selectedFeatureIds.Length;
-                                deletedCount += selectedFeatureIds.Length;
-                            }
+                            //if (DeleteFeatures(null, selectedFeatureIds))
+                            //{
+                            //    RowCount = RowCount - selectedFeatureIds.Length;
+                            //    SelectedCount = SelectedCount - selectedFeatureIds.Length;
+                            //    deletedCount += selectedFeatureIds.Length;
+                            //}
                         }
                     }, () => SelectedLayerAdapter != null && SelectedLayerAdapter.SelectedFeatures.Count > 0);
                 }
@@ -443,7 +445,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 if (deleteOneRowCommand == null)
                 {
-                    deleteOneRowCommand = new RelayCommand<DataRowView>((dataRowView) =>
+                    deleteOneRowCommand = new RelayCommand<DataRowView>(async (dataRowView) =>
                     {
                         var deleteMessenger = new DialogMessage("Do you want to delete the selected row?", null);
                         deleteMessenger.Caption = "Delete Row";
@@ -452,7 +454,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         if (ShowMessageBox(deleteMessenger) == MessageBoxResult.Yes)
                         {
                             string featureId = dataRowView[FeatureLayerAdapter.FeatureIdColumnName].ToString();
-                            if (DeleteFeatures(dataRowView, new string[] { featureId }))
+                            if (await DeleteFeatures(dataRowView, new string[] { featureId }))
                             {
                                 RowCount--;
                                 SelectedCount--;
@@ -475,7 +477,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     {
                         string featureID = dataRowView[FeatureLayerAdapter.FeatureIdColumnName].ToString();
 
-                        ZoomTo(featureID);
+                        _ = ZoomTo(featureID);
                     });
                 }
                 return zoomToOneFeatureCommand;
@@ -490,7 +492,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     zoomToSelectedFeatureCommand = new ObservedCommand(() =>
                     {
-                        ZoomTo(string.Empty);
+                        _ = ZoomTo(string.Empty);
                     }, () => SelectedLayerAdapter != null);
                 }
                 return zoomToSelectedFeatureCommand;
@@ -512,7 +514,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return results;
         }
 
-        public void ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode mode)
+        public void ChangeCurrentLayerReadWriteMode(FileAccess mode)
         {
             if (SelectedLayer is ShapeFileFeatureLayer)
             {
@@ -541,7 +543,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private bool DeleteFeatures(DataRowView dataRowView, IEnumerable<string> featureIds)
+        private async Task<bool> DeleteFeatures(DataRowView dataRowView, IEnumerable<string> featureIds)
         {
             try
             {
@@ -549,14 +551,14 @@ namespace ThinkGeo.MapSuite.GisEditor
                 TransactionResult result = null;
                 Collection<Feature> features = new Collection<Feature>();
                 Collection<LayerOverlay> overlays = new Collection<LayerOverlay>();
-                lock (SelectedLayerAdapter)
+                using (AsyncLocker.LockAsync(SelectedLayerAdapter))
                 {
                     overlays = FindLayerOverlayContaining(map, SelectedLayerAdapter.FeatureLayer);
                     foreach (var overlay in overlays)
                     {
-                        overlay.Close();
+                        await overlay.CloseAsync();
                     }
-                    ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode.ReadWrite);
+                    ChangeCurrentLayerReadWriteMode(FileAccess.ReadWrite);
                     OpenFeatureLayer();
                     foreach (var featureId in featureIds)
                     {
@@ -627,7 +629,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                                 }
                             }
                         }
-                        map.Refresh(selectionTrackOverlay);
+                        await map.RefreshAsync(selectionTrackOverlay);
                     }
                 }
                 if (!changedLayers.Contains(SelectedLayer))
@@ -645,7 +647,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             finally
             {
                 CloseFeatureLayer();
-                ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode.Read);
+                ChangeCurrentLayerReadWriteMode(FileAccess.Read);
             }
         }
 
@@ -672,7 +674,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return MessageBox.Show(msg.Content, msg.Caption, msg.Button, msg.Icon);
         }
 
-        private void ZoomTo(string msg)
+        private async Task ZoomTo(string msg)
         {
             if (!string.IsNullOrEmpty(msg))
             {
@@ -682,7 +684,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
                 if (feature != null && feature.GetWellKnownBinary() != null)
                 {
-                    ZoomToFeatures(new Feature[] { feature }, SelectedLayer);
+                    await ZoomToFeatures(new Feature[] { feature }, SelectedLayer);
                 }
             }
             else if (SelectedLayerAdapter != null)
@@ -691,17 +693,17 @@ namespace ThinkGeo.MapSuite.GisEditor
                 var dic = selectionTrackOverlay.GetSelectedFeaturesGroup(SelectedLayer);
                 if (dic.Count > 0)
                 {
-                    ZoomToFeatures(dic[SelectedLayer], SelectedLayer);
+                    await ZoomToFeatures(dic[SelectedLayer], SelectedLayer);
                 }
             }
         }
 
-        private void ZoomToFeatures(IEnumerable<Feature> features, FeatureLayer featureLayer)
+        private async Task ZoomToFeatures(IEnumerable<Feature> features, FeatureLayer featureLayer)
         {
-            RectangleShape extent = features.Count() == 1 ? GetBoundingBox(features.FirstOrDefault()) : ExtentHelper.GetBoundingBoxOfItems(features);
-            RectangleShape drawingExtent = ExtentHelper.GetDrawingExtent(extent, (float)GisEditor.ActiveMap.ActualWidth, (float)GisEditor.ActiveMap.ActualHeight);
-            var scale = ExtentHelper.GetScale(drawingExtent, (float)map.ActualWidth, map.MapUnit);
-            map.ZoomTo(extent.GetCenterPoint(), scale);
+            RectangleShape extent = features.Count() == 1 ? GetBoundingBox(features.FirstOrDefault()) : MapUtil.GetBoundingBoxOfItems(features);
+            RectangleShape drawingExtent = MapUtil.GetDrawingExtent(extent, (float)GisEditor.ActiveMap.ActualWidth, (float)GisEditor.ActiveMap.ActualHeight);
+            var scale = MapUtil.GetScale(drawingExtent, (float)map.ActualWidth, map.MapUnit);
+            await map.ZoomToAsync(extent.GetCenterPoint(), scale);
             //GisEditor.UIManager.RefreshPlugins(new RefreshArgs(extent.GetCenterPoint(), "Identify"));
             GisEditor.UIManager.RefreshPlugins(new RefreshArgs(new Tuple<IEnumerable<Feature>, FeatureLayer>(features, featureLayer), "Identify"));
         }

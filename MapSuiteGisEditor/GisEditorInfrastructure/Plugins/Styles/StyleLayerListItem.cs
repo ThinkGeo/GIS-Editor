@@ -25,7 +25,8 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor

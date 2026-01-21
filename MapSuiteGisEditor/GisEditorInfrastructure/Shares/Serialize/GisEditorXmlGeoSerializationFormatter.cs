@@ -22,13 +22,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Serialize;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
-    public class GisEditorXmlGeoSerializationFormatter : XmlGeoSerializationFormatter
+    public class GisEditorXmlGeoSerializationFormatter : GeoSerializationFormatter
     {
         private static readonly string symbolPointStyleFullTypeName = "ThinkGeo.MapSuite.WpfDesktopEdition.Extension.SymbolPointStyle, WpfDesktopEditionExtension,";
+
+
+        protected override void SaveCore(GeoObjectModel model, Stream stream)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override GeoObjectModel LoadCore(System.IO.Stream stream)
         {
@@ -53,7 +59,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     dic.Add(guid, newContent);
                 }
 
-                Stream fixResourceStream = typeof(XmlGeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
+                Stream fixResourceStream = typeof(GeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
                 XElement fixElement = XElement.Load(fixResourceStream);
                 foreach (var item in fixElement.Descendants("Pair"))
                 {
@@ -76,7 +82,20 @@ namespace ThinkGeo.MapSuite.GisEditor
                 stream = newStream;
             }
             catch { }
-            return base.LoadCore(stream);
+            return LoadWithCoreXmlFormatter(stream);
+        }
+
+        private static GeoObjectModel LoadWithCoreXmlFormatter(Stream stream)
+        {
+            var coreAssembly = typeof(GeoSerializationFormatter).Assembly;
+            var formatterType = coreAssembly.GetType("ThinkGeo.Core.XmlGeoSerializationFormatter", throwOnError: false);
+            if (formatterType == null)
+            {
+                throw new InvalidOperationException("XmlGeoSerializationFormatter is not available in ThinkGeo.Core.");
+            }
+
+            var formatter = (GeoSerializationFormatter)Activator.CreateInstance(formatterType, true);
+            return formatter.Load(stream);
         }
 
         private static string FixSymbolPointStyleTypeIssue(string content, string oldContent)

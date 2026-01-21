@@ -18,6 +18,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -28,9 +29,9 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -58,14 +59,14 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         public Visibility CheckBoxVisibility
         {
-            get { return styleItem.ConcreteObject is Styles.Style ? Visibility.Visible : Visibility.Collapsed; }
+            get { return styleItem.ConcreteObject is ThinkGeo.Core.Style ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         public bool IsActive
         {
             get
             {
-                Styles.Style style = styleItem.ConcreteObject as Styles.Style;
+                ThinkGeo.Core.Style style = styleItem.ConcreteObject as ThinkGeo.Core.Style;
                 bool isActive = true;
                 if (style != null)
                 {
@@ -75,7 +76,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
             set
             {
-                Styles.Style style = styleItem.ConcreteObject as Styles.Style;
+                ThinkGeo.Core.Style style = styleItem.ConcreteObject as ThinkGeo.Core.Style;
                 if (style != null)
                 {
                     style.IsActive = value;
@@ -227,14 +228,14 @@ namespace ThinkGeo.MapSuite.GisEditor
                 this.contextMenu.Items.Add(GetMenuItem("Move down", MoveDownClick, GetImageUri("moveDown.png")));
                 this.contextMenu.Items.Add(GetMenuItem("Move to top", MoveToTopClick, GetImageUri("toTop.png")));
                 this.contextMenu.Items.Add(GetMenuItem("Move to bottom", MoveToBottomClick, GetImageUri("toBottom.png")));
-                if (styleItem.ConcreteObject is Styles.Style)
+                if (styleItem.ConcreteObject is ThinkGeo.Core.Style)
                 {
                     this.contextMenu.Items.Add(new Separator());
                     this.contextMenu.Items.Add(GetMenuItem("Insert from Library...", InsertFromLibrary, GetImageUri("insert_from_library.png"), !styleArguments.IsSubStyleReadonly));
                     this.contextMenu.Items.Add(GetMenuItem("Replace from Library...", ReplaceFromLibrary, GetImageUri("replace_from_library.png"), !styleArguments.IsSubStyleReadonly));
                     this.contextMenu.Items.Add(new Separator());
                 }
-                if (StyleItem.ConcreteObject is Styles.Style)
+                if (StyleItem.ConcreteObject is ThinkGeo.Core.Style)
                 {
                     this.contextMenu.Items.Add(GetMenuItem("Duplicate", DuplicateClick, "/GisEditorInfrastructure;component/Images/duplicate.png", !styleArguments.IsSubStyleReadonly));
                 }
@@ -367,7 +368,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     subMenuItem.Command = new RelayCommand<Tuple<StylePlugin, StyleCategories>>(commandParameter =>
                     {
                         StylePlugin tmpStylePlugin = commandParameter.Item1;
-                        Styles.Style style = tmpStylePlugin.GetDefaultStyle();
+                        ThinkGeo.Core.Style style = tmpStylePlugin.GetDefaultStyle();
                         style.Name = tmpStylePlugin.Name;
 
                         StyleLayerListItem styleItem = GisEditor.StyleManager.GetStyleLayerListItem(style);
@@ -484,11 +485,11 @@ namespace ThinkGeo.MapSuite.GisEditor
             var compositeStyle = styleItem.ConcreteObject as CompositeStyle;
             if (compositeStyle != null && StyleBuilder != null && GisEditor.ActiveMap != null)
             {
-                var count = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count;
+                var count = GisEditor.ActiveMap.ZoomScales.Count;
                 if (count > styleBuilder.FromZoomLevelIndex - 1 && count > styleBuilder.ToZoomLevelIndex - 1)
                 {
-                    var upperScale = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[styleBuilder.FromZoomLevelIndex - 1].Scale;
-                    var lowerScale = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[styleBuilder.ToZoomLevelIndex - 1].Scale;
+                    var upperScale = GisEditor.ActiveMap.ZoomScales[styleBuilder.FromZoomLevelIndex - 1];
+                    var lowerScale = GisEditor.ActiveMap.ZoomScales[styleBuilder.ToZoomLevelIndex - 1];
                     GisEditor.StyleManager.SaveStyleToLibrary(compositeStyle, lowerScale, upperScale);
                 }
             }
@@ -544,7 +545,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     layer.Columns.Add(column);
                 }
 
-                Collection<Feature> resultFeatures = featureLayer.QueryTools.GetAllFeatures(ReturningColumnsType.AllColumns);
+                IEnumerable<Feature> resultFeatures = featureLayer.QueryTools.GetAllFeatures(ReturningColumnsType.AllColumns);
                 foreach (var condition in conditions)
                 {
                     resultFeatures = condition.GetMatchingFeatures(resultFeatures);

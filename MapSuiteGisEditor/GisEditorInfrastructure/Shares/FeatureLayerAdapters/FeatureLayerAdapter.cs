@@ -26,8 +26,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -126,7 +126,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 featureLayer.SafeProcess(() =>
                 {
-                    count = featureLayer.QueryTools.GetCount();
+                    count = (int)featureLayer.QueryTools.GetCount();
                 });
             }
             return count;

@@ -19,7 +19,8 @@
 
 using System.Linq;
 using System.Reflection;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

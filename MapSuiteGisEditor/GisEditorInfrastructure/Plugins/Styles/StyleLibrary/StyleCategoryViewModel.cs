@@ -22,7 +22,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

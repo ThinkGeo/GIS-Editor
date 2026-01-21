@@ -19,9 +19,10 @@
 
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -54,7 +55,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         styleItem.UpdateConcreteObject();
                         containingOverlay = GisEditor.LayerListManager.SelectedLayerListItem.Parent.Parent.ConcreteObject as TileOverlay;
                     }
-                    else if (styleItem.ConcreteObject is Styles.Style && styleItem.Parent.ConcreteObject is Styles.Style)
+                    else if (styleItem.ConcreteObject is ThinkGeo.Core.Style && styleItem.Parent.ConcreteObject is ThinkGeo.Core.Style)
                     {
                         var index = styleItem.Parent.Children.IndexOf(styleItem);
                         foreach (var item in compositeStyleItem.Children)

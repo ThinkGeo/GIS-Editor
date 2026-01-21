@@ -20,9 +20,9 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -39,7 +39,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return GetMenuItem("Layer Projection", "/GisEditorInfrastructure;component/Images/reprojection.png", command);
         }
 
-        private static void Reproject()
+        private static async void Reproject()
         {
             var result = System.Windows.Forms.MessageBox.Show("Warning! This will modify the internal projection information of your layer. This should only be done if the wrong projection information was selected when initially loading the layer.\r\n\r\nTo change the map's display projection, please use the Map Projection button on the Home tab of the ribbon bar.", "Warning", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Warning);
             if (result == System.Windows.Forms.DialogResult.OK)
@@ -67,9 +67,9 @@ namespace ThinkGeo.MapSuite.GisEditor
                             var projection = new Proj4Projection(proj4Window.Proj4ProjectionParameters, GisEditor.ActiveMap.DisplayProjectionParameters);
                             projection.SyncProjectionParametersString();
                             projection.Open();
-                            layer.FeatureSource.Projection = projection;
+                            layer.FeatureSource.ProjectionConverter = projection;
                             ClearCache(layer);
-                            GisEditor.ActiveMap.Refresh();
+                            await GisEditor.ActiveMap.RefreshAsync();
                         }
                     }
                 }
@@ -82,7 +82,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             if (GisEditor.ActiveMap != null && GisEditor.ActiveMap.ActiveLayer != null && GisEditor.ActiveMap.ActiveLayer is FeatureLayer)
             {
                 var featureLayer = (FeatureLayer)GisEditor.ActiveMap.ActiveLayer;
-                var projection = featureLayer.FeatureSource.Projection;
+                var projection = featureLayer.FeatureSource.ProjectionConverter;
                 var managedProj4Projection = projection as Proj4Projection;
                 var proj4Projection = projection as Proj4Projection;
                 if (managedProj4Projection != null)

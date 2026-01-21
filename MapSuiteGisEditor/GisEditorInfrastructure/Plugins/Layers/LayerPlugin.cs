@@ -28,9 +28,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -205,7 +205,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="layer">The layer list item to build the layer list tree.</param>
         /// <returns></returns>
-        public LayerListItem GetLayerListItem(Layer layer)
+        public LayerListItem GetLayerListItem(LayerBase layer)
         {
             return GetLayerListItemCore(layer);
         }
@@ -215,7 +215,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="layer">The layer list item to build the layer list tree.</param>
         /// <returns></returns>
-        protected virtual LayerListItem GetLayerListItemCore(Layer layer)
+        protected virtual LayerListItem GetLayerListItemCore(LayerBase layer)
         {
             var layerListItem = new LayerListItem(layer);
             layerListItem.SideImage = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/GisEditorInfrastructure;component/Images/arrowDown.png", UriKind.Absolute)) };
@@ -343,7 +343,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return new Collection<MenuItem>();
         }
 
-        public ImageSource GetLayerPreviewSource(Layer layer)
+        public ImageSource GetLayerPreviewSource(LayerBase layer)
         {
             ImageSource imageSource = null;
 
@@ -370,7 +370,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return imageSource;
         }
 
-        protected virtual ImageSource GetLayerPreviewSourceCore(Layer layer)
+        protected virtual ImageSource GetLayerPreviewSourceCore(LayerBase layer)
         {
             ImageSource imageSource = null;
             FeatureLayer featureLayer = layer as FeatureLayer;
@@ -443,7 +443,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private void SetStyleSampleImage(Layer layer, LayerListItem layerListItem)
+        private void SetStyleSampleImage(LayerBase layer, LayerListItem layerListItem)
         {
             ImageSource imageSource = GetLayerPreviewSource(layer);
             if (imageSource != null)

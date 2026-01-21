@@ -20,10 +20,11 @@
 using System;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -61,7 +62,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return GetMenuItem(headerString, string.Format("/GisEditorInfrastructure;component/Images/{0}.png", imageName), command);
         }
 
-        private static void MoveItem(MovementAction movementAction)
+        private static async void MoveItem(MovementAction movementAction)
         {
             var selectedItem = GisEditor.LayerListManager.SelectedLayerListItem;
             if (selectedItem != null && selectedItem.ConcreteObject != null)
@@ -82,7 +83,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 }
                 else if (overlay != null)
                 {
-                    needRefresh = MoveOverlay(overlay, movementAction);
+                    needRefresh = await MoveOverlay(overlay, movementAction);
                 }
                 else if (styleItem != null)
                 {
@@ -237,7 +238,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return needRefresh;
         }
 
-        private static bool MoveOverlay(Overlay overlay, MovementAction movementAction)
+        private static async Task<bool> MoveOverlay(Overlay overlay, MovementAction movementAction)
         {
             var originalIndex = GisEditor.ActiveMap.Overlays.IndexOf(overlay);
             switch (movementAction)
@@ -263,7 +264,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             var currentIndex = GisEditor.ActiveMap.Overlays.IndexOf(overlay);
             var needRefresh = currentIndex != originalIndex;
             if (needRefresh)
-                GisEditor.ActiveMap.Refresh();
+                await GisEditor.ActiveMap.RefreshAsync();
             return needRefresh;
         }
 

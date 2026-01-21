@@ -23,7 +23,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -56,7 +57,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     try
                     {
-                        viewModel.SelectedProj4Model.Proj4Parameter = Proj4Projection.ConvertPrjToProj4(wktString);
+                        viewModel.SelectedProj4Model.Proj4Parameter = Projection.ConvertProjStringToWkt(wktString);
                     }
                     catch (Exception ex)
                     {

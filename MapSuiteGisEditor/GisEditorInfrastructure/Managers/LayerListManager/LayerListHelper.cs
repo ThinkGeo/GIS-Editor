@@ -22,9 +22,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -114,7 +114,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 styleArguments.StyleToEdit = componentStyle;
                 styleArguments.FeatureLayer = featureLayer;
                 styleArguments.FromZoomLevelIndex = 1;
-                styleArguments.ToZoomLevelIndex = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels().Where(z => z.GetType() == typeof(ZoomLevel)).Count();
+                styleArguments.ToZoomLevelIndex = GisEditor.ActiveMap.ZoomScales.Count();
                 styleArguments.AppliedCallback = new Action<StyleBuilderResult>((styleResult) =>
                 {
                     if (!styleResult.Canceled)
@@ -208,7 +208,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
             var notEmptyLevels = allLevels.Where(zoomLevel => zoomLevel.CustomStyles.Count != 0).OrderBy(zoomLevel => zoomLevel.Scale);
 
-            var group = new Dictionary<Styles.Style, Collection<ZoomLevel>>();
+            var group = new Dictionary<ThinkGeo.Core.Style, Collection<ZoomLevel>>();
 
             foreach (var zoomLevel in notEmptyLevels)
             {
@@ -257,9 +257,8 @@ namespace ThinkGeo.MapSuite.GisEditor
 
             if (areaStyle != null)
             {
-                isStyleValid &= (!areaStyle.FillSolidBrush.Color.IsTransparent
-                    || !areaStyle.OutlinePen.Color.IsTransparent
-                    || areaStyle.Advanced.FillCustomBrush != null);
+                isStyleValid &= (!areaStyle.OutlinePen.Color.IsTransparent
+                    || areaStyle.FillBrush != null);
             }
             else if (lineStyle != null)
             {
@@ -272,20 +271,21 @@ namespace ThinkGeo.MapSuite.GisEditor
                 switch (pointStyle.PointType)
                 {
                     case PointType.Symbol:
-                        isStyleValid &= (!pointStyle.SymbolPen.Color.IsTransparent
+                        isStyleValid &= (!pointStyle.OutlinePen.Color.IsTransparent
                             || pointStyle.Image != null
-                            || !pointStyle.SymbolSolidBrush.Color.IsTransparent
-                            || pointStyle.Advanced.CustomBrush != null);
+                            //|| !pointStyle.SymbolSolidBrush.Color.IsTransparent
+                            || pointStyle.FillBrush != null);
                         break;
 
-                    case PointType.Bitmap:
+                    case PointType.Image:
                         isStyleValid &= pointStyle.Image != null;
                         break;
 
-                    case PointType.Character:
-                        isStyleValid &= pointStyle.CharacterFont != null
-                            && (!pointStyle.CharacterSolidBrush.Color.IsTransparent
-                            || pointStyle.Advanced.CustomBrush != null);
+                    case PointType.Glyph:
+                        isStyleValid &= (pointStyle.GlyphFont != null
+                            //&& (!pointStyle.CharacterSolidBrush.Color.IsTransparent
+                            //|| pointStyle.FillBrush != null);
+                            && pointStyle.FillBrush != null);
                         break;
                     default:
                         break;
@@ -295,8 +295,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 isStyleValid &= !string.IsNullOrEmpty(textStyle.TextColumnName)
                     && (!textStyle.HaloPen.Color.IsTransparent
-                    || !textStyle.TextSolidBrush.Color.IsTransparent
-                    || textStyle.Advanced.TextCustomBrush != null);
+                    //|| !textStyle.TextSolidBrush.Color.IsTransparent
+                    || textStyle.TextBrush != null);
             }
             else if (dotDensityStyle != null)
             {
@@ -339,7 +339,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     styleArguments.AvailableStyleCategories = GetStyleCategoriesByFeatureLayer(styleArguments.FeatureLayer);
                     int from = 1;
-                    int to = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Where(z => z.GetType() == typeof(ZoomLevel)).Count();
+                    int to = GisEditor.ActiveMap.ZoomScales.Count();
                     if (!string.IsNullOrEmpty(componentStyleItem.ZoomLevelRange))
                     {
                         var array = componentStyleItem.ZoomLevelRange.Split(" to ".ToArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -357,7 +357,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         if (!styleResults.Canceled)
                         {
                             var resultStyle = styleResults.CompositeStyle as CompositeStyle;
-                            var count = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels().Where(z => z.GetType() == typeof(ZoomLevel)).Count();
+                            var count = GisEditor.ActiveMap.ZoomScales.Count();
                             for (int i = 0; i < count; i++)
                             {
                                 var customStyles = styleArguments.FeatureLayer.ZoomLevelSet.CustomZoomLevels[i].CustomStyles;
@@ -419,7 +419,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             var result = new Collection<LayerListItem>();
             for (int i = 0; i < zoomLevel.CustomStyles.Count; i++)
             {
-                Styles.Style style = zoomLevel.CustomStyles[i];
+                ThinkGeo.Core.Style style = zoomLevel.CustomStyles[i];
                 if (!style.CheckIsValid())
                 {
                     zoomLevel.CustomStyles.Remove(style);

@@ -20,10 +20,10 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -36,7 +36,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return GetMenuItem(GisEditor.LanguageManager.GetStringResource("MapElementsListPluginZoomToExtent"), "/GisEditorInfrastructure;component/Images/zoomextent.png", command);
         }
 
-        private static void ZoomToExtent()
+        private static async void ZoomToExtent()
         {
             RectangleShape resultExtent = null;
             if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
@@ -51,7 +51,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         extents.Add(tmpOverlay.GetBoundingBox());
                     }
                 }
-                resultExtent = ExtentHelper.GetBoundingBoxOfItems(extents);
+                resultExtent = MapUtil.GetBoundingBoxOfItems(extents);
             }
             else if (GisEditor.LayerListManager.SelectedLayerListItems.Count > 0)
             {
@@ -71,7 +71,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         //tmpLayer.Close();
                     }
                 }
-                resultExtent = ExtentHelper.GetBoundingBoxOfItems(extents);
+                resultExtent = MapUtil.GetBoundingBoxOfItems(extents);
             }
             else if (GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject is Overlay)
             {
@@ -107,7 +107,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         featureLayer.SafeProcess(() =>
                         {
                             features = featureLayer.QueryTools.GetFeaturesByColumnValue(columnName, value);
-                            resultExtent = ExtentHelper.GetBoundingBoxOfItems(features);
+                            resultExtent = MapUtil.GetBoundingBoxOfItems(features);
                         });
                         if (features.Count == 0)
                         {
@@ -120,7 +120,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             if (resultExtent != null)
             {
                 GisEditor.ActiveMap.CurrentExtent = resultExtent;
-                GisEditor.ActiveMap.Refresh();
+                await GisEditor.ActiveMap.RefreshAsync();
             }
         }
     }

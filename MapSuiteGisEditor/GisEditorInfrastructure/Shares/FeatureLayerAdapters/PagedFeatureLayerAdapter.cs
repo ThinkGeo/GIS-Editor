@@ -23,8 +23,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Threading;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -52,7 +53,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 featureLayer.SafeProcess(() =>
                 {
-                    rowCount = featureLayer.FeatureSource.GetCount();
+                    rowCount = (int)featureLayer.FeatureSource.GetCount();
                 });
             }
             return rowCount;

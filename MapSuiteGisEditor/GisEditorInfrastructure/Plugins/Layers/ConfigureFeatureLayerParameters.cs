@@ -21,8 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -84,7 +84,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             this.customData = new Dictionary<string, object>();
             this.memoColumnConvertMode = MemoColumnConvertMode.None;
             this.longColumnTruncateMode = LongColumnTruncateMode.None;
-            this.proj4ProjectionParametersString = Proj4Projection.GetDecimalDegreesParametersString();
+            this.proj4ProjectionParametersString = Projection.GetDecimalDegreesProjString();
 
             this.addedFeatures = new Collection<Feature>();
             this.updatedFeatures = new Dictionary<string, Feature>();

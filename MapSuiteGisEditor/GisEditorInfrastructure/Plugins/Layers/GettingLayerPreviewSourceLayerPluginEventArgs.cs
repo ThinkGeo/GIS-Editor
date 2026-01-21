@@ -19,21 +19,21 @@
 
 using System;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
     public class GettingLayerPreviewSourceLayerPluginEventArgs : EventArgs
     {
         private bool cancel;
-        private Layer layer;
+        private LayerBase layer;
         private ImageSource imageSource;
 
         public GettingLayerPreviewSourceLayerPluginEventArgs()
             : this(null, null)
         { }
 
-        public GettingLayerPreviewSourceLayerPluginEventArgs(ImageSource imageSource, Layer layer)
+        public GettingLayerPreviewSourceLayerPluginEventArgs(ImageSource imageSource, LayerBase layer)
         {
             this.layer = layer;
             this.imageSource = imageSource;
@@ -45,7 +45,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             set { cancel = value; }
         }
 
-        public Layer Layer
+        public LayerBase Layer
         {
             get { return layer; }
             set { layer = value; }

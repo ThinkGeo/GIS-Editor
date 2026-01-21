@@ -40,7 +40,7 @@ using ThinkGeo.UI.Wpf;
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
     [Serializable]
-    public sealed partial class GisEditorWpfMap : MapView
+    public sealed partial class GisEditorWpfMap : WpfMap
     {
         private const int panPercentage = 10;
         private const string overlayNamePattern = "(?<=Layer Group) \\d+";

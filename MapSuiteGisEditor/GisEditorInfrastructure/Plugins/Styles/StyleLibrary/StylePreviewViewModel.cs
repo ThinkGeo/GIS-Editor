@@ -24,7 +24,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -115,12 +115,12 @@ namespace ThinkGeo.MapSuite.GisEditor
                 string displayName = name;
                 if (GisEditor.ActiveMap != null && IsStyle)
                 {
-                    var fromZoomLevel = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.OrderBy(z => Math.Abs(z.Scale - UpperScale)).FirstOrDefault();
-                    var toZoomLevel = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.OrderBy(z => Math.Abs(z.Scale - LowerScale)).FirstOrDefault();
-                    var fromIndex = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.IndexOf(fromZoomLevel) + 1;
-                    var toIndex = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.IndexOf(toZoomLevel) + 1;
+                    var fromZoomLevel = GisEditor.ActiveMap.ZoomScales.OrderBy(z => Math.Abs(z - UpperScale)).FirstOrDefault();
+                    var toZoomLevel = GisEditor.ActiveMap.ZoomScales.OrderBy(z => Math.Abs(z - LowerScale)).FirstOrDefault();
+                    var fromIndex = GisEditor.ActiveMap.ZoomScales.IndexOf(fromZoomLevel) + 1;
+                    var toIndex = GisEditor.ActiveMap.ZoomScales.IndexOf(toZoomLevel) + 1;
 
-                    if (fromIndex > 1 || toIndex < GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count)
+                    if (fromIndex > 1 || toIndex < GisEditor.ActiveMap.ZoomScales.Count)
                     {
                         displayName += string.Format(CultureInfo.InvariantCulture, "\r\n {0} - {1}", fromIndex, toIndex);
                     }

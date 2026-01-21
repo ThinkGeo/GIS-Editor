@@ -22,10 +22,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -147,16 +149,16 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// Clears the selected features.
         /// </summary>
         /// <param name="featureLayer">The feature layer.</param>
-        public void ClearSelectedFeatures(FeatureLayer featureLayer)
+        public Task ClearSelectedFeatures(FeatureLayer featureLayer)
         {
-            ClearSelectedFeaturesCore(featureLayer);
+            return ClearSelectedFeaturesCore(featureLayer);
         }
 
         /// <summary>
         /// Clears the selected features core.
         /// </summary>
         /// <param name="featureLayer">The feature layer.</param>
-        protected virtual void ClearSelectedFeaturesCore(FeatureLayer featureLayer)
+        protected virtual async Task ClearSelectedFeaturesCore(FeatureLayer featureLayer)
         {
             if (GisEditor.SelectionManager.GetSelectedFeatures().Count > 0)
             {
@@ -169,7 +171,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 overlay.StandOutHighlightFeatureLayer.InternalFeatures.Clear();
 
                 overlay.HighlightFeatureLayer.BuildIndex();
-                GisEditor.ActiveMap.Refresh(overlay);
+                await GisEditor.ActiveMap.RefreshAsync(overlay);
             }
         }
     }

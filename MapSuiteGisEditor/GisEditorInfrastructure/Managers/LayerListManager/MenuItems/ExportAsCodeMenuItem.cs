@@ -18,7 +18,7 @@
 
 
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Serialize;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -33,12 +33,12 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         private static void ExportAsCode()
         {
-            if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
-            GeoCodeGenerator codeGenerator = new GeoCodeGenerator();
-            string code = codeGenerator.GenerateCode(GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject);
+            //if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
+            //GeoCodeGenerator codeGenerator = new GeoCodeGenerator();
+            //string code = codeGenerator.GenerateCode(GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject);
 
-            ExportCodeWindow codeWindow = new ExportCodeWindow(code);
-            codeWindow.ShowDialog();
+            //ExportCodeWindow codeWindow = new ExportCodeWindow(code);
+            //codeWindow.ShowDialog();
         }
 
         private static bool ExportAsCodeCanExecute()

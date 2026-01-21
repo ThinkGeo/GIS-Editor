@@ -25,7 +25,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -303,7 +303,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="layer">The layer.</param>
         /// <returns></returns>
-        public LayerListItem GetLayerListItem(Layer layer)
+        public LayerListItem GetLayerListItem(LayerBase layer)
         {
             return GetLayerListItemCore(layer);
         }
@@ -313,7 +313,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         /// <param name="layer">The layer.</param>
         /// <returns></returns>
-        protected virtual LayerListItem GetLayerListItemCore(Layer layer)
+        protected virtual LayerListItem GetLayerListItemCore(LayerBase layer)
         {
             LayerPlugin matchLayerPlugin = null;
             var matchLayerPlugins = GetLayerPlugins(layer.GetType());

@@ -28,7 +28,8 @@ using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using GalaSoft.MvvmLight.Messaging;
 using System.Globalization;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -71,7 +72,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     if (selectedOtherProjectionViewModel != null && selectedOtherProjectionViewModel.SelectedProjectionType == SearchProjectionType.Custom)
                     {
                         proj4ProjectionParameter = viewModel.SelectedProj4Parameter;
-                        string projectionWkt = Proj4Projection.ConvertProj4ToPrj(proj4ProjectionParameter);
+                        string projectionWkt = Projection.ConvertProjStringToWkt(proj4ProjectionParameter);
                         if (!string.IsNullOrEmpty(projectionWkt))
                         {
                             DialogResult = result;

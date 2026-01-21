@@ -18,9 +18,11 @@
 
 
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -34,18 +36,18 @@ namespace ThinkGeo.MapSuite.GisEditor
             return brush;
         }
 
-        internal static void HightlightSelectedFeature(Feature feature)
+        internal static async Task HightlightSelectedFeature(Feature feature)
         {
             var selectionOverlay = GisEditor.SelectionManager.GetSelectionOverlay();
             if (selectionOverlay != null && !selectionOverlay.HighlightFeatureLayer.InternalFeatures.Contains(feature.Id))
             {
                 selectionOverlay.HighlightFeatureLayer.InternalFeatures.Add(feature.Id, feature);
                 selectionOverlay.HighlightFeatureLayer.BuildIndex();
-                GisEditor.ActiveMap.Refresh(selectionOverlay);
+                await GisEditor.ActiveMap.RefreshAsync(selectionOverlay);
             }
         }
 
-        internal static void RemoveHightlightFeature(Feature feature)
+        internal static async Task RemoveHightlightFeature(Feature feature)
         {
             var selectionOverlay = GisEditor.SelectionManager.GetSelectionOverlay();
             if (selectionOverlay != null)
@@ -54,7 +56,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     selectionOverlay.HighlightFeatureLayer.InternalFeatures.Remove(feature.Id);
                     selectionOverlay.HighlightFeatureLayer.BuildIndex();
-                    selectionOverlay.Refresh();
+                    await selectionOverlay.RefreshAsync();
                 }
             }
         }
