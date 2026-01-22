@@ -21,8 +21,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Shapes;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

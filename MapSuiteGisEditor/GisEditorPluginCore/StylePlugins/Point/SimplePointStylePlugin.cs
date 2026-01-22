@@ -21,8 +21,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -52,8 +52,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginPointHeader"),
                     SymbolType = PointSymbolType.Circle,
                     SymbolSize = 6,
-                    SymbolSolidBrush = new GeoSolidBrush(GeoColor.FromHtml("#FF4500")),
-                    SymbolPen = new GeoPen(GeoColor.StandardColors.Black, 1),
+                    FillBrush = new GeoSolidBrush(GeoColor.FromHtml("#FF4500")),
+                    OutlinePen = new GeoPen(GeoColors.Black, 1),
                 };
             StyleCandidates.Add(pointStyle);
             pointStyleOption = new StyleSetting(this);
@@ -65,10 +65,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             PointStyle style = StyleCandidates.OfType<PointStyle>().FirstOrDefault();
             if (style != null)
             {
-                alpha = style.SymbolSolidBrush.Color.AlphaComponent;
+                var solidBrush = style.FillBrush as GeoSolidBrush;
+                if (solidBrush != null)
+                {
+                    alpha = solidBrush.Color.A;
+                }
             }
-            var fillColor = new GeoColor(alpha, GeoColorHelper.GetRandomColor());
-            var outlineColor = new GeoColor(alpha, GeoColor.StandardColors.Black);
+            var fillColor = new GeoColor((byte)alpha, GeoColorHelper.GetRandomColor());
+            var outlineColor = new GeoColor((byte)alpha, GeoColors.Black);
             return PointStyles.CreateSimpleCircleStyle(fillColor, 8, outlineColor);
         }
 

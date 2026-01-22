@@ -27,9 +27,9 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using ThinkGeo.MapSuite.GeocodeServerSdk;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -46,7 +46,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private bool isBusy;
         private string address;
         private DataTable currentDataTable;
-        private LayerDefinition layerDefinition;
+        private object layerDefinition;
         private Visibility specifiedTableVisibility;
         private Visibility geocodeTableVisibility;
         private ObservableCollection<SearchedResultViewModel> searchResults;
@@ -62,7 +62,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             InitializeSearchEntries();
         }
 
-        public LayerDefinition LayerDefinition
+        public object LayerDefinition
         {
             get { return layerDefinition; }
             set { layerDefinition = value; }
@@ -114,7 +114,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             if (popupOverlay != null)
                             {
                                 popupOverlay.Popups.Clear();
-                                popupOverlay.Refresh();
+                                popupOverlay.RefreshAsync();
                             }
                         }
                     },
@@ -412,7 +412,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Collection<Layer> layers = new Collection<Layer>();
             foreach (LayerOverlay layerOverlay in GisEditor.ActiveMap.Overlays.OfType<LayerOverlay>())
             {
-                layerOverlay.Layers.Where(l => pluginNames.Contains(GisEditor.LayerManager.GetLayerPlugins(l.GetType()).FirstOrDefault().Name)).ForEach(layers.Add);
+                layerOverlay.Layers
+                    .Where(l => pluginNames.Contains(GisEditor.LayerManager.GetLayerPlugins(l.GetType()).FirstOrDefault().Name))
+                    .ForEach(l => layers.Add((Layer)l));
             }
 
             return layers;

@@ -21,8 +21,8 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

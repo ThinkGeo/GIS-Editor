@@ -28,7 +28,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -197,7 +197,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 try
                 {
-                    Collection<string> databases = PostgreSqlFeatureSource.GetDatabaseNames(tempParam.ServerItem.Server, tempParam.ServerItem.Port, tempParam.ServerItem.UserName, tempParam.ServerItem.Password);
+                    Collection<string> databases = PostgreSqlFeatureSource.GetDatabaseNames(
+                        tempParam.ServerItem.Server,
+                        tempParam.ServerItem.Port.ToString(CultureInfo.InvariantCulture),
+                        tempParam.ServerItem.UserName,
+                        tempParam.ServerItem.Password);
                     tempParam.DatabaseNames.Clear();
                     foreach (var newDbaseName in databases)
                     {

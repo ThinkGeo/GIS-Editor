@@ -17,7 +17,7 @@
 */
 
 
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins

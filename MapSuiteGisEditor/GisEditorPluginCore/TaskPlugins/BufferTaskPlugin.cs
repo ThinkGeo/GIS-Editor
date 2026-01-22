@@ -24,8 +24,8 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Threading;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins

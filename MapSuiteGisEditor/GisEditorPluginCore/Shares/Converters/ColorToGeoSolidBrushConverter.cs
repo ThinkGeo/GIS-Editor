@@ -20,7 +20,7 @@
 using System;
 using System.Windows.Data;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -37,7 +37,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             else if (value is GeoSolidBrush)
             {
                 GeoSolidBrush brush = (GeoSolidBrush)value;
-                return Color.FromArgb(brush.Color.AlphaComponent, brush.Color.RedComponent, brush.Color.GreenComponent, brush.Color.BlueComponent);
+                return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
             }
             else return Binding.DoNothing;
         }

@@ -27,10 +27,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -72,7 +71,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             formatPairs = new Dictionary<string, string>();
             fontName = new System.Windows.Media.FontFamily("Arial");
             fontSize = 12;
-            fontColor = new GeoSolidBrush(GeoColor.StandardColors.Black);
+            fontColor = new GeoSolidBrush(GeoColors.Black);
             dragMode = PrinterDragMode.Draggable;
             resizeMode = PrinterResizeMode.Resizable;
             formats = GetDefaultDateFormats();
@@ -266,3 +265,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

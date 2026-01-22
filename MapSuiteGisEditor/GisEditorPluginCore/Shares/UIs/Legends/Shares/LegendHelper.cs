@@ -23,11 +23,11 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using Style = ThinkGeo.Core.Style;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -80,6 +80,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 case SymbolStyleType.Point_Simple:
                     var point = new PointStyle();
+                    //point.CustomPointStyles.Add(PointStyles.City4);
                     point.CustomPointStyles.Add(PointStyles.City4);
                     return point;
                 case SymbolStyleType.Point_Font:
@@ -120,7 +121,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (style != null) style.Name = propertyName;
                 return style;
             }
-            else return null;
+            else return default(StyleType);
         }
 
         private static T CreateNormalStyle<T>(Style oldStyle,

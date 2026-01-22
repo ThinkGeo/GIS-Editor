@@ -417,9 +417,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void SetDefaultStyle()
         {
-            var defaultPointStyle = PointStyle.CreateSimpleCircleStyle(GeoColor.FromArgb(102, 0, 0, 255), 10, GeoColor.FromArgb(100, 0, 0, 255), 2);
-            var defaultLineStyle = LineStyle.CreateSimpleLineStyle(GeoColor.FromArgb(100, 0, 0, 255), 2, true);
-            var defaultAreaStyle = AreaStyle.CreateSimpleAreaStyle(GeoColor.FromArgb(102, GeoColor.FromHtml("#EFFBD6")), GeoColor.FromArgb(255, 0, 0, 255), 2);
+            var defaultPointStyle = PointStyle.CreateSimpleCircleStyle(GeoColor.FromArgb((byte)102, (byte)0, (byte)0, (byte)255), 10, GeoColor.FromArgb((byte)100, (byte)0, (byte)0, (byte)255), 2);
+            var defaultLineStyle = LineStyle.CreateSimpleLineStyle(GeoColor.FromArgb((byte)100, (byte)0, (byte)0, (byte)255), 2, true);
+            var defaultAreaStyle = AreaStyle.CreateSimpleAreaStyle(GeoColor.FromArgb((byte)102, GeoColor.FromHtml("#EFFBD6")), GeoColor.FromArgb((byte)255, (byte)0, (byte)0, (byte)255), 2);
 
             editShapesLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = defaultPointStyle;
             editShapesLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle = defaultLineStyle;
@@ -447,7 +447,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
             var unselectedPointStyle = PointStyle.CreateSimpleCircleStyle(GeoColors.LightGray, 10, GeoColors.LightGray, 2);
             var unselectedLineStyle = LineStyle.CreateSimpleLineStyle(GeoColors.LightGray, 3, true);
-            var unselectedAreaStyle = AreaStyle.CreateSimpleAreaStyle(GeoColor.FromArgb(0, GeoColor.FromHtml("#EFFBD6")), GeoColors.LightGray, 3);
+            var unselectedAreaStyle = AreaStyle.CreateSimpleAreaStyle(GeoColor.FromArgb((byte)0, GeoColor.FromHtml("#EFFBD6")), GeoColors.LightGray, 3);
 
             editCandidatesLayer.Open();
             editCandidatesLayer.Columns.Add(new FeatureSourceColumn(existingFeatureColumnName));

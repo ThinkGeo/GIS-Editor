@@ -20,8 +20,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ThinkGeo.MapSuite.GeocodeServerSdk;
-using ThinkGeo.MapSuite.Shapes;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

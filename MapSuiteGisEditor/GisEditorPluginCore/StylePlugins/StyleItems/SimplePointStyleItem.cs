@@ -18,7 +18,8 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Styles;
+
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -42,3 +43,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

@@ -21,8 +21,8 @@ using System;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using System.Reflection;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -50,8 +50,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 Name = "Well Point Style",
                 WellPointIndex = 1,
                 SymbolSize = 8,
-                SymbolSolidBrush = new GeoSolidBrush(GeoColor.FromHtml("#FF4500")),
-                SymbolPen = new GeoPen(GeoColor.StandardColors.Black, 1),
+                FillBrush = new GeoSolidBrush(GeoColor.FromHtml("#FF4500")),
+                OutlinePen = new GeoPen(GeoColors.Black, 1),
             };
             StyleCandidates.Add(pointStyle);
             styleOption = new StyleSetting(this);
@@ -63,11 +63,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             WellPointStyle style = StyleCandidates.OfType<WellPointStyle>().FirstOrDefault();
             if (style != null)
             {
-                alpha = style.SymbolSolidBrush.Color.AlphaComponent;
+                var solidBrush = style.FillBrush as GeoSolidBrush;
+                if (solidBrush != null)
+                {
+                    alpha = solidBrush.Color.A;
+                }
             }
-            var fillColor = new GeoColor(alpha, GeoColorHelper.GetRandomColor());
-            var outlineColor = new GeoColor(alpha, GeoColor.StandardColors.Black);
-            return new WellPointStyle(1, new GeoSolidBrush(fillColor), new GeoPen(outlineColor), 8);
+            var fillColor = new GeoColor((byte)alpha, GeoColorHelper.GetRandomColor());
+            var outlineColor = new GeoColor((byte)alpha, GeoColors.Black);
+            return new WellPointStyle(1, 8, new GeoSolidBrush(fillColor), new GeoPen(outlineColor, 1));
         }
 
         protected override SettingUserControl GetSettingsUICore()
@@ -86,3 +90,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

@@ -19,6 +19,7 @@
 
 using GalaSoft.MvvmLight;
 using System;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

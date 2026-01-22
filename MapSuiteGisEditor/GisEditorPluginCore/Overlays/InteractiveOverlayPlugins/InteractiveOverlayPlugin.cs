@@ -19,7 +19,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

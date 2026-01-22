@@ -24,7 +24,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using ThinkGeo.Core;
-using ThinkGeo.Core;
 
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 

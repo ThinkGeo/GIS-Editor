@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:tg="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+        xmlns:tg="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         Title="{DynamicResource AddZoomLevelWindowTitle}"
         Width="265"
         ResizeMode="NoResize"

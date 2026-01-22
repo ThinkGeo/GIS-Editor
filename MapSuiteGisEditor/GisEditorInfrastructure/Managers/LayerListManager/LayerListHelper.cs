@@ -295,7 +295,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 isStyleValid &= !string.IsNullOrEmpty(textStyle.TextColumnName)
                     && (!textStyle.HaloPen.Color.IsTransparent
-                    //|| !textStyle.TextSolidBrush.Color.IsTransparent
+                    //|| !textStyle.TextBrush.Color.IsTransparent
                     || textStyle.TextBrush != null);
             }
             else if (dotDensityStyle != null)

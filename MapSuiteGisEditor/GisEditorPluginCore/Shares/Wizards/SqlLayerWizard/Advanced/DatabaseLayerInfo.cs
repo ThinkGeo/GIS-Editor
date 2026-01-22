@@ -19,9 +19,8 @@
 
 using System;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -106,7 +105,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             layer.DrawingMarginInPixel = 200;
             layer.Open();
             var simpleShapeType = GetSimpleShapeType(layer);
-            Styles.Style shapeStyle = null;
+            ThinkGeo.Core.Style shapeStyle = null;
 
             switch (simpleShapeType)
             {
@@ -130,7 +129,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     shapeStyle = GetDefaultStyle<AreaStyle>(StyleCategories.Area);
                     if (shapeStyle == null)
                     {
-                        shapeStyle = AreaStyles.CreateSimpleAreaStyle(RandomColor(), GeoColor.SimpleColors.Black);
+                        shapeStyle = AreaStyles.CreateSimpleAreaStyle(RandomColor(), GeoColors.Black);
                         shapeStyle.Name = "Simple Style 1";
                     }
                     break;
@@ -138,13 +137,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (shapeStyle != null)
             {
-                ZoomLevelSet zoomLevelSet = GisEditor.ActiveMap.ZoomLevelSet;
-                ZoomLevel zoomLevel = new ZoomLevel(zoomLevelSet.ZoomLevel01.Scale);
+                var zoomScales = GisEditor.ActiveMap.ZoomScales;
+                double baseScale = zoomScales.Count > 0 ? zoomScales[0] : GisEditor.ActiveMap.CurrentScale;
+                ZoomLevel zoomLevel = new ZoomLevel(baseScale);
                 zoomLevel.CustomStyles.Add(shapeStyle);
                 zoomLevel.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
 
                 layer.ZoomLevelSet.CustomZoomLevels[0] = zoomLevel;
-                layer.DrawingQuality = DrawingQuality.CanvasSettings;
+                layer.DrawingQuality = DrawingQuality.HighQuality;
             }
             layer.Close();
 
@@ -174,7 +174,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected abstract Collection<string> CollectDatabaseFromServerCore();
 
-        private CoreStyle GetDefaultStyle<CoreStyle>(StyleCategories styleProviderTypes) where CoreStyle : Styles.Style
+        private CoreStyle GetDefaultStyle<CoreStyle>(StyleCategories styleProviderTypes) where CoreStyle : ThinkGeo.Core.Style
         {
             var provider = GisEditor.StyleManager.GetDefaultStylePlugin(styleProviderTypes);
             if (provider != null)
@@ -200,7 +200,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return null;
         }
 
-        private bool GetUseRandomColorsOption<CoreStyle>(bool useRandomColor, StyleCategories styleProviderTypes) where CoreStyle : Styles.Style
+        private bool GetUseRandomColorsOption<CoreStyle>(bool useRandomColor, StyleCategories styleProviderTypes) where CoreStyle : ThinkGeo.Core.Style
         {
             if (styleProviderTypes == StyleCategories.Area
                 || styleProviderTypes == StyleCategories.Line
@@ -218,3 +218,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

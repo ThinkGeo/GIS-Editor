@@ -20,8 +20,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -214,7 +214,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 File.SetAttributes(dbfPath, FileAttributes.Normal);
 
-                using (GeoDbf geoDbf = new GeoDbf(dbfPath, GeoFileReadWriteMode.ReadWrite))
+                using (GeoDbf geoDbf = new GeoDbf(dbfPath, FileAccess.ReadWrite))
                 {
                     geoDbf.Open();
                     int columnNumber = -1;

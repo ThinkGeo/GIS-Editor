@@ -29,13 +29,13 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.GisEditor.Plugins.Properties;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using MapResizeMode = ThinkGeo.UI.Wpf.MapResizeMode;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -569,9 +569,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static void DrawOverlay(this GisEditorWpfMap map, WmsOverlay wmsOverlay, GeoCanvas geoCanvas, double actualWidth, double actualHeight)
         {
-            if (wmsOverlay.ServerUris.Count > 0)
+            var serverUris = wmsOverlay.GetServerUris();
+            if (serverUris.Count > 0)
             {
-                Uri uri = wmsOverlay.GetRequestUris(geoCanvas.CurrentWorldExtent).FirstOrDefault();
+                Uri uri = wmsOverlay.GetRequestUrisCompat(geoCanvas.CurrentWorldExtent).FirstOrDefault();
                 if (uri != null)
                 {
                     UriBuilder uriBuilder = new UriBuilder(uri);
@@ -617,10 +618,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static void DrawOverlay(this GisEditorWpfMap map, BingMapsOverlay bingOverlay, GeoCanvas geoCanvas)
         {
-            BingMapsLayer bingLayer = new BingMapsLayer(bingOverlay.ApplicationId, (Layers.BingMapsMapType)bingOverlay.MapType);
+            BingMapsLayer bingLayer = new BingMapsLayer(bingOverlay.ApplicationId, (BingMapsMapType)bingOverlay.MapType);
             bingLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-            bingLayer.Proxy = bingOverlay.Proxy;
-            bingLayer.ProjectionFromSphericalMercator = bingOverlay.ProjectionFromSphericalMercator;
+            bingLayer.Proxy = bingOverlay.WebProxy;
+            bingLayer.ProjectionFromSphericalMercator = bingOverlay.ProjectionConverterFromServerProjection ?? bingOverlay.ProjectionConverter;
             bingLayer.TimeoutInSeconds = bingOverlay.TimeoutInSeconds;
             bingLayer.SafeProcess(() =>
             {
@@ -633,11 +634,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             WorldMapKitLayer wmkLayer = new WorldMapKitLayer(worldMapKitWmsWpfOverlay.ClientId, worldMapKitWmsWpfOverlay.PrivateKey);
 
             wmkLayer.DrawingExceptionMode = worldMapKitWmsWpfOverlay.DrawingExceptionMode;
-            wmkLayer.LowerThreshold = 1;
-            wmkLayer.UpperThreshold = double.MaxValue;
+            wmkLayer.LowerScale = 1;
+            wmkLayer.UpperScale = double.MaxValue;
             wmkLayer.WebProxy = worldMapKitWmsWpfOverlay.WebProxy;
             wmkLayer.Projection = worldMapKitWmsWpfOverlay.Projection;
             wmkLayer.TimeoutInSecond = worldMapKitWmsWpfOverlay.TimeoutInSeconds;
+            wmkLayer.MapType = worldMapKitWmsWpfOverlay.MapType;
             wmkLayer.SafeProcess(() =>
             {
                 wmkLayer.Draw(geoCanvas, new Collection<SimpleCandidate>());
@@ -705,17 +707,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void ReprojectRasterLayers(GisEditorWpfMap map, string oldParameters, string newParameters)
         {
-            List<RasterLayer> rasterLayers = map.Overlays.OfType<LayerOverlay>().SelectMany(o => o.Layers).OfType<RasterLayer>().Where(l => !(l is WmsRasterLayer)).ToList();
+            List<RasterLayer> rasterLayers = map.Overlays.OfType<LayerOverlay>().SelectMany(o => o.Layers).OfType<RasterLayer>().Where(l => !(l is WmsAsyncLayer)).ToList();
             foreach (RasterLayer rasterLayer in rasterLayers)
             {
-                if (rasterLayer.ImageSource.Projection == null)
+                if (rasterLayer.ImageSource.ProjectionConverter == null)
                 {
                     //TODO: we need consider the old parameters here. Raster layer has different world file, 
                     // which might contains original projection.
                     string internalProjectionString = oldParameters;
                     rasterLayer.SafeProcess(() =>
                     {
-                        if (rasterLayer.HasProjectionText)
+                        if (rasterLayer.HasProjectionText())
                         {
                             internalProjectionString = rasterLayer.GetProjectionText();
                         }
@@ -723,20 +725,23 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     Proj4Projection projection = new Proj4Projection();
                     projection.InternalProjectionParametersString = internalProjectionString;
                     projection.ExternalProjectionParametersString = newParameters;
-                    rasterLayer.ImageSource.Projection = projection;
-                    rasterLayer.ImageSource.Projection.Open();
+                    rasterLayer.ImageSource.ProjectionConverter = projection;
+                    if (rasterLayer.ImageSource.ProjectionConverter != null)
+                    {
+                        rasterLayer.ImageSource.ProjectionConverter.Open();
+                    }
                 }
                 else
                 {
-                    Proj4ProjectionInfo projectionInfo = Proj4ProjectionInfo.CreateInstance(rasterLayer.ImageSource.Projection);
+                    Proj4ProjectionInfo projectionInfo = Proj4ProjectionInfo.CreateInstance(rasterLayer.ImageSource.ProjectionConverter);
                     if (projectionInfo != null)
                     {
                         projectionInfo.ExternalProjectionParametersString = newParameters;
-                        rasterLayer.ImageSource.Projection = projectionInfo.Projection;
+                        rasterLayer.ImageSource.ProjectionConverter = projectionInfo.Projection;
                         if (rasterLayer.IsOpen)
                         {
-                            rasterLayer.ImageSource.Projection.Close();
-                            rasterLayer.ImageSource.Projection.Open();
+                            rasterLayer.ImageSource.ProjectionConverter.Close();
+                            rasterLayer.ImageSource.ProjectionConverter.Open();
                         }
                     }
                 }
@@ -920,23 +925,35 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return result;
         }
 
-        private static void AddNewStylesToLayer(FeatureLayer featureLayer, IEnumerable<Styles.Style> styles)
+        private static void AddNewStylesToLayer(FeatureLayer featureLayer, IEnumerable<ThinkGeo.Core.Style> styles)
         {
-            featureLayer.DrawingQuality = DrawingQuality.CanvasSettings;
+            featureLayer.DrawingQuality = DrawingQuality.HighQuality;
             if (!styles.All(s => s is TextStyle))
             {
                 featureLayer.ZoomLevelSet.CustomZoomLevels.ForEach(z => z.CustomStyles.Clear());
             }
 
+            var zoomLevelCount = featureLayer.ZoomLevelSet.CustomZoomLevels.Count;
+            if (GisEditor.ActiveMap?.ZoomScales != null && GisEditor.ActiveMap.ZoomScales.Count > 0)
+            {
+                zoomLevelCount = Math.Min(zoomLevelCount, GisEditor.ActiveMap.ZoomScales.Count);
+            }
+
             foreach (var style in styles)
             {
-                AddNewStyleToLayer(featureLayer, style, 1, GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count);
+                AddNewStyleToLayer(featureLayer, style, 1, zoomLevelCount);
             }
         }
 
-        private static void AddNewStyleToLayer(FeatureLayer featureLayer, Styles.Style style, int from, int to)
+        private static void AddNewStyleToLayer(FeatureLayer featureLayer, ThinkGeo.Core.Style style, int from, int to)
         {
-            for (int i = 0; i < GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count; i++)
+            var zoomLevelCount = featureLayer.ZoomLevelSet.CustomZoomLevels.Count;
+            if (GisEditor.ActiveMap?.ZoomScales != null && GisEditor.ActiveMap.ZoomScales.Count > 0)
+            {
+                zoomLevelCount = Math.Min(zoomLevelCount, GisEditor.ActiveMap.ZoomScales.Count);
+            }
+
+            for (int i = 0; i < zoomLevelCount; i++)
             {
                 var tmpZoomLevel = featureLayer.ZoomLevelSet.CustomZoomLevels[i];
                 if (i >= from - 1 && i <= to - 1)
@@ -961,13 +978,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                 else if (featureLayer != null)
                 {
-                    Proj4Projection projection = (featureLayer.FeatureSource.Projection) as Proj4Projection;
+                    Proj4Projection projection = (featureLayer.FeatureSource.ProjectionConverter) as Proj4Projection;
                     if (projection == null)
                     {
                         string projection4326String = Proj4Projection.GetEpsgParametersString(4326);
                         projection = new Proj4Projection(projection4326String, projection4326String);
                         projection.SyncProjectionParametersString();
-                        featureLayer.FeatureSource.Projection = projection;
+                        featureLayer.FeatureSource.ProjectionConverter = projection;
                         projection.Open();
                     }
 
@@ -996,7 +1013,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 if (isFirstAddedLayers[map] || needToRedraw)
                 {
-                    map.Refresh();
+                    map.RefreshAsync();
                 }
             }
         }
@@ -1076,13 +1093,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 switch (unit)
                 {
                     case GeographyUnit.DecimalDegree:
-                        if (wmk.Projection != Layers.WorldMapKitProjection.DecimalDegrees)
-                            wmk.Projection = Layers.WorldMapKitProjection.DecimalDegrees;
+                        if (wmk.Projection != WorldMapKitProjection.DecimalDegrees)
+                            wmk.Projection = WorldMapKitProjection.DecimalDegrees;
                         break;
 
                     case GeographyUnit.Meter:
-                        if (wmk.Projection != Layers.WorldMapKitProjection.SphericalMercator)
-                            wmk.Projection = Layers.WorldMapKitProjection.SphericalMercator;
+                        if (wmk.Projection != WorldMapKitProjection.SphericalMercator)
+                            wmk.Projection = WorldMapKitProjection.SphericalMercator;
                         break;
                 }
                 wmk.DrawingExceptionMode = DrawingExceptionMode.DrawException;
@@ -1098,15 +1115,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             foreach (var wmsOverlay in allWMSOverlays)
             {
-                var uri = wmsOverlay.ServerUris.FirstOrDefault();
+                var uri = wmsOverlay.GetServerUris().FirstOrDefault();
                 if (uri != null)
                 {
-                    WmsRasterLayer wmsRasterLayer = new WmsRasterLayer(uri);
+                    WmsAsyncLayer wmsRasterLayer = new WmsAsyncLayer(uri);
 
                     Collection<string> serverCrss = new Collection<string>();
                     wmsRasterLayer.SafeProcess(() =>
                     {
-                        serverCrss = wmsRasterLayer.GetServerCrss();
+                        serverCrss = wmsRasterLayer.GetServerCrsCollection();
                     });
 
                     foreach (var crs in serverCrss)
@@ -1124,15 +1141,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private static void ReprojectWMSRasterLayers(GisEditorWpfMap map, string oldParameters, string newParameters)
         {
             var allWMSRasterLayers = from overlay in map.Overlays.OfType<LayerOverlay>()
-                                     from layer in overlay.Layers.OfType<WmsRasterLayer>()
-                                     select layer;
+                                     from adapter in overlay.Layers.OfType<WmsAsyncLayerAdapter>()
+                                     where adapter.InnerLayer != null
+                                     select adapter.InnerLayer;
 
             foreach (var wmsRasterLayer in allWMSRasterLayers)
             {
                 Collection<string> serverCrss = new Collection<string>();
                 wmsRasterLayer.SafeProcess(() =>
                 {
-                    serverCrss = wmsRasterLayer.GetServerCrss();
+                    serverCrss = wmsRasterLayer.GetServerCrsCollection();
                 });
 
                 //wmsRasterLayer.Open();
@@ -1164,9 +1182,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void ReprojectFeatureLayer(string targetProj4Parameters, string sourceProj4Projection, FeatureLayer layer)
         {
-            if (layer.FeatureSource.Projection != null)
+            if (layer.FeatureSource.ProjectionConverter != null)
             {
-                Proj4Projection originProj4 = (Proj4Projection)layer.FeatureSource.Projection;
+                Proj4Projection originProj4 = (Proj4Projection)layer.FeatureSource.ProjectionConverter;
                 originProj4.ExternalProjectionParametersString = targetProj4Parameters;
                 originProj4.SyncProjectionParametersString();
             }
@@ -1181,27 +1199,27 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         string originParameters = Proj4Projection.ConvertPrjToProj4(File.ReadAllText(prjPath));
                         var projection = new Proj4Projection(originParameters, targetProj4Parameters);
                         projection.SyncProjectionParametersString();
-                        shpLayer.FeatureSource.Projection = projection;
+                        shpLayer.FeatureSource.ProjectionConverter = projection;
                     }
                     else
                     {
                         var projection = new Proj4Projection(sourceProj4Projection, targetProj4Parameters);
                         projection.SyncProjectionParametersString();
-                        shpLayer.FeatureSource.Projection = projection;
+                        shpLayer.FeatureSource.ProjectionConverter = projection;
                     }
                 }
                 else
                 {
                     var projection = new Proj4Projection(sourceProj4Projection, targetProj4Parameters);
                     projection.SyncProjectionParametersString();
-                    layer.FeatureSource.Projection = projection;
+                    layer.FeatureSource.ProjectionConverter = projection;
                 }
             }
 
             lock (layer)
             {
                 layer.Close();
-                layer.FeatureSource.Projection.Close();
+                layer.FeatureSource.ProjectionConverter.Close();
                 layer.Open();
             }
         }
@@ -1219,13 +1237,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
 
                 o.MapArguments = mapArguments;
-                o.Refresh();
+                o.RefreshAsync();
             });
 
             map.InteractiveOverlays.ForEach(o =>
             {
                 o.MapArguments = mapArguments;
-                o.Refresh();
+                o.RefreshAsync();
             });
         }
 
@@ -1343,7 +1361,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     if (map.SelectionOverlay.HighlightFeatureLayer.InternalFeatures.Count > 0)
                     {
-                        map.SelectionOverlay.Refresh();
+                        map.SelectionOverlay.RefreshAsync();
                     }
 
 #if !GISEditorUnitTest
@@ -1552,7 +1570,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     if (map.SelectionOverlay.HighlightFeatureLayer.InternalFeatures.Count > 0)
                     {
-                        map.SelectionOverlay.Refresh();
+                        map.SelectionOverlay.RefreshAsync();
                     }
 
 #if !GISEditorUnitTest
@@ -1585,7 +1603,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private static IEnumerable<string> GetFiltersInStyle(ZoomLevel currentDrawingZoomLevel)
         {
             Collection<string> filters = null; // new Collection<string>();
-            IEnumerable<Styles.Style> styles = GetStylesForDrawing(currentDrawingZoomLevel);
+            IEnumerable<ThinkGeo.Core.Style> styles = GetStylesForDrawing(currentDrawingZoomLevel);
 
             string allFilters = string.Empty;
             foreach (var item in styles.SelectMany(s => s.Filters))
@@ -1602,7 +1620,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return filters;
         }
 
-        private static IEnumerable<Styles.Style> GetStylesForDrawing(ZoomLevel zoomLevel)
+        private static IEnumerable<ThinkGeo.Core.Style> GetStylesForDrawing(ZoomLevel zoomLevel)
         {
             if (zoomLevel.CustomStyles.Count > 0)
             {
@@ -1777,3 +1795,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+
+

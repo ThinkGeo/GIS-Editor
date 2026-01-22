@@ -20,8 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -32,9 +32,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             RectangleShape newRectangle = rectangle;
 
-            if (featureSource.Projection != null)
+            var projection = featureSource.ProjectionConverter;
+            if (projection != null)
             {
-                newRectangle = featureSource.Projection.ConvertToInternalProjection(newRectangle);
+                if (!projection.IsOpen)
+                {
+                    projection.Open();
+                }
+                newRectangle = projection.ConvertToInternalProjection(newRectangle);
             }
 
             return newRectangle;
@@ -148,18 +153,23 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             Feature newFeature = feature;
 
-            if (featureSource.Projection != null)
+            var projection = featureSource.ProjectionConverter;
+            if (projection != null)
             {
                 try
                 {
-                    newFeature = featureSource.Projection.ConvertToExternalProjection(feature);
+                    if (!projection.IsOpen)
+                    {
+                        projection.Open();
+                    }
+                    newFeature = projection.ConvertToExternalProjection(feature);
                 }
                 catch
                 {
-                    if (!feature.IsValid() && feature.CanMakeValid)
+                    if (!feature.IsValid() && feature.CanMakeValid())
                     {
                         feature = feature.MakeValid();
-                        newFeature = featureSource.Projection.ConvertToExternalProjection(feature);
+                        newFeature = projection.ConvertToExternalProjection(feature);
                     }
                 }
             }

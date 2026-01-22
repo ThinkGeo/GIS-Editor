@@ -2,7 +2,7 @@
     x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.BingMapsConfigWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.BingMaps"
+    xmlns:core="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
     xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="{DynamicResource BingMapsConfigWindowTitle}"

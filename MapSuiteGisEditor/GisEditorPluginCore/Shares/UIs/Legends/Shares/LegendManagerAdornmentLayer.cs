@@ -21,9 +21,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

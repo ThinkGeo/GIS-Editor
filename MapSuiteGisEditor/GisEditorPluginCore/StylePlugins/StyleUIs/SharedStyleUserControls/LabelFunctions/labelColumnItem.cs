@@ -19,6 +19,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -98,3 +99,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

@@ -23,10 +23,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -91,13 +90,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 mapPrinterLayer.MapExtent = wpfMap.CurrentExtent;
                 //RectangleShape currentMapExtent = GetFixedScaledExtent(boudingBox, wpfMap.CurrentResolution, wpfMap.CurrentExtent);
                 //ResetFixedExtent(mapPrinterLayer, currentMapExtent);
-                mapPrinterLayer.BackgroundMask.Advanced.FillCustomBrush = null;
-                mapPrinterLayer.BackgroundMask.OutlinePen = new GeoPen(GeoColor.StandardColors.Black);
+                mapPrinterLayer.BackgroundMask.FillBrush = null;
+                mapPrinterLayer.BackgroundMask.OutlinePen = new GeoPen(GeoColors.Black);
                 var backgroundBrush = wpfMap.BackgroundOverlay.BackgroundBrush as GeoSolidBrush;
                 if (backgroundBrush != null)
-                    mapPrinterLayer.BackgroundMask.FillSolidBrush = backgroundBrush;
+                    mapPrinterLayer.BackgroundMask.FillBrush = backgroundBrush;
                 else
-                    mapPrinterLayer.BackgroundMask.FillSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Transparent);
+                    mapPrinterLayer.BackgroundMask.FillBrush = new GeoSolidBrush(GeoColors.Transparent);
                 mapPrinterLayer.BackgroundMask.SetDrawingLevel();
             }
         }
@@ -157,7 +156,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static byte[] GetCroppedMapPopupOverlayPreviewImage(WpfMap wpfMap, Int32Rect drawingRect)
         {
-            Canvas rootCanvas = wpfMap.ToolsGrid.Parent as Canvas;
+            var toolsGrid = (wpfMap as GisEditorWpfMap)?.ToolsGrid;
+            Canvas rootCanvas = toolsGrid?.Parent as Canvas;
             byte[] imageBytes = null;
             if (rootCanvas != null)
             {
@@ -184,3 +184,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

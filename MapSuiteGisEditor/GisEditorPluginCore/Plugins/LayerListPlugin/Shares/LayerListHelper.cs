@@ -29,10 +29,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -174,11 +174,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return FindViewModelInTree(layerListItem, new Func<object, bool>((actualMapElement) => actualMapElement is T));
         }
 
-        internal static void AddStyle(Styles.Style style, FeatureLayer layer)
+        internal static void AddStyle(ThinkGeo.Core.Style style, FeatureLayer layer)
         {
             var styleProvider = GisEditor.StyleManager.GetStylePluginByStyle(style);
             if (styleProvider == null) return;
-            Styles.Style csvStyle = styleProvider.GetDefaultStyle();
+            ThinkGeo.Core.Style csvStyle = styleProvider.GetDefaultStyle();
             StyleBuilderArguments arguments = new StyleBuilderArguments();
             arguments.AvailableUIElements = StyleBuilderUIElements.ZoomLevelPicker | StyleBuilderUIElements.StyleList;
             arguments.FeatureLayer = layer;
@@ -206,7 +206,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
             };
 
-            arguments.StyleToEdit = new CompositeStyle(new Styles.Style[] { csvStyle }) { Name = styleProvider.Name };
+            arguments.StyleToEdit = new CompositeStyle(new ThinkGeo.Core.Style[] { csvStyle }) { Name = styleProvider.Name };
             arguments.FillRequiredColumnNames();
             var resultStyle = GisEditor.StyleManager.EditStyle(arguments);
             if (!resultStyle.Canceled)
@@ -229,7 +229,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     styleArguments.AvailableStyleCategories = StylePluginHelper.GetStyleCategoriesByFeatureLayer(styleArguments.FeatureLayer);
                     int from = 0;
-                    int to = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count;
+                    int to = GisEditor.ActiveMap.ZoomScales.Count;
                     if (!string.IsNullOrEmpty(componentStyleItem.ZoomLevelRange))
                     {
                         var array = componentStyleItem.ZoomLevelRange.Split(" to ".ToArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -247,7 +247,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         if (!styleResults.Canceled)
                         {
                             var resultStyle = styleResults.CompositeStyle as CompositeStyle;
-                            var count = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels().Count;
+                            var count = GisEditor.ActiveMap.ZoomScales.Count;
                             for (int i = 0; i < count; i++)
                             {
                                 var customStyles = styleArguments.FeatureLayer.ZoomLevelSet.CustomZoomLevels[i].CustomStyles;
@@ -327,7 +327,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         containingOverlay = GisEditor.LayerListManager.SelectedLayerListItem.Parent.Parent.ConcreteObject as TileOverlay;
                     }
                 }
-                else if (styleItem.ConcreteObject is Styles.Style && styleItem.Parent.ConcreteObject is Styles.Style)
+                else if (styleItem.ConcreteObject is ThinkGeo.Core.Style && styleItem.Parent.ConcreteObject is ThinkGeo.Core.Style)
                 {
                     var index = styleItem.Parent.Children.IndexOf(styleItem);
                     styleItem.Parent.Children.RemoveAt(index);
@@ -379,7 +379,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         styleItem.UpdateConcreteObject();
                         containingOverlay = GisEditor.LayerListManager.SelectedLayerListItem.Parent.Parent.ConcreteObject as TileOverlay;
                     }
-                    else if (styleItem.ConcreteObject is Styles.Style && styleItem.Parent.ConcreteObject is Styles.Style)
+                    else if (styleItem.ConcreteObject is ThinkGeo.Core.Style && styleItem.Parent.ConcreteObject is ThinkGeo.Core.Style)
                     {
                         var index = styleItem.Parent.Children.IndexOf(styleItem);
                         foreach (var item in compositeStyleItem.Children)
@@ -442,7 +442,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             editOverlay.AssociateControlPointsLayer.BuildIndex();
             editOverlay.ReshapeControlPointsLayer.BuildIndex();
 
-            GisEditor.ActiveMap.Refresh(editOverlay);
+            GisEditor.ActiveMap.RefreshAsync(editOverlay);
         }
 
         private static object FindSelectedObject(List<StyleLayerListItem> styleItems, List<StyleLayerListItem> clonedStyleItems, object selectedObject)
@@ -504,7 +504,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             });
                         }
 
-                        if (needRefresh && !stopRefresh) trackOverlay.Refresh();
+                        if (needRefresh && !stopRefresh) trackOverlay.RefreshAsync();
                     }
                 }
             }
@@ -519,7 +519,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     (entity.ConcreteObject as MapShape).ZoomLevels.ZoomLevel01.IsActive = entity.IsChecked;
                     if (GisEditor.ActiveMap != null)
-                        GisEditor.ActiveMap.Refresh(entity.Parent.ConcreteObject as MeasureTrackInteractiveOverlay);
+                        GisEditor.ActiveMap.RefreshAsync(entity.Parent.ConcreteObject as MeasureTrackInteractiveOverlay);
                 }
             }
 
@@ -552,7 +552,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 });
 
                 var wkt = mapShape.Feature.GetWellKnownType();
-                Styles.Style drawingStyle = null;
+                ThinkGeo.Core.Style drawingStyle = null;
                 if (wkt == WellKnownType.Line || wkt == WellKnownType.Multiline)
                     drawingStyle = mapShape.ZoomLevels.ZoomLevel01.CustomStyles.OfType<LineStyle>().FirstOrDefault();
                 else
@@ -574,3 +574,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
     }
 }
+
+
+

@@ -41,11 +41,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -326,23 +324,23 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             if (name == "PreviousExtent")
             {
-                GisEditor.ActiveMap.ZoomToPreviousExtent();
+                _ = GisEditor.ActiveMap.ZoomToPreviousExtentAsync();
             }
             else if (name == "NextExtent")
             {
-                GisEditor.ActiveMap.ZoomToNextExtent();
+                _ = GisEditor.ActiveMap.ZoomToNextExtent();
             }
             else if (name == "ZoomIn")
             {
-                GisEditor.ActiveMap.ZoomIn();
+                _ = GisEditor.ActiveMap.ZoomInAsync();
             }
             else if (name == "ZoomOut")
             {
-                GisEditor.ActiveMap.ZoomOut();
+                _ = GisEditor.ActiveMap.ZoomOutAsync();
             }
             else if (name == "CenterAt" && lastClickedPoint != null)
             {
-                GisEditor.ActiveMap.CenterAt(lastClickedPoint);
+                _ = GisEditor.ActiveMap.CenterAtAsync(lastClickedPoint);
             }
             else if (name == "AddDocument")
             {
@@ -548,10 +546,10 @@ namespace ThinkGeo.MapSuite.GisEditor
             GisEditorWpfMap map = new GisEditorWpfMap(name == null ? string.Empty : name);
             if (generalManager != null && generalManager.Scales.Count > 0)
             {
-                map.ZoomLevelSet.CustomZoomLevels.Clear();
+                map.ZoomScales.Clear();
                 foreach (var scale in generalManager.Scales)
                 {
-                    map.ZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(scale));
+                    map.ZoomScales.Add(scale);
                 }
             }
             InitializeMapProperties(map);
@@ -1284,7 +1282,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             e.CanExecute = GisEditor.ProjectManager.IsLoaded;
         }
 
-        private void Map_OverlaysDrawn(object sender, OverlaysDrawnWpfMapEventArgs e)
+        private void Map_OverlaysDrawn(object sender, OverlaysDrawnMapViewEventArgs e)
         {
             GisEditorWpfMap map = sender as GisEditorWpfMap;
             mapStatus.Content = map.GetMapBasicInformation();
@@ -1724,8 +1722,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             map.AllowDrop = true;
             map.IsMapStateChanged = false;
             map.Background = mapBackgroundBrush;
-            map.BackgroundOverlay = new BackgroundOverlay();
-            map.BackgroundOverlay.BackgroundBrush = new GeoSolidBrush(GeoColor.StandardColors.White);
+            //map.BackgroundOverlay = new BackgroundOverlay();
+            map.BackgroundOverlay.BackgroundBrush = new GeoSolidBrush(GeoColors.White);
         }
 
         private void InitializeMapEvents(GisEditorWpfMap map)
@@ -1736,8 +1734,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             map.MouseMove += Map_MouseMove;
             map.OverlaysDrawn -= Map_OverlaysDrawn;
             map.OverlaysDrawn += Map_OverlaysDrawn;
-            map.ZoomLevelSetChanged -= Map_ZoomLevelSetChanged;
-            map.ZoomLevelSetChanged += Map_ZoomLevelSetChanged;
+            //map.ZoomLevelSetChanged -= Map_ZoomLevelSetChanged;
+            //map.ZoomLevelSetChanged += Map_ZoomLevelSetChanged;
             map.ContextMenuOpening -= Map_ContextMenuOpening;
             map.ContextMenuOpening += Map_ContextMenuOpening;
             map.ContextMenu.Opened -= ContextMenu_Opened;
@@ -1798,45 +1796,45 @@ namespace ThinkGeo.MapSuite.GisEditor
             contextMenu.IsOpen = true;
         }
 
-        private void Map_ZoomLevelSetChanged(object sender, ZoomLevelSetChangedWpfMapEventArgs e)
-        {
-            if (generalManager != null && e.NewZoomLevelSet != null)
-            {
-                if (e.NewZoomLevelSet.CustomZoomLevels.Count == 0)
-                {
-                    if (generalManager.Scales.Count > 0)
-                    {
-                        foreach (var item in generalManager.Scales)
-                        {
-                            e.NewZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(item));
-                        }
-                    }
-                    else
-                    {
-                        foreach (var item in e.NewZoomLevelSet.GetZoomLevels())
-                        {
-                            item.Scale = Math.Round(item.Scale, 6);
-                            e.NewZoomLevelSet.CustomZoomLevels.Add(item);
-                        }
-                        for (int i = 0; i < 5; i++)
-                        {
-                            var scale = e.NewZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale * 0.5;
-                            var zoomLevel = new ZoomLevel(Math.Round(scale, 6));
-                            e.NewZoomLevelSet.CustomZoomLevels.Add(zoomLevel);
-                        }
-                    }
-                    (sender as WpfMap).MinimumScale = e.NewZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale;
-                }
-                else
-                {
-                    generalManager.Scales.Clear();
-                    foreach (var item in e.NewZoomLevelSet.CustomZoomLevels.Where(z => !(z is PreciseZoomLevel)))
-                    {
-                        generalManager.Scales.Add(item.Scale);
-                    }
-                }
-            }
-        }
+        //private void Map_ZoomLevelSetChanged(object sender, ZoomLevelSetChangedWpfMapEventArgs e)
+        //{
+        //    if (generalManager != null && e.NewZoomLevelSet != null)
+        //    {
+        //        if (e.NewZoomLevelSet.CustomZoomLevels.Count == 0)
+        //        {
+        //            if (generalManager.Scales.Count > 0)
+        //            {
+        //                foreach (var item in generalManager.Scales)
+        //                {
+        //                    e.NewZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(item));
+        //                }
+        //            }
+        //            else
+        //            {
+        //                foreach (var item in e.NewZoomLevelSet.GetZoomLevels())
+        //                {
+        //                    item.Scale = Math.Round(item.Scale, 6);
+        //                    e.NewZoomLevelSet.CustomZoomLevels.Add(item);
+        //                }
+        //                for (int i = 0; i < 5; i++)
+        //                {
+        //                    var scale = e.NewZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale * 0.5;
+        //                    var zoomLevel = new ZoomLevel(Math.Round(scale, 6));
+        //                    e.NewZoomLevelSet.CustomZoomLevels.Add(zoomLevel);
+        //                }
+        //            }
+        //            (sender as WpfMap).MinimumScale = e.NewZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale;
+        //        }
+        //        else
+        //        {
+        //            generalManager.Scales.Clear();
+        //            foreach (var item in e.NewZoomLevelSet.CustomZoomLevels.Where(z => !(z is PreciseZoomLevel)))
+        //            {
+        //                generalManager.Scales.Add(item.Scale);
+        //            }
+        //        }
+        //    }
+        //}
 
         private static void InitializePanZoomBar(GisEditorWpfMap map, bool showPanZoomBar)
         {
@@ -1849,7 +1847,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         }
 
         [Obfuscation]
-        private void Map_MapClick(object sender, MapClickWpfMapEventArgs e)
+        private void Map_MapClick(object sender, MapClickMapViewEventArgs e)
         {
             lastClickedPoint = e.WorldLocation;
         }

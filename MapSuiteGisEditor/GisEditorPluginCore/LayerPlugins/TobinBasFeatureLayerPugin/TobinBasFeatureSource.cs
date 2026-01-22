@@ -26,8 +26,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -56,7 +56,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private FileAccess fileAccess;
 
         [NonSerialized]
-        private GeoFileReadWriteMode shapeFileReadWriteMode;
+        private FileAccess shapeFileReadWriteMode;
 
         [Obfuscation(Exclude = true)]
         private Collection<Feature> annotationFeatures;
@@ -116,11 +116,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         protected override void OpenCore()
         {
             fileAccess = FileAccess.Read;
-            GeoFileReadWriteMode rTreeFileAccess = GeoFileReadWriteMode.Read;
-            if (shapeFileReadWriteMode == GeoFileReadWriteMode.ReadWrite)
+            FileAccess rTreeFileAccess = FileAccess.Read;
+            if (shapeFileReadWriteMode == FileAccess.ReadWrite)
             {
                 fileAccess = FileAccess.ReadWrite;
-                rTreeFileAccess = GeoFileReadWriteMode.ReadWrite;
+                rTreeFileAccess = FileAccess.ReadWrite;
             }
 
             Validator.CheckTobinBasFileName(tobinBasFilePathName);
@@ -224,7 +224,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             BuildIndexFile(shapePathFilename, Path.ChangeExtension(shapePathFilename, ".idx"), null, string.Empty, string.Empty, BuildIndexMode.DoNotRebuild);
         }
 
-        public static void BuildIndexFile(string shapePathFilename, string indexPathFilename, Projection projection, string columnName, string regularExpression, BuildIndexMode buildIndexMode)
+        public static void BuildIndexFile(string shapePathFilename, string indexPathFilename, ProjectionConverter projection, string columnName, string regularExpression, BuildIndexMode buildIndexMode)
         {
             //Validators.CheckParameterIsNotNullOrEmpty(shapePathFilename, "shapePathFileName");
             //Validators.CheckShapeFileNameIsValid(shapePathFilename, "shapePathFileName");
@@ -236,7 +236,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             BuildIndexFile(shapePathFilename, indexPathFilename, projection, columnName, regularExpression, buildIndexMode, Encoding.Default);
         }
 
-        public static void BuildIndexFile(string basPathFilename, string indexPathFilename, Projection projection, string columnName, string regularExpression, BuildIndexMode buildIndexMode, Encoding encoding)
+        public static void BuildIndexFile(string basPathFilename, string indexPathFilename, ProjectionConverter projection, string columnName, string regularExpression, BuildIndexMode buildIndexMode, Encoding encoding)
         {
             //Validators.CheckParameterIsNotNullOrEmpty(basPathFilename, "shapePathFileName");
             //Validators.CheckShapeFileNameIsValid(basPathFilename, "shapePathFileName");
@@ -249,7 +249,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             string tmpIndexPathFilename = Path.GetDirectoryName(indexPathFilename) + "\\TMP" + Path.GetFileName(indexPathFilename);
             if (!(File.Exists(indexPathFilename) && File.Exists(Path.ChangeExtension(indexPathFilename, ".ids"))) || buildIndexMode == BuildIndexMode.Rebuild)
             {
-                RtreeSpatialIndex rTreeIndex = new RtreeSpatialIndex(tmpIndexPathFilename, GeoFileReadWriteMode.ReadWrite);
+                RtreeSpatialIndex rTreeIndex = new RtreeSpatialIndex(tmpIndexPathFilename, FileAccess.ReadWrite);
 
                 TobinBasFeatureSource featureSource = new TobinBasFeatureSource(basPathFilename);
                 featureSource.Encoding = encoding;
@@ -457,7 +457,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private void OpenRtree(GeoFileReadWriteMode rTreeFileAccess)
+        private void OpenRtree(FileAccess rTreeFileAccess)
         {
             if (rTreeIndex == null && requireIndex)
             {
@@ -512,7 +512,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private static void BuildIndex(BasFeatureEntity featureEntity, RtreeSpatialIndex openedRtree, Projection openedProjection)
+        private static void BuildIndex(BasFeatureEntity featureEntity, RtreeSpatialIndex openedRtree, ProjectionConverter openedProjection)
         {
             if (featureEntity != null)
             {

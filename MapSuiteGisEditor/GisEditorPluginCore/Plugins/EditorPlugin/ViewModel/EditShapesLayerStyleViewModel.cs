@@ -23,8 +23,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Styles;
-using Style = ThinkGeo.MapSuite.Styles.Style;
+using ThinkGeo.Core;
+
+using Style = ThinkGeo.Core.Style;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -60,7 +61,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (editOverlay.EditShapesLayer.InternalFeatures.Count > 0)
                     {
-                        editOverlay.Refresh();
+                        editOverlay.RefreshAsync();
                     }
                 }
                 UpdateEditStylePreviewASync();
@@ -104,3 +105,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

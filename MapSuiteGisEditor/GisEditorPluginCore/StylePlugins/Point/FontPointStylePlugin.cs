@@ -19,8 +19,8 @@
 
 using System;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -43,9 +43,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             return new FontPointStyle
             {
-                CharacterFont = new GeoFont("Arial", 9, DrawingFontStyles.Regular),
-                CharacterIndex = FontPicker.FromCharactorIndex,
-                CharacterSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Black)
+                GlyphFont = new GeoFont("Arial", 9, DrawingFontStyles.Regular),
+                GlyphContent = char.ConvertFromUtf32(FontPicker.FromCharactorIndex),
+                FillBrush = new GeoSolidBrush(GeoColors.Black)
             };
         }
 

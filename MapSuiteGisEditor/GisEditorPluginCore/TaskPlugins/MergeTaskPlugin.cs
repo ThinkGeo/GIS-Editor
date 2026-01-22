@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -90,11 +90,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void ProcessWithShapeFilesOnly()
         {
-            int count = featureSources.Sum(f =>
+            int count = (int)Math.Min(int.MaxValue, featureSources.Sum(f =>
             {
                 if (!f.IsOpen) f.Open();
                 return f.GetCount();
-            });
+            }));
 
             var args = new UpdatingTaskProgressEventArgs(TaskState.Updating);
             var shapeFileFeatureSources = featureSources.OfType<ShapeFileFeatureSource>().ToList();

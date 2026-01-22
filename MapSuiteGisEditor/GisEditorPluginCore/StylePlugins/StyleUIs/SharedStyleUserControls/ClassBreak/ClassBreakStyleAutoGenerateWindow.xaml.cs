@@ -21,7 +21,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

@@ -19,7 +19,7 @@
 
 using System;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -76,7 +76,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void ShapeFileFeatureSource_BuildingIndex(object sender, BuildingIndexShapeFileFeatureSourceEventArgs e)
         {
-            BuildingIndexEventArgs args = new BuildingIndexEventArgs(e.RecordCount, e.CurrentRecordIndex, e.CurrentFeature, e.StartProcessTime, e.Cancel);
+            int recordCount = e.RecordCount > int.MaxValue ? int.MaxValue : (int)e.RecordCount;
+            int currentIndex = e.CurrentRecordIndex > int.MaxValue ? int.MaxValue : (int)e.CurrentRecordIndex;
+            BuildingIndexEventArgs args = new BuildingIndexEventArgs(recordCount, currentIndex, e.CurrentFeature, e.StartProcessTime, e.Cancel);
             OnBuildingIndex(args);
             e.Cancel = args.Cancel;
         }

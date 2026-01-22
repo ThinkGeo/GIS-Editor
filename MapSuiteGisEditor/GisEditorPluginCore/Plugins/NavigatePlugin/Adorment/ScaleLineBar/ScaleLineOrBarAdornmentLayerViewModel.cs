@@ -27,10 +27,7 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Windows;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -62,9 +59,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public ScaleLineOrBarAdornmentLayerViewModel()
         {
-            ForeColor = new GeoSolidBrush(GeoColor.SimpleColors.Black);
-            AlteColor = new GeoSolidBrush(GeoColor.StandardColors.White);
-            BackMask = new AreaStyle(new GeoSolidBrush(GeoColor.StandardColors.Transparent));
+            ForeColor = new GeoSolidBrush(GeoColors.Black);
+            AlteColor = new GeoSolidBrush(GeoColors.White);
+            BackMask = new AreaStyle(new GeoSolidBrush(GeoColors.Transparent));
             Width = 392;
             height = 32;
             MaximumWidth = 392;
@@ -413,7 +410,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void SetDefaultStyles()
         {
-            BackMask = new AreaStyle(new GeoSolidBrush(GeoColor.StandardColors.Transparent));
+            BackMask = new AreaStyle(new GeoSolidBrush(GeoColors.Transparent));
             BackMask.Name = GisEditor.StyleManager.GetStylePluginByStyle(BackMask).Name;
         }
 

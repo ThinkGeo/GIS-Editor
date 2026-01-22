@@ -407,7 +407,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     csvReader.ValueSeparator = Delimiter[0];
                     if (IsColumnNamesInFirstRow)
                     {
-                        foreach (string column in csvReader.ReadHeaderRecord().Values)
+                        csvReader.ReadHeaderRecord();
+                        var headerRecord = csvReader.HeaderRecord;
+                        foreach (string column in (headerRecord != null ? headerRecord.Values : Enumerable.Empty<string>()))
                         {
                             dataTable.Columns.Add(column);
                         }
@@ -416,7 +418,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         foreach (DataRecord dt in csvReader.ReadDataRecords())
                         {
                             DataRow dr = dataTable.NewRow();
-                            if (dt.Values.Count == dt.HeaderRecord.Values.Count)
+                            if (dt.HeaderRecord != null && dt.Values.Count == dt.HeaderRecord.Values.Count)
                             {
                                 foreach (string column in dt.HeaderRecord.Values)
                                 {

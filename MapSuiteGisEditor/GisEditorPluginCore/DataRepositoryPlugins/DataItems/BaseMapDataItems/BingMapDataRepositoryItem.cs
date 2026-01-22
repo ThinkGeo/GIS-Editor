@@ -24,8 +24,8 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -33,7 +33,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     public class BingMapDataRepositoryItem : DataRepositoryItem, IStorableSettings
     {
         private string bingMapsKey;
-        private Layers.BingMapsMapType bingMapType;
+        private BingMapsMapType bingMapType;
 
         public BingMapDataRepositoryItem()
         {
@@ -75,7 +75,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             set { bingMapsKey = value; }
         }
 
-        internal Layers.BingMapsMapType BingMapType
+        internal BingMapsMapType BingMapType
         {
             get { return bingMapType; }
             set { bingMapType = value; }
@@ -111,7 +111,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             if (settings.GlobalSettings.ContainsKey("BingMapType"))
             {
-                bingMapType = (Layers.BingMapsMapType)Enum.Parse(typeof(Layers.BingMapsMapType), settings.GlobalSettings["BingMapType"]);
+                bingMapType = (BingMapsMapType)Enum.Parse(typeof(BingMapsMapType), settings.GlobalSettings["BingMapType"]);
             }
         }
 
@@ -162,7 +162,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                             if (mapWithBings.Map.ActualWidth != 0 || mapWithBings.Map.ActualHeight != 0)
                             {
-                                mapWithBings.Map.Refresh();
+                                mapWithBings.Map.RefreshAsync();
                             }
                         }
                     }
@@ -171,3 +171,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

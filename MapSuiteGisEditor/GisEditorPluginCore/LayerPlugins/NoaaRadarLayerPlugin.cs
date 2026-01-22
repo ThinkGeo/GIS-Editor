@@ -21,8 +21,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -50,15 +50,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(NoaaRadarRasterLayer);
+            return typeof(NoaaWeatherStationFeatureLayer);
         }
 
         protected override Uri GetUriCore(Layer layer)
         {
-            return new Uri("NoaaRadarRasterLayer:None");
+            return new Uri("NoaaWeatherStationFeatureLayer:None");
         }
 
-        protected override LayerListItem GetLayerListItemCore(Layer layer)
+        protected override LayerListItem GetLayerListItemCore(LayerBase layer)
         {
             LayerListItem layerListItem = base.GetLayerListItemCore(layer);
             if (layerListItem != null)
@@ -75,10 +75,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Collection<Layer> GetLayersCore(GetLayersParameters getLayersParameters)
         {
-            NoaaRadarRasterLayer noaaRadarRasterLayer = new NoaaRadarRasterLayer();
+            NoaaWeatherStationFeatureLayer noaaRadarRasterLayer = new NoaaWeatherStationFeatureLayer();
             noaaRadarRasterLayer.Transparency = 50 * 2.55f;
             string wgs84Parameters = Proj4Projection.GetWgs84ParametersString();
-            noaaRadarRasterLayer.InitializeProj4Projection(wgs84Parameters);
+            noaaRadarRasterLayer.Projection = new Projection(wgs84Parameters);
             return new Collection<Layer> { noaaRadarRasterLayer };
         }
     }

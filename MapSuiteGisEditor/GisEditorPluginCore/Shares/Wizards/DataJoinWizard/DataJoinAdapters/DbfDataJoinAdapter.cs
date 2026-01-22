@@ -21,7 +21,7 @@ using System;
 using System.Data;
 using System.IO;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -36,7 +36,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 DataTable dataTable = new DataTable();
 
-                using (GeoDbf geoDbf = new GeoDbf(filePath, GeoFileReadWriteMode.Read))
+                using (GeoDbf geoDbf = new GeoDbf(filePath, FileAccess.Read))
                 {
                     geoDbf.Open();
 
@@ -74,7 +74,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             Collection<FeatureSourceColumn> result = new Collection<FeatureSourceColumn>();
 
-            using (GeoDbf geoDbf = new GeoDbf(filePath, GeoFileReadWriteMode.Read))
+            using (GeoDbf geoDbf = new GeoDbf(filePath, FileAccess.Read))
             {
                 geoDbf.Open();
                 var columns = geoDbf.GetAllColumns();
@@ -91,3 +91,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

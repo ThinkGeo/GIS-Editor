@@ -20,8 +20,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -95,10 +95,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 var otherLayers = layerOverlays.SelectMany(layerOverlay => layerOverlay.Layers.Where(layer =>
                 {
                     return layer is NativeImageRasterLayer ||
-                        layer is MrSidRasterLayer ||
-                        layer is EcwRasterLayer ||
+                        layer is MrSidGdalRasterLayer ||
+                        layer is EcwGdalRasterLayer ||
                         layer is GeoTiffRasterLayer ||
-                        layer is Jpeg2000RasterLayer;
+                        layer is Jpeg2000GdalRasterLayer;
                 }));
                 bool loaded = false;
                 foreach (var item in otherLayers)

@@ -21,9 +21,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -56,7 +57,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (applyCommand == null)
                 {
-                    applyCommand = new RelayCommand(ApplyScaleSettings);
+                    applyCommand = new RelayCommand(async () => await ApplyScaleSettings());
                 }
                 return applyCommand;
             }
@@ -68,9 +69,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (okCommand == null)
                 {
-                    okCommand = new RelayCommand(() =>
+                    okCommand = new RelayCommand(async () =>
                     {
-                        ApplyScaleSettings();
+                        await ApplyScaleSettings();
                         MessengerInstance.Send(GisEditor.LanguageManager.GetStringResource("CloseWindowMessage"), this);
                     });
                 }
@@ -164,7 +165,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private void ApplyScaleSettings()
+        private async Task ApplyScaleSettings()
         {
             GisEditorWpfMap wpfMap = GisEditor.ActiveMap;
             var scaleLayers = wpfMap.FixedAdornmentOverlay.Layers.Where(tmpAdornmentLayer => (tmpAdornmentLayer is ScaleLineAdornmentLayer || tmpAdornmentLayer is ScaleBarAdornmentLayer)).ToArray();
@@ -181,7 +182,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 wpfMap.FixedAdornmentOverlay.Layers.Add(tmpLayer.ToActualAdornmentLayer());
             }
 
-            wpfMap.Refresh(wpfMap.FixedAdornmentOverlay);
+            await wpfMap.FixedAdornmentOverlay.RefreshAsync();
         }
 
         private string GenerateScaleName()

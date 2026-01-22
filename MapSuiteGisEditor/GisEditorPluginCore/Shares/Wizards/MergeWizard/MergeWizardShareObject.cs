@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -172,7 +172,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 foreach (var featureSource in featureSources)
                 {
                     featureSource.Close();
-                    if (featureSource.Projection != null) featureSource.Projection.Close();
                 }
             }
 

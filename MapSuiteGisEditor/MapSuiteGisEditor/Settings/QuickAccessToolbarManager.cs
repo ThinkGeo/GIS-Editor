@@ -32,6 +32,12 @@ namespace ThinkGeo.MapSuite.GisEditor
     [Obfuscation]
     public class QuickAccessToolbarManager : Manager
     {
+        private sealed class QuickAccessToolbarSettingHost : SettingUserControl
+        {
+            public QuickAccessToolbarSettingHost()
+            { }
+        }
+
         private SettingUserControl quickAccessToolbarSettingUI;
         private QuickAccessToolbarSettingViewModel quickAccessToolbarSettingViewModel;
 
@@ -44,8 +50,11 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             if (quickAccessToolbarSettingUI == null)
             {
-                quickAccessToolbarSettingUI = new QuickAccessToolbarSettingUserControl();
-                quickAccessToolbarSettingUI.DataContext = quickAccessToolbarSettingViewModel;
+                var host = new QuickAccessToolbarSettingHost();
+                host.Title = "QuickAccessToolbarSettingTitle";
+                host.Content = new QuickAccessToolbarSettingUserControl();
+                host.DataContext = quickAccessToolbarSettingViewModel;
+                quickAccessToolbarSettingUI = host;
             }
 
             return quickAccessToolbarSettingUI;

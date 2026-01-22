@@ -20,9 +20,9 @@
 using System;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -250,7 +250,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var currentIndex = GisEditor.ActiveMap.Overlays.IndexOf(overlay);
             var needRefresh = currentIndex != originalIndex;
             if (needRefresh)
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             return needRefresh;
         }
 

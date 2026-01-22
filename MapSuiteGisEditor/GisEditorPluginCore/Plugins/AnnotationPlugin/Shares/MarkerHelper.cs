@@ -23,10 +23,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -74,7 +74,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 };
 
                 map.Overlays.Add(markerOverlay);
-                map.Refresh();
+                map.RefreshAsync();
             }
         }
 
@@ -227,9 +227,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 });
             }
 
-            marker.AdjustPosition(textStyle.PointPlacement);
+            marker.AdjustPosition(textStyle.TextPlacement);
             markerOverlay.Markers.Add(markerId, marker);
-            markerOverlay.Refresh();
+            markerOverlay.RefreshAsync();
         }
 
         private static void marker_PositionChanged(object sender, PositionChangedMarkerEventArgs e)
@@ -280,7 +280,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private static void CancelTextAnnotation()
         {
             CurrentMarkerOverlay.Markers.Clear();
-            CurrentMarkerOverlay.Refresh();
+            CurrentMarkerOverlay.RefreshAsync();
         }
 
         internal static bool CommitTextAnnotations()
@@ -340,8 +340,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 CurrentMarkerOverlay.Markers.Clear();
 
-                CurrentMarkerOverlay.Refresh();
-                ViewModel.CurrentAnnotationOverlay.Refresh();
+                CurrentMarkerOverlay.RefreshAsync();
+                ViewModel.CurrentAnnotationOverlay.RefreshAsync();
                 ViewModel.SyncUIState();
                 GisEditor.UIManager.RefreshPlugins(new RefreshArgs(CurrentMarkerOverlay, RefreshArgsDescription.CommitTextAnnotationsDescription));
             }
@@ -349,7 +349,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return isChanged;
         }
 
-        public static void AdjustPosition(this Marker marker, PointPlacement placement)
+        public static void AdjustPosition(this Marker marker, TextPlacement placement)
         {
             marker.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             Size markerSize = marker.DesiredSize;
@@ -367,35 +367,35 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             switch (placement)
             {
-                case PointPlacement.UpperLeft:
+                case TextPlacement.UpperLeft:
                     markerOX = -markerSize.Width * .5;
                     markerOY = -markerSize.Height * .5;
                     break;
-                case PointPlacement.UpperCenter:
+                case TextPlacement.Upper:
                     markerOY = -markerSize.Height * .5;
                     break;
-                case PointPlacement.UpperRight:
+                case TextPlacement.UpperRight:
                     markerOX = markerSize.Width * .5;
                     markerOY = -markerSize.Height * .5;
                     break;
-                case PointPlacement.CenterRight:
+                case TextPlacement.Right:
                     markerOX = markerSize.Width * .5;
                     break;
-                case PointPlacement.CenterLeft:
+                case TextPlacement.Left:
                     markerOX = -markerSize.Width * .5;
                     break;
-                case PointPlacement.LowerLeft:
+                case TextPlacement.LowerLeft:
                     markerOX = -markerSize.Width * .5;
                     markerOY = markerSize.Height * .5;
                     break;
-                case PointPlacement.LowerCenter:
+                case TextPlacement.Lower:
                     markerOY = markerSize.Height * .5;
                     break;
-                case PointPlacement.LowerRight:
+                case TextPlacement.LowerRight:
                     markerOX = markerSize.Width * .5;
                     markerOY = markerSize.Height * .5;
                     break;
-                case PointPlacement.Center:
+                case TextPlacement.Center:
                 default:
                     break;
             }
@@ -412,3 +412,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

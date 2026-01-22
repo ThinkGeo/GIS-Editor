@@ -20,7 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

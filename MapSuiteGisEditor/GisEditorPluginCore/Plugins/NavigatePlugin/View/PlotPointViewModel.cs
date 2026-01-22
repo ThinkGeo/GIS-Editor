@@ -28,8 +28,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+
+using ThinkGeo.UI.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -348,13 +350,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             plottedMarker.YOffset = -8.5;
             plottedMarker.ToolTip = GetWorkingContent(plottedPoint);
             plottedMarker.PositionChanged += MarkerPositionChanged;
-            plottedMarker.MarkerMouseClick += MarkerMouseClick;
+            plottedMarker.MouseClick += MarkerMouseClick;
             plottedMarker.PreviewMouseRightButtonDown += PlottedMarker_PreviewMouseRightButtonDown;
             plottedMarker.ContextMenu = GetContextMenuForPlottedMarker(plottedMarker);
 
             SimpleMarkerOverlay simpleMarkerOverlay = CurrentOverlays.PlottedMarkerOverlay;
             simpleMarkerOverlay.Markers.Add(plottedMarker);
-            GisEditor.ActiveMap.Refresh(simpleMarkerOverlay);
+            GisEditor.ActiveMap.RefreshAsync(simpleMarkerOverlay);
         }
 
         private static void PlottedMarker_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -391,14 +393,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     if (currentMarkerOverlay.Markers.Contains(relatedMarker))
                     {
                         currentMarkerOverlay.Markers.Remove(relatedMarker);
-                        GisEditor.ActiveMap.Refresh(currentMarkerOverlay);
+                        GisEditor.ActiveMap.RefreshAsync(currentMarkerOverlay);
                     }
 
                     PopupOverlay currentPopupOverlay = CurrentOverlays.PopupOverlay;
                     if (currentPopupOverlay.Popups.Contains(relatedPopup))
                     {
                         currentPopupOverlay.Popups.Remove(relatedPopup);
-                        GisEditor.ActiveMap.Refresh(currentPopupOverlay);
+                        GisEditor.ActiveMap.RefreshAsync(currentPopupOverlay);
                     }
                 }
             };
@@ -436,7 +438,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     SetPopupOffset(attachedPopup);
                     popupOverlay.Popups.Add(attachedPopup);
 
-                    GisEditor.ActiveMap.Refresh(popupOverlay);
+                    GisEditor.ActiveMap.RefreshAsync(popupOverlay);
                     currentMarker.Tag = attachedPopup;
                 }
 
@@ -482,3 +484,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

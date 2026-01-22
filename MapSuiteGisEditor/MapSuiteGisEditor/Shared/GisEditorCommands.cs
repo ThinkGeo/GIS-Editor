@@ -25,9 +25,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -69,13 +69,14 @@ namespace ThinkGeo.MapSuite.GisEditor
                                 TileOverlay tileOverlay = overlay as TileOverlay;
                                 if (tileOverlay != null)
                                 {
-                                    tileOverlay.ClearCaches(GisEditor.ActiveMap.CurrentExtent);
+                                  //  tileOverlay.ClearCaches(GisEditor.ActiveMap.CurrentExtent);
                                     LayerOverlay layerOverlay = tileOverlay as LayerOverlay;
-                                    tileOverlay.Invalidate(false);
+                                    //tileOverlay.Invalidate(false);
+                                    _ = tileOverlay.RefreshAsync();
                                 }
                                 else
                                 {
-                                    overlay.Refresh();
+                                    _ = overlay.RefreshAsync();
                                 }
                             }
                         }

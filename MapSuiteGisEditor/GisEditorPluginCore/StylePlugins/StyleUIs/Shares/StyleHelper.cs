@@ -25,8 +25,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -80,11 +80,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             //        TextStyle textStyle = (TextStyle)style;
             //        if (textStyle.CustomTextStyles.Count == 0)
             //        {
-            //            canvas.DrawTextWithWorldCoordinate("A", textStyle.Font, textStyle.TextSolidBrush, textStyle.HaloPen, 0, 0, DrawingLevel.LabelLevel);
+            //            canvas.DrawTextWithWorldCoordinate("A", textStyle.Font, textStyle.TextBrush, textStyle.HaloPen, 0, 0, DrawingLevel.LabelLevel);
             //        }
             //        else
             //        {
-            //            canvas.DrawTextWithWorldCoordinate("A", textStyle.CustomTextStyles[0].Font, textStyle.CustomTextStyles[0].TextSolidBrush, textStyle.CustomTextStyles[0].HaloPen, 0, 0, DrawingLevel.LabelLevel);
+            //            canvas.DrawTextWithWorldCoordinate("A", textStyle.CustomTextStyles[0].Font, textStyle.CustomTextStyles[0].TextBrush, textStyle.CustomTextStyles[0].HaloPen, 0, 0, DrawingLevel.LabelLevel);
             //        }
             //    }
             //    else if (style is DotDensityStyle)

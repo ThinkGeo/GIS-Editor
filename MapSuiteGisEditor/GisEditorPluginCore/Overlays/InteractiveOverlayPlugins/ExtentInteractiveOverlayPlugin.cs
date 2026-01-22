@@ -19,8 +19,10 @@
 
 using System;
 using System.Linq;
-using ThinkGeo.MapSuite.Wpf;
+using System.Windows.Input;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -41,7 +43,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (overlay != null)
             {
                 overlay.PanMode = MapPanMode.Disabled;
-                overlay.LeftClickDragKey = System.Windows.Forms.Keys.ShiftKey;
+                overlay.TrackZoomInKey = Key.LeftShift;
                 overlay.OverlayCanvas.IsEnabled = false;
                 if (GisEditor.ActiveMap != null)
                 {

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing.Drawing2D;
 
 namespace ThinkGeo.Core
 {
@@ -14,6 +15,10 @@ namespace ThinkGeo.Core
     [Serializable]
     public class PlatformGeoCanvas : SkiaGeoCanvas
     {
+        public CompositingQuality CompositingQuality { get; set; } = CompositingQuality.HighSpeed;
+
+        public SmoothingMode SmoothingMode { get; set; } = SmoothingMode.HighSpeed;
+
         // Intentionally empty. All functionality is inherited from SkiaGeoCanvas / GeoCanvas.
     }
 }

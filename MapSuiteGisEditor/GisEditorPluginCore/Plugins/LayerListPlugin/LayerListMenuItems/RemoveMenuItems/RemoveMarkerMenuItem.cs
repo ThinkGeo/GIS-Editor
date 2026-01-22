@@ -19,7 +19,8 @@
 
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -39,7 +40,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 SimpleMarkerOverlay markerOverlay = GetMarkerOverlayByMarker(GisEditor.ActiveMap, marker);
                 markerOverlay.Markers.Remove(marker);
-                GisEditor.ActiveMap.Refresh(markerOverlay);
+                GisEditor.ActiveMap.RefreshAsync(markerOverlay);
                 GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(markerOverlay.Markers, RefreshArgsDescription.RemoveMarkerDescription));
             }
         }
@@ -52,3 +53,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

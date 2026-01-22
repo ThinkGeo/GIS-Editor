@@ -21,10 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -38,7 +37,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public static WorldMapKitMapOverlay AddWorldMapKitOverlay(GisEditorWpfMap map)
         {
             var wmkOverlay = new WorldMapKitMapOverlay(WmkClientId, WmkPrivateKey);
-            wmkOverlay.TileType = TileType.HybridTile;
+            wmkOverlay.TileType = TileType.PreloadDataMultiTile;
             wmkOverlay.Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName");
             wmkOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             wmkOverlay.TileBuffer = 2;
@@ -46,12 +45,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (string.IsNullOrEmpty(map.DisplayProjectionParameters))
             {
-                wmkOverlay.Projection = Layers.WorldMapKitProjection.DecimalDegrees;
+                wmkOverlay.Projection = WorldMapKitProjection.DecimalDegrees;
                 map.DisplayProjectionParameters = Proj4Projection.GetEpsgParametersString(4326);
             }
             else
             {
-                wmkOverlay.Projection = map.MapUnit == GeographyUnit.DecimalDegree ? Layers.WorldMapKitProjection.DecimalDegrees : Layers.WorldMapKitProjection.SphericalMercator;
+                wmkOverlay.Projection = map.MapUnit == GeographyUnit.DecimalDegree ? WorldMapKitProjection.DecimalDegrees : WorldMapKitProjection.SphericalMercator;
             }
             wmkOverlay.RefreshCache();
             if (map.MapUnit == GeographyUnit.Meter || map.MapUnit == GeographyUnit.DecimalDegree)
@@ -91,10 +90,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static BingMapsOverlay AddBingMapOverlayToMap(GisEditorWpfMap map, BingMapsConfigWindow configWindow, BingMapsOverlay bingOverlay)
         {
-            bingOverlay = new BingMapsOverlay(configWindow.BingMapsKey, (Wpf.BingMapsMapType)configWindow.BingMapsStyle);//new BingMapsOverlay(configWindow.BingMapsKey);
-            bingOverlay.Logo = null;
+            bingOverlay = new BingMapsOverlay(configWindow.BingMapsKey, (BingMapsMapType)configWindow.BingMapsStyle);//new BingMapsOverlay(configWindow.BingMapsKey);
             bingOverlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
-            bingOverlay.TileType = TileType.HybridTile;
+            bingOverlay.TileType = TileType.PreloadDataMultiTile;
             bingOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             bingOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(BingOverlay_DrawingException);
             bingOverlay.RefreshCache();
@@ -105,7 +103,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public static OpenStreetMapOverlay AddOpenStreetMapOverlay(GisEditorWpfMap map)
         {
             OpenStreetMapOverlay osmOverlay = new OpenStreetMapOverlay();
-            osmOverlay.TileType = TileType.HybridTile;
+            osmOverlay.TileType = TileType.PreloadDataMultiTile;
             osmOverlay.Name = "OpenStreetMap";
             osmOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             osmOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(OsmOverlay_DrawingException);
@@ -138,10 +136,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public static void SetZoomLevel(ZoomLevelSet zoomLevelSet, GisEditorWpfMap map)
         {
             zoomLevelSet.AddZoomLevels();
-            map.ZoomLevelSet = zoomLevelSet;
+            map.ZoomScales.Clear();
+            foreach (var item in zoomLevelSet.CustomZoomLevels)
+            {
+                map.ZoomScales.Add(item.Scale);
+            }
 
             //the following line of code sets the zoom levels back to normal, if the Open Street Map was in the map previously.
-            map.MinimumScale = map.ZoomLevelSet.GetZoomLevels().LastOrDefault().Scale;
+            map.MinimumScale = map.ZoomScales.LastOrDefault();
         }
 
         private static void SetExtent(GisEditorWpfMap map)
@@ -337,13 +339,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     if (drawingExceptionLayerEventArgs.Canvas.ClippingArea != null)
                     {
                         var clippingCenter = drawingExceptionLayerEventArgs.Canvas.ClippingArea.GetCenterPoint();
-                        drawingExceptionLayerEventArgs.Canvas.DrawTextWithWorldCoordinate(message, font, new GeoSolidBrush(GeoColor.StandardColors.GrayText), clippingCenter.X, clippingCenter.Y, DrawingLevel.LabelLevel);
+                        drawingExceptionLayerEventArgs.Canvas.DrawTextWithWorldCoordinate(message, font, new GeoSolidBrush(GeoColors.GrayText), clippingCenter.X, clippingCenter.Y, DrawingLevel.LabelLevel);
                         drawingExceptionLayerEventArgs.Cancel = true;
                     }
                     else
                     {
                         var drawingArea = drawingExceptionLayerEventArgs.Canvas.MeasureText(message, font);
-                        drawingExceptionLayerEventArgs.Canvas.DrawTextWithScreenCoordinate(message, font, new GeoSolidBrush(GeoColor.StandardColors.GrayText), 20 + drawingArea.Width * .5f, 20 + drawingArea.Height * .5f, DrawingLevel.LabelLevel);
+                        drawingExceptionLayerEventArgs.Canvas.DrawTextWithScreenCoordinate(message, font, new GeoSolidBrush(GeoColors.GrayText), 20 + drawingArea.Width * .5f, 20 + drawingArea.Height * .5f, DrawingLevel.LabelLevel);
                         drawingExceptionLayerEventArgs.Cancel = true;
                     }
                 }
@@ -352,13 +354,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     if (drawingExceptionTileOverlayEventArgs.Canvas.ClippingArea != null)
                     {
                         var clippingCenter = drawingExceptionTileOverlayEventArgs.Canvas.ClippingArea.GetCenterPoint();
-                        drawingExceptionTileOverlayEventArgs.Canvas.DrawTextWithWorldCoordinate(message, font, new GeoSolidBrush(GeoColor.StandardColors.GrayText), clippingCenter.X, clippingCenter.Y, DrawingLevel.LabelLevel);
+                        drawingExceptionTileOverlayEventArgs.Canvas.DrawTextWithWorldCoordinate(message, font, new GeoSolidBrush(GeoColors.GrayText), clippingCenter.X, clippingCenter.Y, DrawingLevel.LabelLevel);
                         drawingExceptionTileOverlayEventArgs.Cancel = true;
                     }
                     else
                     {
                         var drawingArea = drawingExceptionTileOverlayEventArgs.Canvas.MeasureText(message, font);
-                        drawingExceptionTileOverlayEventArgs.Canvas.DrawTextWithScreenCoordinate(message, font, new GeoSolidBrush(GeoColor.StandardColors.GrayText), 20 + drawingArea.Width * .5f, 20 + drawingArea.Height * .5f, DrawingLevel.LabelLevel);
+                        drawingExceptionTileOverlayEventArgs.Canvas.DrawTextWithScreenCoordinate(message, font, new GeoSolidBrush(GeoColors.GrayText), 20 + drawingArea.Width * .5f, 20 + drawingArea.Height * .5f, DrawingLevel.LabelLevel);
                         drawingExceptionTileOverlayEventArgs.Cancel = true;
                     }
                 }

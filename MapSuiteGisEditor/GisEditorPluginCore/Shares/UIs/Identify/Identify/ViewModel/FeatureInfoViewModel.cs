@@ -24,10 +24,11 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.IO;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -119,7 +120,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return results;
         }
 
-        internal void ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode shapeFileReadWriteMode, FeatureLayer selectedLayer)
+        internal void ChangeCurrentLayerReadWriteMode(FileAccess shapeFileReadWriteMode, FeatureLayer selectedLayer)
         {
             ShapeFileFeatureLayer layer = selectedLayer as ShapeFileFeatureLayer;
             if (layer != null || layer.ReadWriteMode != shapeFileReadWriteMode)

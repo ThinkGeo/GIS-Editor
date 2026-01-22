@@ -20,8 +20,9 @@
 using System;
 using System.Globalization;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+
+using ThinkGeo.UI.Wpf;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -49,7 +50,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             double scaleValue = map.CurrentScale;
             int zoomLevel = map.GetSnappedZoomLevelIndex(scaleValue) + 1;
 
-            bool isPreciseZoomLevel = map.ZoomLevelSet.GetZoomLevels()[zoomLevel - 1] is PreciseZoomLevel;
+            //bool isPreciseZoomLevel = map.ZoomLevelSet.GetZoomLevels()[zoomLevel - 1] is PreciseZoomLevel;
+            bool isPreciseZoomLevel = false;
 
             TextBlock projectionTextBlock = new TextBlock();
             projectionTextBlock.SetResourceReference(TextBlock.TextProperty, "MapExtensionProjectionText");
@@ -112,9 +114,9 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     try
                     {
-                        Proj4Projection proj = new Proj4Projection();
-                        proj.InternalProjectionParametersString = map.DisplayProjectionParameters;
-                        proj.ExternalProjectionParametersString = Proj4Projection.GetDecimalDegreesParametersString();
+                        ProjectionConverter proj = new ProjectionConverter();
+                        proj.InternalProjection.ProjString = map.DisplayProjectionParameters;
+                        proj.ExternalProjection.ProjString = Projection.GetDecimalDegreesProjString();
                         proj.Open();
                         lonlat = proj.ConvertToExternalProjection(lonlat) as PointShape;
                         proj.Close();

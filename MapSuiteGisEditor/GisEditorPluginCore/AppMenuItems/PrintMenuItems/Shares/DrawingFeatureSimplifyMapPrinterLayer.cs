@@ -19,10 +19,9 @@
 
 using System;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

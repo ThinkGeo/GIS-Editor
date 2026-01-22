@@ -23,8 +23,7 @@ using System.Globalization;
 using System.Reflection;
 using GalaSoft.MvvmLight;
 using System.Windows;
-using ThinkGeo.MapSuite.Wpf;
-using ThinkGeo.MapSuite.WpfDesktop;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {

@@ -25,11 +25,11 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
-using Style = ThinkGeo.MapSuite.Styles.Style;
+using Style = ThinkGeo.Core.Style;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -589,7 +589,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     isInBracket = firstCondition.IsLeftBracket;
 
-                    currentMatchedFeatures = firstCondition.GetMatchingFeatures(features);
+                    currentMatchedFeatures = new Collection<Feature>(firstCondition.GetMatchingFeatures(features).ToList());
                     matchedFeatures = new Collection<Feature>(currentMatchedFeatures.ToList());
 
                     isInBracket = isInBracket && !firstCondition.IsRightBracket;

@@ -104,6 +104,22 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             get { return labelFunctionColumnNames; }
         }
 
+        public bool BestPlacement
+        {
+            get { return TextPlacement == TextPlacement.AutoPlacement; }
+            set
+            {
+                if (value)
+                {
+                    TextPlacement = TextPlacement.AutoPlacement;
+                }
+                else if (TextPlacement == TextPlacement.AutoPlacement)
+                {
+                    TextPlacement = TextPlacement.Center;
+                }
+            }
+        }
+
         protected override void DrawSampleCore(GeoCanvas canvas, DrawingRectangleF drawingRectangleF)
         {
             RectangleShape rectangle = ToWorldCoordinate(canvas, drawingRectangleF);

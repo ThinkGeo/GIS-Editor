@@ -24,9 +24,8 @@ using System.IO;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -65,7 +64,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             dragMode = PrinterDragMode.Draggable;
             backgroundStyle = new AreaStyle();
             backgroundStyle.DrawingLevel = DrawingLevel.LabelLevel;
-            AreaStyle areaStyle = new AreaStyle(new GeoPen(GeoColor.StandardColors.Black, 1));
+            AreaStyle areaStyle = new AreaStyle(new GeoPen(GeoColors.Black, 1));
             areaStyle.Name = "Area Style";
             areaStyle.DrawingLevel = DrawingLevel.LabelLevel;
             backgroundStyle.CustomAreaStyles.Add(areaStyle);

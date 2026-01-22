@@ -373,7 +373,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
                 FeatureLayerPlugin layerPlugin = (FeatureLayerPlugin)GisEditor.LayerManager.GetLayerPlugins(selectedLayer.GetType()).FirstOrDefault();
 
-                ExportToShapeFile(resultFeatures, featureColumns, layerPlugin, selectedLayer.FeatureSource.GetFirstFeaturesWellKnownType());
+                var _ = ExportToShapeFile(resultFeatures, featureColumns, layerPlugin, selectedLayer.FeatureSource.GetFirstFeaturesWellKnownType());
             }
         }
 
@@ -755,7 +755,11 @@ GisEditor.ActiveMap.Height, returningColumnNames);
             int currentIndex = newMenuItems.Count - 1;
             foreach (var item in menuItems)
             {
-                if (newMenuItems[currentIndex].Header == "--" && item.Header == "--") continue;
+                if (string.Equals(newMenuItems[currentIndex].Header as string, "--", StringComparison.Ordinal) &&
+                    string.Equals(item.Header as string, "--", StringComparison.Ordinal))
+                {
+                    continue;
+                }
 
                 newMenuItems.Add(item);
                 currentIndex++;

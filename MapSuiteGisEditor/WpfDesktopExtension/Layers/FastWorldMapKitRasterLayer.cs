@@ -24,9 +24,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using ThinkGeo.Core;
-using ThinkGeo.Core;
-using ThinkGeo.Core;
-using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {

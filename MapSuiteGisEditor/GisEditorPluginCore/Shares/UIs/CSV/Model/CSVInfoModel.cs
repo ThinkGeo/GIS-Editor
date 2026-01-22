@@ -20,7 +20,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

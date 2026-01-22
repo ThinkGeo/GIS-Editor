@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -267,7 +267,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void Apply()
         {
             AddTitlesToMap();
-            GisEditor.ActiveMap.Refresh();
+            GisEditor.ActiveMap.RefreshAsync();
         }
 
         private int GetMaxIndex()

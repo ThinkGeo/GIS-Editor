@@ -23,10 +23,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -151,7 +150,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (MaskFillColor != null)
             {
                 textStyle.Mask = new AreaStyle(new GeoPen(MaskOutlineColor, MaskOutlineThickness), (GeoSolidBrush)MaskFillColor);
-                textStyle.MaskMargin = MaskMargin;
+                textStyle.MaskMargin = new DrawingMargin(MaskMargin, MaskMargin, MaskMargin, MaskMargin);
             }
             return textStyle;
         }

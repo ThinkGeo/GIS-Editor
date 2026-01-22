@@ -20,8 +20,7 @@
 using System;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -63,7 +62,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             GridlinesPrinterLayer gridlinesPrinterLayer = printerLayer as GridlinesPrinterLayer;
             if (gridlinesPrinterLayer == null)
             {
-                selectedBrush = new GeoSolidBrush(GeoColor.StandardColors.Gray);
+                selectedBrush = new GeoSolidBrush(GeoColors.Gray);
                 selectedDashStyle = LineDashStyle.Dot;
                 rows = 10;
                 columns = 10;
@@ -272,3 +271,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

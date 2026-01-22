@@ -31,8 +31,7 @@ using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Serialize;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -40,7 +39,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     [NonSerializableBaseType]
     public class WmsRasterLayerConfigViewModel : ViewModelBase
     {
-        private WmsRasterLayer wmsRasterLayer;
+        private WmsAsyncLayer wmsRasterLayer;
         private WmsLayerViewModel selectedLayer;
         [NonSerialized]
         private BitmapImage previewSource;
@@ -240,7 +239,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        public WmsRasterLayer WmsRasterLayer
+        public WmsAsyncLayer WmsAsyncLayer
         {
             get { return wmsRasterLayer; }
         }
@@ -277,7 +276,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (addLayerCommand == null)
                 {
-                    addLayerCommand = new ObservedCommand(AddServerLayer, () => WmsRasterLayer != null && SelectedLayer != null);
+                    addLayerCommand = new ObservedCommand(AddServerLayer, () => WmsAsyncLayer != null && SelectedLayer != null);
                 }
                 return addLayerCommand;
             }
@@ -299,7 +298,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             if (Uri.IsWellFormedUriString(WmsServerUrl, UriKind.Absolute))
             {
-                if (WmsRasterLayer == null)
+                if (WmsAsyncLayer == null)
                 {
                     InitializeWmsRasterLayer();
                 }
@@ -315,12 +314,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                         {
-                            WmsRasterLayer.Credentials = new NetworkCredential(UserName, Password);
+                            WmsAsyncLayer.Credentials = new NetworkCredential(UserName, Password);
                         }
-                        if (!WmsRasterLayer.IsOpen) WmsRasterLayer.Open();
-                        styleNames = WmsRasterLayer.GetServerStyleNames();
-                        outputFormats = WmsRasterLayer.GetServerOutputFormats();
-                        serverLayerNames = WmsRasterLayer.GetServerLayerNames();
+                        if (!WmsAsyncLayer.IsOpen) WmsAsyncLayer.Open();
+                        styleNames = WmsAsyncLayer.GetServerStyleNames();
+                        outputFormats = WmsAsyncLayer.GetServerOutputFormats();
+                        serverLayerNames = WmsAsyncLayer.GetServerLayerNames();
                     }
                     catch (Exception ex)
                     {
@@ -372,14 +371,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void InitializeWmsRasterLayer()
         {
-            wmsRasterLayer = new WmsRasterLayer(new Uri(wmsServerUrl, UriKind.Absolute));
+            wmsRasterLayer = new WmsAsyncLayer(new Uri(wmsServerUrl, UriKind.Absolute));
             wmsRasterLayer.UpperThreshold = double.MaxValue;
             wmsRasterLayer.LowerThreshold = double.MinValue;
         }
 
         private void AddServerLayer()
         {
-            if (WmsRasterLayer != null && SelectedLayer != null)
+            if (WmsAsyncLayer != null && SelectedLayer != null)
             {
                 if (!string.IsNullOrEmpty(parameters))
                 {
@@ -391,25 +390,25 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         {
                             string paraKey = item.Substring(0, index);
                             string paraValue = item.Remove(0, index + 1);
-                            if (!WmsRasterLayer.Parameters.ContainsKey(paraKey))
+                            if (!WmsAsyncLayer.Parameters.ContainsKey(paraKey))
                             {
-                                WmsRasterLayer.Parameters.Add(paraKey, paraValue);
+                                WmsAsyncLayer.Parameters.Add(paraKey, paraValue);
                             }
                         }
                         else
                             continue;
                     }
                 }
-                WmsRasterLayer.ActiveLayerNames.Add(SelectedLayer.Name);
-                WmsRasterLayer.Exceptions = "application/vnd.ogc.se_xmld";
-                WmsRasterLayer.Name = Name;
+                WmsAsyncLayer.ActiveLayerNames.Add(SelectedLayer.Name);
+                WmsAsyncLayer.Exceptions = "application/vnd.ogc.se_xmld";
+                WmsAsyncLayer.Name = Name;
                 if (!string.IsNullOrEmpty(SelectedFormat))
                 {
-                    WmsRasterLayer.OutputFormat = SelectedFormat;
+                    WmsAsyncLayer.OutputFormat = SelectedFormat;
                 }
-                if (!string.IsNullOrEmpty(SelectedStyle) && !WmsRasterLayer.ActiveStyleNames.Contains(SelectedStyle))
+                if (!string.IsNullOrEmpty(SelectedStyle) && !WmsAsyncLayer.ActiveStyleNames.Contains(SelectedStyle))
                 {
-                    WmsRasterLayer.ActiveStyleNames.Add(SelectedStyle);
+                    WmsAsyncLayer.ActiveStyleNames.Add(SelectedStyle);
                 }
 
                 Messenger.Default.Send(true, this);
@@ -445,7 +444,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void DrawPreview()
         {
-            if (WmsRasterLayer == null)
+            if (WmsAsyncLayer == null)
             {
                 InitializeWmsRasterLayer();
             }
@@ -453,14 +452,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             MemoryStream bitmapMemory = null;
             try
             {
-                WmsRasterLayer.Open();
-                WmsRasterLayer.TimeoutInSecond = 30;
-                WmsRasterLayer.ActiveLayerNames.Clear();
-                WmsRasterLayer.ActiveLayerNames.Add(SelectedLayer.Name);
+                WmsAsyncLayer.Open();
+                WmsAsyncLayer.TimeoutInSeconds = 30;
+                WmsAsyncLayer.ActiveLayerNames.Clear();
+                WmsAsyncLayer.ActiveLayerNames.Add(SelectedLayer.Name);
 
                 MapEngine mapEngine = new MapEngine();
-                mapEngine.StaticLayers.Add(WmsRasterLayer);
-                mapEngine.CurrentExtent = WmsRasterLayer.GetBoundingBox();
+                mapEngine.StaticLayers.Add(new WmsAsyncLayerAdapter(WmsAsyncLayer));
+                mapEngine.CurrentExtent = WmsAsyncLayer.GetBoundingBox();
 
                 previewBitmap = new Bitmap(125, 125);
                 mapEngine.DrawStaticLayers(previewBitmap, GeographyUnit.DecimalDegree);
@@ -521,3 +520,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

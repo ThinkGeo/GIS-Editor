@@ -760,11 +760,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
 
             int i = -1;
-            var list = csvDataRecord.Values.Select(value =>
+            var list = csvDataRecord.Values.AsEnumerable().Select(value =>
             {
                 i++;
                 return csvDataRecord.HeaderRecord[i] + ':' + value;
-            });
+            }).ToList();
 
             switch (mappingType)
             {

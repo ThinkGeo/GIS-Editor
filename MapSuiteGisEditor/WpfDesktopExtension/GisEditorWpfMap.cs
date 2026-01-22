@@ -108,6 +108,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         [NonSerialized]
         private Grid progressGrid;
 
+        [NonSerialized]
+        private Grid toolsGrid;
+
         [Obfuscation(Exclude = true)]
         private AdornmentOverlay fixedAdornmentOverlay;
 
@@ -154,6 +157,18 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         public GisEditorWpfMap()
             : this(string.Empty)
         { }
+
+        public Grid ToolsGrid
+        {
+            get
+            {
+                if (toolsGrid == null)
+                {
+                    toolsGrid = new Grid();
+                }
+                return toolsGrid;
+            }
+        }
 
         public GisEditorWpfMap(string name)
             : base()
@@ -426,7 +441,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (worldExtent == null) worldExtent = GetLayersBoundingBox(parameters.LayersToAdd);
 
             //step 3
-            AddLayersToLayerOverlay(parameters);
+            var _ = AddLayersToLayerOverlay(parameters);
             OnAddedLayersToActiveOverlay(parameters);
 
             if (parameters.LayersAdded != null)
@@ -457,7 +472,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             await RefreshCachesAndZoomToExtent(isFirstLayer, isFirstLayerAfterBase, worldExtent, newLayersInSight, parameters);
         }
 
-        protected void OnAddingLayersToActiveOverlay(AddLayersParameters parameters)
+        private void OnAddingLayersToActiveOverlay(AddLayersParameters parameters)
         {
             EventHandler<AddingLayersToActiveOverlayEventArgs> handler = AddingLayersToActiveOverlay;
             if (handler != null)
@@ -466,7 +481,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        protected void OnAddedLayersToActiveOverlay(AddLayersParameters parameters)
+        private void OnAddedLayersToActiveOverlay(AddLayersParameters parameters)
         {
             EventHandler<AddedLayersToActiveOverlayEventArgs> handler = AddedLayersToActiveOverlay;
             if (handler != null)

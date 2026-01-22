@@ -22,7 +22,8 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Windows;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
+using System.Globalization;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -109,7 +110,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     try
                     {
-                        Collection<string> newDbNames = PostgreSqlFeatureSource.GetDatabaseNames(serverName, portName,
+                        Collection<string> newDbNames = PostgreSqlFeatureSource.GetDatabaseNames(serverName, portName.ToString(CultureInfo.InvariantCulture),
                             userName, password);
                         databaseNames.Clear();
 

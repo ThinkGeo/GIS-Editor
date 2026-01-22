@@ -19,8 +19,9 @@
 
 using System;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

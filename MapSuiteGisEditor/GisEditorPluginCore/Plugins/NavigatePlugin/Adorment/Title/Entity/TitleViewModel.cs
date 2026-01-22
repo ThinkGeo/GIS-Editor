@@ -20,8 +20,7 @@
 using System;
 using System.Windows.Media;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -115,7 +114,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get
             {
                 if (fontColor == null)
-                    fontColor = new GeoSolidBrush(GeoColor.SimpleColors.Black);
+                    fontColor = new GeoSolidBrush(GeoColors.Black);
                 return fontColor;
             }
             set
@@ -224,7 +223,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get
             {
                 if (haloColor == null)
-                    haloColor = new GeoSolidBrush(GeoColor.StandardColors.White);
+                    haloColor = new GeoSolidBrush(GeoColors.White);
                 return haloColor;
             }
             set
@@ -259,7 +258,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get
             {
                 if (maskFillColor == null)
-                    maskFillColor = new GeoSolidBrush(GeoColor.StandardColors.White);
+                    maskFillColor = new GeoSolidBrush(GeoColors.White);
                 return maskFillColor;
             }
             set
@@ -274,7 +273,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get
             {
                 if (maskOutlineColor == null)
-                    maskOutlineColor = new GeoSolidBrush(GeoColor.SimpleColors.Black);
+                    maskOutlineColor = new GeoSolidBrush(GeoColors.Black);
                 return maskOutlineColor;
             }
             set

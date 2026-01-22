@@ -23,8 +23,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -210,7 +210,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
 
             if (featureSource.IsOpen) featureSource.Close();
-            if (featureSource.Projection != null) featureSource.Projection.Close();
 
             var plugin = GisEditor.TaskManager.GetActiveTaskPlugins<SimplifyTaskPlugin>().FirstOrDefault();
             if (plugin != null)

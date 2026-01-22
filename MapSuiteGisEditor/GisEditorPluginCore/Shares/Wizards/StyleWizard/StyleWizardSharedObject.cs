@@ -21,7 +21,7 @@ using System;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using System.Collections.Generic;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

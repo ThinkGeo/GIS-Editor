@@ -23,9 +23,9 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -107,7 +107,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     int index = int.Parse(settings.GlobalSettings[addedScaleIndexKey]);
                     if (GisEditor.ActiveMap != null)
                     {
-                        GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Insert(index, new PreciseZoomLevel(value));
+                        if (index >= 0 && index <= GisEditor.ActiveMap.ZoomScales.Count && !GisEditor.ActiveMap.ZoomScales.Any(s => Math.Abs(s - value) < 1))
+                        {
+                            GisEditor.ActiveMap.ZoomScales.Insert(index, value);
+                        }
                     }
                 }
             }
@@ -118,20 +121,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             StorableSettings settings = base.GetSettingsCore();
             if (GisEditor.ActiveMap != null)
             {
-                Collection<ZoomLevel> zoomLevels = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels;
-                ZoomLevel zoomLevel = zoomLevels.FirstOrDefault(c => c is PreciseZoomLevel);
-                if (zoomLevel != null)
+                var defaultScales = new GoogleMapsZoomLevelSet().GetZoomLevels().Select(z => z.Scale).ToList();
+                var addedScale = GisEditor.ActiveMap.ZoomScales.FirstOrDefault(s => !defaultScales.Any(d => Math.Abs(d - s) < 1));
+                if (addedScale > 0)
                 {
-                    settings.GlobalSettings[addedScaleKey] = zoomLevel.Scale.ToString(CultureInfo.InvariantCulture);
-                    settings.GlobalSettings[addedScaleIndexKey] = zoomLevels.IndexOf(zoomLevel).ToString(CultureInfo.InvariantCulture);
+                    settings.GlobalSettings[addedScaleKey] = addedScale.ToString(CultureInfo.InvariantCulture);
+                    settings.GlobalSettings[addedScaleIndexKey] = GisEditor.ActiveMap.ZoomScales.IndexOf(addedScale).ToString(CultureInfo.InvariantCulture);
                 }
             }
             return settings;
         }
 
-        private void WpfMap_CurrentScaleChanged(object sender, CurrentScaleChangedWpfMapEventArgs e)
+        private void WpfMap_CurrentScaleChanged(object sender, CurrentScaleChangedMapViewEventArgs e)
         {
-            double currentScale = e.CurrentScale * Conversion.ConvertMeasureUnits(1, DistanceUnit.Inch, viewModel.SelectedDistanceUnit);
+            double currentScale = e.NewScale * Conversion.ConvertMeasureUnits(1, DistanceUnit.Inch, viewModel.SelectedDistanceUnit);
             viewModel.UpdateValues();
             viewModel.SelectedScale = viewModel.Scales.FirstOrDefault(s => Math.Abs(s.Scale - currentScale) < 1);
         }

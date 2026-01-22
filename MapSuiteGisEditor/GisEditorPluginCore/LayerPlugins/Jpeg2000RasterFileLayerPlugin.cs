@@ -20,7 +20,7 @@
 using System;
 using System.IO;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -39,19 +39,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Index = LayerPluginOrder.Jpeg2000RasterFileLayerPlugin;
             RequireWorldFile = true;
 
-            DataSourceResolveToolCore = new FileDataSourceResolveTool<Jpeg2000RasterLayer>(ExtensionFilter,
-                l => l.PathFilename,
-                (l, newPathFilename) => l.PathFilename = newPathFilename);
+            DataSourceResolveToolCore = new FileDataSourceResolveTool<Jpeg2000GdalRasterLayer>(ExtensionFilter,
+                l => l.ImagePath,
+                (l, newPathFilename) => l.ImagePath = newPathFilename);
         }
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(Jpeg2000RasterLayer);
+            return typeof(Jpeg2000GdalRasterLayer);
         }
 
         protected override Uri GetUriCore(Layer layer)
         {
-            return new Uri(layer.Cast<Jpeg2000RasterLayer>().PathFilename);
+            return new Uri(layer.Cast<Jpeg2000GdalRasterLayer>().ImagePath);
         }
 
         [Obsolete("This method is obsoleted, please call DataSourceResolver.IsDataSourceAvailable(Layer) instead.")]
@@ -68,7 +68,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override RasterLayer GetRasterLayer(Uri uri)
         {
-            RasterLayer layer = new Jpeg2000RasterLayer(Path.GetFullPath(uri.LocalPath));
+            RasterLayer layer = new Jpeg2000GdalRasterLayer(Path.GetFullPath(uri.LocalPath));
             return layer;
         }
     }

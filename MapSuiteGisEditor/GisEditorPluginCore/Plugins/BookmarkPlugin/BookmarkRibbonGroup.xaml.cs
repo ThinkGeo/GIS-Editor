@@ -24,7 +24,9 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+using ThinkGeo.MapSuite.WpfDesktop.Extension;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

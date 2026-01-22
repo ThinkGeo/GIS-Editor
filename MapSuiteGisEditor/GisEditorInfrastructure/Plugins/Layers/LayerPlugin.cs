@@ -51,7 +51,6 @@ namespace ThinkGeo.MapSuite.GisEditor
         private string extensionFilter;
 
         [Obfuscation]
-        private bool canResolveDataSource;
 
         [Obfuscation]
         [NonSerialized]

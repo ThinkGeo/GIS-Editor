@@ -19,7 +19,7 @@
 
 using System;
 using System.Collections.ObjectModel;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -61,7 +61,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override void SetRequireIndexCore(FeatureLayer featureLayer, bool requireIndex)
         {
-            ((KmlFeatureLayer)featureLayer).RequireIndex = requireIndex;
+            //((KmlFeatureLayer)featureLayer).RequireIndex = requireIndex;
         }
     }
 }

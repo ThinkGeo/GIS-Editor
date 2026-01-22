@@ -36,11 +36,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -129,18 +127,18 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             dpi = 96;
             zooms = new Collection<string>();
             selectedSizeUnit = SizeUnit.Inches;
-            foreach (ZoomLevel level in PrintMap.ZoomLevelSet.GetZoomLevels())
-            {
-                Zooms.Add(((PrinterZoomLevelSet)PrintMap.ZoomLevelSet).GetZoomPercentage(level) + "%");
-            }
+            //foreach (ZoomLevel level in PrintMap.ZoomScales.GetZoomLevels())
+            //{
+            //    Zooms.Add(((PrinterZoomLevelSet)PrintMap.ZoomLevelSet).GetZoomPercentage(level) + "%");
+            //}
             sizeBoundingBoxes = new Dictionary<PrinterPageSize, RectangleShape>();
             foreach (PrinterPageSize item in Enum.GetValues(typeof(PrinterPageSize)))
             {
                 if (item != PrinterPageSize.Custom) sizeBoundingBoxes.Add(item, GetPageBoundingBox(PrintingUnit.Inch, item));
             }
-            defaultAreaStyle = new AreaStyle(new GeoPen(GeoColor.StandardColors.Black), new GeoSolidBrush(GeoColor.StandardColors.White)) { Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginAreaHeader") };
-            defaultLineStyle = new LineStyle(new GeoPen(GeoColor.StandardColors.Black)) { Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginLineHeader") };
-            defaultPointStyle = new PointStyle(PointSymbolType.Circle, new GeoSolidBrush(GeoColor.StandardColors.White), new GeoPen(GeoColor.StandardColors.Black), 8) { Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginPointHeader") };
+            defaultAreaStyle = new AreaStyle(new GeoPen(GeoColors.Black), new GeoSolidBrush(GeoColors.White)) { Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginAreaHeader") };
+            defaultLineStyle = new LineStyle(new GeoPen(GeoColors.Black)) { Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginLineHeader") };
+            defaultPointStyle = new PointStyle(PointSymbolType.Circle, 8, new GeoSolidBrush(GeoColors.White), new GeoPen(GeoColors.Black)) { Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginPointHeader") };
         }
 
         public string CurrentScale
@@ -176,19 +174,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         double rightScale = Conversion.ConvertMeasureUnits(scale, RightUnit, DistanceUnit.Meter);
                         double zoomToScale = rightScale / leftScale;
                         ZoomLevel zoomLevel = new ZoomLevel(Math.Round(zoomToScale, 6));
-                        PrintMap.ZoomLevelSet.CustomZoomLevels.Clear();
-                        List<ZoomLevel> zoomLevels = PrintMap.ZoomLevelSet.GetZoomLevels().ToList();
-                        foreach (var item in zoomLevels)
+                        //PrintMap.ZoomLevelSet.CustomZoomLevels.Clear();
+                        //List<ZoomLevel> zoomLevels = PrintMap.ZoomLevelSet.GetZoomLevels().ToList();
+                        foreach (var item in PrintMap.ZoomScales)
                         {
-                            item.Scale = Math.Round(item.Scale, 6);
-                            if (item.Scale < zoomToScale && !PrintMap.ZoomLevelSet.CustomZoomLevels.Contains(zoomLevel))
+                            //item.Scale = Math.Round(item.Scale, 6);
+                            //if (item.Scale < zoomToScale && !PrintMap.ZoomLevelSet.CustomZoomLevels.Contains(zoomLevel))
+                            if (item < zoomToScale)
                             {
-                                PrintMap.ZoomLevelSet.CustomZoomLevels.Add(zoomLevel);
+                                PrintMap.ZoomScales.Add(item);
                             }
-                            PrintMap.ZoomLevelSet.CustomZoomLevels.Add(item);
                         }
                         PrintMap.CurrentScale = zoomToScale;
-                        PrintMap.Refresh();
+                        PrintMap.RefreshAsync();
                     },
                     () =>
                     {
@@ -299,7 +297,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     PrintMap.CurrentExtent = pagePrinterLayer.GetBoundingBox();
                 }
                 ChangeScaleBarLineWidth();
-                PrintMap.Refresh();
+                PrintMap.RefreshAsync();
             }
         }
 
@@ -331,7 +329,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     });
                 }
 
-                PrintMap.Refresh();
+                PrintMap.RefreshAsync();
             }
         }
 
@@ -344,7 +342,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 RaisePropertyChanged(() => Width);
                 bool needConvert = selectedSizeUnit == SizeUnit.Inches || selectedSizeUnit == SizeUnit.Cm;
                 pagePrinterLayer.CustomWidth = needConvert ? (float)(Width * dpi) : Width;
-                PrintMap.Refresh();
+                PrintMap.RefreshAsync();
             }
         }
 
@@ -358,7 +356,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 bool needConvert = selectedSizeUnit == SizeUnit.Inches || selectedSizeUnit == SizeUnit.Cm;
                 pagePrinterLayer.CustomHeight = needConvert ? (float)(Height * dpi) : Height;
-                PrintMap.Refresh();
+                PrintMap.RefreshAsync();
             }
         }
 
@@ -409,7 +407,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     double zoomStr = Double.Parse(currentZoom.Replace("%", ""));
                     PrintMap.CurrentScale = PrinterHelper.GetPointsPerGeographyUnit(PrintMap.MapUnit) / (zoomStr / 100);
-                    PrintMap.Refresh();
+                    PrintMap.RefreshAsync();
                 }
 
                 skipRefresh = false;
@@ -637,45 +635,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         if (CheckAllMapElementsHasLayers())
                         {
-                            PdfDocument pdfDocument = null;
-                            Bitmap bitmap = null;
-                            try
-                            {
-                                pdfDocument = new PdfDocument();
-                                PdfPage pdfPage = pdfDocument.AddPage();
-                                pdfPage.Orientation = pagePrinterLayer.Orientation == PrinterOrientation.Portrait ? PageOrientation.Portrait : PageOrientation.Landscape;
-                                pdfPage.Size = GetPdfPageSize(pagePrinterLayer.PageSize);
-
-                                PdfGeoCanvas pdfGeoCanvas = new PdfGeoCanvas();
-                                pdfGeoCanvas.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-                                pdfGeoCanvas.BeginDrawing(pdfPage, pagePrinterLayer.GetBoundingBox(), PrintMap.MapUnit);
-
-                                foreach (var printerLayer in printerOverlay.PrinterLayers.Where(l => !(l is PagePrinterLayer)))
-                                {
-                                    printerLayer.IsDrawing = true;
-                                    SaveAndRestoreMapPrinterLayer(printerLayer, tmpLayer => tmpLayer.Draw(pdfGeoCanvas, new Collection<SimpleCandidate>()));
-                                    printerLayer.IsDrawing = false;
-                                }
-
-                                pdfGeoCanvas.EndDrawing();
-                                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                                saveFileDialog.Filter = "Pdf Document(*.pdf)|*.pdf";
-                                if (saveFileDialog.ShowDialog().GetValueOrDefault())
-                                {
-                                    pdfDocument.Save(saveFileDialog.FileName);
-                                    Process.Start(saveFileDialog.FileName);
-                                }
-                            }
-                            catch (NotSupportedException ex)
-                            {
-                                GisEditor.LoggerManager.Log(LoggerLevel.Debug, ex.Message, new ExceptionInfo(ex));
-                                System.Windows.Forms.MessageBox.Show(ex.Message, GisEditor.LanguageManager.GetStringResource("PrintNotSupportWarningCaption"), System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                            }
-                            finally
-                            {
-                                if (pdfDocument != null) pdfDocument.Dispose();
-                                if (bitmap != null) bitmap.Dispose();
-                            }
+                            System.Windows.Forms.MessageBox.Show(
+                                "PDF export is not available in the ThinkGeo.Core build yet.",
+                                GisEditor.LanguageManager.GetStringResource("PrintNotSupportWarningCaption"),
+                                System.Windows.Forms.MessageBoxButtons.OK,
+                                System.Windows.Forms.MessageBoxIcon.Information);
                         }
                     });
                 }
@@ -819,7 +783,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             {
                                 ApplySignature();
                             }
-                            PrintMap.Refresh();
+                            PrintMap.RefreshAsync();
                         }
                     });
                 }
@@ -888,7 +852,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         {
                             ApplySignature();
                         }
-                        PrintMap.Refresh();
+                        PrintMap.RefreshAsync();
                     });
                 }
                 return newLayoutCommand;
@@ -940,7 +904,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             if (printerOverlay.PrinterLayers.Contains(selectedSignature.SignaturePrinterLayer))
                             {
                                 printerOverlay.PrinterLayers.Remove(selectedSignature.SignaturePrinterLayer);
-                                printMap.Refresh();
+                                printMap.RefreshAsync();
                             }
                             signatures.Remove(selectedSignature);
                             if (signatures.Count > 0)
@@ -1010,7 +974,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     applySignatureCommand = new ObservedCommand(() =>
                     {
                         ApplySignature();
-                        printMap.Refresh();
+                        PrintMap.RefreshAsync();
 
                     }, () => selectedSignature != null);
                 }
@@ -1045,11 +1009,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (PrintMap.ActualWidth != 0)
                 {
-                    PrinterZoomLevelSet printerZoomLevelSet = (PrinterZoomLevelSet)PrintMap.ZoomLevelSet;
-                    ZoomLevel currentZoomLevel = printerZoomLevelSet.GetZoomLevel(PrintMap.CurrentExtent, PrintMap.ActualWidth, PrintMap.MapUnit);
+                    //PrinterZoomLevelSet printerZoomLevelSet = (PrinterZoomLevelSet)PrintMap.ZoomLevelSet;
+                    //ZoomLevel currentZoomLevel = printerZoomLevelSet.GetZoomLevel(PrintMap.CurrentExtent, PrintMap.ActualWidth, PrintMap.MapUnit);
 
-                    skipRefresh = true;
-                    CurrentZoom = (int)printerZoomLevelSet.GetZoomPercentage(currentZoomLevel) + "%";
+                    //skipRefresh = true;
+                    //CurrentZoom = (int)printerZoomLevelSet.GetZoomPercentage(currentZoomLevel) + "%";
                 }
             };
 
@@ -1119,7 +1083,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 try
                 {
                     if (loadFromFile)
-                        serializationWrapper = GisEditor.Serializer.Deserialize(layout, GeoFileReadWriteMode.Read) as PrintLayersSerializeProxy;
+                        serializationWrapper = GisEditor.Serializer.Deserialize(layout, FileAccess.Read) as PrintLayersSerializeProxy;
                     else
                         serializationWrapper = GisEditor.Serializer.Deserialize(layout) as PrintLayersSerializeProxy;
                     if (serializationWrapper != null)
@@ -1183,7 +1147,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         {
                             printMap.CurrentExtent = pagePrinterLayer.GetBoundingBox();
                         });
-                        PrintMap.Refresh();
+                        PrintMap.RefreshAsync();
                         IsBusy = false;
                     }));
                 }
@@ -1368,11 +1332,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             PrintMap = new GisEditorWpfMap();
             PrintMap.IsMapLoaded = true;
             PrintMap.TrackOverlay.TrackMode = TrackMode.None;
-            PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle = new AreaStyle(new GeoPen(GeoColor.StandardColors.Black), new GeoSolidBrush(GeoColor.StandardColors.White));
+            PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle = new AreaStyle(new GeoPen(GeoColors.Black), new GeoSolidBrush(GeoColors.White));
             PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.DrawingLevel = DrawingLevel.LabelLevel;
-            PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle = new LineStyle(new GeoPen(GeoColor.StandardColors.Black, 2), new GeoPen(GeoColor.StandardColors.Black, 1));
+            PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle = new LineStyle(new GeoPen(GeoColors.Black, 2), new GeoPen(GeoColors.Black, 1));
             PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle.SetDrawingLevel();
-            PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = new PointStyle(PointSymbolType.Circle, new GeoSolidBrush(GeoColor.StandardColors.White), new GeoPen(GeoColor.StandardColors.Black), 8);
+            PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = new PointStyle(PointSymbolType.Circle, 8, new GeoSolidBrush(GeoColors.White), new GeoPen(GeoColors.Black));
             PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle.DrawingLevel = DrawingLevel.LabelLevel;
             PrintMap.TrackOverlay.TrackShapeLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
             PrintMap.TrackOverlay.TrackEnded += new EventHandler<TrackEndedTrackInteractiveOverlayEventArgs>(TrackOverlay_TrackEnded);
@@ -1383,8 +1347,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (scaleLine != null) PrintMap.MapTools.Remove(scaleLine);
             PrintMap.FixedAdornmentOverlay.Layers.Clear();
             PrintMap.FixedAdornmentOverlay.IsVisible = false;
-            PrintMap.ExtentOverlay.DoubleLeftClickMode = MapDoubleLeftClickMode.Disabled;
-            PrintMap.ExtentOverlay.DoubleRightClickMode = MapDoubleRightClickMode.Disabled;
+            PrintMap.ExtentOverlay.DoubleLeftClickMode = MapDoubleClickMode.Disabled;
+            PrintMap.ExtentOverlay.DoubleRightClickMode = MapDoubleClickMode.Disabled;
             PrintMap.MapDoubleClick += (s, e) =>
             {
                 if (PrintMap.InteractiveOverlays.Contains("PrintPreviewOverlay"))
@@ -1405,8 +1369,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             };
 
             PrintMap.MapUnit = GeographyUnit.Meter;
-            PrintMap.ZoomLevelSet = new PrinterZoomLevelSet(PrintMap.MapUnit, PrinterHelper.GetPointsPerGeographyUnit(PrintMap.MapUnit));
-            PrintMap.BackgroundOverlay.BackgroundBrush = new GeoSolidBrush(GeoColor.StandardColors.LightGray);
+         //   PrintMap.ZoomLevelSet = new PrinterZoomLevelSet(PrintMap.MapUnit, PrinterHelper.GetPointsPerGeographyUnit(PrintMap.MapUnit));
+            PrintMap.BackgroundOverlay.BackgroundBrush = new GeoSolidBrush(GeoColors.LightGray);
 
             PrinterOverlay = new AdvancedPrinterInteractiveOverlay { DrawingExceptionMode = DrawingExceptionMode.DrawException };
 
@@ -1425,7 +1389,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             PrinterOverlay.MapMouseClick += new EventHandler<MapMouseClickInteractiveOverlayEventArgs>(PrinterOverlay_MapMouseClick);
             PrintMap.CurrentExtent = new RectangleShape(-631.249660084684, 662.599643203345, 631.249660084684, -662.599643203345);
 
-            PrintMap.MinimumScale = PrintMap.ZoomLevelSet.ZoomLevel20.Scale;
+            //PrintMap.MinimumScale = PrintMap.ZoomLevelSet.ZoomLevel20.Scale;
 
             PrintMap.ContextMenu = null;
         }
@@ -1441,8 +1405,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else featureBBox.ScaleUp(2);
 
-            var height = (int)(featureBBox.Height / PrintMap.CurrentExtent.Height * printerOverlay.MapArguments.ActualHeight);
-            var width = (int)(featureBBox.Width / PrintMap.CurrentExtent.Width * printerOverlay.MapArguments.ActualWidth);
+            var height = (int)(featureBBox.Height / PrintMap.CurrentExtent.Height * printerOverlay.MapArguments.MapHeight);
+            var width = (int)(featureBBox.Width / PrintMap.CurrentExtent.Width * printerOverlay.MapArguments.MapWidth);
             if (height > 0 && width > 0)
             {
                 InMemoryFeatureLayer featureLayer = new InMemoryFeatureLayer();
@@ -1460,7 +1424,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 drawingFeaturePrinterLayer.SetPosition(featureBBox);
                 printerOverlay.PrinterLayers.Add(drawingFeaturePrinterLayer);
                 printMap.TrackOverlay.TrackShapeLayer.InternalFeatures.Clear();
-                printMap.Refresh();
+                PrintMap.RefreshAsync();
                 printMap.TrackOverlay.TrackMode = TrackMode.None;
                 IsPoint = false;
                 IsLine = false;
@@ -1562,7 +1526,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                 //To clear cache and make this layer can be redrawn
                 mapPrinterLayer.IsDrawing = true;
-                printMap.Refresh();
+                PrintMap.RefreshAsync();
                 mapPrinterLayer.IsDrawing = false;
             }
         }
@@ -1594,7 +1558,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var printerLayer = GetPrinterLayerFromMenuItemTag<MapPrinterLayer>(sender);
             var viewModel = new ScaleBarElementViewModel(printerLayer);
             printerOverlay.PrinterLayers.Add(ScaleBarPrinterLayerAdapter.GetScaleBarPrinterLayer(viewModel));
-            printMap.Refresh();
+            PrintMap.RefreshAsync();
         }
 
         private void AddScaleLineItemClick(object sender, RoutedEventArgs e)
@@ -1602,7 +1566,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var printerLayer = GetPrinterLayerFromMenuItemTag<MapPrinterLayer>(sender);
             var viewModel = new ScaleLineElementViewModel(printerLayer);
             printerOverlay.PrinterLayers.Add(ScaleLinePrinterLayerAdapter.GetScaleLinePrinterLayer(viewModel));
-            printMap.Refresh();
+            PrintMap.RefreshAsync();
         }
 
         private void LockAspectRatioMenuItemClick(object sender, RoutedEventArgs e)
@@ -1652,7 +1616,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     interactionArguments.WorldX = newCenterPoint.X;
                     interactionArguments.WorldY = newCenterPoint.Y;
                     printerOverlay.MouseClick(interactionArguments);
-                    printerOverlay.Refresh();
+                    printerOverlay.RefreshAsync();
                 }
             }
         }
@@ -1667,7 +1631,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var printerLayer = GetPrinterLayerFromMenuItemTag<PrinterLayer>(sender);
             printerOverlay.PrinterLayers.Remove(printerLayer);
             printerOverlay.PrinterLayers.Insert(1, printerLayer);
-            printMap.Refresh();
+            PrintMap.RefreshAsync();
         }
 
         private void SendBackwardMenuItemClick(object sender, RoutedEventArgs e)
@@ -1678,7 +1642,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 printerOverlay.PrinterLayers.Remove(printerLayer);
                 printerOverlay.PrinterLayers.Insert(index - 1, printerLayer);
-                printMap.Refresh();
+                PrintMap.RefreshAsync();
             }
         }
 
@@ -1687,7 +1651,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var printerLayer = GetPrinterLayerFromMenuItemTag<PrinterLayer>(sender);
             printerOverlay.PrinterLayers.Remove(printerLayer);
             printerOverlay.PrinterLayers.Add(printerLayer);
-            printMap.Refresh();
+            PrintMap.RefreshAsync();
         }
 
         private void BringForwardMenuItemClick(object sender, RoutedEventArgs e)
@@ -1698,7 +1662,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 printerOverlay.PrinterLayers.RemoveAt(index);
                 printerOverlay.PrinterLayers.Insert(index + 1, printerLayer);
-                printMap.Refresh();
+                PrintMap.RefreshAsync();
             }
         }
 
@@ -1745,7 +1709,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             copiedPrinterLayer.SetPosition(pos.Width, pos.Height, 0, 0, PrintingUnit.Inch);
             printerOverlay.PrinterLayers.Add(copiedPrinterLayer);
             copiedPrinterLayer = null;
-            printMap.Refresh();
+            PrintMap.RefreshAsync();
         }
 
         internal bool EditTrackLayerAreaStyle(InMemoryFeatureLayer inMemoryFeatureLayer)
@@ -1896,13 +1860,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void ZoomTo(MapPrinterLayer mapPrinterLayer, double newScale)
         {
             var mapBoundingBox = mapPrinterLayer.GetBoundingBox();
-            mapPrinterLayer.MapExtent = ExtentHelper.ZoomToScale(newScale, mapPrinterLayer.MapExtent, mapPrinterLayer.MapUnit, (float)mapBoundingBox.Width, (float)mapBoundingBox.Height);
-            PrintMap.Refresh();
+            mapPrinterLayer.MapExtent = MapUtil.ZoomToScale(newScale, mapPrinterLayer.MapExtent, mapPrinterLayer.MapUnit, (float)mapBoundingBox.Width, (float)mapBoundingBox.Height);
+            PrintMap.RefreshAsync();
         }
 
         private void SavePrinterLayerLayout(string layoutFilePath)
         {
-            Dictionary<SimplifyMapPrinterLayer, List<Layer>> layers = new Dictionary<SimplifyMapPrinterLayer, List<Layer>>();
+            Dictionary<SimplifyMapPrinterLayer, List<LayerBase>> layers = new Dictionary<SimplifyMapPrinterLayer, List<LayerBase>>();
             PrintLayersSerializeProxy wrapper = new PrintLayersSerializeProxy(printerOverlay.PrinterLayers);
             wrapper.GridPrinterLayer = PrinterOverlay.GridLayer;
             foreach (var mapPrinterLayer in wrapper.PrinterLayers.Where(l => l.GetType() == typeof(SimplifyMapPrinterLayer)).OfType<SimplifyMapPrinterLayer>())
@@ -2015,7 +1979,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (isDragging)
             {
                 isDragging = false;
-                printMap.Refresh(printMap.InteractiveOverlays);
+                printMap.RefreshAsync();
             }
         }
 
@@ -2024,11 +1988,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (isDragging)
             {
                 System.Windows.Point currentPosition = e.GetPosition(printMap);
-                double currentResolution = printMap.CurrentResolution;
-                double offsetScreenX = currentPosition.X - originPosition.X;
-                double offsetScreenY = currentPosition.Y - originPosition.Y;
+                if (printMap.ActualWidth > 0 && printMap.ActualHeight > 0)
+                {
+                    var mapExtent = printMap.CurrentExtent;
+                    var originWorld = MapUtil.ToWorldCoordinate(mapExtent, (float)originPosition.X, (float)originPosition.Y, (float)printMap.ActualWidth, (float)printMap.ActualHeight);
+                    var currentWorld = MapUtil.ToWorldCoordinate(mapExtent, (float)currentPosition.X, (float)currentPosition.Y, (float)printMap.ActualWidth, (float)printMap.ActualHeight);
+                    var offsetX = originWorld.X - currentWorld.X;
+                    var offsetY = originWorld.Y - currentWorld.Y;
 
-                printMap.Pan(-offsetScreenX, offsetScreenY);
+                    var translated = mapExtent.CloneDeep() as RectangleShape ?? mapExtent;
+                    translated.TranslateByOffset(offsetX, offsetY);
+                    printMap.CurrentExtent = translated;
+                    printMap.RefreshAsync();
+                }
                 printMap.Cursor = GisEditorCursors.Grab;
                 originPosition = currentPosition;
                 e.Handled = true;
@@ -2045,3 +2017,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         #endregion drag events
     }
 }
+

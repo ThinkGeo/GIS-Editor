@@ -18,15 +18,16 @@
 
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -281,7 +282,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         }
 
                         resultLayer = targetLayerPlugin.CreateFeatureLayer(parameters);
-                        resultLayer.FeatureSource.Projection = proj4;
+                        resultLayer.FeatureSource.ProjectionConverter = proj4;
                         resultLayer = targetLayerPlugin.GetLayers(getLayerParameters).FirstOrDefault() as FeatureLayer;
                     }
                 }
@@ -300,7 +301,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         GisEditor.ActiveMap.RefreshActiveOverlay();
                         RefreshArgs refreshArgs = new RefreshArgs(null, "LoadToMapCore");
                         InvokeRefreshPlugins(GisEditor.UIManager, refreshArgs);
-                        GisEditor.ActiveMap.Refresh();
+                        GisEditor.ActiveMap.RefreshAsync();
                     }
                 }
             }
@@ -352,7 +353,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 });
 
                 overlay.TakeSnapshot();
-                overlay.Refresh();
+                overlay.RefreshAsync();
                 GisEditor.SelectionManager.ClearSelectedFeatures(sourceLayer);
             }
         }
@@ -371,7 +372,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 var targetLayers = new Collection<FeatureLayer>() { inMemoryFeatureLayer };
                 AddFeaturesToSelectedLayer(selectedFeaturesLayers, targetLayers);
-                GisEditor.ActiveMap.Refresh(GisEditor.ActiveMap.ActiveOverlay);
+                GisEditor.ActiveMap.RefreshAsync(GisEditor.ActiveMap.ActiveOverlay);
                 RefreshArgs refreshArgs = new RefreshArgs(GisEditor.ActiveMap, RefreshArgsDescription.AddLayerGroupCommandDescription);
                 GisEditor.UIManager.BeginRefreshPlugins(refreshArgs);
                 LayerOverlay overlay = GisEditor.ActiveMap.ActiveOverlay as LayerOverlay;
@@ -407,7 +408,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (selectedFeaturesLayers.Count > 1)
             {
                 AddFeaturesToSelectedLayer(selectedFeaturesLayers, existLayers);
-                GisEditor.ActiveMap.Refresh(GisEditor.ActiveMap.ActiveOverlay);
+                GisEditor.ActiveMap.RefreshAsync(GisEditor.ActiveMap.ActiveOverlay);
                 RefreshArgs refreshArgs = new RefreshArgs(GisEditor.ActiveMap, RefreshArgsDescription.AddLayerGroupCommandDescription);
                 GisEditor.UIManager.BeginRefreshPlugins(refreshArgs);
                 LayerOverlay overlay = GisEditor.ActiveMap.ActiveOverlay as LayerOverlay;
@@ -483,7 +484,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Collection<Feature> features = GisEditor.SelectionManager.GetSelectedFeatures();
             AddFeaturesToInMemoryFeatureLayer(inMemoryFeatureLayer, features);
 
-            GisEditor.ActiveMap.Refresh(GisEditor.ActiveMap.ActiveOverlay);
+            GisEditor.ActiveMap.RefreshAsync(GisEditor.ActiveMap.ActiveOverlay);
             RefreshArgs refreshArgs = new RefreshArgs(GisEditor.ActiveMap, RefreshArgsDescription.AddLayerGroupCommandDescription);
             GisEditor.UIManager.BeginRefreshPlugins(refreshArgs);
             LayerOverlay overlay = GisEditor.ActiveMap.ActiveOverlay as LayerOverlay;
@@ -517,7 +518,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void AddFeaturesToShapeFileFeatureLayer(ShapeFileFeatureLayer shapeFileFeatureLayer, Collection<Feature> features)
         {
-            shapeFileFeatureLayer.ReadWriteMode = GeoFileReadWriteMode.ReadWrite;
+            shapeFileFeatureLayer.ReadWriteMode = FileAccess.ReadWrite;
 
             shapeFileFeatureLayer.SafeProcess(() =>
             {
@@ -582,3 +583,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
     }
 }
+
+
+
+

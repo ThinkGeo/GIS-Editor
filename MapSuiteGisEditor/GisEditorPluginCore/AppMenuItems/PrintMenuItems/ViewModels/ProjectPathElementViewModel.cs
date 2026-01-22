@@ -25,10 +25,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -62,7 +61,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             fontName = new System.Windows.Media.FontFamily("Arial");
             fontSize = 12;
-            fontColor = new GeoSolidBrush(GeoColor.StandardColors.Black);
+            fontColor = new GeoSolidBrush(GeoColors.Black);
             dragMode = PrinterDragMode.Draggable;
             resizeMode = PrinterResizeMode.Resizable;
             this.projectPath = projectPath;
@@ -218,3 +217,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

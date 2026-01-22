@@ -26,10 +26,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -57,7 +56,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             addingColumnName = string.Empty;
             fontName = new System.Windows.Media.FontFamily("Arial");
-            fontColor = new GeoSolidBrush(GeoColor.StandardColors.Black);
+            fontColor = new GeoSolidBrush(GeoColors.Black);
             resizeMode = PrinterResizeMode.Resizable;
             dragMode = PrinterDragMode.Draggable;
             currentDataTable = new DataTable();

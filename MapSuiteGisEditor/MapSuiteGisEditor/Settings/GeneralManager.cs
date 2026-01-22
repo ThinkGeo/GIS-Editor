@@ -26,7 +26,7 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -39,6 +39,12 @@ namespace ThinkGeo.MapSuite.GisEditor
     [Obfuscation]
     public class GeneralManager : Manager
     {
+        private sealed class GeneralSettingHost : SettingUserControl
+        {
+            public GeneralSettingHost()
+            { }
+        }
+
         private static readonly string autoSaveKey = "AutoSaveKey";
         private static readonly string mouseCoordinateKey = typeof(MouseCoordinateType).FullName;
         private static readonly string windowLocationKey = "WindowLocation";
@@ -167,8 +173,12 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             if (generalSettingUI == null)
             {
-                generalSettingUI = new GeneralSettingUserControl();
-                generalSettingUI.DataContext = new GeneralSettingViewModel(this);
+                var host = new GeneralSettingHost();
+                host.Title = "GeneralSettingTitle";
+                host.Description = "GeneralOptionUserControlTitleText";
+                host.Content = new GeneralSettingUserControl();
+                host.DataContext = new GeneralSettingViewModel(this);
+                generalSettingUI = host;
             }
 
             return generalSettingUI;

@@ -27,12 +27,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
-using Style = ThinkGeo.MapSuite.Styles.Style;
+using Style = ThinkGeo.Core.Style;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -287,7 +286,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 featureLayer.Open();
                 if (featureLayer.FeatureSource.CanGetCountQuickly())
                 {
-                    int count = featureLayer.FeatureSource.GetCount();
+                    long count = featureLayer.FeatureSource.GetCount();
                     if (count > 500000)
                     {
                         //MessageBoxResult result = MessageBox.Show(string.Format("{0} contains a large amount of records, it might spend too much time to process. Do you want to continue?", featureLayer.Name), "Info", MessageBoxButton.YesNo, MessageBoxImage.Information);

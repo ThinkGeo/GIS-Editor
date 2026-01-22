@@ -27,10 +27,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.GisEditor.Toolkits;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -214,7 +213,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     try
                     {
-                        var shapeFileFeatureLayer = new ShapeFileFeatureLayer(fileName, GeoFileReadWriteMode.Read);
+                        var shapeFileFeatureLayer = new ShapeFileFeatureLayer(fileName, FileAccess.Read);
                         shapeFileFeatureLayer.Name = Path.GetFileNameWithoutExtension(fileName);
                         shapeFileFeatureLayer.Encoding = GetEncoding(fileName);
                         shapeFileFeatureLayer.SimplificationAreaInPixel = 4;
@@ -617,7 +616,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             string prjPath = Path.ChangeExtension(featureLayerStructureParameters.LayerUri.OriginalString, "prj");
             File.WriteAllText(prjPath, Proj4Projection.ConvertProj4ToPrj(featureLayerStructureParameters.Proj4ProjectionParametersString));
 
-            ShapeFileFeatureLayer resultLayer = new ShapeFileFeatureLayer(featureLayerStructureParameters.LayerUri.LocalPath, GeoFileReadWriteMode.ReadWrite);
+            ShapeFileFeatureLayer resultLayer = new ShapeFileFeatureLayer(featureLayerStructureParameters.LayerUri.LocalPath, FileAccess.ReadWrite);
 
             if (addedFeatures.Count > 0)
             {
@@ -819,7 +818,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        protected override LayerListItem GetLayerListItemCore(Layer layer)
+        protected override LayerListItem GetLayerListItemCore(LayerBase layer)
         {
             var shapeFileLayerListItem = base.GetLayerListItemCore(layer);
             shapeFileLayerListItem.Name = layer.Name;
@@ -870,8 +869,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                                 e1.Cancel = window.IsCanceled;
                                 Application.Current.Dispatcher.BeginInvoke(() =>
                                 {
-                                    window.Maximum = e1.RecordCount;
-                                    window.ProgressValue = e1.CurrentRecordIndex;
+                                    window.Maximum = (int)Math.Min(int.MaxValue, e1.RecordCount);
+                                    window.ProgressValue = (int)Math.Min(int.MaxValue, e1.CurrentRecordIndex);
                                 });
                             }
                         };
@@ -1032,3 +1031,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         #endregion
     }
 }
+

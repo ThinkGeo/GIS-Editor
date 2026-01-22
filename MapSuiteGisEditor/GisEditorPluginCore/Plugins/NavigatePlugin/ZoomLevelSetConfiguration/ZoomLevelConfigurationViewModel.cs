@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -34,7 +34,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public ZoomLevelConfigurationViewModel()
         {
             zoomLevelSetViewModel = new ObservableCollection<ZoomLevelViewModel>();
-            ReaddZoomLevels(GisEditor.ActiveMap.ZoomLevelSet);
+            ReaddZoomLevels(GisEditor.ActiveMap.ZoomScales);
         }
 
         public ZoomLevelViewModel SelectedZoomLevel
@@ -52,13 +52,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get { return zoomLevelSetViewModel; }
         }
 
-        public void ReaddZoomLevels(ZoomLevelSet zoomLevelSet)
+        public void ReaddZoomLevels(IEnumerable<double> scales)
         {
             zoomLevelSetViewModel.Clear();
-            List<ZoomLevel> zoomLevels = zoomLevelSet.CustomZoomLevels.Where(c => !(c is PreciseZoomLevel)).ToList();
-            for (int i = 0; i < zoomLevels.Count(); i++)
+            var zoomLevels = scales.ToList();
+            for (int i = 0; i < zoomLevels.Count; i++)
             {
-                zoomLevelSetViewModel.Add(new ZoomLevelViewModel(i, zoomLevels[i].Scale));
+                zoomLevelSetViewModel.Add(new ZoomLevelViewModel(i, zoomLevels[i]));
             }
         }
     }

@@ -20,7 +20,8 @@
 using System;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -38,18 +39,23 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var styleItem = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as CompositeStyle;
             if (styleItem != null && GisEditor.LayerListManager.SelectedLayerListItem is StyleLayerListItem)
             {
-                int from = 0, to = 0;
-                var array = ((StyleLayerListItem)GisEditor.LayerListManager.SelectedLayerListItem).ZoomLevelRange.Split(" to ".ToArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (array.Length == 2)
+                int from = 1;
+                int to = GisEditor.ActiveMap.ZoomScales.Count();
+                string range = ((StyleLayerListItem)GisEditor.LayerListManager.SelectedLayerListItem).ZoomLevelRange;
+                if (!string.IsNullOrEmpty(range))
                 {
-                    int.TryParse(array[0].Replace("(", "").Trim(), out from);
-                    int.TryParse(array[1].Replace(")", "").Trim(), out to);
+                    var array = range.Split(" to ".ToArray(), StringSplitOptions.RemoveEmptyEntries);
+                    if (array.Length == 2)
+                    {
+                        int.TryParse(array[0].Replace("(", "").Trim(), out from);
+                        int.TryParse(array[1].Replace(")", "").Trim(), out to);
+                    }
                 }
-                var count = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count;
+                var count = GisEditor.ActiveMap.ZoomScales.Count;
                 if (count > from - 1 && count > to - 1)
                 {
-                    var upperScale = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[from - 1].Scale;
-                    var lowerScale = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[to - 1].Scale;
+                    var upperScale = GisEditor.ActiveMap.ZoomScales[from - 1];
+                    var lowerScale = GisEditor.ActiveMap.ZoomScales[to - 1];
                     GisEditor.StyleManager.SaveStyleToLibrary(styleItem, lowerScale, upperScale);
                 }
             }

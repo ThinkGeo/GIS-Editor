@@ -19,8 +19,8 @@
 
 using System;
 using System.ComponentModel;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -72,20 +72,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualAreaStyle.Advanced.FillCustomBrush != null ? actualAreaStyle.Advanced.FillCustomBrush : actualAreaStyle.FillSolidBrush;
+                return actualAreaStyle.FillBrush;
             }
             set
             {
-                GeoSolidBrush solidBrush = value as GeoSolidBrush;
-                if (solidBrush != null)
-                {
-                    actualAreaStyle.FillSolidBrush = solidBrush;
-                    actualAreaStyle.Advanced.FillCustomBrush = null;
-                }
-                else
-                {
-                    actualAreaStyle.Advanced.FillCustomBrush = value;
-                }
+                actualAreaStyle.FillBrush = value;
 
                 RaisePropertyChanged("FillColor");
             }

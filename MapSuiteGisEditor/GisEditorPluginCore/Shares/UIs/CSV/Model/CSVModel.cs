@@ -27,8 +27,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Resources;
 using System.Xml.Linq;
-using Kent.Boogaart.KBCsv;
-using ThinkGeo.MapSuite.Layers;
+using CsvReader = Kent.Boogaart.KBCsv.CsvReader;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -149,7 +149,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             using (var csvReader = InitReader())
             {
-                var results = csvReader.HeaderRecord.Values.ToArray();
+                var headerRecord = csvReader.HeaderRecord ?? csvReader.ReadHeaderRecord();
+                var results = headerRecord != null ? headerRecord.Values.ToArray() : Array.Empty<string>();
                 csvReader.Close();
                 return results;
             }

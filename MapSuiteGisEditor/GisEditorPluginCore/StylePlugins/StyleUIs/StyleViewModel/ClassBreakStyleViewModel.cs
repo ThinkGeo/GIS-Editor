@@ -26,10 +26,9 @@ using System.Windows;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -225,15 +224,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                                     var lineStyle = newStyle as LineStyle;
 
                                     if (areaStyle != null)
-                                        areaStyle.FillSolidBrush = brushes[i];
+                                        areaStyle.FillBrush = brushes[i];
                                     else if (pointStyle != null)
-                                        pointStyle.SymbolSolidBrush = brushes[i];
+                                        pointStyle.FillBrush = brushes[i];
                                     else if (lineStyle != null)
                                         lineStyle.OuterPen.Brush = brushes[i];
 
                                     newStyle.Name = itemStyleName;
 
-                                    Collection<Styles.Style> customStyles = new Collection<Styles.Style>();
+                                    Collection<ThinkGeo.Core.Style> customStyles = new Collection<ThinkGeo.Core.Style>();
                                     customStyles.Add(newStyle);
                                     newStyle.Name = GisEditor.StyleManager.GetStylePluginByStyle(newStyle).Name;
                                     var classBreak = new ClassBreak(startingValue, customStyles);
@@ -392,7 +391,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         {
                             if (requiredValues.FeatureLayer.FeatureSource.CanGetCountQuickly())
                             {
-                                int count = requiredValues.FeatureLayer.FeatureSource.GetCount();
+                                long count = requiredValues.FeatureLayer.FeatureSource.GetCount();
                                 if (count > 50000)
                                 {
                                     //MessageBoxResult result = MessageBox.Show(string.Format("{0} contains a large amount of records, it might spend too much time to process. Do you want to continue?", requiredValues.FeatureLayer.Name), "Info", MessageBoxButton.YesNo, MessageBoxImage.Information);

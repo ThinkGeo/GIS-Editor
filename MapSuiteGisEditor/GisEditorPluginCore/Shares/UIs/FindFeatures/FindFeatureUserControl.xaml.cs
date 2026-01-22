@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -80,7 +81,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     highlightLayer.InternalFeatures.Clear();
                     highlightLayer.InternalFeatures.Add(tmpFeature.Id, tmpFeature);
                     GisEditor.ActiveMap.CurrentExtent = entity.Feature.GetBoundingBox();
-                    GisEditor.ActiveMap.Refresh();
+                    GisEditor.ActiveMap.RefreshAsync();
                 }
             }
         }
@@ -130,8 +131,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 highlightLayer.InternalFeatures.Clear();
                 highlightLayer.InternalFeatures.Add(tmpFeature.Id, tmpFeature);
                 GisEditor.ActiveMap.CurrentExtent = entity.Feature.GetBoundingBox();
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
     }
 }
+

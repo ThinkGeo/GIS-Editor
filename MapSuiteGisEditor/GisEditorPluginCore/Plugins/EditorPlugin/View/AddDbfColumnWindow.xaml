@@ -6,8 +6,8 @@
     xmlns:extension="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop.Extension"
     xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:tgshapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
-    xmlns:tgshplayer="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite"
+    xmlns:tgshapes="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
+    xmlns:tgshplayer="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
     Title="{DynamicResource AddNewColumnWindowTitle}"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
@@ -326,3 +326,4 @@
         </Grid>
     </Grid>
 </Window>
+

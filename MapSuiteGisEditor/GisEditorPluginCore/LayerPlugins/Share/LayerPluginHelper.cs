@@ -25,8 +25,8 @@ using System.Windows;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -150,7 +150,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 string currentProj4 = string.Empty;
                 info.Layer.Open();
-                if (info.Layer.HasProjectionText)
+                if (info.Layer.HasProjectionText())
                 {
                     currentProj4 = info.Layer.GetProjectionText();
                 }

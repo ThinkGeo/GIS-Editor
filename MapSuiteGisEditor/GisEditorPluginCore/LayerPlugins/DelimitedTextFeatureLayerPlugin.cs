@@ -26,9 +26,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -410,7 +410,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return SimpleShapeType.Point;
         }
 
-        protected override LayerListItem GetLayerListItemCore(Layer layer)
+        protected override LayerListItem GetLayerListItemCore(LayerBase layer)
         {
             var layerListItem = base.GetLayerListItemCore(layer);
             var csvLayer = (CsvFeatureLayer)layer;

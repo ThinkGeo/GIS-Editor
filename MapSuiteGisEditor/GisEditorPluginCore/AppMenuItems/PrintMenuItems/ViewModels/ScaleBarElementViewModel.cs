@@ -26,9 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -60,10 +59,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             this.mapPrinterLayer = mapPrinterLayer;
             background = new AreaStyle();
-            background.CustomAreaStyles.Add(new AreaStyle(new GeoSolidBrush(GeoColor.StandardColors.Transparent)));
+            background.CustomAreaStyles.Add(new AreaStyle(new GeoSolidBrush(GeoColors.Transparent)));
             selectedUnitSystem = UnitSystem.Metric;
-            color = new GeoSolidBrush(GeoColor.StandardColors.Black);
-            alternatingColor = new GeoSolidBrush(GeoColor.StandardColors.White);
+            color = new GeoSolidBrush(GeoColors.Black);
+            alternatingColor = new GeoSolidBrush(GeoColors.White);
             resizeMode = PrinterResizeMode.Resizable;
             dragMode = PrinterDragMode.Draggable;
             PropertyChanged += ScaleBarViewModelPropertyChanged;
@@ -156,7 +155,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         if (Background == null)
                         {
                             Background = new AreaStyle();
-                            Background.CustomAreaStyles.Add(new AreaStyle(new GeoSolidBrush(GeoColor.StandardColors.Transparent)));
+                            Background.CustomAreaStyles.Add(new AreaStyle(new GeoSolidBrush(GeoColors.Transparent)));
                         }
 
                         AreaStyle editingStyle = (AreaStyle)background.CloneDeep();

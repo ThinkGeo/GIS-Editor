@@ -26,8 +26,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -127,7 +127,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (entity != null)
                 {
                     GisEditor.ActiveMap.CurrentExtent = entity.Feature.GetBoundingBox();
-                    GisEditor.ActiveMap.Refresh();
+                    GisEditor.ActiveMap.RefreshAsync();
                 }
             }
         }

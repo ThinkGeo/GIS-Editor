@@ -18,10 +18,9 @@
 
 
 using System.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -128,8 +127,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             if (mapPrinterLayer.Layers.Count == 0)
             {
-                mapPrinterLayer.BackgroundMask.Advanced.FillCustomBrush = new GeoLinearGradientBrush(GeoColor.FromHtml("#FFFFFF"), GeoColor.FromHtml("#E6E6E6"), GeoLinearGradientDirection.BottomToTop);
-                mapPrinterLayer.BackgroundMask.OutlinePen = new GeoPen(GeoColor.StandardColors.Black);
+                mapPrinterLayer.BackgroundMask.FillBrush = new GeoLinearGradientBrush(GeoColor.FromHtml("#FFFFFF"), GeoColor.FromHtml("#E6E6E6"), GeoLinearGradientDirection.BottomToTop);
+                mapPrinterLayer.BackgroundMask.OutlinePen = new GeoPen(GeoColors.Black);
                 mapPrinterLayer.BackgroundMask.DrawingLevel = DrawingLevel.LabelLevel;
             }
         }
@@ -254,8 +253,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 dataGridPrinterLayer.DataTable.Rows.RemoveAt(currentCount - 1);
             }
 
-            dataGridPrinterLayer.BackgroundMask = new AreaStyle(new GeoPen(GeoColor.StandardColors.Black, 1));
-            dataGridPrinterLayer.TextBrush = dataGridEntity.FontColor;
+            dataGridPrinterLayer.BackgroundMask = new AreaStyle(new GeoPen(GeoColors.Black, 1));
+            dataGridPrinterLayer.TextBrush = dataGridEntity.FontColor as GeoSolidBrush ?? new GeoSolidBrush(GeoColors.Black);
             dataGridPrinterLayer.DragMode = dataGridEntity.DragMode;
             dataGridPrinterLayer.ResizeMode = dataGridEntity.ResizeMode;
         }
@@ -266,7 +265,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             legendItemViewModel.ImageMask = legendItem.ImageMask;
 
             legendItemViewModel.Text = legendItem.TextStyle.TextColumnName;
-            legendItemViewModel.TextSolidBrush = legendItem.TextStyle.TextSolidBrush;
+            legendItemViewModel.TextBrush = legendItem.TextStyle.TextBrush as GeoSolidBrush ?? new GeoSolidBrush(GeoColors.Black);
             legendItemViewModel.TextMask = legendItem.TextMask;
 
             GeoFontViewModel geoFontViewModel = new GeoFontViewModel();

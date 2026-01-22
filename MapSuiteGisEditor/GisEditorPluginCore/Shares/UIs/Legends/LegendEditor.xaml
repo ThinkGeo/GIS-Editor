@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:tg="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite"
+        xmlns:tg="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         Title="{DynamicResource ResourceKey=LegendEditorLegendEditorTitle}"
         Width="880"
         Height="640"

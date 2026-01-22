@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -180,7 +180,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             featureLayers.ForEach(featureSource =>
             {
                 if (featureSource.IsOpen) featureSource.Close();
-                if (featureSource.FeatureSource.Projection != null) featureSource.FeatureSource.Projection.Close();
+                if (featureSource.FeatureSource.ProjectionConverter != null) featureSource.FeatureSource.ProjectionConverter.Close();
             });
 
             var plugin = GisEditor.TaskManager.GetActiveTaskPlugins<BlendTaskPlugin>().FirstOrDefault();

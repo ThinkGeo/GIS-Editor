@@ -15,7 +15,7 @@ namespace Kent.Boogaart.KBCsv
     {
         private readonly string path;
         private readonly Encoding encoding;
-        private List<string> headerRecord;
+        private HeaderRecord headerRecord;
 
         public CsvReader(string path)
             : this(path, Encoding.UTF8)
@@ -31,23 +31,30 @@ namespace Kent.Boogaart.KBCsv
             ValueSeparator = ',';
         }
 
-        /// <summary>
-        /// Gets or sets the delimiter used between fields.
-        /// </summary>
         public char ValueSeparator { get; set; }
 
-        /// <summary>
-        /// 1-based record number for the current data record during enumeration.
-        /// </summary>
+        // Included for compatibility with external code that may set it.
+        public char ValueDelimiter { get; set; }
+
+        public bool PreserveLeadingWhiteSpace { get; set; }
+
+        public bool PreserveTrailingWhiteSpace { get; set; }
+
         public long RecordNumber { get; private set; }
 
-        public void ReadHeaderRecord()
+        public bool HasMoreRecords { get; private set; }
+
+        public HeaderRecord HeaderRecord => headerRecord;
+
+        public HeaderRecord ReadHeaderRecord()
         {
             using (var reader = new StreamReader(path, encoding, detectEncodingFromByteOrderMarks: true))
             {
                 var headerLine = reader.ReadLine();
-                headerRecord = ParseCsvLine(headerLine, ValueSeparator);
+                headerRecord = new HeaderRecord(ParseCsvLine(headerLine, ValueSeparator));
             }
+
+            return headerRecord;
         }
 
         public IEnumerable<DataRecord> DataRecords
@@ -58,7 +65,6 @@ namespace Kent.Boogaart.KBCsv
 
                 using (var reader = new StreamReader(path, encoding, detectEncodingFromByteOrderMarks: true))
                 {
-                    // Skip header
                     reader.ReadLine();
 
                     RecordNumber = 0;
@@ -71,6 +77,36 @@ namespace Kent.Boogaart.KBCsv
                     }
                 }
             }
+        }
+
+        public IEnumerable<string[]> DataRecordsAsStrings
+        {
+            get { return DataRecords.Select(r => r.Values.ToArray()); }
+        }
+
+        public ICollection<DataRecord> ReadDataRecords()
+        {
+            return DataRecords.ToList();
+        }
+
+        public ICollection<string[]> ReadDataRecordsAsStrings()
+        {
+            return DataRecordsAsStrings.ToList();
+        }
+
+        public DataRecord ReadDataRecord()
+        {
+            return DataRecords.FirstOrDefault();
+        }
+
+        public string[] ReadDataRecordAsStrings()
+        {
+            return DataRecordsAsStrings.FirstOrDefault();
+        }
+
+        public void Close()
+        {
+            // No-op for compatibility; enumerators own their StreamReader.
         }
 
         private void EnsureHeader()
@@ -101,7 +137,6 @@ namespace Kent.Boogaart.KBCsv
                 {
                     if (c == '"')
                     {
-                        // Escaped quote
                         if (i + 1 < line.Length && line[i + 1] == '"')
                         {
                             sb.Append('"');
@@ -145,16 +180,58 @@ namespace Kent.Boogaart.KBCsv
         }
     }
 
-    public sealed class DataRecord
+    public sealed class HeaderRecord
     {
-        public DataRecord(List<string> headerRecord, List<string> values)
+        public HeaderRecord(IEnumerable<string> values)
         {
-            HeaderRecord = headerRecord ?? new List<string>();
-            Values = values ?? new List<string>();
+            Values = values != null ? new List<string>(values) : new List<string>();
         }
 
-        public List<string> HeaderRecord { get; }
+        public List<string> Values { get; }
+
+        public int IndexOf(string columnName)
+        {
+            return Values.IndexOf(columnName);
+        }
+
+        public string this[int index]
+        {
+            get
+            {
+                return index >= 0 && index < Values.Count ? Values[index] : string.Empty;
+            }
+        }
+    }
+
+    public sealed class DataRecord
+    {
+        public DataRecord(HeaderRecord headerRecord, IList<string> values)
+        {
+            HeaderRecord = headerRecord ?? new HeaderRecord(Array.Empty<string>());
+            Values = values != null ? new List<string>(values) : new List<string>();
+        }
+
+        public HeaderRecord HeaderRecord { get; }
 
         public List<string> Values { get; }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (HeaderRecord == null || string.IsNullOrEmpty(columnName)) return string.Empty;
+
+                int index = HeaderRecord.IndexOf(columnName);
+                return index >= 0 && index < Values.Count ? Values[index] : string.Empty;
+            }
+        }
+
+        public string this[int index]
+        {
+            get
+            {
+                return index >= 0 && index < Values.Count ? Values[index] : string.Empty;
+            }
+        }
     }
 }

@@ -18,8 +18,8 @@
 
 
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -39,7 +39,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else if (printerLayer is LabelPrinterLayer)
                 return new LabelPrinterLayerAdapter(GisEditor.ActiveMap.FixedAdornmentOverlay.Layers.OfType<TitleAdornmentLayer>().FirstOrDefault());
-            else if (printerLayer is LegendPrinterLayer)
+            else if (printerLayer is LegendPrinterLayer1)
             {
                 var legendLayer = GisEditor.ActiveMap.FixedAdornmentOverlay.Layers.OfType<LegendManagerAdornmentLayer>().SelectMany(l => l.LegendLayers.Select(ll => ll.ToLegendAdornmentLayer())).FirstOrDefault();
                 return new LegendPrinterLayerAdapter(legendLayer);

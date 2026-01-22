@@ -21,10 +21,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -82,12 +81,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     double latDiff = DecimalDegreesHelper.GetLatitudeDifferenceFromDistance(textSize, DistanceUnit.Feet);
                     PointShape startPoint = (PointShape)item.GetShape();
                     PointShape endPoint = new PointShape(startPoint.X, startPoint.Y + latDiff);
-                    float fontSize = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, startPoint, canvas.Width, canvas.Height).Y -
-                        ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, endPoint, canvas.Width, canvas.Height).Y;
+                    float fontSize = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, startPoint, canvas.Width, canvas.Height).Y -
+                        MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, endPoint, canvas.Width, canvas.Height).Y;
 
                     if (fontSize > minAnnotationFontSize)
                     {
-                        TextStyle textStyle = new TextStyle("TextString", new GeoFont(), new GeoSolidBrush(GeoColor.SimpleColors.Black));
+                        TextStyle textStyle = new TextStyle("TextString", new GeoFont(), new GeoSolidBrush(GeoColors.Black));
                         textStyle.DuplicateRule = LabelDuplicateRule.UnlimitedDuplicateLabels;
                         textStyle.OverlappingRule = LabelOverlappingRule.AllowOverlapping;
                         textStyle.YOffsetInPixel = 1 * fontSize;
@@ -116,3 +115,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

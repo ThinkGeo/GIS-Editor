@@ -196,7 +196,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
-        public bool IsEnabled
+        public new bool IsEnabled
         {
             get { return isEnabled; }
             set { isEnabled = value; }

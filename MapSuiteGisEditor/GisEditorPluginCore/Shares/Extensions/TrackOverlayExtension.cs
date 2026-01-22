@@ -17,10 +17,9 @@
 */
 
 
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -40,14 +39,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void SetStyle(InMemoryFeatureLayer layer)
         {
-            PointStyle pointStyle = PointStyles.CreateSimpleCircleStyle(GeoColor.FromArgb(100, GeoColor.StandardColors.White), 12, GeoColor.FromArgb(200, GeoColor.StandardColors.Black), 1);
+            PointStyle pointStyle = PointStyles.CreateSimpleCircleStyle(GeoColor.FromArgb((byte)100, GeoColors.White), 12, GeoColor.FromArgb((byte)200, GeoColors.Black), 1);
 
-            LineStyle lineStyle = LineStyles.CreateSimpleLineStyle(GeoColor.FromArgb(255, 0, 0, 255), 2, true);
+            LineStyle lineStyle = LineStyles.CreateSimpleLineStyle(GeoColor.FromArgb((byte)255, (byte)0, (byte)0, (byte)255), 2, true);
             lineStyle.OuterPen.LineJoin = DrawingLineJoin.Round;
             lineStyle.InnerPen.LineJoin = DrawingLineJoin.Round;
             lineStyle.CenterPen.LineJoin = DrawingLineJoin.Round;
 
-            AreaStyle areaStyle = AreaStyles.CreateSimpleAreaStyle(GeoColor.FromArgb(102, 0, 0, 255), GeoColor.FromArgb(255, 0, 0, 255), 2);
+            AreaStyle areaStyle = AreaStyles.CreateSimpleAreaStyle(GeoColor.FromArgb((byte)102, (byte)0, (byte)0, (byte)255), GeoColor.FromArgb((byte)255, (byte)0, (byte)0, (byte)255), 2);
             areaStyle.OutlinePen.LineJoin = DrawingLineJoin.Round;
 
             layer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;

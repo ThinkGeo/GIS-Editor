@@ -1,15 +1,15 @@
-﻿<contract:SettingUserControl x:Class="ThinkGeo.MapSuite.GisEditor.GeneralSettingUserControl"
+﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.GeneralSettingUserControl"
                              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                              xmlns:clr="clr-namespace:System;assembly=mscorlib"
                              xmlns:contract="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
                              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                             xmlns:wpf="clr-namespace:ThinkGeo.MapSuite.Wpf;assembly=ThinkGeo.MapSuite.Wpf"
+                             xmlns:wpf="clr-namespace:ThinkGeo.UI.Wpf;assembly=ThinkGeo.UI.Wpf"
                              d:DesignHeight="300"
                              d:DesignWidth="365"
                              mc:Ignorable="d">
-    <contract:SettingUserControl.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ObjectDataProvider x:Key="ThemeProvider"
                                 MethodName="GetValues"
@@ -27,7 +27,7 @@
             </ObjectDataProvider>
 
         </ResourceDictionary>
-    </contract:SettingUserControl.Resources>
+    </UserControl.Resources>
     <Grid ShowGridLines="False">
         <Grid.Resources>
             <Style x:Key="titleStyle" TargetType="TextBlock">
@@ -157,4 +157,4 @@
                     Content="{DynamicResource ResourceKey=GeneralSettingUserControlDscResetquotDidYouDscContent}" />
         </StackPanel>
     </Grid>
-</contract:SettingUserControl>
+</UserControl>

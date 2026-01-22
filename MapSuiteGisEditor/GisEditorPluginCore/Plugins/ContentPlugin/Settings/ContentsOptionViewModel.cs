@@ -19,7 +19,9 @@
 
 using System;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
+using CoreZoomSnapDirection = ThinkGeo.Core.ZoomSnapDirection;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -110,10 +112,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public bool IsZoomSnapDirectionWithLowerScale
         {
-            get { return contentOption.ZoomSnapDirection == ZoomSnapDirection.LowerScale; }
+            get { return contentOption.ZoomSnapDirection == CoreZoomSnapDirection.LowerScale; }
             set
             {
-                contentOption.ZoomSnapDirection = value ? ZoomSnapDirection.LowerScale : ZoomSnapDirection.UpperScale;
+                contentOption.ZoomSnapDirection = value ? CoreZoomSnapDirection.LowerScale : CoreZoomSnapDirection.UpperScale;
                 RaisePropertyChanged(() => IsZoomSnapDirectionWithLowerScale);
             }
         }

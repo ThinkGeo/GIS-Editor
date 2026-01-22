@@ -1,13 +1,13 @@
 <Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.PrintMapWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:core="clr-namespace:ThinkGeo.MapSuite;assembly=ThinkGeo.MapSuite"
-        xmlns:shapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
-        xmlns:printer="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.Printers"
+        xmlns:core="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
+        xmlns:shapes="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
+        xmlns:printer="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         xmlns:gisToolKit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:wpfEdition="clr-namespace:ThinkGeo.MapSuite.Wpf;assembly=ThinkGeo.MapSuite.Wpf"
+        xmlns:wpfEdition="clr-namespace:ThinkGeo.UI.Wpf;assembly=ThinkGeo.UI.Wpf"
         Title="{DynamicResource ResourceKey=PrintMapWindowPrintMapTitle}"
         Width="920"
         Height="630"
@@ -19,7 +19,7 @@
         Style="{StaticResource WindowStyle}"
         WindowState="Maximized">
     <Window.DataContext>
-        <local:PrintMapViewModel x:Name="printMapViewModel" />
+        <local:PrintMapViewModel />
     </Window.DataContext>
     <Window.Resources>
         <ObjectDataProvider x:Key="PrinterOrientationProvider"

@@ -21,8 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -106,7 +106,8 @@ namespace ThinkGeo.MapSuite.GisEditor
         public void ForEachFeatures(ShapeFileFeatureSource featureSource, Func<Feature, bool> process)
         {
             if (!featureSource.IsOpen) featureSource.Open();
-            int currentFeatureCount = featureSource.GetCount();
+            long featureCount = featureSource.GetCount();
+            int currentFeatureCount = featureCount > int.MaxValue ? int.MaxValue : (int)featureCount;
             for (int i = 0; i < currentFeatureCount; i++)
             {
                 var currentFeature = featureSource.GetFeatureById((i + 1).ToString(), featureSource.GetDistinctColumnNames());
@@ -123,7 +124,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             if (!featureSource.IsOpen) featureSource.Open();
 
             int currentProgress = 0;
-            int currentFeatureCount = featureSource.GetCount();
+            long featureCount = featureSource.GetCount();
+            int currentFeatureCount = featureCount > int.MaxValue ? int.MaxValue : (int)featureCount;
             for (int i = 0; i < currentFeatureCount; i++)
             {
                 var currentFeature = featureSource.GetFeatureById((i + 1).ToString(), featureSource.GetDistinctColumnNames());
@@ -155,7 +157,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
 
             ShapeFileFeatureLayer.CreateShapeFile(shapeFileType, pathFileName, columns);
-            featureLayer = new ShapeFileFeatureLayer(pathFileName, GeoFileReadWriteMode.ReadWrite);
+            featureLayer = new ShapeFileFeatureLayer(pathFileName, FileAccess.ReadWrite);
         }
 
         private static Collection<DbfColumn> ConvertToDbfColumns(IEnumerable<FeatureSourceColumn> featureSourceColumns)

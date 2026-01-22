@@ -22,9 +22,9 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -75,7 +75,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     var geoCanvas = new PlatformGeoCanvas();
                     geoCanvas.BeginDrawing(nativeImage, new RectangleShape(-10, 10, 10, -10), GeographyUnit.DecimalDegree);
-                    geoCanvas.Clear(new GeoSolidBrush(GeoColor.StandardColors.White));
+                    geoCanvas.Clear(new GeoSolidBrush(GeoColors.White));
                     style.DrawSample(geoCanvas);
                     geoCanvas.EndDrawing();
 

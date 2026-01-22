@@ -18,6 +18,7 @@
 
 
 using System;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -28,3 +29,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         Area = 1
     }
 }
+

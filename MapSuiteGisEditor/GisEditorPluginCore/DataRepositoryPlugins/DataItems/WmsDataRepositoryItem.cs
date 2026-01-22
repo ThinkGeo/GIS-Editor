@@ -26,7 +26,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -96,10 +96,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override void LoadCore()
         {
-            WmsRasterLayer layer = new WmsRasterLayer(new Uri(Url)) { Name = Name };
+            WmsAsyncLayer layer = new WmsAsyncLayer(new Uri(Url)) { Name = Name };
             layer.ActiveLayerNames.Add(Name);
             layer.InitializeProj4Projection(GisEditor.ActiveMap.DisplayProjectionParameters);
-            var layers = new Layer[] { layer };
+
+            var layers = new Layer[] { new WmsAsyncLayerAdapter(layer) };
             GisEditor.ActiveMap.AddLayersBySettings(layers);
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadCoreDescription));
         }
@@ -275,3 +276,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

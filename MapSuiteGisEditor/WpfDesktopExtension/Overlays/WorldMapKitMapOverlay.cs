@@ -41,6 +41,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private string privateKey;
         private int timeoutInSeconds;
         private WebProxy webProxy;
+        private WorldMapKitMapType mapType;
+        private WorldMapKitProjection projection;
 
         // These events existed on the legacy implementation. They are kept to
         // avoid breaking consumers, even though the underlying OSM overlay does
@@ -69,6 +71,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             this.clientId = clientId;
             this.privateKey = privateKey;
             this.webProxy = webProxy;
+            mapType = WorldMapKitMapType.Default;
+            projection = WorldMapKitProjection.SphericalMercator;
 
             // Keep behavior similar to the legacy overlay.
             IsBase = true;
@@ -91,7 +95,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         /// <summary>
         /// Gets or sets the length of time, in seconds, before the request times out.
         /// </summary>
-        public int TimeoutInSeconds
+        public new int TimeoutInSeconds
         {
             get => timeoutInSeconds;
             set
@@ -119,10 +123,22 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             set => privateKey = value;
         }
 
+        public WorldMapKitMapType MapType
+        {
+            get => mapType;
+            set => mapType = value;
+        }
+
+        public WorldMapKitProjection Projection
+        {
+            get => projection;
+            set => projection = value;
+        }
+
         /// <summary>
         /// Gets or sets the proxy used for requesting web resources.
         /// </summary>
-        public WebProxy WebProxy
+        public new WebProxy WebProxy
         {
             get => webProxy;
             set

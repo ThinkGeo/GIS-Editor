@@ -20,8 +20,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -55,7 +55,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 int applyToZoomLevelIndex = (int)zoomLevel.ApplyUntilZoomLevel;
                 double upperScale = zoomLevel.Scale;
-                double lowerScale = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels()[applyToZoomLevelIndex - 1].Scale;
+                double lowerScale = GisEditor.ActiveMap.ZoomScales[applyToZoomLevelIndex - 1];
                 return GisEditor.ActiveMap.CurrentScale <= upperScale && GisEditor.ActiveMap.CurrentScale >= lowerScale;
             }
             else return false;

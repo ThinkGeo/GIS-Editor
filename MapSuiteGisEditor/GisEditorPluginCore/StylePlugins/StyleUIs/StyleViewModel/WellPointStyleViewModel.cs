@@ -20,8 +20,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -95,19 +95,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.Advanced.CustomBrush != null ? actualPointStyle.Advanced.CustomBrush : actualPointStyle.SymbolSolidBrush;
+                return actualPointStyle.FillBrush;
             }
             set
             {
-                if (value is GeoSolidBrush)
-                {
-                    actualPointStyle.SymbolSolidBrush = (GeoSolidBrush)value;
-                    actualPointStyle.Advanced.CustomBrush = null;
-                }
-                else
-                {
-                    actualPointStyle.Advanced.CustomBrush = value;
-                }
+                actualPointStyle.FillBrush = value;
                 RaisePropertyChanged("FillColor");
             }
         }
@@ -116,11 +108,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.SymbolPen.Brush;
+                EnsureOutlinePen();
+                return actualPointStyle.OutlinePen.Brush;
             }
             set
             {
-                actualPointStyle.SymbolPen.Brush = value;
+                EnsureOutlinePen();
+                actualPointStyle.OutlinePen.Brush = value;
                 RaisePropertyChanged("OutlineColor");
             }
         }
@@ -129,11 +123,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.SymbolPen.Width;
+                EnsureOutlinePen();
+                return actualPointStyle.OutlinePen.Width;
             }
             set
             {
-                actualPointStyle.SymbolPen.Width = value;
+                EnsureOutlinePen();
+                actualPointStyle.OutlinePen.Width = value;
                 RaisePropertyChanged("OutlineThickness");
             }
         }
@@ -173,8 +169,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             WellPointStyle pointStyle = new WellPointStyle();
             pointStyle.SymbolSize = 16;
-            pointStyle.SymbolSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Black);
-            pointStyle.SymbolPen = new GeoPen(GeoColor.SimpleColors.Black);
+            pointStyle.FillBrush = new GeoSolidBrush(GeoColors.Black);
+            pointStyle.OutlinePen = new GeoPen(GeoColors.Black);
 
             var bufferUnitNames = Enum.GetValues(typeof(WellPointSymbolType));
             foreach (var item in bufferUnitNames)
@@ -187,5 +183,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             return images;
         }
+
+        private void EnsureOutlinePen()
+        {
+            if (actualPointStyle.OutlinePen == null)
+            {
+                actualPointStyle.OutlinePen = new GeoPen(GeoColors.Transparent, 1);
+            }
+        }
     }
 }
+

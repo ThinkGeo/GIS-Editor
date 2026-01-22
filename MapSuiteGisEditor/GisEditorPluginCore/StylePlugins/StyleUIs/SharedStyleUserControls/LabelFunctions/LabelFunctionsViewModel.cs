@@ -17,7 +17,7 @@
 */
 
 
-using CSScriptLibrary;
+using CssScript = CSScriptLibrary.CSScript;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -26,6 +26,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -204,7 +205,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 code = code.Replace("#CODE#", ScriptText);
                 code = code.Replace("#PARAMETERS#", parameters);
 
-                Assembly assembly = CSScript.LoadCode(code);
+                Assembly assembly = CssScript.LoadCode(code);
                 return string.Empty;
             }
             catch (Exception ex)
@@ -228,3 +229,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

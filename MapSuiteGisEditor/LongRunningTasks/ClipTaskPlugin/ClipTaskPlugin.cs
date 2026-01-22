@@ -143,7 +143,7 @@ namespace LongRunningTaskPlugins
             lock (featureSource)
             {
                 if (!featureSource.IsOpen) featureSource.Open();
-                Collection<Feature> results = featureSource.GetFeaturesOutsideBoundingBox(ExtentHelper.GetBoundingBoxOfItems(clippingFeatures), ReturningColumnsType.AllColumns);
+                Collection<Feature> results = featureSource.GetFeaturesOutsideBoundingBox(MapUtil.GetBoundingBoxOfItems(clippingFeatures), ReturningColumnsType.AllColumns);
                 Collection<Feature> sourceFeatures = new Collection<Feature>();
                 ShapeFileType shapeFileType = ((ShapeFileFeatureSource)featureSource).GetShapeFileType();
                 int index = 1;
@@ -405,7 +405,7 @@ namespace LongRunningTaskPlugins
                 }
 
                 if (!featureSource.IsOpen) featureSource.Open();
-                Collection<Feature> sourceFeatures = featureSource.GetFeaturesInsideBoundingBox(ExtentHelper.GetBoundingBoxOfItems(features), ReturningColumnsType.AllColumns);
+                Collection<Feature> sourceFeatures = featureSource.GetFeaturesInsideBoundingBox(MapUtil.GetBoundingBoxOfItems(features), ReturningColumnsType.AllColumns);
 
                 if (tmpProjection != null)
                 {
@@ -586,3 +586,4 @@ namespace LongRunningTaskPlugins
         }
     }
 }
+

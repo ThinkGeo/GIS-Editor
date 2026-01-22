@@ -16,6 +16,7 @@
 * limitations under the License.
 */
 
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

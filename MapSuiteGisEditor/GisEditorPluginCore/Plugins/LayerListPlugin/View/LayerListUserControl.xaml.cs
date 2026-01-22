@@ -30,12 +30,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
-using Style = ThinkGeo.MapSuite.Styles.Style;
+using Style = ThinkGeo.Core.Style;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -901,7 +901,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             layerOverlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
                             targetOverlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
 
-                            GisEditor.ActiveMap.Refresh(new Collection<Overlay> { layerOverlay, targetOverlay });
+                            layerOverlay.RefreshAsync();
+                            targetOverlay.RefreshAsync();
                         }
                         draggedEntity.Parent = targetEntity;
                         UpdateLayout();
@@ -1009,7 +1010,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
                 }
 
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -1228,7 +1229,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (!shapeFileFeatureLayer.IsOpen) shapeFileFeatureLayer.Open();
             var count = shapeFileFeatureLayer.GetRecordCount();
             shapeFileFeatureLayer.Close();
-            return count;
+            return count > int.MaxValue ? int.MaxValue : (int)count;
         }
 
         private int GetInMemoryFeatureCount(InMemoryFeatureLayer inMemoryFeatureLayer)
@@ -1237,7 +1238,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var count = inMemoryFeatureLayer.QueryTools.GetCount();
             count += inMemoryFeatureLayer.FeatureIdsToExclude.Count;
             inMemoryFeatureLayer.Close();
-            return count;
+            return count > int.MaxValue ? int.MaxValue : (int)count;
         }
     }
 }
+
+

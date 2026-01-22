@@ -1,8 +1,8 @@
 <styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.TextStyleUserControl"
                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                          xmlns:tgstyles="clr-namespace:ThinkGeo.MapSuite.Styles;assembly=ThinkGeo.MapSuite"
-                          xmlns:tgdrawing="clr-namespace:ThinkGeo.MapSuite.Drawing;assembly=ThinkGeo.MapSuite"
+                          xmlns:tgstyles="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
+                          xmlns:tgdrawing="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                           xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -25,11 +25,11 @@
                     <x:TypeExtension TypeName="tgstyles:SplineType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider x:Key="PointPlacementProvider"
+            <ObjectDataProvider x:Key="TextPlacementProvider"
                                 MethodName="GetValues"
-                                ObjectType="{x:Type tgstyles:PointPlacement}">
+                                ObjectType="{x:Type tgstyles:TextPlacement}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:TypeExtension TypeName="tgstyles:PointPlacement" />
+                    <x:TypeExtension TypeName="tgstyles:TextPlacement" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider x:Key="LabelDuplicateRuleProvider"
@@ -620,8 +620,8 @@
                             <ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       IsEnabled="{Binding LabelPlacementIsEnabled}"
-                                      ItemsSource="{Binding Source={StaticResource PointPlacementProvider}}"
-                                      SelectedItem="{Binding CurrentPointPlacement,
+                                      ItemsSource="{Binding Source={StaticResource TextPlacementProvider}}"
+                                      SelectedItem="{Binding CurrentTextPlacement,
                                                              Mode=TwoWay}"
                                       Visibility="{Binding LabelPlacementVisibility}">
                                 <ComboBox.ItemTemplate>

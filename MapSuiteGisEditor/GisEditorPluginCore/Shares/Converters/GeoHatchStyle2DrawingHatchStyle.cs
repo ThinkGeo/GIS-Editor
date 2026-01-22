@@ -20,7 +20,7 @@
 using System;
 using System.Drawing.Drawing2D;
 using System.Windows.Data;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

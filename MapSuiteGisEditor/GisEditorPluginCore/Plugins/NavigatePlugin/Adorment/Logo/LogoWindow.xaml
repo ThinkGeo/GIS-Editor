@@ -5,7 +5,7 @@
         xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:tg="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite"
+        xmlns:tg="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         Title="{DynamicResource LogoWindowTitle}"
         Width="560"
         Height="280"

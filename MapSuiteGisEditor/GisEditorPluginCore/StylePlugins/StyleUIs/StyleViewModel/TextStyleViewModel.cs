@@ -28,10 +28,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -514,19 +513,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualTextStyle.Advanced.TextCustomBrush != null ? actualTextStyle.Advanced.TextCustomBrush : actualTextStyle.TextSolidBrush;
+                return actualTextStyle.TextBrush;
             }
             set
             {
-                if (value is GeoSolidBrush)
-                {
-                    actualTextStyle.TextSolidBrush = (GeoSolidBrush)value;
-                    actualTextStyle.Advanced.TextCustomBrush = null;
-                }
-                else
-                {
-                    actualTextStyle.Advanced.TextCustomBrush = value;
-                }
+                actualTextStyle.TextBrush = value;
                 RaisePropertyChanged("FontColor");
             }
         }
@@ -600,7 +591,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 //if (value)
                 //{
-                //    actualTextStyle.HaloPen = new GeoPen(GeoColor.SimpleColors.White, haloWidth);
+                //    actualTextStyle.HaloPen = new GeoPen(GeoColors.White, haloWidth);
                 //}
                 //else
                 //{
@@ -650,12 +641,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 actualTextStyle.IsHaloEnabled = value;
                 if (value && actualTextStyle.Mask == null)
                 {
-                    actualTextStyle.Mask = AreaStyles.CreateSimpleAreaStyle(GeoColor.SimpleColors.White, GeoColor.FromHtml("#808080"));
+                    actualTextStyle.Mask = AreaStyles.CreateSimpleAreaStyle(GeoColors.White, GeoColor.FromHtml("#808080"));
                     actualTextStyle.Mask.DrawingLevel = DrawingLevel.LabelLevel;
                 }
                 //if (value)
                 //{
-                //    actualTextStyle.Mask = AreaStyles.CreateSimpleAreaStyle(GeoColor.SimpleColors.White, GeoColor.FromHtml("#808080"));
+                //    actualTextStyle.Mask = AreaStyles.CreateSimpleAreaStyle(GeoColors.White, GeoColor.FromHtml("#808080"));
                 //    actualTextStyle.Mask.DrawingLevel = DrawingLevel.LabelLevel;
                 //}
                 //else
@@ -719,7 +710,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 GeoBrush brush = new GeoSolidBrush();
                 if (actualTextStyle.Mask != null)
                 {
-                    brush = actualTextStyle.Mask.Advanced.FillCustomBrush != null ? actualTextStyle.Mask.Advanced.FillCustomBrush : actualTextStyle.Mask.FillSolidBrush;
+                    brush = actualTextStyle.Mask.FillBrush;
                 }
                 return brush;
             }
@@ -727,15 +718,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (actualTextStyle.Mask != null)
                 {
-                    if (value is GeoSolidBrush)
-                    {
-                        actualTextStyle.Mask.FillSolidBrush = (GeoSolidBrush)value;
-                        actualTextStyle.Mask.Advanced.FillCustomBrush = null;
-                    }
-                    else
-                    {
-                        actualTextStyle.Mask.Advanced.FillCustomBrush = value;
-                    }
+                    actualTextStyle.Mask.FillBrush = value;
                 }
                 RaisePropertyChanged("FillColor");
             }
@@ -745,11 +728,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualTextStyle.MaskMargin;
+                return actualTextStyle.MaskMargin.Left;
             }
             set
             {
-                actualTextStyle.MaskMargin = value;
+                actualTextStyle.MaskMargin = new DrawingMargin(value, value, value, value);
                 RaisePropertyChanged("Margin");
             }
         }
@@ -992,16 +975,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        public PointPlacement CurrentPointPlacement
+        public TextPlacement CurrentTextPlacement
         {
             get
             {
-                return actualTextStyle.PointPlacement;
+                return actualTextStyle.TextPlacement;
             }
             set
             {
-                actualTextStyle.PointPlacement = value;
-                RaisePropertyChanged("CurrentPointPlacement");
+                actualTextStyle.TextPlacement = value;
+                RaisePropertyChanged("CurrentTextPlacement");
             }
         }
 
@@ -1035,14 +1018,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return String.IsNullOrEmpty(imagePath) ? ((IconStyle)actualTextStyle).IconFilePathName : imagePath;
+                return String.IsNullOrEmpty(imagePath) ? ((IconStyle)actualTextStyle).IconPathFilename : imagePath;
             }
             set
             {
                 imagePath = value;
                 if (!String.IsNullOrEmpty(value) && StyleHelper.IsImageValid(value))
                 {
-                    //((IconStyle)actualTextStyle).IconFilePathName = value;
+                    ((IconStyle)actualTextStyle).IconPathFilename = value;
 
                     var stream = new System.IO.MemoryStream(System.IO.File.ReadAllBytes(value));
                     ((IconStyle)actualTextStyle).IconImage = new GeoImage(stream);
@@ -1050,7 +1033,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                 else
                 {
-                    ((IconStyle)actualTextStyle).IconFilePathName = null;
+                    ((IconStyle)actualTextStyle).IconPathFilename = null;
                     ((IconStyle)actualTextStyle).IconImage = null;
                     RaisePropertyChanged("IconFilePathName");
                 }
@@ -1426,3 +1409,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

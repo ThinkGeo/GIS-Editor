@@ -30,10 +30,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -170,7 +169,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             foreach (var enetity in ComponentStyle.Children)
             {
-                var style = enetity.ConcreteObject as Styles.Style;
+                var style = enetity.ConcreteObject as ThinkGeo.Core.Style;
                 if (style != null)
                 {
                     foreach (var tmpItem in GenerateStyleItems(style, level))
@@ -250,7 +249,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return new BitmapImage(new Uri(String.Format(CultureInfo.InvariantCulture, "/GisEditorPluginCore;component/Images/{0}", iconName), UriKind.RelativeOrAbsolute));
         }
 
-        private IEnumerable<LegendImporterItemViewModel> GenerateStyleItems(Styles.Style style, int level)
+        private IEnumerable<LegendImporterItemViewModel> GenerateStyleItems(ThinkGeo.Core.Style style, int level)
         {
             if (style is AreaStyle || style is PointStyle || style is LineStyle)
             {
@@ -293,7 +292,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 var regexStyle = clonedStyle as RegexStyle;
                 var valueStyle = clonedStyle as ValueStyle;
                 var filterStyle = clonedStyle as FilterStyle;
-                IEnumerable<Styles.Style> subStyles = new Collection<Styles.Style>();
+                IEnumerable<ThinkGeo.Core.Style> subStyles = new Collection<ThinkGeo.Core.Style>();
                 if (classBreakStyle != null)
                     subStyles = classBreakStyle.ClassBreaks.SelectMany(classBreakItem =>
                     {
@@ -306,7 +305,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 else if (regexStyle != null)
                     subStyles = regexStyle.RegexItems.SelectMany(regexItem => regexItem.CustomStyles);
                 else if (filterStyle != null)
-                    subStyles = new Collection<Styles.Style>();//filterStyle.Styles;
+                    subStyles = new Collection<ThinkGeo.Core.Style>();//filterStyle.Styles;
                 else
                     subStyles = valueStyle.ValueItems.SelectMany(valueItem =>
                     {
@@ -398,3 +397,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

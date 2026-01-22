@@ -31,10 +31,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -94,10 +93,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public LegendItemViewModel(LegendItem legendItem)
         {
             this.coreItem = legendItem;
-            this.coreItem.ImageMask = new AreaStyle() { FillSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Transparent) };
-            this.coreItem.TextMask = new AreaStyle() { FillSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Transparent) };
-            this.coreItem.BackgroundMask = new AreaStyle() { FillSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Transparent) };
-            this.coreItem.TextStyle = new TextStyle() { TextSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Black) };
+            this.coreItem.ImageMask = new AreaStyle() { FillBrush = new GeoSolidBrush(GeoColors.Transparent) };
+            this.coreItem.TextMask = new AreaStyle() { FillBrush = new GeoSolidBrush(GeoColors.Transparent) };
+            this.coreItem.BackgroundMask = new AreaStyle() { FillBrush = new GeoSolidBrush(GeoColors.Transparent) };
+            this.coreItem.TextStyle = new TextStyle() { TextBrush = new GeoSolidBrush(GeoColors.Black) };
             this.simpleCandidates = new Collection<SimpleCandidate>();
             InitLazyRenderTimer();
             if (NotifiedGeoFont == null) NotifiedGeoFont = new GeoFontViewModel { FontName = "Arial", FontSize = 10 };
@@ -548,13 +547,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        public GeoSolidBrush TextSolidBrush
+        public GeoSolidBrush TextBrush
         {
-            get { return coreItem.TextStyle.TextSolidBrush; }
+            get { return coreItem.TextStyle.TextBrush as GeoSolidBrush ?? new GeoSolidBrush(GeoColors.Black); }
             set
             {
-                coreItem.TextStyle.TextSolidBrush = value;
-                RaisePropertyChanged(()=>TextSolidBrush);
+                coreItem.TextStyle.TextBrush = value;
+                RaisePropertyChanged(()=>TextBrush);
                 LazyRenderPreview();
             }
         }
@@ -699,7 +698,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     CompositingQuality = CompositingQuality.HighSpeed,
                     SmoothingMode = SmoothingMode.HighSpeed,
-                    DrawingQuality = DrawingQuality.CanvasSettings,
+                    DrawingQuality = DrawingQuality.HighQuality,
                 };
                 SizeF measuredSize = Measure(geoCanvas);
                 Bitmap nativeImage = new Bitmap((int)(measuredSize.Width + LeftPadding + RightPadding + 1), (int)(measuredSize.Height + TopPadding + BottomPadding + 1));
@@ -752,7 +751,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 TextLeftPadding = TextLeftPadding,
                 TextMask = TextMask == null ? null : (AreaStyle)TextMask.CloneDeep(),
                 TextRightPadding = TextRightPadding,
-                TextSolidBrush = TextSolidBrush,
+                TextBrush = TextBrush,
                 TextTopPadding = TextTopPadding,
                 Text = this.Text,
                 TopPadding = TopPadding,
@@ -778,7 +777,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             this.coreItem.TextStyle.Font = NotifiedGeoFont.ToGeoFont();
 
             LegendItem newLegendItem = new LegendItem((int)Width, (int)Height, ImageWidth, ImageHeight, ImageStyle,
-                new TextStyle(Text, NotifiedGeoFont.ToGeoFont(), TextSolidBrush));
+                new TextStyle(Text, NotifiedGeoFont.ToGeoFont(), TextBrush));
             newLegendItem.BackgroundMask = BackgroundMask;
             newLegendItem.BottomPadding = BottomPadding;
             newLegendItem.ImageBottomPadding = ImageBottomPadding;

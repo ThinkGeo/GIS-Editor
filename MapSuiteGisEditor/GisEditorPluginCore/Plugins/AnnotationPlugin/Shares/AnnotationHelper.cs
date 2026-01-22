@@ -22,10 +22,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -81,7 +81,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             double right = textScreenPoint.X + textArea.Width;
                             double bottom = textScreenPoint.Y + textArea.Height;
 
-                            string placementString = textStyle.PointPlacement.ToString();
+                            string placementString = textStyle.TextPlacement.ToString();
                             if (placementString.Contains("Left"))
                             {
                                 left = textScreenPoint.X - textArea.Width;
@@ -143,8 +143,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
 
                     ViewModel.CurrentEditOverlay.CalculateAllControlPoints();
-                    ViewModel.CurrentAnnotationOverlay.Refresh();
-                    ViewModel.CurrentEditOverlay.Refresh();
+                    ViewModel.CurrentAnnotationOverlay.RefreshAsync();
+                    ViewModel.CurrentEditOverlay.RefreshAsync();
                     ViewModel.SyncUIState();
                     ViewModel.TakeSnapshot();
                 }
@@ -192,11 +192,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 CommitTextAnnotationEdit();
 
                 ViewModel.CurrentAnnotationOverlay.TrackShapeLayer.FeatureIdsToExclude.Clear();
-                ViewModel.CurrentAnnotationOverlay.Refresh();
+                ViewModel.CurrentAnnotationOverlay.RefreshAsync();
 
                 ViewModel.CurrentEditOverlay.EditShapesLayer.InternalFeatures.Clear();
                 ViewModel.CurrentEditOverlay.CalculateAllControlPoints();
-                ViewModel.CurrentEditOverlay.Refresh();
+                ViewModel.CurrentEditOverlay.RefreshAsync();
 
                 ViewModel.SyncStylePreview();
                 ViewModel.SyncUIState();
@@ -315,7 +315,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
 
                 MarkerHelper.CurrentMarkerOverlay.Markers.Clear();
-                MarkerHelper.CurrentMarkerOverlay.Refresh();
+                MarkerHelper.CurrentMarkerOverlay.RefreshAsync();
             }
         }
 
@@ -365,3 +365,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

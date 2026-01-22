@@ -22,7 +22,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

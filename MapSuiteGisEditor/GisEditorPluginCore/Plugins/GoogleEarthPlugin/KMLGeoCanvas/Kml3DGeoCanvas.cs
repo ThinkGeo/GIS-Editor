@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -78,7 +78,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             if (fillBrush == null)
             {
-                fillBrush = new GeoSolidBrush(GeoColor.SimpleColors.Transparent);
+                fillBrush = new GeoSolidBrush(GeoColors.Transparent);
             }
 
             int id = 0;
@@ -185,7 +185,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             contentStringBuilder.AppendLine(@"</Placemark>");
         }
 
-        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, float rotateAngle, DrawingTextAlignment drawingTextAlignment)
+        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, DrawingTextAlignment drawingTextAlignment, float rotateAngle)
         {
             int id = 0;
             if (fillBrush != null)
@@ -242,7 +242,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             foreach (ScreenPointF screenPoint in screenPoints)
             {
-                PointShape pointShape = ExtentHelper.ToWorldCoordinate(virtualWorldExtent, screenPoint.X + xOffset, screenPoint.Y + yOffset, virtualMapWidth, virtualMapHeight);
+                PointShape pointShape = MapUtil.ToWorldCoordinate(virtualWorldExtent, screenPoint.X + xOffset, screenPoint.Y + yOffset, virtualMapWidth, virtualMapHeight);
                 contentStringBuilder.AppendFormat(" {0},{1},{2} ", pointShape.X, pointShape.Y, height);
             }
             contentStringBuilder.AppendLine(@"</coordinates>");
@@ -254,7 +254,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             foreach (ScreenPointF screenPoint in screenPoints)
             {
-                PointShape pointShape = ExtentHelper.ToWorldCoordinate(virtualWorldExtent, screenPoint.X + xOffset, screenPoint.Y + yOffset, virtualMapWidth, virtualMapHeight);
+                PointShape pointShape = MapUtil.ToWorldCoordinate(virtualWorldExtent, screenPoint.X + xOffset, screenPoint.Y + yOffset, virtualMapWidth, virtualMapHeight);
                 contentStringBuilder.AppendFormat(" {0},{1} ", pointShape.X, pointShape.Y);
             }
             contentStringBuilder.AppendLine(@"</coordinates>");
@@ -383,10 +383,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private string GetGoogleHTMLColor(GeoColor geoColor)
         {
             StringBuilder googleHtmlColor = new StringBuilder();
-            googleHtmlColor.Append(GetColorComponentInHex(geoColor.AlphaComponent));
-            googleHtmlColor.Append(GetColorComponentInHex(geoColor.BlueComponent));
-            googleHtmlColor.Append(GetColorComponentInHex(geoColor.GreenComponent));
-            googleHtmlColor.Append(GetColorComponentInHex(geoColor.RedComponent));
+            googleHtmlColor.Append(GetColorComponentInHex(geoColor.A));
+            googleHtmlColor.Append(GetColorComponentInHex(geoColor.B));
+            googleHtmlColor.Append(GetColorComponentInHex(geoColor.G));
+            googleHtmlColor.Append(GetColorComponentInHex(geoColor.R));
             return googleHtmlColor.ToString();
         }
 
@@ -405,19 +405,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             throw new NotImplementedException();
         }
 
-        protected override float GetCanvasHeightCore(object nativeImage)
+        protected override void DrawArcCore(GeoPen outlinePen, float x, float y, float width, float height, float startAngle, float sweepAngle, DrawingLevel drawingLevel)
+        {
+            return;
+        }
+
+        protected override float GetCanvasHeightCore()
         {
             return virtualMapHeight;
         }
 
-        protected override float GetCanvasWidthCore(object nativeImage)
+        protected override float GetCanvasWidthCore()
         {
             return virtualMapWidth;
-        }
-
-        public override System.IO.Stream GetStreamFromGeoImage(GeoImage image)
-        {
-            throw new NotImplementedException();
         }
 
         protected override DrawingRectangleF MeasureTextCore(string text, GeoFont font)
@@ -428,15 +428,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return canvas.MeasureText(text, font);
         }
 
-        protected override GeoImage ToGeoImageCore(object nativeImage)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object ToNativeImageCore(GeoImage image)
-        {
-            throw new NotImplementedException();
-        }
 
         protected override void EndDrawingCore()
         {
@@ -456,3 +447,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

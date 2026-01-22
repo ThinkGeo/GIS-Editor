@@ -20,7 +20,8 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -69,7 +70,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void ScaleComboBox_DropDownOpened(object sender, EventArgs e)
         {
             ScaleComboBox.Items.Clear();
-            foreach (var zoomLevel in GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels)
+            foreach (var scale in GisEditor.ActiveMap.ZoomScales)
             {
                 Scale = CalculateScale();
             }

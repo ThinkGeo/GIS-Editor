@@ -24,7 +24,7 @@ using System.Xml.Linq;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

@@ -21,8 +21,8 @@ using System;
 using System.IO;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -72,10 +72,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public string InternalProjection
         {
-            get { return ((Proj4Projection)shpLayer.FeatureSource.Projection).InternalProjectionParametersString; }
+            get { return ((Proj4Projection)shpLayer.FeatureSource.ProjectionConverter).InternalProjectionParametersString; }
             set
             {
-                Proj4Projection projection = (Proj4Projection)shpLayer.FeatureSource.Projection;
+                Proj4Projection projection = (Proj4Projection)shpLayer.FeatureSource.ProjectionConverter;
                 projection.InternalProjectionParametersString = value;
                 projection.SyncProjectionParametersString();
                 RaisePropertyChanged(() => InternalProjection);
@@ -84,10 +84,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public string ExternalProjection
         {
-            get { return ((Proj4Projection)shpLayer.FeatureSource.Projection).ExternalProjectionParametersString; }
+            get { return ((Proj4Projection)shpLayer.FeatureSource.ProjectionConverter).ExternalProjectionParametersString; }
             set
             {
-                Proj4Projection projection = (Proj4Projection)shpLayer.FeatureSource.Projection;
+                Proj4Projection projection = (Proj4Projection)shpLayer.FeatureSource.ProjectionConverter;
                 projection.ExternalProjectionParametersString = value;
                 projection.SyncProjectionParametersString();
                 RaisePropertyChanged(() => ExternalProjection);
@@ -134,14 +134,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             shpLayer.RequireIndex = false;
             bool isDecimalDegree = LayerPluginHelper.IsDecimalDegree(shpLayer);
             shpLayer.RequireIndex = requireIndex;
-            shpLayer.FeatureSource.Projection = new Proj4Projection();
+            shpLayer.FeatureSource.ProjectionConverter = new Proj4Projection();
             if (File.Exists(prjPath))
             {
                 string wkt = File.ReadAllText(prjPath);
                 try
                 {
                     string proj4 = Proj4Projection.ConvertPrjToProj4(wkt);
-                    Proj4Projection projection = (Proj4Projection)ShpLayer.FeatureSource.Projection;
+                    Proj4Projection projection = (Proj4Projection)ShpLayer.FeatureSource.ProjectionConverter;
                     projection.InternalProjectionParametersString = proj4;
                     projection.SyncProjectionParametersString();
                     IsInternalProjectionDetermined = true;
@@ -154,7 +154,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else if (isDecimalDegree)
             {
-                Proj4Projection projection = (Proj4Projection)ShpLayer.FeatureSource.Projection;
+                Proj4Projection projection = (Proj4Projection)ShpLayer.FeatureSource.ProjectionConverter;
                 projection.InternalProjectionParametersString = Proj4Projection.GetEpsgParametersString(4326);
                 projection.SyncProjectionParametersString();
                 IsInternalProjectionDetermined = true;

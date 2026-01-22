@@ -19,6 +19,7 @@
 
 using System;
 using System.Windows.Media;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

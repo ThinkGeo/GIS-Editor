@@ -22,8 +22,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -95,7 +95,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 identifyOverlay.HighlightFeatureLayer.InternalFeatures.Clear();
                 identifyOverlay.HighlightFeatureLayer.BuildIndex();
                 identifyOverlay.StandOutHighlightFeatureLayer.InternalFeatures.Clear();
-                identifyOverlay.Refresh();
+                identifyOverlay.RefreshAsync();
             }
 
             featureInfoControl.Refresh(new Dictionary<FeatureLayer,Collection<Feature>>());

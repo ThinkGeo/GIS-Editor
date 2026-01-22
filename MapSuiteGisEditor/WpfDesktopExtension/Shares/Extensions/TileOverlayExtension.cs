@@ -19,6 +19,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using ThinkGeo.Core;
 using ThinkGeo.UI.Wpf;
@@ -44,10 +45,27 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             get { return TimeSpan.FromMilliseconds(requestRefreshBufferTimeInMillisecond); }
         }
 
-        //public static void RefreshWithBufferSettings(this Overlay overlay)
-        //{
-        //    overlay.Refresh(TimeSpan.FromMilliseconds(RefreshBufferTimeInMillisecond), RequestDrawingBufferTimeType.ResetDelay);
-        //}
+        public static void RefreshWithBufferSettings(this Overlay overlay)
+        {
+            if (overlay == null) return;
+
+            try
+            {
+                var refreshAsync = overlay.GetType().GetMethod("RefreshAsync", BindingFlags.Instance | BindingFlags.Public);
+                if (refreshAsync != null)
+                {
+                    refreshAsync.Invoke(overlay, null);
+                    return;
+                }
+
+                var refresh = overlay.GetType().GetMethod("Refresh", BindingFlags.Instance | BindingFlags.Public);
+                refresh?.Invoke(overlay, null);
+            }
+            catch
+            {
+                // Best-effort only.
+            }
+        }
 
         public static async Task Invalidate(this TileOverlay overlay)
         {

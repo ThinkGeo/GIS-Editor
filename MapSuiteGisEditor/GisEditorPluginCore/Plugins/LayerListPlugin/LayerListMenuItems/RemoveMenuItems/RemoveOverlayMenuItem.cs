@@ -19,8 +19,8 @@
 
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -58,7 +58,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         if (!measureTrackInteractiveOverlay.IsVisible) measureTrackInteractiveOverlay.IsVisible = true;
                         measureTrackInteractiveOverlay.ShapeLayer.MapShapes.Clear();
                         measureTrackInteractiveOverlay.History.Clear();
-                        measureTrackInteractiveOverlay.Refresh();
+                        measureTrackInteractiveOverlay.RefreshAsync();
                         GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(measureTrackInteractiveOverlay, RefreshArgsDescription.ClearCommandDescription));
                     }
                     else

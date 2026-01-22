@@ -22,9 +22,8 @@ using System.Linq;
 using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -76,7 +75,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //                    }
 
         //                    graticuleLayer.IsVisible = isEnabled;
-        //                    extendedMap.AdornmentOverlay.Refresh();
+        //                    extendedMap.AdornmentOverlay.RefreshAsync();
         //                }
         //            });
         //        }
@@ -92,7 +91,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     return GisEditor.ActiveMap.BackgroundOverlay.BackgroundBrush;
                 }
-                else return new GeoSolidBrush(GeoColor.SimpleColors.Transparent);
+                else return new GeoSolidBrush(GeoColors.Transparent);
             }
             set
             {
@@ -101,7 +100,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     GisEditor.ActiveMap.BackgroundOverlay.BackgroundBrush = value;
                     if (GisEditor.ActiveMap.IsLoaded)
                     {
-                        GisEditor.ActiveMap.Refresh(GisEditor.ActiveMap.BackgroundOverlay);
+                        GisEditor.ActiveMap.RefreshAsync(GisEditor.ActiveMap.BackgroundOverlay);
                     }
                 }
                 RaisePropertyChanged(() => SelectedBackground);
@@ -114,9 +113,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get
             {
                 AreaStyle areaStyle = new AreaStyle();
-                areaStyle.Advanced.FillCustomBrush = SelectedBackground;
+                areaStyle.FillBrush = SelectedBackground;
                 return areaStyle.GetPreviewImage(32, 32);
             }
         }
     }
 }
+
+

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:tg="clr-namespace:ThinkGeo.MapSuite.Layers;assembly=ThinkGeo.MapSuite.Layers.Adornments"
+        xmlns:tg="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         Title="{DynamicResource ResourceKey=LegendItemEditorLegendItemEditorTitle}"
         Width="750"
         Height="400"
@@ -212,7 +212,7 @@
                                                    IsGradientColorBrushTabEnabled="False"
                                                    IsHatchBrushTabEnabled="False"
                                                    IsTextureBrushTabEnabled="False"
-                                                   SelectedBrush="{Binding TextSolidBrush,
+                                                   SelectedBrush="{Binding TextBrush,
                                                                            Mode=TwoWay}" />
                     </DockPanel>
                     <DockPanel Margin="{StaticResource MarginBottom}">

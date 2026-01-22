@@ -23,7 +23,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Styles;
+
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

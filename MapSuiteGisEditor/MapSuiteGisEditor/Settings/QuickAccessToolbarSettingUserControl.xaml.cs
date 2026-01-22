@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Windows.Controls.Ribbon;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -29,14 +30,13 @@ namespace ThinkGeo.MapSuite.GisEditor
     /// Interaction logic for QuickAccessToolbarSettingUserControl.xaml
     /// </summary>
     [Obfuscation]
-    public partial class QuickAccessToolbarSettingUserControl : SettingUserControl
+    public partial class QuickAccessToolbarSettingUserControl : UserControl
     {
         public QuickAccessToolbarSettingUserControl()
         {
-            Title = "QuickAccessToolbarSettingTitle";
             InitializeComponent();
-
-            RefreshRibbonListBox();
+            DataContextChanged += (s, e) => RefreshRibbonListBox();
+            Loaded += (s, e) => RefreshRibbonListBox();
         }
 
         [Obfuscation]
@@ -68,20 +68,31 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         private void RefreshRibbonListBox()
         {
-            if (quickAccessToolbarSettingViewModel.GisEditorUserControl != null)
+            var viewModel = DataContext as QuickAccessToolbarSettingViewModel;
+            if (viewModel != null && viewModel.GisEditorUserControl != null)
             {
-                ribbonListBox.ItemsSource = quickAccessToolbarSettingViewModel.GisEditorUserControl.ribbonContainer.Items.OfType<RibbonTab>()
+                ribbonListBox.ItemsSource = viewModel.GisEditorUserControl.ribbonContainer.Items.OfType<RibbonTab>()
                      .SelectMany(g => g.Items.OfType<RibbonGroup>())
                      .SelectMany(g => g.Items.OfType<object>())
-                     .Where(i => quickAccessToolbarSettingViewModel.CheckCanAddToQuickAccessBar(i)).OfType<object>();
+                     .Where(i => viewModel.CheckCanAddToQuickAccessBar(i)).OfType<object>();
 
-                listBox.ItemsSource = quickAccessToolbarSettingViewModel.GisEditorUserControl.ribbonContainer.QuickAccessToolBar.Items;
+                listBox.ItemsSource = viewModel.GisEditorUserControl.ribbonContainer.QuickAccessToolBar.Items;
+            }
+            else
+            {
+                ribbonListBox.ItemsSource = null;
+                listBox.ItemsSource = null;
             }
         }
 
         [Obfuscation]
         private void DownButton_Click(object sender, RoutedEventArgs e)
         {
+            var quickAccessToolbarSettingViewModel = DataContext as QuickAccessToolbarSettingViewModel;
+            if (quickAccessToolbarSettingViewModel == null || quickAccessToolbarSettingViewModel.GisEditorUserControl == null)
+            {
+                return;
+            }
             var index = listBox.SelectedIndex;
             if (index < quickAccessToolbarSettingViewModel.GisEditorUserControl.ribbonContainer.QuickAccessToolBar.Items.Count - 1)
             {
@@ -95,6 +106,11 @@ namespace ThinkGeo.MapSuite.GisEditor
         [Obfuscation]
         private void UpButton_Click(object sender, RoutedEventArgs e)
         {
+            var quickAccessToolbarSettingViewModel = DataContext as QuickAccessToolbarSettingViewModel;
+            if (quickAccessToolbarSettingViewModel == null || quickAccessToolbarSettingViewModel.GisEditorUserControl == null)
+            {
+                return;
+            }
             var index = listBox.SelectedIndex;
             if (index > 0)
             {

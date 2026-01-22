@@ -1,7 +1,7 @@
 <styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.CustomSymbolPointStyleUserControl"
                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                          xmlns:core="clr-namespace:ThinkGeo.MapSuite.Drawing;assembly=ThinkGeo.MapSuite"
+                          xmlns:core="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                           xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

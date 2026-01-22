@@ -22,7 +22,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -86,7 +86,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var defaultColors = new ObservableCollection<SolidColorBrush>();
             foreach (GeoColor colorx in colors)
             {
-                Color color = Color.FromArgb(colorx.AlphaComponent, colorx.RedComponent, colorx.GreenComponent, colorx.BlueComponent);
+                Color color = Color.FromArgb(colorx.A, colorx.R, colorx.G, colorx.B);
                 defaultColors.Add(new SolidColorBrush(color));
             }
 

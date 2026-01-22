@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -127,7 +127,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (pointStyle.PointType != (PointType)((int)SelectedPointStyleType - 1))
                     {
-                        Styles.Style newStyle = null;
+                        ThinkGeo.Core.Style newStyle = null;
                         switch (SelectedPointStyleType)
                         {
                             case PointStyleType.Simple:
@@ -249,13 +249,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return columnNames;
         }
 
-        private static PointStyleType GetPointStyleType(Styles.PointStyle style)
+        private static PointStyleType GetPointStyleType(PointStyle style)
         {
             switch (style.PointType)
             {
-                case PointType.Bitmap:
+                case PointType.Image:
                     return PointStyleType.CustomSymbol;
-                case PointType.Character:
+                case PointType.Glyph:
                     return PointStyleType.Font;
                 case PointType.Symbol:
                 default:

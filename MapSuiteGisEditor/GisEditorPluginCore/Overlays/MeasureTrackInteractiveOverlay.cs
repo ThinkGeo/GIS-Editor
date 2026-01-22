@@ -23,13 +23,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -76,6 +74,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         [NonSerialized]
         private MeasureCustomeMode measureCustomeMode;
+
+        public RenderMode RenderMode { get; set; }
 
         public MeasureTrackInteractiveOverlay()
         {
@@ -208,7 +208,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 TrackShapeLayer.InternalFeatures.Clear();
                 TrackShapeLayer.InternalFeatures.Add(drageFeature);
 
-                arguments.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                arguments.SetDrawThisOverlay(InteractiveOverlayDrawType.Draw);
                 arguments.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
             }
 
@@ -376,9 +376,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             TrackShapeLayer.InternalFeatures.Clear();
         }
 
-        protected override void DrawTileCore(GeoCanvas geoCanvas)
+        protected override Task DrawTileAsyncCore(GeoCanvas geoCanvas)
         {
-            base.DrawTileCore(geoCanvas);
             LayerTile layerTile = OverlayCanvas.Children.OfType<LayerTile>().FirstOrDefault(tmpTile
                 => tmpTile.GetValue(FrameworkElement.NameProperty).Equals("DefaultLayerTile"));
 
@@ -387,12 +386,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 layerTile.DrawingLayers.Insert(0, ShapeLayer);
                 layerTile.Draw(geoCanvas);
             }
+
+            return base.DrawTileAsyncCore(geoCanvas);
         }
 
         protected override InteractiveResult KeyDownCore(KeyEventInteractionArguments interactionArguments)
         {
             InteractiveResult result = base.KeyDownCore(interactionArguments);
-            if (interactionArguments.Key == System.Windows.Forms.Keys.Escape.ToString())
+            if (interactionArguments.Key == System.Windows.Input.Key.Escape)
             {
                 CancelLastestTracking();
                 textBlock.Visibility = Visibility.Collapsed;
@@ -406,7 +407,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override RectangleShape GetBoundingBoxCore()
         {
-            RectangleShape extent = ExtentHelper.GetBoundingBoxOfItems(ShapeLayer.MapShapes.Select(m => m.Value.Feature));
+            RectangleShape extent = MapUtil.GetBoundingBoxOfItems(ShapeLayer.MapShapes.Select(m => m.Value.Feature));
             return extent;
         }
 
@@ -841,18 +842,23 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
+        private void Refresh()
+        {
+            parentMap?.Refresh();
+        }
+
         public static CompositeStyle GetInitialCompositeStyle()
         {
-            AreaStyle measurementAreaStyle = new AreaStyle(new GeoPen(GeoColor.SimpleColors.Black, 2), new GeoSolidBrush(GeoColor.StandardColors.Transparent));
+            AreaStyle measurementAreaStyle = new AreaStyle(new GeoPen(GeoColors.Black, 2), new GeoSolidBrush(GeoColors.Transparent));
             measurementAreaStyle.Name = "Measurement Area Style";
-            LineStyle measurementLineStyle = new LineStyle(new GeoPen(GeoColor.SimpleColors.Black, 2), new GeoPen(GeoColor.StandardColors.Transparent));
+            LineStyle measurementLineStyle = new LineStyle(new GeoPen(GeoColors.Black, 2), new GeoPen(GeoColors.Transparent));
             measurementLineStyle.Name = "Measurement Line Style";
             IconTextStyle measurementPointStyle = new IconTextStyle();
             measurementPointStyle.Name = "Measurement Text Style";
             measurementPointStyle.TextColumnName = measureResultColumnName;
             measurementPointStyle.Font = new GeoFont("Arial", 12);
-            measurementPointStyle.TextSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Black);
-            measurementPointStyle.HaloPen = new GeoPen(GeoColor.StandardColors.White, 3);
+            measurementPointStyle.TextBrush = new GeoSolidBrush(GeoColors.Black);
+            measurementPointStyle.HaloPen = new GeoPen(GeoColors.White, 3);
             measurementPointStyle.BestPlacement = false;
             measurementPointStyle.DuplicateRule = LabelDuplicateRule.UnlimitedDuplicateLabels;
             measurementPointStyle.OverlappingRule = LabelOverlappingRule.AllowOverlapping;
@@ -872,3 +878,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

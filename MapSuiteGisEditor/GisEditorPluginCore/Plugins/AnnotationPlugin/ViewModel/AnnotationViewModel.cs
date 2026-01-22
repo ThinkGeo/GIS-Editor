@@ -32,11 +32,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -495,7 +494,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             }
                         }
 
-                        CurrentAnnotationOverlay.Refresh();
+                        CurrentAnnotationOverlay.RefreshAsync();
                         SyncUIState();
 
                     }, () => CurrentAnnotationOverlay != null);
@@ -532,7 +531,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         {
                             ScreenPointF point = new ScreenPointF((float)labelInfo.PositionInScreenCoordinates.X + rectangle.Width / 2 + 3, (float)labelInfo.PositionInScreenCoordinates.Y - rectangle.Height / 2);
 
-                            PointShape pointShape = ExtentHelper.ToWorldCoordinate(GisEditor.ActiveMap.CurrentExtent, point, (float)width, (float)height);
+                            PointShape pointShape = MapUtil.ToWorldCoordinate(GisEditor.ActiveMap.CurrentExtent, point, (float)width, (float)height);
                             Feature pointFeature = new Feature(pointShape);
                             pointFeature.Id = pointShape.Id;
                             pointFeature.ColumnValues[AnnotationTrackInteractiveOverlay.valueStyleMatchColumnName] = valueStyleMatchColumnName;
@@ -577,11 +576,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             CurrentAnnotationOverlay.TrackShapeLayer.InternalFeatures.Clear();
             CurrentAnnotationOverlay.TrackShapeLayer.FeatureIdsToExclude.Clear();
-            CurrentAnnotationOverlay.Refresh();
+            CurrentAnnotationOverlay.RefreshAsync();
 
             CurrentEditOverlay.EditShapesLayer.InternalFeatures.Clear();
             CurrentEditOverlay.CalculateAllControlPoints();
-            GisEditor.ActiveMap.Refresh(CurrentEditOverlay);
+            GisEditor.ActiveMap.RefreshAsync(CurrentEditOverlay);
 
             SyncUIState();
         }
@@ -662,7 +661,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     if (needMarkerOverlayRefreshed)
                     {
-                        MarkerHelper.CurrentMarkerOverlay.Refresh();
+                        MarkerHelper.CurrentMarkerOverlay.RefreshAsync();
                     }
 
                     if (isEditing)
@@ -673,8 +672,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             });
 
             CurrentEditOverlay.CalculateAllControlPoints();
-            CurrentEditOverlay.Refresh();
-            CurrentAnnotationOverlay.Refresh();
+            CurrentEditOverlay.RefreshAsync();
+            CurrentAnnotationOverlay.RefreshAsync();
             SyncUIState();
 
             TakeSnapshot();
@@ -686,7 +685,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
              .ZoomLevel01.CustomStyles.OfType<ValueStyle>().First()
              .ValueItems.Take(1).SelectMany(valueItem =>
              {
-                 return new Styles.Style[] 
+                 return new ThinkGeo.Core.Style[] 
                 { 
                     valueItem.DefaultAreaStyle, 
                     valueItem.DefaultLineStyle, 
@@ -791,13 +790,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (needMarkerOverlayRefreshed)
             {
-                MarkerHelper.CurrentMarkerOverlay.Refresh();
+                MarkerHelper.CurrentMarkerOverlay.RefreshAsync();
             }
 
             CurrentAnnotationOverlay.TrackShapeLayer.FeatureIdsToExclude.Clear();
-            CurrentAnnotationOverlay.Refresh();
+            CurrentAnnotationOverlay.RefreshAsync();
             CurrentEditOverlay.CalculateAllControlPoints();
-            CurrentEditOverlay.Refresh();
+            CurrentEditOverlay.RefreshAsync();
 
             SyncUIState();
         }
@@ -868,19 +867,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (CurrentAnnotationOverlay.MapArguments != null)
             {
-                CurrentAnnotationOverlay.Refresh();
+                CurrentAnnotationOverlay.RefreshAsync();
             }
 
             CurrentEditOverlay.CalculateAllControlPoints();
 
             if (CurrentEditOverlay.MapArguments != null)
             {
-                CurrentEditOverlay.Refresh();
+                CurrentEditOverlay.RefreshAsync();
             }
 
             if (MarkerHelper.CurrentMarkerOverlay != null)
             {
-                MarkerHelper.CurrentMarkerOverlay.Refresh();
+                MarkerHelper.CurrentMarkerOverlay.RefreshAsync();
             }
 
             RaisePropertyChanged(() => CanUndo);
@@ -991,3 +990,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+
+

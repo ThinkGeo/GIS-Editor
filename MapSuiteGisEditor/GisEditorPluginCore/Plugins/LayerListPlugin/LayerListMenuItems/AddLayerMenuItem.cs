@@ -21,8 +21,8 @@ using System;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -73,7 +73,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     subItem.IsChecked = false;
                 }
                 hybridMenuItem.IsChecked = true;
-                tileOverlay.TileType = TileType.HybridTile;
+                tileOverlay.TileType = TileType.MultiTile;
                 tileOverlay.RefreshWithBufferSettings();
             }, () => GisEditor.ActiveMap != null);
             hybridMenuItem.Command = hybridCommand;
@@ -94,7 +94,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         subItem.IsChecked = false;
                     }
                 }
-                tileOverlay.TileType = TileType.PreloadDataHybridTile;
+                tileOverlay.TileType = TileType.PreloadDataMultiTile;
                 tileOverlay.RefreshWithBufferSettings();
             }, () => GisEditor.ActiveMap != null);
             preloadMenuItem.Command = preloadCommand;
@@ -105,11 +105,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 case TileType.SingleTile:
                     singleMenuItem.IsChecked = true;
                     break;
-                case TileType.PreloadDataHybridTile:
+                case TileType.PreloadDataMultiTile:
                     preloadMenuItem.IsChecked = true;
                     break;
-                case TileType.MultipleTile:
-                case TileType.HybridTile:
+                case TileType.MultiTile:
                 default:
                     hybridMenuItem.IsChecked = true;
                     break;

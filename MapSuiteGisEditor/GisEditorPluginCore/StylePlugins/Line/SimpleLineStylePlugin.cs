@@ -21,8 +21,8 @@ using System;
 using System.Linq;
 using System.ComponentModel.Composition;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -49,9 +49,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             LineStyle lineStyle = new LineStyle
                 {
                     Name = GisEditor.LanguageManager.GetStringResource("AnnotationStylesRibbonGroupLineStyleLabel"),
-                    OuterPen = new GeoPen(GeoColor.SimpleColors.Black, 1),
-                    InnerPen = new GeoPen(GeoColor.StandardColors.Transparent, 1),
-                    CenterPen = new GeoPen(GeoColor.StandardColors.Transparent, 1),
+                    OuterPen = new GeoPen(GeoColors.Black, 1),
+                    InnerPen = new GeoPen(GeoColors.Transparent, 1),
+                    CenterPen = new GeoPen(GeoColors.Transparent, 1),
                 };
             StyleCandidates.Add(lineStyle);
             lineStyleOption = new StyleSetting(this);
@@ -63,9 +63,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             LineStyle style = StyleCandidates.OfType<LineStyle>().FirstOrDefault();
             if (style != null)
             {
-                alpha = style.OuterPen.Color.AlphaComponent;
+                alpha = style.OuterPen.Color.A;
             }
-            var outerColor = new GeoColor(alpha, GeoColorHelper.GetRandomColor(RandomColorType.Bright));
+            var outerColor = new GeoColor((byte)alpha, GeoColorHelper.GetRandomColor(RandomColorType.Bright));
             return new LineStyle(new GeoPen(outerColor));
         }
 

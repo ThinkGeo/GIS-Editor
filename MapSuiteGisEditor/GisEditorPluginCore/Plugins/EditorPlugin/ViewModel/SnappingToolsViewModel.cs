@@ -23,7 +23,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -212,7 +212,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (count == 0)
                 {
                     SnappingLayers.Clear();
-                    EditOverlay.Refresh();
+                    EditOverlay.RefreshAsync();
                 }
             }
         }

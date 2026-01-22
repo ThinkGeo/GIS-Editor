@@ -25,8 +25,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -157,7 +157,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             string prjPath = Path.ChangeExtension(featureLayerStructureParameters.LayerUri.OriginalString, "prj");
             File.WriteAllText(prjPath, Proj4Projection.ConvertProj4ToPrj(featureLayerStructureParameters.Proj4ProjectionParametersString));
 
-            var resultLayer = new TabFeatureLayer(featureLayerStructureParameters.LayerUri.LocalPath, GeoFileReadWriteMode.ReadWrite);
+            var resultLayer = new TabFeatureLayer(featureLayerStructureParameters.LayerUri.LocalPath, FileAccess.ReadWrite);
 
             if (featureLayerStructureParameters.AddedFeatures.Count > 0)
             {

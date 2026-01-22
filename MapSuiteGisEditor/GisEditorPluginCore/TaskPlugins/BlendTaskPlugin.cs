@@ -21,13 +21,15 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+using Microsoft.SqlServer.Types;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -148,7 +150,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             List<Feature> resultFeatures = new List<Feature>();
 
-            if (featureToBeShattered != null && featureToBeShattered.CanMakeValid) featureToBeShattered = featureToBeShattered.MakeValid();
+            if (featureToBeShattered != null && featureToBeShattered.CanMakeValid()) featureToBeShattered = featureToBeShattered.MakeValid();
 
             for (int i = 0; i < features.Count; i++)
             {
@@ -156,7 +158,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 tmpFeature = GetValidPolygonFeature(tmpFeature);
                 if (tmpFeature == null) continue;
 
-                if (tmpFeature.CanMakeValid) tmpFeature = tmpFeature.MakeValid();
+                if (tmpFeature.CanMakeValid()) tmpFeature = tmpFeature.MakeValid();
                 if (featureToBeShattered != null)
                 {
                     //if (featureToBeShattered.IsDisjointed(tmpFeature))
@@ -471,6 +473,130 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
             }
             return resultFeatures;
+        }
+    }
+
+    static class SqlTypesGeometryHelper
+    {
+        public static bool Intersects(BaseShape shape1, BaseShape shape2)
+        {
+            return shape1 != null && shape2 != null && shape1.Intersects(shape2);
+        }
+
+        public static bool Intersects(BaseShape shape, Feature feature)
+        {
+            return shape != null && feature != null && shape.Intersects(feature);
+        }
+
+        public static bool IsDisjointed(BaseShape shape, Feature feature)
+        {
+            return shape != null && feature != null && shape.IsDisjointed(feature);
+        }
+
+        public static bool IsDisjointed(Feature feature1, Feature feature2)
+        {
+            if (feature1 == null || feature2 == null) return false;
+            return feature1.GetShape().IsDisjointed(feature2);
+        }
+
+        public static bool IsDisjointed(BaseShape shape1, BaseShape shape2)
+        {
+            return shape1 != null && shape2 != null && shape1.IsDisjointed(shape2);
+        }
+
+        public static bool Contains(BaseShape shape, Feature feature)
+        {
+            return shape != null && feature != null && shape.Contains(feature);
+        }
+
+        public static bool Contains(BaseShape shape1, BaseShape shape2)
+        {
+            return shape1 != null && shape2 != null && shape1.Contains(shape2);
+        }
+
+        public static BaseShape Union(IEnumerable<AreaBaseShape> shapes)
+        {
+            if (shapes == null) return null;
+            AreaBaseShape result = null;
+            foreach (var shape in shapes.Where(s => s != null))
+            {
+                result = result == null ? shape : result.Union(shape);
+            }
+            return result;
+        }
+
+        public static BaseShape Union(AreaBaseShape shape1, AreaBaseShape shape2)
+        {
+            if (shape1 == null) return shape2;
+            if (shape2 == null) return shape1;
+            return shape1.Union(shape2);
+        }
+
+        public static Feature GetDifference(Feature feature1, Feature feature2)
+        {
+            if (feature1 == null || feature2 == null) return feature1 ?? feature2;
+            return feature1.GetDifference(feature2);
+        }
+
+        public static BaseShape GetDifference(AreaBaseShape shape1, AreaBaseShape shape2)
+        {
+            if (shape1 == null || shape2 == null) return shape1 ?? shape2;
+            return shape1.GetDifference(shape2);
+        }
+
+        public static Feature GetIntersection(Feature feature1, Feature feature2)
+        {
+            if (feature1 == null || feature2 == null) return null;
+            var intersectionShape = GetIntersection(feature1.GetShape(), feature2.GetShape());
+            if (intersectionShape == null) return null;
+            var result = new Feature(intersectionShape);
+            foreach (var kvp in feature1.ColumnValues)
+            {
+                result.ColumnValues[kvp.Key] = kvp.Value;
+            }
+            return result;
+        }
+
+        public static BaseShape GetIntersection(BaseShape shape1, BaseShape shape2)
+        {
+            if (shape1 == null || shape2 == null) return null;
+            var geom1 = SqlGeometry.STGeomFromWKB(new SqlBytes(shape1.GetWellKnownBinary()), 0);
+            var geom2 = SqlGeometry.STGeomFromWKB(new SqlBytes(shape2.GetWellKnownBinary()), 0);
+            if (!geom1.STIsValid()) geom1 = geom1.MakeValid();
+            if (!geom2.STIsValid()) geom2 = geom2.MakeValid();
+
+            var intersection = geom1.STIntersection(geom2);
+            if (intersection.IsNull) return null;
+
+            var bytes = intersection.STAsBinary().Value;
+            return BaseShape.CreateShapeFromWellKnownData(bytes);
+        }
+
+        public static MultipolygonShape Buffer(BaseShape shape, double distance, int smoothness, BufferCapType capStyle, GeographyUnit mapUnit, DistanceUnit distanceUnit)
+        {
+            return shape?.Buffer(distance, smoothness, capStyle, mapUnit, distanceUnit);
+        }
+
+        public static Feature Buffer(Feature feature, double distance, int smoothness, BufferCapType capStyle, GeographyUnit mapUnit, DistanceUnit distanceUnit)
+        {
+            return feature?.Buffer(distance, smoothness, capStyle, mapUnit, distanceUnit);
+        }
+
+        public static bool IsValid(Feature feature)
+        {
+            return feature != null && feature.IsGeometryValid();
+        }
+
+        public static Feature MakeValid(Feature feature)
+        {
+            if (feature == null) return null;
+            if (feature.IsGeometryValid()) return feature;
+            return feature;
+        }
+
+        public static string GetInvalidReason(Feature feature)
+        {
+            return feature == null ? string.Empty : feature.GetInvalidReason();
         }
     }
 }

@@ -379,35 +379,33 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             return interactiveResult;
         }
 
-        //public void RemoveLastVertex()
-        //{
-        //    if (TrackMode == TrackMode.Line)
-        //    {
-        //        if (Vertices.Count < 3)
-        //        {
-        //            CleanTrackingShapes();
-        //        }
-        //        else
-        //        {
-        //            Vertices.RemoveAt(Vertices.Count - 2);
-        //            MouseDownCount--;
-        //        }
-        //    }
-        //    else if (TrackMode == TrackMode.Freehand || TrackMode == TrackMode.Polygon)
-        //    {
-        //        if (Vertices.Count < 5)
-        //        {
-        //            CleanTrackingShapes();
-        //        }
-        //        else
-        //        {
-        //            Vertices.RemoveAt(Vertices.Count - 3);
-        //            MouseDownCount--;
-        //        }
-        //    }
-
-        //    DrawCore(MapArguments.CurrentExtent, OverlayRefreshType.Redraw);
-        //}
+        public void RemoveLastVertex()
+        {
+            if (TrackMode == TrackMode.Line)
+            {
+                if (Vertices.Count < 3)
+                {
+                    CleanTrackingShapes();
+                }
+                else
+                {
+                    Vertices.RemoveAt(Vertices.Count - 2);
+                    MouseDownCount--;
+                }
+            }
+            else if (TrackMode == TrackMode.Freehand || TrackMode == TrackMode.Polygon)
+            {
+                if (Vertices.Count < 5)
+                {
+                    CleanTrackingShapes();
+                }
+                else
+                {
+                    Vertices.RemoveAt(Vertices.Count - 3);
+                    MouseDownCount--;
+                }
+            }
+        }
 
         protected override InteractiveResult MouseClickCore(InteractionArguments interactionArguments)
         {

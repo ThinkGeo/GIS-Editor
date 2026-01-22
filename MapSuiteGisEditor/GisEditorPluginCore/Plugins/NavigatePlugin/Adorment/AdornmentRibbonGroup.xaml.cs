@@ -23,8 +23,8 @@ using System.Linq;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -104,7 +104,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         //        graticuleLayer.IsVisible = !adornmentRibbonGroupViewModel.IsGraticulesVisible;
         //        adornmentRibbonGroupViewModel.IsGraticulesVisible = graticuleLayer.IsVisible;
-        //        extendedMap.AdornmentOverlay.Refresh();
+        //        extendedMap.AdornmentOverlay.RefreshAsync();
         //    }
         //}
 
@@ -146,7 +146,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
             {
-                GisEditor.ActiveMap.FixedAdornmentOverlay.Refresh();
+                GisEditor.ActiveMap.FixedAdornmentOverlay.RefreshAsync();
             }));
         }
     }

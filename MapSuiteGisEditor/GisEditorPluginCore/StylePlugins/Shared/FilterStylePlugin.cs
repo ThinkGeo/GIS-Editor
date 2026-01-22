@@ -23,11 +23,11 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
-using Style = ThinkGeo.MapSuite.Styles.Style;
+using Style = ThinkGeo.Core.Style;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -112,7 +112,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 FilterStyle filterStyle = (FilterStyle)layerListItem.ConcreteObject;
                 foreach (var condition in filterStyle.Conditions)
                 {
-                    resultFeatures = condition.GetMatchingFeatures(resultFeatures);
+                    resultFeatures = new Collection<Feature>(condition.GetMatchingFeatures(resultFeatures).ToList());
                 }
 
                 if (resultFeatures.Count > 0)
@@ -218,7 +218,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         }
                         resultLayer = targetLayerPlugin.CreateFeatureLayer(parameters);
 
-                        resultLayer.FeatureSource.Projection = proj4;
+                        resultLayer.FeatureSource.ProjectionConverter = proj4;
                         resultLayer = targetLayerPlugin.GetLayers(getLayerParameters).FirstOrDefault() as FeatureLayer;
                     }
                 }
@@ -237,7 +237,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         GisEditor.ActiveMap.RefreshActiveOverlay();
                         RefreshArgs refreshArgs = new RefreshArgs(this, "LoadToMapCore");
                         InvokeRefreshPlugins(GisEditor.UIManager, refreshArgs);
-                        GisEditor.ActiveMap.Refresh();
+                        GisEditor.ActiveMap.RefreshAsync();
                     }
                 }
             }
@@ -296,13 +296,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 FilterStyle filterStyle = (FilterStyle)layerListItem.ConcreteObject;
                 foreach (var condition in filterStyle.Conditions)
                 {
-                    resultFeatures = condition.GetMatchingFeatures(resultFeatures);
+                    resultFeatures = new Collection<Feature>(condition.GetMatchingFeatures(resultFeatures).ToList());
                 }
                 if (resultFeatures.Count > 0)
                 {
-                    RectangleShape boundingBox = ExtentHelper.GetBoundingBoxOfItems(resultFeatures);
+                    RectangleShape boundingBox = MapUtil.GetBoundingBoxOfItems(resultFeatures);
                     GisEditor.ActiveMap.CurrentExtent = boundingBox;
-                    GisEditor.ActiveMap.Refresh();
+                    GisEditor.ActiveMap.RefreshAsync();
                 }
             }
         }
@@ -315,3 +315,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

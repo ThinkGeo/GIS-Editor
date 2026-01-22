@@ -24,7 +24,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using ThinkGeo.Core;
-using ThinkGeo.Core;
 
 
 namespace ThinkGeo.MapSuite.GisEditor

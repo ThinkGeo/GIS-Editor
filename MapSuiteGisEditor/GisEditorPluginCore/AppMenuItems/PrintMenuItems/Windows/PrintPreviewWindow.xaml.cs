@@ -28,7 +28,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

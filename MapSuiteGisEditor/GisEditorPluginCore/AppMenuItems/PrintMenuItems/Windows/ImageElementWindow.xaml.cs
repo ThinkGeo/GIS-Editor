@@ -23,8 +23,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using Microsoft.Win32;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

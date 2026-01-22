@@ -25,11 +25,10 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -187,20 +186,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             ScaleBarPrinterLayer scaleBarPrinterLayer = new ScaleBarPrinterLayer(mapPrinterLayer);
             scaleBarPrinterLayer.MapUnit = mapPrinterLayer.MapUnit;
-            scaleBarPrinterLayer.BackgroundMask = new AreaStyle(new GeoSolidBrush(GeoColor.StandardColors.Transparent));
+            scaleBarPrinterLayer.BackgroundMask = new AreaStyle(new GeoSolidBrush(GeoColors.Transparent));
             scaleBarPrinterLayer.UnitFamily = UnitSystem.Metric;
-            scaleBarPrinterLayer.AlternateBarBrush = new GeoSolidBrush(GeoColor.StandardColors.White);
+            scaleBarPrinterLayer.AlternateBarBrush = new GeoSolidBrush(GeoColors.White);
             scaleBarPrinterLayer.Open();
             scaleBarPrinterLayer.SetPosition(width, height, centerX, centerY, PrintingUnit.Inch);
             return scaleBarPrinterLayer;
         }
 
-        public static LegendPrinterLayer GetLegendPrinterLayer(double width, double height, double centerX, double centerY)
+        public static LegendPrinterLayer1 GetLegendPrinterLayer(double width, double height, double centerX, double centerY)
         {
-            LegendPrinterLayer legendPrinterLayer = new GisEditorLegendPrinterLayer();
-            legendPrinterLayer.LegendItems.Add(GetLegendItem(GeoColor.StandardColors.LightBlue, "Sample1", 3, 3));
-            legendPrinterLayer.LegendItems.Add(GetLegendItem(GeoColor.StandardColors.LawnGreen, "Sample2", 3, 15));
-            legendPrinterLayer.LegendItems.Add(GetLegendItem(GeoColor.StandardColors.LightGreen, "Sample3", 3, 18));
+            var legendPrinterLayer = new GisEditorLegendPrinterLayer();
+            legendPrinterLayer.LegendItems.Add(GetLegendItem(GeoColors.LightBlue, "Sample1", 3, 3));
+            legendPrinterLayer.LegendItems.Add(GetLegendItem(GeoColors.LawnGreen, "Sample2", 3, 15));
+            legendPrinterLayer.LegendItems.Add(GetLegendItem(GeoColors.LightGreen, "Sample3", 3, 18));
             legendPrinterLayer.Open();
             legendPrinterLayer.SetPosition(width, height, centerX, centerY, PrintingUnit.Inch);
             return legendPrinterLayer;
@@ -276,7 +275,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var bingOverlay = map.Overlays.OfType<BingMapsOverlay>().FirstOrDefault();
             if (bingOverlay != null && bingOverlay.IsVisible)
             {
-                BingMapsLayer bingMapsLayer = new BingMapsLayer(bingOverlay.ApplicationId, (Layers.BingMapsMapType)bingOverlay.MapType);
+                BingMapsLayer bingMapsLayer = new BingMapsLayer(bingOverlay.ApplicationId, (BingMapsMapType)bingOverlay.MapType);
                 bingMapsLayer.TileCache = null;
                 bingMapsLayer.TimeoutInSeconds = 5;
                 bingMapsLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
@@ -293,6 +292,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 worldMapKitLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(WorldMapKitLayer_DrawingException);
                 worldMapKitLayer.TileCache = null;
                 worldMapKitLayer.Projection = wmlkOverlay.Projection;
+                worldMapKitLayer.MapType = wmlkOverlay.MapType;
                 mapPrinterLayer.Layers.Add(worldMapKitLayer);
             }
         }

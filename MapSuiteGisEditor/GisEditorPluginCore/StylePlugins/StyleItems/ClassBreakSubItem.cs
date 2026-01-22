@@ -22,7 +22,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Styles;
+
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

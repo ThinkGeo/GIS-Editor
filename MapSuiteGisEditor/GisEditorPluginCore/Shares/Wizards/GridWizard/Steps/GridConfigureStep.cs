@@ -20,8 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -115,13 +115,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (entity.HasSelectedFeatures && entity.OnlyUseSelectedFeatures)
                 {
                     features = GisEditor.SelectionManager.GetSelectedFeatures().Where(f => f.Tag != null && f.Tag == entity.SelectedFeatureLayer).ToList();
-                    gridExtent = ExtentHelper.GetBoundingBoxOfItems(features);
+                    gridExtent = MapUtil.GetBoundingBoxOfItems(features);
                     gridExtent.ScaleUp(0.05);
                 }
                 else
                 {
                     features = entity.SelectedFeatureLayer.FeatureSource.GetAllFeatures(entity.SelectedFeatureLayer.FeatureSource.GetDistinctColumnNames()).ToList();
-                    gridExtent = ExtentHelper.GetBoundingBoxOfItems(features);
+                    gridExtent = MapUtil.GetBoundingBoxOfItems(features);
                 }
             });
 

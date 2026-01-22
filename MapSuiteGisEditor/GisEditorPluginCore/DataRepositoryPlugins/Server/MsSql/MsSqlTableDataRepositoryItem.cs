@@ -24,7 +24,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -120,7 +120,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private Collection<MsSqlFeatureLayer> GetMsSql2008FeatureLayers()
+        private Collection<SqlServerFeatureLayer> GetMsSql2008FeatureLayers()
         {
             if (LayerInfo != null)
             {
@@ -145,10 +145,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         layerParameters.CustomData["UserName"] = serverItem.UserName;
                         layerParameters.CustomData["Password"] = serverItem.Password;
 
-                        Collection<MsSqlFeatureLayer> newLayers = new Collection<MsSqlFeatureLayer>();
+                        Collection<SqlServerFeatureLayer> newLayers = new Collection<SqlServerFeatureLayer>();
                         try
                         {
-                            newLayers = GisEditor.LayerManager.GetLayers<MsSqlFeatureLayer>(layerParameters);
+                            newLayers = GisEditor.LayerManager.GetLayers<SqlServerFeatureLayer>(layerParameters);
                         }
                         catch (Exception ex)
                         {
@@ -162,7 +162,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
                 }
             }
-            return new Collection<MsSqlFeatureLayer>();
+            return new Collection<SqlServerFeatureLayer>();
         }
     }
 }

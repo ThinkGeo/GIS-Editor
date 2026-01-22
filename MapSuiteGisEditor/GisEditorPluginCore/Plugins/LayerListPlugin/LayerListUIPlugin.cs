@@ -28,9 +28,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -151,7 +150,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         TileOverlay tileOverlay = LayerListHelper.FindMapElementInLayerList<TileOverlay>(GisEditor.LayerListManager.SelectedLayerListItem);
                         if (tileOverlay != null)
                         {
-                            tileOverlay.Refresh();
+                            tileOverlay.RefreshAsync();
                         }
                     }
                 }
@@ -188,7 +187,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //        ApplyLinkSourceItems(sourceFeatureLayer, resultItem.LinkSourceItems);
         //        sourceFeatureLayer.FeatureSource.RefreshColumns();
         //        GisEditor.ActiveMap.RefreshActiveOverlay();
-        //        GisEditor.ActiveMap.Refresh();
+        //        GisEditor.ActiveMap.RefreshAsync();
         //    }
         //}
 
@@ -691,20 +690,21 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return expandStatusElement;
         }
 
-        private void MapCurrentScaleChanged(object sender, CurrentScaleChangedWpfMapEventArgs e)
+        private void MapCurrentScaleChanged(object sender, CurrentScaleChangedMapViewEventArgs e)
         {
             GisEditorWpfMap map = sender as GisEditorWpfMap;
             LayerListItem viewModel = null;
             if (map != null && (viewModel = layerListUserControl.DataContext as LayerListItem) != null)
             {
+                var currentExtent = map.CurrentExtent;
+                currentExtent = GisEditor.ActiveMap.GetSnappedExtent(currentExtent);
                 var layerEntities = viewModel.Children.SelectMany(overlayEntity =>
                     overlayEntity.Children.ToDictionary(layerEntity => layerEntity, layerEntity =>
                     {
                         var featureLayer = layerEntity.ConcreteObject as FeatureLayer;
                         if (featureLayer != null)
                         {
-                            e.CurrentExtent = GisEditor.ActiveMap.GetSnappedExtent(e.CurrentExtent);
-                            var zoomLevel = featureLayer.ZoomLevelSet.GetZoomLevelForDrawing(e.CurrentExtent, map.ActualWidth, map.MapUnit);
+                            var zoomLevel = featureLayer.ZoomLevelSet.GetZoomLevelForDrawing(currentExtent, map.ActualWidth, map.MapUnit);
                             return zoomLevel == null;
                         }
                         else return false;
@@ -752,7 +752,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         FeatureLayer featureLayer = item.Key.ConcreteObject as FeatureLayer;
                         if (featureLayer != null)
                         {
-                            var zoomLevel = featureLayer.ZoomLevelSet.GetZoomLevelForDrawing(e.CurrentExtent, map.ActualWidth, map.MapUnit);
+                            var zoomLevel = featureLayer.ZoomLevelSet.GetZoomLevelForDrawing(currentExtent, map.ActualWidth, map.MapUnit);
                             if (zoomLevel == null) break;
                             if (zoomLevel.CustomStyles.Count > 0)
                             {
@@ -804,3 +804,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

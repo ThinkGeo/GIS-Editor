@@ -20,7 +20,7 @@
 using System;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -56,7 +56,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override void LoadCore()
         {
-            LoadNoaaLayer<NoaaRadarRasterLayer>("NoaaRadarRasterLayer:None", false);
+            LoadNoaaLayer<NoaaWeatherStationFeatureLayer>("NoaaWeatherStationFeatureLayer:None", false);
             LoadNoaaLayer<NoaaWeatherStationFeatureLayer>("NoaaWeatherStationFeatureLayer:None");
             LoadNoaaLayer<NoaaWeatherWarningsFeatureLayer>("NoaaWeatherWarningsFeatureLayer:None");
         }
@@ -73,7 +73,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void WeatherRadarItem_Loaded(object sender, LoadedDataRepositoryItemEventArgs e)
         {
-            LoadNoaaLayer<NoaaRadarRasterLayer>("NoaaRadarRasterLayer:None");
+            LoadNoaaLayer<NoaaWeatherStationFeatureLayer>("NoaaWeatherStationFeatureLayer:None");
         }
 
         private static void LoadNoaaLayer<T>(string uri, bool refresh = true) where T : Layer
@@ -83,7 +83,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 weatherOverlay = new NoaaWeatherOverlay();
                 GisEditor.ActiveMap.Overlays.Add(weatherOverlay);
-                GisEditor.ActiveMap.Refresh(weatherOverlay);
+                GisEditor.ActiveMap.RefreshAsync(weatherOverlay);
             }
 
             T layer = weatherOverlay.Layers.OfType<T>().FirstOrDefault();
@@ -99,9 +99,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (refresh)
             {
-                weatherOverlay.Refresh();
+                weatherOverlay.RefreshAsync();
                 GisEditor.UIManager.RefreshPlugins();
             }
         }
     }
 }
+

@@ -26,7 +26,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 using System.Windows.Data;
-using ThinkGeo.MapSuite.Serialize;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -204,7 +204,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             string[] files = Directory.GetFiles(documentFolder, "*.tgsty", SearchOption.AllDirectories);
 
-            Stream fixResourceStream = typeof(XmlGeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
+            Stream fixResourceStream = typeof(GeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
             System.Xml.Linq.XElement fixElement = System.Xml.Linq.XElement.Load(fixResourceStream);
 
             foreach (var file in files)

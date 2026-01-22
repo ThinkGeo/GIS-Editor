@@ -23,8 +23,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -210,9 +210,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 MasterLayer.FeatureSource.Close();
             }
-            if (MasterLayer.FeatureSource.Projection != null && MasterLayer.FeatureSource.Projection.IsOpen)
+            if (MasterLayer.FeatureSource.ProjectionConverter != null && MasterLayer.FeatureSource.ProjectionConverter.IsOpen)
             {
-                MasterLayer.FeatureSource.Projection.Close();
+                MasterLayer.FeatureSource.ProjectionConverter.Close();
             }
             foreach (var featureLayer in clippingLayerFeatureLayers)
             {
@@ -220,9 +220,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     featureLayer.Close();
                 }
-                if (featureLayer.FeatureSource.Projection != null && featureLayer.FeatureSource.Projection.IsOpen)
+                if (featureLayer.FeatureSource.ProjectionConverter != null && featureLayer.FeatureSource.ProjectionConverter.IsOpen)
                 {
-                    featureLayer.FeatureSource.Projection.Close();
+                    featureLayer.FeatureSource.ProjectionConverter.Close();
                 }
             }
 

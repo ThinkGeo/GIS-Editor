@@ -20,9 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -40,13 +39,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public EditorSetting()
         {
             IsAttributePrompted = true;
-            AreaStyle editAreaStyle = new AreaStyle(new GeoPen(GeoColor.StandardColors.Pink, 3));
+            AreaStyle editAreaStyle = new AreaStyle(new GeoPen(GeoColors.Pink, 3));
             editAreaStyle.Name = "Edit Area Style";
-            LineStyle editLineStyle = new LineStyle(new GeoPen(GeoColor.FromArgb(255, 0, 0, 255), 3));
+            LineStyle editLineStyle = new LineStyle(new GeoPen(GeoColor.FromArgb((byte)255, (byte)0, (byte)0, (byte)255), 3));
             editLineStyle.Name = "Edit Line Style";
             PointStyle editPointStyle = new PointStyle();
             editPointStyle.Name = "Edit Point Style";
-            editPointStyle.SymbolPen = new GeoPen(GeoColor.FromArgb(255, 0, 0, 255), 5);
+            editPointStyle.OutlinePen = new GeoPen(GeoColor.FromArgb((byte)255, (byte)0, (byte)0, (byte)255), 5);
 
             editCompositeStyle = new CompositeStyle();
             editCompositeStyle.Styles.Add(editAreaStyle);

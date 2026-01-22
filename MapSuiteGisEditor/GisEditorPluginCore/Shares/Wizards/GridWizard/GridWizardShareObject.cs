@@ -24,8 +24,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins

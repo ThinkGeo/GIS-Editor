@@ -24,8 +24,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -181,7 +181,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 var defaultZoomLevelSet = new GoogleMapsZoomLevelSet();
                 defaultZoomLevelSet.AddZoomLevels();
-                viewModel.ReaddZoomLevels(defaultZoomLevelSet);
+                viewModel.ReaddZoomLevels(defaultZoomLevelSet.GetZoomLevels().Select(z => z.Scale));
             }
         }
 
@@ -250,10 +250,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void ChangeExtent()
         {
             int zoomLevelIndex = GisEditor.ActiveMap.GetSnappedZoomLevelIndex(GisEditor.ActiveMap.CurrentScale);
-            if (viewModel.ZoomLevelSetViewModel.Count < GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count && zoomLevelIndex >= viewModel.ZoomLevelSetViewModel.Count)
+            if (viewModel.ZoomLevelSetViewModel.Count < GisEditor.ActiveMap.ZoomScales.Count && zoomLevelIndex >= viewModel.ZoomLevelSetViewModel.Count)
             {
                 GisEditor.ActiveMap.CurrentExtent = GetRectangleShape(GisEditor.ActiveMap.CurrentExtent.GetCenterPoint(), viewModel.ZoomLevelSetViewModel.Last().Scale);
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -272,7 +272,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             bool zoomLevelSetChanged = false;
 
             var newScales = viewModel.ZoomLevelSetViewModel.Select(z => z.Scale).ToList();
-            var originalScales = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Select(z => z.Scale).ToList();
+            var originalScales = GisEditor.ActiveMap.ZoomScales.ToList();
             if (newScales.Count == originalScales.Count)
             {
                 for (int i = 0; i < newScales.Count; i++)
@@ -290,3 +290,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
     }
 }
+

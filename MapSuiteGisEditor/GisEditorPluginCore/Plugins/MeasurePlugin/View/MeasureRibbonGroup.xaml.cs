@@ -21,7 +21,9 @@ using Microsoft.Windows.Controls.Ribbon;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -84,7 +86,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
 
                 viewModel.SelectedPolygonTrackMode = measureOverlay.PolygonTrackMode;
-                if (measureOverlay.ShapeLayer.MapShapes.Count > 0 && currentMap.ActualWidth > 0 && currentMap.ActualHeight > 0) currentMap.Refresh(measureOverlay);
+                if (measureOverlay.ShapeLayer.MapShapes.Count > 0 && currentMap.ActualWidth > 0 && currentMap.ActualHeight > 0) _ = currentMap.RefreshAsync();
                 DataContext = null;
                 DataContext = viewModel;
                 viewModel.UpdateStylePreview();

@@ -20,9 +20,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Xml.Linq;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -30,12 +30,10 @@ namespace ThinkGeo.MapSuite.GisEditor
     /// Interaction logic for GeneralOption.xaml
     /// </summary>
     [Obfuscation]
-    public partial class GeneralSettingUserControl : SettingUserControl
+    public partial class GeneralSettingUserControl : UserControl
     {
         public GeneralSettingUserControl()
         {
-            Title = "GeneralSettingTitle";
-            Description = "GeneralOptionUserControlTitleText";
             InitializeComponent();
             Loaded += new System.Windows.RoutedEventHandler(GeneralSettingUserControl_Loaded);
         }
@@ -71,15 +69,15 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 var tmpSettings = Application.Current.MainWindow.Tag as Dictionary<string, string>;
                 RectangleShape currentExtent = GisEditor.ActiveMap.CurrentExtent;
-                Proj4Projection projection = new Proj4Projection(GisEditor.ActiveMap.DisplayProjectionParameters, Proj4Projection.GetWgs84ParametersString());
+                ProjectionConverter projection = new ProjectionConverter(GisEditor.ActiveMap.DisplayProjectionParameters, Projection.GetWgs84ProjString());
                 //projection.Open();
                 //RectangleShape extent = projection.ConvertToExternalProjection(currentExtent);
                 //projection.Close();
 
                 RectangleShape extent = currentExtent;
 
-                projection.SyncProjectionParametersString();
-                if (projection.CanProject())
+                //projection.SyncProjectionParametersString();
+                //if (projection.CanProject())
                 {
                     try
                     {

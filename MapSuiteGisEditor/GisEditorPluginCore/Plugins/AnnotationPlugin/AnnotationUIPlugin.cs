@@ -24,9 +24,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -134,7 +134,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     viewModel.CurrentEditOverlay.EditShapesLayer.InternalFeatures.Remove(editFeature);
                 }
             }
-            GisEditor.ActiveMap.Refresh();
+            GisEditor.ActiveMap.RefreshAsync();
         }
 
         private void AddFileLinkItem_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -147,7 +147,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 InMemoryFeatureLayer layer = viewModel.CurrentAnnotationOverlay.TrackShapeLayer;
                 Feature tempFeature = layer.InternalFeatures.FirstOrDefault(f => f.Id.Equals(feature.Id));
                 viewModel.CurrentAnnotationOverlay.SetLinkFileName(tempFeature, fileName);
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
 

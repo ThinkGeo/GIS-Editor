@@ -20,9 +20,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -43,7 +43,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     var key = (GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as MapShape).Feature.Id;
                     measureOverlay.ShapeLayer.MapShapes.Remove(key);
-                    GisEditor.ActiveMap.Refresh(measureOverlay);
+                    GisEditor.ActiveMap.RefreshAsync(measureOverlay);
                     GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(measureOverlay, RefreshArgsDescription.RemoveFeatureDescription));
                 }
             }
@@ -67,7 +67,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     if (overlay != null)
                     {
-                        GisEditor.ActiveMap.Refresh(overlay);
+                        GisEditor.ActiveMap.RefreshAsync(overlay);
                         GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(feature, RefreshArgsDescription.RemoveFeatureDescription));
                     }
                 }

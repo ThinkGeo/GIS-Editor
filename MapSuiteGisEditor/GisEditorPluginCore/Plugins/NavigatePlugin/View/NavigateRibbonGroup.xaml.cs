@@ -18,8 +18,9 @@
 
 
 using System.Linq;
+using System.Windows.Input;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -62,7 +63,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else if (panZoom.SwitcherMode != SwitcherMode.Identify)
             {
-                if (CurrentOverlays.ExtentOverlay.LeftClickDragKey == System.Windows.Forms.Keys.None)
+                if (CurrentOverlays.ExtentOverlay.TrackZoomInKey == Key.None)
                 {
                     panZoom.SwitcherMode = SwitcherMode.TrackZoom;
                 }

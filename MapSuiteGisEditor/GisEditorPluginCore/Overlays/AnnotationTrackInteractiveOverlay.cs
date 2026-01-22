@@ -23,13 +23,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -88,6 +86,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             InitSelectStyle();
         }
 
+        public RenderMode RenderMode { get; set; }
+
         public InMemoryFeatureLayer SelectionLayer { get { return selectionLayer; } }
 
         public ValueStyle TrackLayerStyle { get { return layerStyle; } }
@@ -98,7 +98,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             set { fileLinkable = value; }
         }
 
-        public Styles.Style LastPointStyle
+        public ThinkGeo.Core.Style LastPointStyle
         {
             get
             {
@@ -138,7 +138,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        public void ChangeAppliedStyle(Styles.Style style, AnnotaionStyleType annotationStyleType)
+        public void ChangeAppliedStyle(ThinkGeo.Core.Style style, AnnotaionStyleType annotationStyleType)
         {
             AreaStyle areaStyle = style as AreaStyle;
             LineStyle lineStyle = style as LineStyle;
@@ -271,7 +271,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (trackStartPointShape != null)
             {
                 result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                result.SetDrawThisOverlay(InteractiveOverlayDrawType.Draw);
                 double left = trackStartPointShape.X < interactionArguments.WorldX ? trackStartPointShape.X : interactionArguments.WorldX;
                 double right = trackStartPointShape.X > interactionArguments.WorldX ? trackStartPointShape.X : interactionArguments.WorldX;
                 double top = trackStartPointShape.Y > interactionArguments.WorldY ? trackStartPointShape.Y : interactionArguments.WorldY;
@@ -289,7 +289,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (selectionLayer.InternalFeatures.Count > 0)
             {
                 result.ProcessOtherOverlaysMode = ProcessOtherOverlaysMode.DoNotProcessOtherOverlays;
-                result.DrawThisOverlay = InteractiveOverlayDrawType.Draw;
+                result.SetDrawThisOverlay(InteractiveOverlayDrawType.Draw);
                 OnSelectionFinished(selectionLayer.InternalFeatures.First().GetBoundingBox());
                 selectionLayer.InternalFeatures.Clear();
                 trackStartPointShape = null;
@@ -312,7 +312,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //    return GetLatestStyle<T>(String.Empty, returnRealStyle);
         //}
 
-        public T GetLatestStyle<T>(AnnotaionStyleType annotaionStyleType, bool returnRealStyle = true) where T : Styles.Style
+        public T GetLatestStyle<T>(AnnotaionStyleType annotaionStyleType, bool returnRealStyle = true) where T : ThinkGeo.Core.Style
         {
             ValueItem lastValueItem = null;
 
@@ -328,14 +328,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (lastValueItem != null)
             {
-                var styles = new Collection<Styles.Style>();
+                var styles = new Collection<ThinkGeo.Core.Style>();
 
                 if (returnRealStyle)
                 {
                     styles.Add(lastValueItem.DefaultAreaStyle.CustomAreaStyles.Count > 0 ? lastValueItem.DefaultAreaStyle.CustomAreaStyles[0] : lastValueItem.DefaultAreaStyle);
                     styles.Add(lastValueItem.DefaultLineStyle.CustomLineStyles.Count > 0 ? lastValueItem.DefaultLineStyle.CustomLineStyles[0] : lastValueItem.DefaultLineStyle);
                     styles.Add(lastValueItem.DefaultPointStyle.CustomPointStyles.Count > 0 ? lastValueItem.DefaultPointStyle.CustomPointStyles[0] : lastValueItem.DefaultPointStyle);
-                    styles.Add(lastValueItem.DefaultTextStyle.CustomTextStyles.Count > 0 ? lastValueItem.DefaultTextStyle.CustomTextStyles[0] : lastValueItem.DefaultTextStyle);
+
+                    styles.Add(lastValueItem.DefaultTextStyle);
+
                 }
                 else
                 {
@@ -359,14 +361,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (returnRealTextStyle)
                 {
-                    return foundValueItem.DefaultTextStyle.CustomTextStyles.Count > 0 ? foundValueItem.DefaultTextStyle.CustomTextStyles[0] : foundValueItem.DefaultTextStyle;
+
+                    return foundValueItem.DefaultTextStyle;
+
                 }
                 return foundValueItem.DefaultTextStyle;
             }
             return null;
         }
 
-        protected override void DrawTileCore(GeoCanvas geoCanvas)
+        protected override Task DrawTileAsyncCore(GeoCanvas geoCanvas)
         {
             LayerTile layerTile = OverlayCanvas.Children.OfType<LayerTile>().FirstOrDefault(tmpTile
                 => tmpTile.GetValue(FrameworkElement.NameProperty).Equals("DefaultLayerTile"));
@@ -376,7 +380,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 layerTile.DrawingLayers.Add(selectionLayer);
             }
 
-            base.DrawTileCore(geoCanvas);
+            return base.DrawTileAsyncCore(geoCanvas);
         }
 
         protected override void OnDrawing(DrawingOverlayEventArgs e)
@@ -398,7 +402,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 DefaultAreaStyle = GetDefaultAreaStyle(),
                 DefaultLineStyle = GetDefaultLineStyle(),
                 DefaultPointStyle = GetDefaultPointStyle(),
-                DefaultTextStyle = GetDefaultTextStyle(annotationTextColumnName, PointPlacement.LowerRight)
+                DefaultTextStyle = GetDefaultTextStyle(annotationTextColumnName, TextPlacement.LowerRight)
             };
 
             ValueItem fileLinkValueItem = new ValueItem
@@ -408,7 +412,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 DefaultAreaStyle = GetDefaultAreaStyle(),
                 DefaultLineStyle = GetDefaultLineStyle(),
                 DefaultPointStyle = GetDefaultPointStyle(),
-                DefaultTextStyle = GetDefaultTextStyle(LinkFileStyleColumnName, PointPlacement.LowerCenter),
+                DefaultTextStyle = GetDefaultTextStyle(LinkFileStyleColumnName, TextPlacement.Lower),
             };
             fileLinkValueItem.DefaultPointStyle.Name = "FileLinkStyle";
             fileLinkValueItem.DefaultTextStyle.Name = "FileLinkStyle";
@@ -442,14 +446,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             selectionLayer = new InMemoryFeatureLayer();
             selectionLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle
-                = new AreaStyle(new GeoPen(GeoColor.SimpleColors.Black, 1f), new GeoSolidBrush(GeoColor.FromArgb(100, GeoColor.StandardColors.White)));
+                = new AreaStyle(new GeoPen(GeoColors.Black, 1f), new GeoSolidBrush(GeoColor.FromArgb((byte)100, GeoColors.White)));
             selectionLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.OutlinePen.DashPattern.Add(4);
             selectionLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.OutlinePen.DashPattern.Add(4);
             selectionLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle.OutlinePen.DashStyle = LineDashStyle.Dash;
             selectionLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
         }
 
-        private void ApplyNewStyle<T>(string propertyName, T newStyle, AnnotaionStyleType annotationStyleType = AnnotaionStyleType.LayerStyle) where T : Styles.Style
+        private void ApplyNewStyle<T>(string propertyName, T newStyle, AnnotaionStyleType annotationStyleType = AnnotaionStyleType.LayerStyle) where T : ThinkGeo.Core.Style
         {
             ValueItem valueItem = layerStyle.ValueItems.LastOrDefault().CloneDeep();
             if (annotationStyleType == AnnotaionStyleType.FileLinkStyle)
@@ -466,10 +470,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     case AnnotaionStyleType.LayerStyle:
                     default:
-                        valueItem.DefaultTextStyle.PointPlacement = PointPlacement.LowerRight;
+                        valueItem.DefaultTextStyle.TextPlacement = TextPlacement.LowerRight;
                         break;
                     case AnnotaionStyleType.FileLinkStyle:
-                        valueItem.DefaultTextStyle.PointPlacement = PointPlacement.LowerCenter;
+                        valueItem.DefaultTextStyle.TextPlacement = TextPlacement.Lower;
                         break;
                 }
             }
@@ -532,12 +536,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         #region Default styles
 
-        private static IconTextStyle GetDefaultTextStyle(string columnName, PointPlacement pointPlacement)
+        private static IconTextStyle GetDefaultTextStyle(string columnName, TextPlacement textPlacement)
         {
             return new IconTextStyle
             {
                 Font = new GeoFont("Arial", 11),
-                TextSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Black),
+                TextBrush = new GeoSolidBrush(GeoColors.Black),
                 OverlappingRule = LabelOverlappingRule.AllowOverlapping,
                 ForceHorizontalLabelForLine = false,
                 SplineType = SplineType.Default,
@@ -547,7 +551,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 TextLineSegmentRatio = 0.9,
                 IconImageScale = 1,
                 Name = GisEditor.LanguageManager.GetStringResource("AnnotationTrackOverlayerLabelStyle1"),
-                PointPlacement = pointPlacement,
+                TextPlacement = textPlacement,
                 TextColumnName = columnName
             };
         }
@@ -558,8 +562,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 SymbolType = PointSymbolType.Circle,
                 SymbolSize = 10,
-                SymbolSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Red),
-                SymbolPen = new GeoPen(GeoColor.StandardColors.Transparent, 1),
+                FillBrush = new GeoSolidBrush(GeoColors.Red),
+                OutlinePen = new GeoPen(GeoColors.Transparent, 1),
                 Name = GisEditor.LanguageManager.GetStringResource("AnnotationTrackOverlayerPointStyle1")
             };
         }
@@ -568,7 +572,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             return new LineStyle
             {
-                OuterPen = new GeoPen(GeoColor.SimpleColors.Black, 2),
+                OuterPen = new GeoPen(GeoColors.Black, 2),
                 Name = GisEditor.LanguageManager.GetStringResource("AnnotationTrackOverlayerLineStyle1")
             };
         }
@@ -577,8 +581,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             return new AreaStyle
             {
-                FillSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.White),
-                OutlinePen = new GeoPen(GeoColor.SimpleColors.Black, 2),
+                FillBrush = new GeoSolidBrush(GeoColors.White),
+                OutlinePen = new GeoPen(GeoColors.Black, 2),
                 Name = GisEditor.LanguageManager.GetStringResource("AnnotationTrackOverlayerAreaStyle1")
             };
         }
@@ -586,3 +590,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         #endregion Default styles
     }
 }
+
+

@@ -21,8 +21,8 @@ using System;
 using System.Linq;
 using System.ComponentModel.Composition;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -49,7 +49,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             AreaStyle areaStyle = new AreaStyle
             {
                 Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginAreaHeader"),
-                FillSolidBrush = new GeoSolidBrush(GeoColor.FromHtml("#C0C0C0")),
+                FillBrush = new GeoSolidBrush(GeoColor.FromHtml("#C0C0C0")),
                 OutlinePen = new GeoPen(GeoColor.FromHtml("#808080"), 1),
             };
             StyleCandidates.Add(areaStyle);
@@ -60,9 +60,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             int alpha = 255;
             AreaStyle areaStyle = StyleCandidates.OfType<AreaStyle>().FirstOrDefault();
-            alpha = areaStyle != null ? areaStyle.FillSolidBrush.Color.AlphaComponent : 255;
-            var fillColor = new GeoColor(alpha, GeoColorHelper.GetRandomColor());
-            var outlineColor = new GeoColor(alpha, GeoColor.SimpleColors.Black);
+            var solidBrush = areaStyle?.FillBrush as GeoSolidBrush;
+            alpha = solidBrush != null ? solidBrush.Color.A : 255;
+            var fillColor = new GeoColor((byte)alpha, GeoColorHelper.GetRandomColor());
+            var outlineColor = new GeoColor((byte)alpha, GeoColors.Black);
             return AreaStyles.CreateSimpleAreaStyle(fillColor, outlineColor);
 
         }

@@ -21,8 +21,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -103,8 +103,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     gisEditorTrackOverlay.SnappingLayers.Add(dataContext.Value);
 
-                    GisEditor.ActiveMap.CurrentExtentChanged -= new System.EventHandler<CurrentExtentChangedWpfMapEventArgs>(ActiveMap_CurrentExtentChanged);
-                    GisEditor.ActiveMap.CurrentExtentChanged += new System.EventHandler<CurrentExtentChangedWpfMapEventArgs>(ActiveMap_CurrentExtentChanged);
+                    GisEditor.ActiveMap.CurrentExtentChanged -= new System.EventHandler<CurrentExtentChangedMapViewEventArgs>(ActiveMap_CurrentExtentChanged);
+                    GisEditor.ActiveMap.CurrentExtentChanged += new System.EventHandler<CurrentExtentChangedMapViewEventArgs>(ActiveMap_CurrentExtentChanged);
                 }
             }
 
@@ -124,10 +124,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 });
             }
 
-            viewModel.EditOverlay.Refresh();
+            viewModel.EditOverlay.RefreshAsync();
         }
 
-        private void ActiveMap_CurrentExtentChanged(object sender, CurrentExtentChangedWpfMapEventArgs e)
+        private void ActiveMap_CurrentExtentChanged(object sender, CurrentExtentChangedMapViewEventArgs e)
         {
             var gisEditorTrackOverlay = GisEditor.ActiveMap.TrackOverlay as GisEditorTrackInteractiveOverlay;
             if (gisEditorTrackOverlay != null)
@@ -137,3 +137,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

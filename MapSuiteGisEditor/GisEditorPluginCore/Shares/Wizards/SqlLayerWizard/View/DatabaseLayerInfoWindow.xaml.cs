@@ -20,7 +20,7 @@
 using System;
 using System.Windows;
 using GalaSoft.MvvmLight.Messaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

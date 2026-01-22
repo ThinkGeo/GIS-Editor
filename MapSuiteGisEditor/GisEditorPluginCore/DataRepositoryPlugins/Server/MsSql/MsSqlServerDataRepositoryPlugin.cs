@@ -345,7 +345,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                                 textBlock.Text = text;
                             });
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             Application.Current.Dispatcher.BeginInvoke(() =>
                             {

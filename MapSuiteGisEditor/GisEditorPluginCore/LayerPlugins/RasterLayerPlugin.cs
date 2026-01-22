@@ -23,8 +23,8 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -69,7 +69,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     layer.Name = Path.GetFileNameWithoutExtension(uri.LocalPath);
 
                     layer.Open();
-                    if (!layer.HasProjectionText)
+                    if (!layer.HasProjectionText())
                     {
                         string proj4PathFileName = Path.ChangeExtension(uri.LocalPath, "prj");
                         string proj4Parameter = LayerPluginHelper.GetProj4ProjectionParameter(proj4PathFileName);

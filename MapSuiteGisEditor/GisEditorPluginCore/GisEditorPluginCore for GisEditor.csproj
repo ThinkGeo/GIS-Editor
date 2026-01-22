@@ -72,10 +72,6 @@
       <HintPath>..\..\Dependencies\AWSSDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CSScriptLibrary">
-      <HintPath>..\..\..\Dependencies\Windows\CSScriptLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WPF4">
       <HintPath>..\..\Dependencies\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
       <Private>False</Private>
@@ -107,10 +103,6 @@
     </Reference>
     <Reference Include="IronRuby">
       <HintPath>..\..\Dependencies\IronRuby.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Kent.Boogaart.KBCsv">
-      <HintPath>..\..\Dependencies\Kent.Boogaart.KBCsv.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="log4net">

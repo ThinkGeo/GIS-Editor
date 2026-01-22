@@ -20,6 +20,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

@@ -21,7 +21,8 @@ using System;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -37,7 +38,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void CreateSubItems(MenuItem menuItem)
         {
-            var enumNames = Enum.GetNames(typeof(Wpf.BingMapsMapType)).Where(name => !name.Contains("Birdseye")).ToArray();
+            var enumNames = Enum.GetNames(typeof(BingMapsMapType)).Where(name => !name.Contains("Birdseye")).ToArray();
 
             for (int i = 0; i < enumNames.Length; i++)
             {
@@ -54,7 +55,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     var bingOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as BingMapsOverlay;
                     if (bingOverlay != null)
                     {
-                        bingOverlay.MapType = (Wpf.BingMapsMapType)Enum.Parse(typeof(Wpf.BingMapsMapType), enumName);
+                        bingOverlay.MapType = (BingMapsMapType)Enum.Parse(typeof(BingMapsMapType), enumName);
                         bingOverlay.Invalidate();
 
                         menuItem.Items.OfType<MenuItem>().ForEach(item =>

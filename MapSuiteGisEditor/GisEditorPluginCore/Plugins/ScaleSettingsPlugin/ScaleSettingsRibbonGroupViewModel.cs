@@ -21,8 +21,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -137,9 +137,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (GisEditor.ActiveMap != null)
             {
                 scales.Clear();
-                foreach (var zoomLevel in GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels)
+                foreach (var scale in GisEditor.ActiveMap.ZoomScales)
                 {
-                    double resultValue = zoomLevel.Scale * Conversion.ConvertMeasureUnits(1, DistanceUnit.Inch, SelectedDistanceUnit);
+                    double resultValue = scale * Conversion.ConvertMeasureUnits(1, DistanceUnit.Inch, SelectedDistanceUnit);
                     scales.Add(new ScaleWrapper(resultValue, GetSimplifiedNumber(resultValue)));
                 }
                 selectedScale = scales.FirstOrDefault(s => Math.Abs(s.Scale - GisEditor.ActiveMap.CurrentScale) < 1);
@@ -190,9 +190,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public static void SetNewScale(double zoomToScale, PointShape centerPoint, bool zoomToAuto = true)
         {
             int index = -1;
-            for (int i = 0; i < GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count - 1; i++)
+            var zoomScales = GisEditor.ActiveMap.ZoomScales;
+            for (int i = 0; i < zoomScales.Count - 1; i++)
             {
-                if (GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[i].Scale > zoomToScale && GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[i + 1].Scale <= zoomToScale)
+                if (zoomScales[i] > zoomToScale && zoomScales[i + 1] <= zoomToScale)
                 {
                     index = i + 1;
                     break;
@@ -200,31 +201,22 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             if (index == -1)
             {
-                if (GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels[0].Scale < zoomToScale)
+                if (zoomScales.Count > 0 && zoomScales[0] < zoomToScale)
                 {
                     index = 0;
                 }
-                else if (GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale > zoomToScale)
+                else if (zoomScales.Count > 0 && zoomScales.LastOrDefault() > zoomToScale)
                 {
-                    index = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count;
+                    index = zoomScales.Count;
                 }
             }
 
-            if (index >= 0 && index <= GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count)
+            if (index >= 0 && index <= zoomScales.Count)
             {
-                if (!GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Any(c => Math.Abs(c.Scale - zoomToScale) < 1))
+                if (!zoomScales.Any(c => Math.Abs(c - zoomToScale) < 1))
                 {
-                    ZoomLevel deletedZoomLevel = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.FirstOrDefault(c => c is PreciseZoomLevel);
-                    if (deletedZoomLevel != null)
-                    {
-                        GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Remove(deletedZoomLevel);
-                    }
-
-                    PreciseZoomLevel newZoomLevel = new PreciseZoomLevel(zoomToScale);
-                    GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Insert(index, newZoomLevel);
-
-                    ZoomLevel[] zoomLevels = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.ToArray();
-                    CommandHelper.ApplyNewZoomLevelSet(zoomLevels);
+                    zoomScales.Insert(index, zoomToScale);
+                    CommandHelper.ApplyNewZoomLevelSet(zoomScales);
                 }
                 if (zoomToAuto)
                 {

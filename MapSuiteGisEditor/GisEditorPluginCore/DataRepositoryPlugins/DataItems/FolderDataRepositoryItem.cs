@@ -267,7 +267,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        internal bool Rename(string newName)
+        internal new bool Rename(string newName)
         {
             bool succussed = false;
             string newLocation = Path.Combine(FolderInfo.Parent.FullName, newName);

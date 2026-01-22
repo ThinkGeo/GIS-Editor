@@ -26,8 +26,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ThinkGeo.MapSuite.Wpf;
-using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -157,7 +156,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             foreach (var map in GisEditor.DockWindowManager.DocumentWindows.Select(d => d.Content).OfType<WpfMap>())
             {
-                map.Overlays.ForEach(o => o.RefreshWithBufferSettings());
+                //map.Overlays.ForEach(o => o.RefreshWithBufferSettings());
             }
         }
 

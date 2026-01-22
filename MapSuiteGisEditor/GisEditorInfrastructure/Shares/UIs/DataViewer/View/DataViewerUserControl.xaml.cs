@@ -765,13 +765,13 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     if (IsHighlightFeatureEnabled)
                     {
-                        DataViewerHelper.HightlightSelectedFeature(copyFeature);
+                        var _ = DataViewerHelper.HightlightSelectedFeature(copyFeature);
                     }
                     viewModel.SelectedLayerAdapter.SelectedFeatures.Add(selectedFeature.Id, selectedFeature);
                 }
                 else
                 {
-                    DataViewerHelper.RemoveHightlightFeature(copyFeature);
+                    var _ = DataViewerHelper.RemoveHightlightFeature(copyFeature);
                     viewModel.SelectedLayerAdapter.SelectedFeatures.Remove(selectedFeature.Id);
                 }
                 viewModel.SelectedCount = viewModel.SelectedLayerAdapter.SelectedFeatures.Count;

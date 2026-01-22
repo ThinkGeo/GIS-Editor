@@ -23,9 +23,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -76,8 +76,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         if (GisEditor.ActiveMap != null)
                         {
-                            var zoomLevels = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels();
-                            if (zoomLevels.Count > level) GisEditor.ActiveMap.ZoomToScale(zoomLevels[level].Scale);
+                            var zoomScales = GisEditor.ActiveMap.ZoomScales;
+                            if (zoomScales.Count > level)
+                            {
+                                var center = GisEditor.ActiveMap.CurrentExtent?.GetCenterPoint();
+                                if (center != null)
+                                {
+                                    GisEditor.ActiveMap.ZoomTo(center, zoomScales[level]);
+                                }
+                            }
                         }
                     });
                 }
@@ -200,10 +207,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public void SysnchCurrentZoomLevels(WpfMap currentMap)
         {
             CurrentZoomLevels.Clear();
-            List<ZoomLevel> zoomLevels = currentMap.ZoomLevelSet.CustomZoomLevels.Where(c => !(c is PreciseZoomLevel)).ToList();
-            for (int i = 0; i < zoomLevels.Count; i++)
+            var zoomScales = currentMap.ZoomScales.ToList();
+            for (int i = 0; i < zoomScales.Count; i++)
             {
-                string number = String.Format(CultureInfo.InvariantCulture, "Level {0:D2} - Scale 1:{1:N0}", i + 1, zoomLevels[i].Scale);
+                string number = String.Format(CultureInfo.InvariantCulture, "Level {0:D2} - Scale 1:{1:N0}", i + 1, zoomScales[i]);
                 ZoomLevelItemViewModel currentLevel = new ZoomLevelItemViewModel();
                 currentLevel.Name = number;
                 currentLevel.ScaleIndex = i;

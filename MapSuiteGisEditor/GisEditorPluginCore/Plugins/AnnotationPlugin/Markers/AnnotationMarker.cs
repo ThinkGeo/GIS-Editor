@@ -21,9 +21,9 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

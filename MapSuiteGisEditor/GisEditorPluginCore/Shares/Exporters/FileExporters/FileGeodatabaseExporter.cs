@@ -21,8 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -111,7 +111,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             });
 
             ShapeFileFeatureLayer.CreateShapeFile(group.Key, path, dbfColumns);
-            ShapeFileFeatureLayer layer = new ShapeFileFeatureLayer(path, GeoFileReadWriteMode.ReadWrite);
+            ShapeFileFeatureLayer layer = new ShapeFileFeatureLayer(path, FileAccess.ReadWrite);
             try
             {
                 layer.Open();
@@ -122,7 +122,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     var newFeature = feature;
                     if (!feature.IsValid())
                     {
-                        if (feature.CanMakeValid) newFeature = feature.MakeValid();
+                        if (feature.CanMakeValid()) newFeature = feature.MakeValid();
                         else isValid = false;
                     }
                     if (isValid)
@@ -184,7 +184,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 File.SetAttributes(dbfPath, FileAttributes.Normal);
 
-                using (GeoDbf geoDbf = new GeoDbf(dbfPath, GeoFileReadWriteMode.ReadWrite))
+                using (GeoDbf geoDbf = new GeoDbf(dbfPath, FileAccess.ReadWrite))
                 {
                     geoDbf.Open();
                     int columnNumber = -1;
@@ -231,3 +231,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

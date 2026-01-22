@@ -22,7 +22,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -40,22 +40,21 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(WmsRasterLayer);
+            return typeof(WmsAsyncLayer);
         }
 
         protected override Collection<Layer> GetLayersCore(GetLayersParameters getLayersParameters)
         {
-            Collection<Layer> layers = base.GetLayersCore(getLayersParameters);
+            Collection<Layer> layers = new Collection<Layer>();
             WmsRasterLayerConfigWindow wmsWindow = new WmsRasterLayerConfigWindow();
             wmsWindow.ViewModel.AddToDataRepositoryVisibility = Visibility.Visible;
             if (wmsWindow.ShowDialog().GetValueOrDefault())
             {
-                WmsRasterLayer wmsRasterlayer = wmsWindow.ViewModel.WmsRasterLayer;
+                WmsAsyncLayer wmsRasterlayer = wmsWindow.ViewModel.WmsAsyncLayer;
                 wmsRasterlayer.InitializeProj4Projection(GisEditor.ActiveMap.DisplayProjectionParameters);
                 if (wmsRasterlayer != null && wmsRasterlayer.ActiveLayerNames.Count > 0)
                 {
-                    WmsRasterLayer layer = wmsRasterlayer;
-                    layers.Add(layer);
+                    layers.Add(new WmsAsyncLayerAdapter(wmsRasterlayer));
                 }
                 if (wmsWindow.ViewModel.DoesAddToDataRepository)
                 {
@@ -82,37 +81,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override RasterLayer GetRasterLayer(Uri uri)
         {
-            WmsRasterLayer layer = null;
-            WmsRasterLayerConfigWindow wmsWindow = new WmsRasterLayerConfigWindow();
-            wmsWindow.ViewModel.AddToDataRepositoryVisibility = Visibility.Visible;
-            if (wmsWindow.ShowDialog().GetValueOrDefault())
-            {
-                WmsRasterLayer wmsRasterlayer = wmsWindow.ViewModel.WmsRasterLayer;
-                wmsRasterlayer.InitializeProj4Projection(GisEditor.ActiveMap.DisplayProjectionParameters);
-                if (wmsRasterlayer != null && wmsRasterlayer.ActiveLayerNames.Count > 0)
-                {
-                    layer = wmsRasterlayer;
-                }
-                if (wmsWindow.ViewModel.DoesAddToDataRepository)
-                {
-                    var wmsDataPlugin = GisEditor.DataRepositoryManager.GetPlugins().OfType<WmsDataRepositoryPlugin>().FirstOrDefault();
-                    if (wmsDataPlugin != null)
-                    {
-                        wmsDataPlugin.RootDataRepositoryItem.Children.Add(new WmsDataRepositoryItem(
-                            wmsWindow.ViewModel.Name,
-                            new ObservableCollection<string>(wmsWindow.ViewModel.AvailableLayers.Select(l => l.Name)),
-                            wmsWindow.ViewModel.WmsServerUrl,
-                            wmsWindow.ViewModel.UserName,
-                            wmsWindow.ViewModel.Password,
-                            wmsWindow.ViewModel.Parameters,
-                            wmsWindow.ViewModel.Formats,
-                            wmsWindow.ViewModel.Styles,
-                            wmsWindow.ViewModel.SelectedFormat,
-                            wmsWindow.ViewModel.SelectedStyle));
-                    }
-                }
-            }
-            return layer;
+            // WMS layers are not file-based raster layers in ThinkGeo.Core.
+            // Return null here and use the config window path in GetLayersCore.
+            return null;
         }
 
         //protected override Collection<Layer> GetLayersCore(GetLayersParameters getLayersParameters)
@@ -122,7 +93,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //    wmsWindow.ViewModel.AddToDataRepositoryVisibility = Visibility.Visible;
         //    if (wmsWindow.ShowDialog().GetValueOrDefault())
         //    {
-        //        WmsRasterLayer wmsRasterlayer = wmsWindow.ViewModel.WmsRasterLayer;
+        //        WmsAsyncLayer wmsRasterlayer = wmsWindow.ViewModel.WmsAsyncLayer;
         //        wmsRasterlayer.InitializeProj4Projection(GisEditor.ActiveMap.DisplayProjectionParameters);
         //        if (wmsRasterlayer != null && wmsRasterlayer.ActiveLayerNames.Count > 0)
         //        {

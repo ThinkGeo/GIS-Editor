@@ -24,9 +24,9 @@ using System.Linq;
 using GalaSoft.MvvmLight;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -286,7 +286,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
 
             SharedViewModel.Instance.EditOverlay.EditShapesLayer.BuildIndex();
-            GisEditor.ActiveMap.Refresh(SharedViewModel.Instance.EditOverlay);
+            GisEditor.ActiveMap.RefreshAsync(SharedViewModel.Instance.EditOverlay);
 
             SharedViewModel.Instance.EditOverlay.TakeSnapshot();
         }
@@ -374,7 +374,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     SharedViewModel.Instance.EditOverlay.EditShapesLayer.BuildIndex();
                 }
                 SharedViewModel.Instance.EditOverlay.TakeSnapshot();
-                GisEditor.ActiveMap.Refresh(SharedViewModel.Instance.EditOverlay);
+                GisEditor.ActiveMap.RefreshAsync(SharedViewModel.Instance.EditOverlay);
             }
         }
 
@@ -497,7 +497,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             SharedViewModel.Instance.EditOverlay.NewFeatureIds.Add(id);
             SharedViewModel.Instance.EditOverlay.EditShapesLayer.InternalFeatures.Add(feature.Id, feature);
             SharedViewModel.Instance.EditOverlay.EditShapesLayer.BuildIndex();
-            GisEditor.ActiveMap.Refresh(SharedViewModel.Instance.EditOverlay);
+            GisEditor.ActiveMap.RefreshAsync(SharedViewModel.Instance.EditOverlay);
         }
     }
 }

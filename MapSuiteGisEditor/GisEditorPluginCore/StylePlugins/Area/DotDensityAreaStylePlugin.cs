@@ -19,8 +19,8 @@
 
 using System;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -42,8 +42,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         protected override Style GetDefaultStyleCore()
         {
             PointStyle innerStyle = PointStyles.City1;
-            innerStyle.SymbolPen.Color = GeoColor.StandardColors.Transparent;
-            innerStyle.SymbolSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Transparent);
+            if (innerStyle.OutlinePen == null)
+            {
+                innerStyle.OutlinePen = new GeoPen(GeoColors.Transparent);
+            }
+            innerStyle.OutlinePen.Color = GeoColors.Transparent;
+            innerStyle.FillBrush = new GeoSolidBrush(GeoColors.Transparent);
             innerStyle.Name = GisEditor.LanguageManager.GetStringResource("MapElementsListPluginPointHeader");
             return new DotDensityStyle { CustomPointStyle = innerStyle };
         }

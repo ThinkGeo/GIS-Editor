@@ -25,9 +25,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -141,7 +141,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 var dbfFName = Path.ChangeExtension(shpFName, ".dbf");
                 if (File.Exists(dbfFName))
                 {
-                    using (GeoDbf geoDbf = new GeoDbf(dbfFName, GeoFileReadWriteMode.Read))
+                    using (GeoDbf geoDbf = new GeoDbf(dbfFName, FileAccess.Read))
                     {
                         geoDbf.Open();
                         for (int i = 1; i <= geoDbf.RecordCount; i++)

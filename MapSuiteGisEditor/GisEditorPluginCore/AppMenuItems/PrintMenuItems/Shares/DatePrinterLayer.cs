@@ -23,10 +23,9 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Reflection;
 using System.Drawing;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -51,7 +50,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private float maxFontSize = 200;
 
         public DatePrinterLayer()
-            : this("", new GeoFont("Arial", 10), new GeoSolidBrush(GeoColor.StandardColors.Black)) { }
+            : this("", new GeoFont("Arial", 10), new GeoSolidBrush(GeoColors.Black)) { }
 
         public DatePrinterLayer(string text, GeoFont font, GeoBrush textBrush)
             : base()
@@ -156,10 +155,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             StringBuilder sb = new StringBuilder();
 
-            //ScreenPointF textCenterOnScreen = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, drawingBoundingBox.GetCenterPoint(), canvas.Width, canvas.Height);
+            //ScreenPointF textCenterOnScreen = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, drawingBoundingBox.GetCenterPoint(), canvas.Width, canvas.Height);
             DrawingRectangleF drawingRect = canvas.MeasureText(text, drawingFont);
-            ScreenPointF upperLeftOnScreen = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, drawingBoundingBox.UpperLeftPoint, canvas.Width, canvas.Height);
-            ScreenPointF lowerRightOnScreen = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, drawingBoundingBox.UpperRightPoint, canvas.Width, canvas.Height);
+            ScreenPointF upperLeftOnScreen = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, drawingBoundingBox.UpperLeftPoint, canvas.Width, canvas.Height);
+            ScreenPointF lowerRightOnScreen = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, drawingBoundingBox.UpperRightPoint, canvas.Width, canvas.Height);
             int drawingRectWidthOnScreen = (int)(lowerRightOnScreen.X - upperLeftOnScreen.X);
 
             Graphics g = Graphics.FromImage(new Bitmap(1, 1));
@@ -292,9 +291,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             float rtn = font.Size;
 
-            ScreenPointF boundingBoxPointFUL = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, boundingBox.UpperLeftPoint, canvas.Width, canvas.Height);
-            ScreenPointF boundingBoxPointFUR = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, boundingBox.UpperRightPoint, canvas.Width, canvas.Height);
-            ScreenPointF boundingBoxPointFLL = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, boundingBox.LowerLeftPoint, canvas.Width, canvas.Height);
+            ScreenPointF boundingBoxPointFUL = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, boundingBox.UpperLeftPoint, canvas.Width, canvas.Height);
+            ScreenPointF boundingBoxPointFUR = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, boundingBox.UpperRightPoint, canvas.Width, canvas.Height);
+            ScreenPointF boundingBoxPointFLL = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, boundingBox.LowerLeftPoint, canvas.Width, canvas.Height);
 
             double widthInScreen = boundingBoxPointFUR.X - boundingBoxPointFUL.X;
             double heightInScreen = boundingBoxPointFLL.Y - boundingBoxPointFUL.Y;
@@ -327,3 +326,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

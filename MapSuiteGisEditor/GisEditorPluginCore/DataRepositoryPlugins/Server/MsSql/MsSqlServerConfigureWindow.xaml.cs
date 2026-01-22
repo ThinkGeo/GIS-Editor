@@ -22,7 +22,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -61,7 +61,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             if (e.Key == Key.Enter)
             {
-                DatabaseLayerInfoViewModel<MsSqlFeatureLayer> viewModel = DataContext as DatabaseLayerInfoViewModel<MsSqlFeatureLayer>;
+                DatabaseLayerInfoViewModel<SqlServerFeatureLayer> viewModel = DataContext as DatabaseLayerInfoViewModel<SqlServerFeatureLayer>;
                 if (viewModel != null)
                 {
                     viewModel.ConnectToDatabaseCommand.Execute(null);

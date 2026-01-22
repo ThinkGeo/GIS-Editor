@@ -23,9 +23,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -69,12 +69,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(MsSqlFeatureLayer);
+            return typeof(SqlServerFeatureLayer);
         }
 
         protected override string GetInternalProj4ProjectionParametersCore(FeatureLayer featureLayer)
         {
-            MsSqlFeatureLayer sqlLayer = featureLayer as MsSqlFeatureLayer;
+            SqlServerFeatureLayer sqlLayer = featureLayer as SqlServerFeatureLayer;
             if (sqlLayer == null)
             {
                 return base.GetInternalProj4ProjectionParametersCore(featureLayer);
@@ -85,7 +85,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         protected override Collection<Layer> GetLayersCore(GetLayersParameters getLayersParameters)
         {
             Collection<Layer> resultLayers = base.GetLayersCore(getLayersParameters);
-            Collection<MsSqlFeatureLayer> newFeatureLayers = new Collection<MsSqlFeatureLayer>();
+            Collection<SqlServerFeatureLayer> newFeatureLayers = new Collection<SqlServerFeatureLayer>();
 
             if (getLayersParameters.CustomData.ContainsKey("TableName") && getLayersParameters.CustomData.ContainsKey("DatabaseName") && getLayersParameters.CustomData.ContainsKey("IdColumn") && getLayersParameters.CustomData.ContainsKey("ServerName"))
             {
@@ -116,9 +116,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return resultLayers;
         }
 
-        private Collection<MsSqlFeatureLayer> GetFeatureLayersCore()
+        private Collection<SqlServerFeatureLayer> GetFeatureLayersCore()
         {
-            Collection<MsSqlFeatureLayer> layers = new Collection<MsSqlFeatureLayer>();
+            Collection<SqlServerFeatureLayer> layers = new Collection<SqlServerFeatureLayer>();
             foreach (var layer in GetLayers(null))
             {
                 layers.Add(layer);
@@ -135,12 +135,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return propertiesUserControl;
         }
 
-        public Collection<MsSqlFeatureLayer> GetLayers(params MsSql2008FeatureLayerInfo[] configurations)
+        public Collection<SqlServerFeatureLayer> GetLayers(params MsSql2008FeatureLayerInfo[] configurations)
         {
             return GetLayers(configurations as IEnumerable<MsSql2008FeatureLayerInfo>);
         }
 
-        public Collection<MsSqlFeatureLayer> GetLayers(IEnumerable<MsSql2008FeatureLayerInfo> configurations)
+        public Collection<SqlServerFeatureLayer> GetLayers(IEnumerable<MsSql2008FeatureLayerInfo> configurations)
         {
             return GetLayersCore(configurations);
         }
@@ -160,9 +160,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return SimpleShapeType.Unknown;
         }
 
-        protected virtual Collection<MsSqlFeatureLayer> GetLayersCore(IEnumerable<MsSql2008FeatureLayerInfo> configurations)
+        protected virtual Collection<SqlServerFeatureLayer> GetLayersCore(IEnumerable<MsSql2008FeatureLayerInfo> configurations)
         {
-            Collection<MsSqlFeatureLayer> resultLayers = new Collection<MsSqlFeatureLayer>();
+            Collection<SqlServerFeatureLayer> resultLayers = new Collection<SqlServerFeatureLayer>();
             if (configurations == null)
             {
                 var window = new DatabaseLayerInfoWindow();
@@ -212,7 +212,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
 
                 Singleton<ServerFeatureLayerSettingsUserControl>.Instance.SQLTimeoutInSecond = timeout;
-                GisEditor.GetMaps().SelectMany(m => m.Overlays.OfType<LayerOverlay>().SelectMany(lo => lo.Layers.OfType<MsSqlFeatureLayer>())).ForEach(l =>
+                GisEditor.GetMaps().SelectMany(m => m.Overlays.OfType<LayerOverlay>().SelectMany(lo => lo.Layers.OfType<SqlServerFeatureLayer>())).ForEach(l =>
                 {
                     l.CommandTimeout = timeout;
                 });
@@ -226,7 +226,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        //protected override LayerListItem GetLayerListItemCore(Layer layer)
+        //protected override LayerListItem GetLayerListItemCore(LayerBase layer)
         //{
         //    var layerViewModel = base.GetLayerListItemCore(layer);
         //    var msSql2008Layer = (MsSql2008FeatureLayer)layer;
@@ -240,3 +240,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //}
     }
 }
+

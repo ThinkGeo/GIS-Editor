@@ -19,6 +19,11 @@ namespace ThinkGeo.Core
     /// </summary>
     public class Proj4Projection : ProjectionConverter
     {
+        private const string WktWgs84 =
+            "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433]]";
+        private const string WktWebMercator =
+            "PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH]]";
+
         private string internalParametersString;
         private string externalParametersString;
 
@@ -103,6 +108,67 @@ namespace ThinkGeo.Core
             }
         }
 
+        public static string GetWgs84ParametersString()
+        {
+            return GetEpsgParametersString(4326);
+        }
+
+        public static string GetDecimalDegreesParametersString()
+        {
+            return GetWgs84ParametersString();
+        }
+
+        public static string GetGoogleMapParametersString()
+        {
+            return GetEpsgParametersString(3857);
+        }
+
+        public static string ConvertProj4ToPrj(string proj4Parameters)
+        {
+            if (string.IsNullOrWhiteSpace(proj4Parameters)) return string.Empty;
+
+            var wkt = TryConvertProj4ToPrjWithOsr(proj4Parameters);
+            if (!string.IsNullOrWhiteSpace(wkt)) return wkt;
+
+            if (LooksLikeWkt(proj4Parameters)) return proj4Parameters;
+
+            var normalized = proj4Parameters.ToLowerInvariant();
+            if (normalized.Contains("+proj=longlat") || normalized.Contains("+proj=latlong"))
+            {
+                return WktWgs84;
+            }
+
+            if (normalized.Contains("+proj=merc"))
+            {
+                return WktWebMercator;
+            }
+
+            return string.Empty;
+        }
+
+        public static string ConvertPrjToProj4(string prjWkt)
+        {
+            if (string.IsNullOrWhiteSpace(prjWkt)) return string.Empty;
+
+            var proj4 = TryConvertPrjToProj4WithOsr(prjWkt);
+            if (!string.IsNullOrWhiteSpace(proj4)) return proj4;
+
+            if (LooksLikeProj4(prjWkt)) return prjWkt;
+
+            var normalized = prjWkt.ToLowerInvariant();
+            if (normalized.Contains("wgs_1984") || normalized.Contains("wgs 84"))
+            {
+                if (normalized.Contains("pseudo-mercator") || normalized.Contains("web mercator") || normalized.Contains("mercator"))
+                {
+                    return GetGoogleMapParametersString();
+                }
+
+                return GetWgs84ParametersString();
+            }
+
+            return string.Empty;
+        }
+
         private string GetProjectionString(string preferredName)
         {
             // Try common property names across ThinkGeo versions.
@@ -150,6 +216,75 @@ namespace ThinkGeo.Core
                 {
                     // ignore
                 }
+            }
+        }
+
+        private static bool LooksLikeWkt(string text)
+        {
+            return text.IndexOf("GEOGCS", StringComparison.OrdinalIgnoreCase) >= 0
+                || text.IndexOf("PROJCS", StringComparison.OrdinalIgnoreCase) >= 0
+                || text.IndexOf("LOCAL_CS", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool LooksLikeProj4(string text)
+        {
+            return text.IndexOf("+proj", StringComparison.OrdinalIgnoreCase) >= 0
+                || text.IndexOf("+datum", StringComparison.OrdinalIgnoreCase) >= 0
+                || text.IndexOf("+a=", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static string TryConvertProj4ToPrjWithOsr(string proj4Parameters)
+        {
+            try
+            {
+                var srType = Type.GetType("OSGeo.OSR.SpatialReference, osr_csharp");
+                if (srType == null) return null;
+
+                var sr = Activator.CreateInstance(srType);
+                var import = srType.GetMethod("ImportFromProj4", new[] { typeof(string) });
+                var export = srType.GetMethod("ExportToWkt", new[] { typeof(string).MakeByRefType(), typeof(string[]) });
+                if (import == null || export == null) return null;
+
+                var importResult = (int)import.Invoke(sr, new object[] { proj4Parameters });
+                if (importResult != 0) return null;
+
+                object[] exportArgs = { null, null };
+                var exportResult = (int)export.Invoke(sr, exportArgs);
+                if (exportResult != 0) return null;
+
+                return exportArgs[0] as string;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string TryConvertPrjToProj4WithOsr(string prjWkt)
+        {
+            try
+            {
+                var srType = Type.GetType("OSGeo.OSR.SpatialReference, osr_csharp");
+                if (srType == null) return null;
+
+                var sr = Activator.CreateInstance(srType);
+                var import = srType.GetMethod("ImportFromWkt", new[] { typeof(string).MakeByRefType() });
+                var export = srType.GetMethod("ExportToProj4", new[] { typeof(string).MakeByRefType() });
+                if (import == null || export == null) return null;
+
+                object[] importArgs = { prjWkt };
+                var importResult = (int)import.Invoke(sr, importArgs);
+                if (importResult != 0) return null;
+
+                object[] exportArgs = { null };
+                var exportResult = (int)export.Invoke(sr, exportArgs);
+                if (exportResult != 0) return null;
+
+                return exportArgs[0] as string;
+            }
+            catch
+            {
+                return null;
             }
         }
     }

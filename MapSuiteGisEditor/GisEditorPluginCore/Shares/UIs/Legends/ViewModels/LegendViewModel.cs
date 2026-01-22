@@ -31,10 +31,9 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -895,7 +894,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     CompositingQuality = CompositingQuality.HighSpeed,
                     SmoothingMode = SmoothingMode.HighSpeed,
-                    DrawingQuality = DrawingQuality.CanvasSettings,
+                    DrawingQuality = DrawingQuality.HighQuality,
                 };
 
                 LegendAdornmentLayer tmpLegendAdornmentLayer = ToLegendAdornmentLayer();

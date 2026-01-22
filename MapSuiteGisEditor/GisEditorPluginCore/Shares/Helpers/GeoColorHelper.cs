@@ -17,7 +17,7 @@
 */
 
 
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -39,7 +39,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             var resultColor = GeoColor.GetRandomGeoColor(randomColorType);
             // avoid yellow color.
-            while (resultColor.Equals(GeoColor.SimpleColors.Yellow))
+            while (resultColor.Equals(GeoColors.Yellow))
             {
                 resultColor = GeoColor.GetRandomGeoColor(randomColorType);
             }

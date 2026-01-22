@@ -544,7 +544,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 }
                 var tileOverlay = (TileOverlay)ConcreteObject;
                 tileOverlay.IsVisible = isChecked;
-                if (!isChecked) RefreshOverlay(tileOverlay);
+                if (!isChecked) { var _ = RefreshOverlay(tileOverlay); }
                 GisEditor.UIManager.InvokeRefreshPlugins();
             }
             else if (ConcreteObject is Layer && needRefresh)
@@ -583,7 +583,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     {
                         tileOverlay.IsVisible = Parent.IsChecked;
                         tileOverlay.Invalidate();
-                        RefreshOverlay(tileOverlay);
+                        var _ = RefreshOverlay(tileOverlay);
                     }
                 }
                 GisEditor.UIManager.InvokeRefreshPlugins();
@@ -605,7 +605,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     if (layerOverlay != null && layerOverlay.IsVisible)
                     {
                         layerOverlay.Invalidate();
-                        RefreshOverlay(layerOverlay);
+                        var _ = RefreshOverlay(layerOverlay);
                     }
                 }
             }

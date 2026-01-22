@@ -25,7 +25,7 @@ using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -268,8 +268,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         LoginSuccess = false;
 
                         PostgreServerDataRepositoryItem serverItem = new PostgreServerDataRepositoryItem();
-                        Collection<string> newDbNames = PostgreSqlFeatureSource.GetDatabaseNames(serverName, portName,
-                            userName, password);
+                        Collection<string> newDbNames = PostgreSqlFeatureSource.GetDatabaseNames(
+                            serverName,
+                            portName.ToString(CultureInfo.InvariantCulture),
+                            userName,
+                            password);
                         PostgreConfigureInfo info = new PostgreConfigureInfo();
                         info.Password = Password;
                         info.Server = ServerName;

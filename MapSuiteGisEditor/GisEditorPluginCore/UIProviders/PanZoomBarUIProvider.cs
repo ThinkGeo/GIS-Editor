@@ -19,7 +19,7 @@
 
 using System;
 using System.Windows;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -35,7 +35,25 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override FrameworkElement GetUICore()
         {
-            return new SwitcherPanZoomBarMapTool { DisplayZoomBarText = DisplayZoomBarText.Display };
+            var tool = new SwitcherPanZoomBarMapTool();
+            var prop = tool.GetType().GetProperty("DisplayZoomBarText");
+            if (prop != null && prop.CanWrite)
+            {
+                try
+                {
+                    var enumType = prop.PropertyType;
+                    if (enumType.IsEnum)
+                    {
+                        var value = Enum.Parse(enumType, "Display");
+                        prop.SetValue(tool, value, null);
+                    }
+                }
+                catch
+                {
+                    // Best-effort only.
+                }
+            }
+            return tool;
         }
     }
 }

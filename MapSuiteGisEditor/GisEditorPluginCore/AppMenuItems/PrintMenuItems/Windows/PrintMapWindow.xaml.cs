@@ -28,10 +28,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -41,6 +40,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     /// </summary>
     public partial class PrintMapWindow : Window
     {
+        private readonly PrintMapViewModel printMapViewModel;
         private PrinterPageSize savedSize;
         private float savedWidth;
         private float savedHeight;
@@ -51,6 +51,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public PrintMapWindow()
         {
             InitializeComponent();
+            printMapViewModel = DataContext as PrintMapViewModel ?? new PrintMapViewModel();
+            DataContext = printMapViewModel;
             printMapViewModel.RemovingItem += new EventHandler<RoutedEventArgs>(Entity_RemovingItem);
             printMapViewModel.EditingItem += new EventHandler<RoutedEventArgs>(Entity_EditingItem);
             printMapViewModel.SetPosition += new EventHandler<RoutedEventArgs>(PrintMapViewModel_SetPosition);
@@ -195,7 +197,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
             }
             printMapViewModel.PrinterOverlay.PrinterLayers.Remove(printerLayer);
-            printMapViewModel.PrintMap.Refresh();
+            printMapViewModel.PrintMap.RefreshAsync();
         }
 
         [System.Reflection.Obfuscation]
@@ -262,18 +264,18 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 dataGridElementWindow.SetProperties(printerLayer);
                 ShowDataGridElementWindow(dataGridElementWindow, printerLayer);
             }
-            else if (actualType == typeof(LegendPrinterLayer) || actualType.IsSubclassOf(typeof(LegendPrinterLayer)))
+            else if (actualType == typeof(LegendPrinterLayer1) || actualType.IsSubclassOf(typeof(LegendPrinterLayer1)))
             {
-                LegendPrinterLayer legendPrinterLayer = printerLayer as LegendPrinterLayer;
+                LegendPrinterLayer1 legendPrinterLayer = printerLayer as LegendPrinterLayer1;
                 if (legendPrinterLayer != null)
                 {
                     LegendAdornmentLayerViewModel notifiedLegendAdornmentLayer = new LegendAdornmentLayerViewModel();
                     notifiedLegendAdornmentLayer.LegendItems.Clear();
                     notifiedLegendAdornmentLayer.BackgroundMask = legendPrinterLayer.BackgroundMask;
-                    notifiedLegendAdornmentLayer.Height = legendPrinterLayer.Height;
-                    notifiedLegendAdornmentLayer.Width = legendPrinterLayer.Width;
-                    notifiedLegendAdornmentLayer.XOffsetInPixel = legendPrinterLayer.XOffsetInPixel;
-                    notifiedLegendAdornmentLayer.YOffsetInPixel = legendPrinterLayer.YOffsetInPixel;
+                    notifiedLegendAdornmentLayer.Height = (float)legendPrinterLayer.Height;
+                    notifiedLegendAdornmentLayer.Width = (float)legendPrinterLayer.Width;
+                    notifiedLegendAdornmentLayer.XOffsetInPixel = (float)legendPrinterLayer.XOffsetInPixel;
+                    notifiedLegendAdornmentLayer.YOffsetInPixel = (float)legendPrinterLayer.YOffsetInPixel;
                     if (legendPrinterLayer.Title != null)
                     {
                         LegendItemViewModel notifiedLegendItem = new LegendItemViewModel() { LegendItemType = LegendItemType.Header };
@@ -324,7 +326,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 else
                     mapPrinterLayer.SetPosition(pageBoundingBox.Width - 3, pageBoundingBox.Height - 3, 0, 0, PrintingUnit.Inch);
                 printMapViewModel.PrinterOverlay.PrinterLayers.Add(mapPrinterLayer);
-                printMapViewModel.PrinterOverlay.Refresh();
+                printMapViewModel.PrinterOverlay.RefreshAsync();
             }
             else
             {
@@ -452,7 +454,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             ResetPosition(projectPathPrinterLayer, textWorldCenter);
                         }
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -496,7 +498,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             ResetPosition(datePrinterLayer, textWorldCenter);
                         }
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -545,7 +547,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             ResetPosition(labelPrinterLayer, textWorldCenter);
                         }
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -616,7 +618,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         imgPrinterLayer.LoadFromViewModel(imageElementViewModel);
                         imgPrinterLayer.Image = geoImage;
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -637,7 +639,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         (printerlayer as ScaleLinePrinterLayer).LoadFromViewModel(scaleLineViewModel);
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -658,7 +660,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         (printerLayer as ScaleBarPrinterLayer).LoadFromViewModel(scaleBarViewModel);
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -682,7 +684,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         (printerLayer as DataGridPrinterLayer).LoadFromViewModel(dataGridEntity);
                     }
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -693,7 +695,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (!(notifiedLegendAdornmentLayer.LegendSizeMode == LegendSizeMode.Auto && notifiedLegendAdornmentLayer.LegendItems.Count == 0))
                 {
-                    LegendPrinterLayer legendPrinterLayer = new GisEditorLegendPrinterLayer(notifiedLegendAdornmentLayer.ToLegendAdornmentLayer()) { DrawingExceptionMode = DrawingExceptionMode.DrawException };
+                    var legendPrinterLayer = new GisEditorLegendPrinterLayer(notifiedLegendAdornmentLayer.ToLegendAdornmentLayer()) { DrawingExceptionMode = DrawingExceptionMode.DrawException };
                     legendPrinterLayer.BackgroundMask.SetDrawingLevel();
 
                     var copiedLegendItems = new Collection<LegendItem>();
@@ -738,7 +740,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         printMapViewModel.PrinterOverlay.PrinterLayers.Insert(index, legendPrinterLayer);
                     else
                         printMapViewModel.PrinterOverlay.PrinterLayers.Add(legendPrinterLayer);
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -880,7 +882,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
                     var tmpScaleLineLayer = ScaleLinePrinterLayerAdapter.GetScaleLinePrinterLayer(new ScaleLineElementViewModel(geoMapPrinterLayer));
                     printMapViewModel.IsSelectMapElement = !outOfRange && ScaleLineElementViewModel.IsValid(tmpScaleLineLayer);
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
 
                 ClearBBoxSelectorFromAllMaps();
@@ -1092,7 +1094,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 printMapViewModel.PrintMap.TrackOverlay.TrackMode = trackMode;
                 printMapViewModel.PrinterOverlay.IsEditable = false;
                 printMapViewModel.PrinterOverlay.IsEditable = true;
-                printMapViewModel.PrintMap.Refresh();
+                printMapViewModel.PrintMap.RefreshAsync();
             }
             else printMapViewModel.PrintMap.TrackOverlay.TrackMode = TrackMode.None;
         }
@@ -1116,7 +1118,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (!(printMapViewModel.SelectedPrinterLayer is PagePrinterLayer))
                 {
                     printMapViewModel.PrinterOverlay.PrinterLayers.Remove(printMapViewModel.SelectedPrinterLayer);
-                    printMapViewModel.PrintMap.Refresh();
+                    printMapViewModel.PrintMap.RefreshAsync();
                 }
             }
         }
@@ -1186,7 +1188,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     printMapViewModel.PrinterOverlay.MouseClick(interactionArguments);
                 }
                 //printMapViewModel.CurrentZoom = printMapViewModel.CurrentZoom;
-                printMapViewModel.PrintMap.Refresh();
+                printMapViewModel.PrintMap.RefreshAsync();
             }
         }
 
@@ -1218,7 +1220,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     mapLayer.MapImageCache = null;
                 }
-                printMapViewModel.PrinterOverlay.Refresh();
+                printMapViewModel.PrinterOverlay.RefreshAsync();
             }
         }
 
@@ -1242,7 +1244,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     mapLayer.MapImageCache = null;
                 }
-                printMapViewModel.PrinterOverlay.Refresh();
+                printMapViewModel.PrinterOverlay.RefreshAsync();
             }
         }
 
@@ -1261,7 +1263,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         mapLayer.MapImageCache = null;
                     }
-                    printMapViewModel.PrinterOverlay.Refresh();
+                    printMapViewModel.PrinterOverlay.RefreshAsync();
                 }
             }
         }
@@ -1278,7 +1280,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     printMapViewModel.PrinterOverlay.GridLayer.IsVisible = false;
                 }
-                printMapViewModel.PrinterOverlay.Refresh();
+                printMapViewModel.PrinterOverlay.RefreshAsync();
             }
         }
 

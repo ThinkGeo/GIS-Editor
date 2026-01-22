@@ -26,7 +26,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -55,7 +55,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static readonly DependencyProperty PreviewSourceNameProperty = DependencyProperty.Register("PreviewSourceName", typeof(string), typeof(DropDownColorPicker), new UIPropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register("SelectedBrush", typeof(GeoBrush), typeof(DropDownColorPicker), new UIPropertyMetadata(new GeoSolidBrush(GeoColor.StandardColors.White), new PropertyChangedCallback(OnSelectedBrushPropertyChanged)));
+        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register("SelectedBrush", typeof(GeoBrush), typeof(DropDownColorPicker), new UIPropertyMetadata(new GeoSolidBrush(GeoColors.White), new PropertyChangedCallback(OnSelectedBrushPropertyChanged)));
 
         public static readonly DependencyProperty IsDroppedProperty = DependencyProperty.Register("IsDropped", typeof(bool), typeof(DropDownColorPicker), new UIPropertyMetadata(false, new PropertyChangedCallback(IsDroppedPropertyChanged)));
 
@@ -259,18 +259,18 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (colorPicker.SelectedBrush is GeoSolidBrush)
                 {
-                    colorPicker.SelectedBrush = new GeoSolidBrush(GeoColor.FromArgb(Alpha, ((GeoSolidBrush)SelectedBrush).Color.RedComponent, ((GeoSolidBrush)SelectedBrush).Color.GreenComponent, ((GeoSolidBrush)SelectedBrush).Color.BlueComponent));
+                    colorPicker.SelectedBrush = new GeoSolidBrush(GeoColor.FromArgb((byte)Alpha, ((GeoSolidBrush)SelectedBrush).Color.R, ((GeoSolidBrush)SelectedBrush).Color.G, ((GeoSolidBrush)SelectedBrush).Color.B));
                 }
                 else if (colorPicker.SelectedBrush is GeoLinearGradientBrush)
                 {
                     GeoLinearGradientBrush gradientBrush = (GeoLinearGradientBrush)colorPicker.SelectedBrush;
-                    colorPicker.SelectedBrush = new GeoLinearGradientBrush(GeoColor.FromArgb(Alpha, gradientBrush.StartColor.RedComponent, gradientBrush.StartColor.GreenComponent, gradientBrush.StartColor.BlueComponent), gradientBrush.EndColor, gradientBrush.DirectionAngle);
+                    colorPicker.SelectedBrush = new GeoLinearGradientBrush(GeoColor.FromArgb((byte)Alpha, gradientBrush.StartColor.R, gradientBrush.StartColor.G, gradientBrush.StartColor.B), gradientBrush.EndColor, gradientBrush.DirectionAngle);
                 }
                 else if (colorPicker.SelectedBrush is GeoHatchBrush)
                 {
                     GeoHatchBrush geoHatchBrush = (GeoHatchBrush)colorPicker.SelectedBrush;
-                    GeoColor newForegroundColor = new GeoColor(Alpha, geoHatchBrush.ForegroundColor.RedComponent, geoHatchBrush.ForegroundColor.GreenComponent, geoHatchBrush.ForegroundColor.BlueComponent);
-                    GeoColor newBackgroundColor = new GeoColor(Alpha, geoHatchBrush.BackgroundColor.RedComponent, geoHatchBrush.BackgroundColor.GreenComponent, geoHatchBrush.BackgroundColor.BlueComponent);
+                    GeoColor newForegroundColor = new GeoColor((byte)Alpha, geoHatchBrush.ForegroundColor.R, geoHatchBrush.ForegroundColor.G, geoHatchBrush.ForegroundColor.B);
+                    GeoColor newBackgroundColor = new GeoColor((byte)Alpha, geoHatchBrush.BackgroundColor.R, geoHatchBrush.BackgroundColor.G, geoHatchBrush.BackgroundColor.B);
                     colorPicker.SelectedBrush = new GeoHatchBrush(geoHatchBrush.HatchStyle, newForegroundColor, newBackgroundColor);
                 }
                 RefreshPreviews();
@@ -288,18 +288,18 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (SelectedBrush is GeoSolidBrush)
                 {
                     GeoColor geoColor = ((GeoSolidBrush)SelectedBrush).Color;
-                    Alpha = geoColor.AlphaComponent;
-                    ((GeoSolidBrush)SelectedBrush).Color = new GeoColor(Alpha, ((GeoSolidBrush)SelectedBrush).Color);
+                    Alpha = geoColor.A;
+                    ((GeoSolidBrush)SelectedBrush).Color = new GeoColor((byte)Alpha, ((GeoSolidBrush)SelectedBrush).Color);
                     geoColor = ((GeoSolidBrush)SelectedBrush).Color;
 
-                    PreviewSourceName = Color.FromArgb(geoColor.AlphaComponent, geoColor.RedComponent, geoColor.GreenComponent, geoColor.BlueComponent).ToString();
+                    PreviewSourceName = Color.FromArgb(geoColor.A, geoColor.R, geoColor.G, geoColor.B).ToString();
                     g.FillRectangle(new System.Drawing.SolidBrush(GeoColor2DrawingColorConverter.Convert(geoColor)), new System.Drawing.Rectangle(0, 0, 20, 20));
                 }
                 else if (SelectedBrush is GeoHatchBrush)
                 {
                     PreviewSourceName = ((GeoHatchBrush)SelectedBrush).HatchStyle.ToString();
                     GeoHatchBrush geoHatchBrush = (GeoHatchBrush)SelectedBrush;
-                    Alpha = geoHatchBrush.ForegroundColor.AlphaComponent;
+                    Alpha = geoHatchBrush.ForegroundColor.A;
                     System.Drawing.Drawing2D.HatchBrush hatchBrush = new System.Drawing.Drawing2D.HatchBrush(
                         GeoHatchStyle2DrawingHatchStyle.Convert(geoHatchBrush.HatchStyle),
                         GeoColor2DrawingColorConverter.Convert(geoHatchBrush.ForegroundColor),
@@ -317,7 +317,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 else if (SelectedBrush is GeoLinearGradientBrush)
                 {
                     GeoLinearGradientBrush gradientBrush = (GeoLinearGradientBrush)SelectedBrush;
-                    Alpha = gradientBrush.StartColor.AlphaComponent;
+                    Alpha = gradientBrush.StartColor.A;
                     PreviewSourceName = String.Format("Gradients Angle:{2}",
                         GeoColor2MediaColorConverter.Convert(gradientBrush.StartColor),
                         GeoColor2MediaColorConverter.Convert(gradientBrush.EndColor),

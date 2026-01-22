@@ -26,7 +26,7 @@ using ThinkGeo.Core;
 namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 {
     [Serializable]
-    public class GisEditorLegendPrinterLayer : LegendPrinterLayer
+    public class GisEditorLegendPrinterLayer : LegendPrinterLayer1
     {
         [Obfuscation]
         private bool isPrinting;

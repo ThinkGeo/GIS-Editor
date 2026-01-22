@@ -25,8 +25,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -457,7 +457,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             ConcurrentQueue<Feature> validResult = new ConcurrentQueue<Feature>();
             Parallel.ForEach(features, tmpFeature =>
             {
-                if (tmpFeature.CanMakeValid)
+                if (tmpFeature.CanMakeValid())
                 {
                     tmpFeature = tmpFeature.MakeValid();
                     validResult.Enqueue(tmpFeature);

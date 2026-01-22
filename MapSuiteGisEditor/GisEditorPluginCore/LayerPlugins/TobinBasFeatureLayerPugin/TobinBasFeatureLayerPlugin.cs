@@ -21,9 +21,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -102,11 +101,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 CompositeStyle compositeStyle = new CompositeStyle();
                 compositeStyle.Name = tobinBasFeatureLayer.Name;
-                AreaStyle areaStyle = AreaStyles.CreateSimpleAreaStyle(new GeoColor(0, GeoColor.SimpleColors.Black), new GeoColor(250, GeoColor.SimpleColors.Black), 1);
+                AreaStyle areaStyle = AreaStyle.CreateSimpleAreaStyle(new GeoColor(0, GeoColors.Black), new GeoColor(250, GeoColors.Black), 1);
                 areaStyle.Name = "Area Style";
-                LineStyle lineStyle = LineStyles.CreateSimpleLineStyle(GeoColor.SimpleColors.Black, 0.5f, false);
+                LineStyle lineStyle = LineStyle.CreateSimpleLineStyle(GeoColors.Black, 0.5f, false);
                 lineStyle.Name = "Line Style";
-                PointStyle pointStyle = PointStyles.CreateSimplePointStyle(PointSymbolType.Circle, GeoColor.SimpleColors.Green, 3);
+                PointStyle pointStyle = PointStyle.CreateSimplePointStyle(PointSymbolType.Circle, GeoColors.Green, 3);
                 pointStyle.Name = "Point Style";
 
                 compositeStyle.Styles.Add(areaStyle);

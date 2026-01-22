@@ -22,7 +22,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

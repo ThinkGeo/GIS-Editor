@@ -25,8 +25,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -56,9 +56,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             ActualObject = style;
             actualPointStyle = style;
-            if (actualPointStyle.CharacterIndex == 0)
+            if (GetGlyphIndex() == 0)
             {
-                actualPointStyle.CharacterIndex = 33;
+                SetGlyphIndex(33);
             }
 
             if (style is SymbolPointStyle || style is FontPointStyle)
@@ -305,19 +305,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.Advanced.CustomBrush != null ? actualPointStyle.Advanced.CustomBrush : actualPointStyle.SymbolSolidBrush;
+                return actualPointStyle.FillBrush;
             }
             set
             {
-                if (value is GeoSolidBrush)
-                {
-                    actualPointStyle.SymbolSolidBrush = (GeoSolidBrush)value;
-                    actualPointStyle.Advanced.CustomBrush = null;
-                }
-                else
-                {
-                    actualPointStyle.Advanced.CustomBrush = value;
-                }
+                actualPointStyle.FillBrush = value;
                 RaisePropertyChanged("FillColor");
             }
         }
@@ -326,11 +318,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.SymbolPen.Brush;
+                EnsureOutlinePen();
+                return actualPointStyle.OutlinePen.Brush;
             }
             set
             {
-                actualPointStyle.SymbolPen.Brush = value;
+                EnsureOutlinePen();
+                actualPointStyle.OutlinePen.Brush = value;
                 RaisePropertyChanged("OutlineColor");
             }
         }
@@ -339,11 +333,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.SymbolPen.Width;
+                EnsureOutlinePen();
+                return actualPointStyle.OutlinePen.Width;
             }
             set
             {
-                actualPointStyle.SymbolPen.Width = value;
+                EnsureOutlinePen();
+                actualPointStyle.OutlinePen.Width = value;
                 RaisePropertyChanged("OutlineThickness");
             }
         }
@@ -352,11 +348,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.CharacterIndex;
+                return GetGlyphIndex();
             }
             set
             {
-                actualPointStyle.CharacterIndex = value;
+                SetGlyphIndex(value);
                 RaisePropertyChanged("CharacterIndex");
             }
         }
@@ -365,11 +361,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return new System.Windows.Media.FontFamily(actualPointStyle.CharacterFont.FontName);
+                EnsureGlyphFont();
+                return new System.Windows.Media.FontFamily(actualPointStyle.GlyphFont.FontName);
             }
             set
             {
-                actualPointStyle.CharacterFont = new GeoFont(value.Source, actualPointStyle.CharacterFont.Size, actualPointStyle.CharacterFont.Style);
+                EnsureGlyphFont();
+                actualPointStyle.GlyphFont = new GeoFont(value.Source, actualPointStyle.GlyphFont.Size, actualPointStyle.GlyphFont.Style);
                 RaisePropertyChanged("CharacterFontName");
             }
         }
@@ -378,11 +376,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return (int)actualPointStyle.CharacterFont.Size;
+                EnsureGlyphFont();
+                return (int)actualPointStyle.GlyphFont.Size;
             }
             set
             {
-                actualPointStyle.CharacterFont = new GeoFont(actualPointStyle.CharacterFont.FontName, value, actualPointStyle.CharacterFont.Style);
+                EnsureGlyphFont();
+                actualPointStyle.GlyphFont = new GeoFont(actualPointStyle.GlyphFont.FontName, value, actualPointStyle.GlyphFont.Style);
                 actualPointStyle.SymbolSize = value;
                 RaisePropertyChanged("CharacterFontSize");
             }
@@ -392,11 +392,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.CharacterFont.Style;
+                EnsureGlyphFont();
+                return actualPointStyle.GlyphFont.Style;
             }
             set
             {
-                actualPointStyle.CharacterFont = new GeoFont(actualPointStyle.CharacterFont.FontName, actualPointStyle.CharacterFont.Size, value);
+                EnsureGlyphFont();
+                actualPointStyle.GlyphFont = new GeoFont(actualPointStyle.GlyphFont.FontName, actualPointStyle.GlyphFont.Size, value);
                 RaisePropertyChanged("CharacterFontStyleIndex");
             }
         }
@@ -405,20 +407,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get
             {
-                return actualPointStyle.Advanced.CustomBrush != null ? actualPointStyle.Advanced.CustomBrush : actualPointStyle.CharacterSolidBrush;
+                return actualPointStyle.FillBrush;
             }
             set
             {
-                if (value is GeoSolidBrush)
-                {
-                    actualPointStyle.CharacterSolidBrush = (GeoSolidBrush)value;
-                    actualPointStyle.Advanced.CustomBrush = null;
-                }
-                else
-                {
-                    actualPointStyle.Advanced.CustomBrush = value;
-                    actualPointStyle.CharacterSolidBrush = null;
-                }
+                actualPointStyle.FillBrush = value;
                 RaisePropertyChanged("CharacterBrush");
             }
         }
@@ -466,6 +459,57 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             else
             {
                 base.StyleViewModel_PropertyChanged(sender, e);
+            }
+        }
+
+        private void EnsureOutlinePen()
+        {
+            if (actualPointStyle.OutlinePen == null)
+            {
+                actualPointStyle.OutlinePen = new GeoPen(GeoColors.Transparent, 1);
+            }
+        }
+
+        private void EnsureGlyphFont()
+        {
+            if (actualPointStyle.GlyphFont == null)
+            {
+                actualPointStyle.GlyphFont = new GeoFont("Arial", 9, DrawingFontStyles.Regular);
+            }
+        }
+
+        private int GetGlyphIndex()
+        {
+            if (string.IsNullOrEmpty(actualPointStyle.GlyphContent))
+            {
+                return 0;
+            }
+
+            try
+            {
+                return char.ConvertToUtf32(actualPointStyle.GlyphContent, 0);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        private void SetGlyphIndex(int value)
+        {
+            if (value <= 0)
+            {
+                actualPointStyle.GlyphContent = string.Empty;
+                return;
+            }
+
+            try
+            {
+                actualPointStyle.GlyphContent = char.ConvertFromUtf32(value);
+            }
+            catch
+            {
+                actualPointStyle.GlyphContent = string.Empty;
             }
         }
 
@@ -530,8 +574,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             PointStyle pointStyle = new PointStyle();
             pointStyle.SymbolSize = 14;
-            pointStyle.SymbolSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Black);
-            pointStyle.SymbolPen = new GeoPen(GeoColor.SimpleColors.Black);
+            pointStyle.FillBrush = new GeoSolidBrush(GeoColors.Black);
+            pointStyle.OutlinePen = new GeoPen(GeoColors.Black);
             var bufferUnitNames = Enum.GetValues(typeof(PointSymbolType));
             foreach (var item in bufferUnitNames)
             {

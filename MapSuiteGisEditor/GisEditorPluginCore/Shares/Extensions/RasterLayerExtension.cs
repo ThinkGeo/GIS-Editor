@@ -18,8 +18,9 @@
 
 
 using System;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using System.Reflection;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -30,17 +31,47 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Proj4Projection projection = new Proj4Projection();
             projection.InternalProjectionParametersString = internalProj4ProjectionParameter;
             projection.ExternalProjectionParametersString = GisEditor.ActiveMap.DisplayProjectionParameters;
-            rasterLayer.ImageSource.Projection = projection;
+            rasterLayer.ImageSource.ProjectionConverter = projection;
         }
 
         public static String GetInternalProj4ProjectionParameter(this RasterLayer rasterLayer)
         {
-            Proj4Projection projection = rasterLayer.ImageSource.Projection as Proj4Projection;
+            Proj4Projection projection = rasterLayer.ImageSource.ProjectionConverter as Proj4Projection;
             if (projection != null)
             {
                 return projection.InternalProjectionParametersString;
             }
             else
+            {
+                return string.Empty;
+            }
+        }
+
+        public static bool HasProjectionText(this RasterLayer rasterLayer)
+        {
+            return !string.IsNullOrEmpty(GetProjectionText(rasterLayer));
+        }
+
+        public static string GetProjectionText(this RasterLayer rasterLayer)
+        {
+            if (rasterLayer?.ImageSource == null) return string.Empty;
+
+            var projection = rasterLayer.ImageSource.ProjectionConverter;
+            if (projection == null) return string.Empty;
+
+            if (projection is Proj4Projection proj4)
+            {
+                return proj4.InternalProjectionParametersString ?? string.Empty;
+            }
+
+            var property = projection.GetType().GetProperty("InternalProjectionParametersString", BindingFlags.Instance | BindingFlags.Public)
+                ?? projection.GetType().GetProperty("ProjectionString", BindingFlags.Instance | BindingFlags.Public);
+
+            try
+            {
+                return property?.GetValue(projection, null)?.ToString() ?? string.Empty;
+            }
+            catch
             {
                 return string.Empty;
             }

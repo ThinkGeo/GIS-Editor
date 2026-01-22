@@ -21,7 +21,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

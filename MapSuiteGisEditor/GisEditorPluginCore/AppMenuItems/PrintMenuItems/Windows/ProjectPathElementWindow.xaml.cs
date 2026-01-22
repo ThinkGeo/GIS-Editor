@@ -20,7 +20,7 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

@@ -25,7 +25,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -53,7 +53,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             minimum = 0;
             classesCount = 5;
             baseBrush = new GeoSolidBrush(GeoColor.FromHtml("#9ACD32"));
-            endBrush = new GeoSolidBrush(GeoColor.StandardColors.Red);
+            endBrush = new GeoSolidBrush(GeoColors.Red);
             colorFields = new String[] { "Hue", "Saturation", "Lightness" };
             selectedColorField = ClassBreakBy.Hue;
             startColorName = "Start Color";
@@ -91,7 +91,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (!selectedColorField.Equals("Hue"))
                 {
                     var solidBrush = (GeoSolidBrush)baseBrush;
-                    HSL hsl = GetHslFromRgb(solidBrush.Color.RedComponent, solidBrush.Color.GreenComponent, solidBrush.Color.BlueComponent);
+                    HSL hsl = GetHslFromRgb(solidBrush.Color.R, solidBrush.Color.G, solidBrush.Color.B);
                     Maximum = selectedColorField.Equals("Saturation") ? hsl.Saturation : hsl.Luminance;
                     if (currentValue >= maximum)
                     {
@@ -267,10 +267,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             double start = 0;
             foreach (var brush in brushes)
             {
-                byte a = brush.Color.AlphaComponent;
-                byte r = brush.Color.RedComponent;
-                byte g = brush.Color.GreenComponent;
-                byte b = brush.Color.BlueComponent;
+                byte a = brush.Color.A;
+                byte r = brush.Color.R;
+                byte g = brush.Color.G;
+                byte b = brush.Color.B;
                 var fillBrush = new SolidColorBrush(Color.FromArgb(a, r, g, b));
                 var fillRect = new Rect(start, 0, blockWidth, previewHeight);
                 drawingContext.DrawRectangle(fillBrush, null, fillRect);
@@ -288,15 +288,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private Collection<GeoSolidBrush> GetBreakdownBrushes(int breakCount, GeoSolidBrush baseBrush, GeoSolidBrush endBrush, ClassBreakBy breakColorMode)
         {
             Collection<GeoSolidBrush> brushes = new Collection<GeoSolidBrush>();
-            HSL baseHsl = GetHslFromRgb(baseBrush.Color.RedComponent, baseBrush.Color.GreenComponent, baseBrush.Color.BlueComponent);
+            HSL baseHsl = GetHslFromRgb(baseBrush.Color.R, baseBrush.Color.G, baseBrush.Color.B);
             HSL endHsl = null;
             if (breakColorMode == ClassBreakBy.Hue)
             {
-                endHsl = GetHslFromRgb(endBrush.Color.RedComponent, endBrush.Color.GreenComponent, endBrush.Color.BlueComponent);
+                endHsl = GetHslFromRgb(endBrush.Color.R, endBrush.Color.G, endBrush.Color.B);
                 var averageH = (endHsl.Hue - baseHsl.Hue) / (breakCount - 1);
                 var averageS = (endHsl.Saturation - baseHsl.Saturation) / (breakCount - 1);
                 var averageL = (endHsl.Luminance - baseHsl.Luminance) / (breakCount - 1);
-                var averageAlpha = (endBrush.Color.AlphaComponent - baseBrush.Color.AlphaComponent) / (breakCount - 1);
+                var averageAlpha = (endBrush.Color.A - baseBrush.Color.A) / (breakCount - 1);
                 brushes.Add(baseBrush);
                 for (int i = 1; i <= breakCount - 2; i++)
                 {
@@ -305,7 +305,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     generatedHsl.Saturation += averageS * i;
                     generatedHsl.Luminance += averageL * i;
 
-                    brushes.Add(GetSolidBrushFromHsl((byte)((int)baseBrush.Color.AlphaComponent + averageAlpha * i), generatedHsl));
+                    brushes.Add(GetSolidBrushFromHsl((byte)((int)baseBrush.Color.A + averageAlpha * i), generatedHsl));
                 }
                 brushes.Add(endBrush);
             }
@@ -316,12 +316,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     endHsl.Saturation = this.currentValue;
                     var averageS = (baseHsl.Saturation - currentValue) / (breakCount - 1);
-                    brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.AlphaComponent, endHsl));
+                    brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.A, endHsl));
                     for (int i = 1; i <= breakCount - 2; i++)
                     {
                         HSL generatedHsl = new HSL(endHsl.Hue, endHsl.Saturation, endHsl.Luminance);
                         generatedHsl.Saturation += averageS * i;
-                        brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.AlphaComponent, generatedHsl));
+                        brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.A, generatedHsl));
                     }
                     brushes.Add(baseBrush);
                 }
@@ -329,13 +329,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     endHsl.Luminance = this.currentValue;
                     var averageL = (baseHsl.Luminance - currentValue) / (breakCount - 1);
-                    brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.AlphaComponent, endHsl));
+                    brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.A, endHsl));
                     for (int i = 1; i <= breakCount - 2; i++)
                     {
                         HSL generatedHsl = new HSL(endHsl.Hue, endHsl.Saturation, endHsl.Luminance);
                         generatedHsl.Luminance += averageL * i;
 
-                        brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.AlphaComponent, generatedHsl));
+                        brushes.Add(GetSolidBrushFromHsl(baseBrush.Color.A, generatedHsl));
                     }
                     brushes.Add(baseBrush);
                 }

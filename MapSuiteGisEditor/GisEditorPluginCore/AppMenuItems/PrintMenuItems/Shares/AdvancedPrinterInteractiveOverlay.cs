@@ -20,10 +20,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using System.Threading.Tasks;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -42,9 +41,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             set { gridLayer = value; }
         }
 
-        protected override void DrawTileCore(GeoCanvas geoCanvas)
+        protected override async Task DrawTileAsyncCore(GeoCanvas geoCanvas)
         {
-            base.DrawTileCore(geoCanvas);
+            await base.DrawTileAsyncCore(geoCanvas).ConfigureAwait(false);
             if (gridLayer != null)
             {
                 PagePrinterLayer pagePrinterLayer = PrinterLayers.OfType<PagePrinterLayer>().FirstOrDefault();

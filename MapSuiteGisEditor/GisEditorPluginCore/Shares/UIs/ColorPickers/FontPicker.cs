@@ -25,9 +25,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -169,8 +169,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             PointStyle pointStyle = new PointStyle(
                 new GeoFont(currentInstance.SelectedFontFamily.Source, defaultFontSize, currentInstance.SelectedFontStyle),
-                currentInstance.SelectedCharacterIndex,
-                new GeoSolidBrush(GeoColor.StandardColors.Black));
+                ((char)currentInstance.SelectedCharacterIndex).ToString(),
+                new GeoSolidBrush(GeoColors.Black));
 
             System.Drawing.Bitmap nativeImage = new System.Drawing.Bitmap(defaultPreviewSize, defaultPreviewSize);
             var geoCanvas = new PlatformGeoCanvas();

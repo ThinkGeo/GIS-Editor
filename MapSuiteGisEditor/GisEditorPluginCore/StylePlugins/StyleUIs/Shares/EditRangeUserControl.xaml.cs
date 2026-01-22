@@ -20,7 +20,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -53,11 +53,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Collection<string> items = new Collection<string>();
             if (GisEditor.ActiveMap != null)
             {
-                ZoomLevelSet zoomLevelSet = GisEditor.ActiveMap.ZoomLevelSet;
-                for (int i = 0; i < zoomLevelSet.CustomZoomLevels.Count; i++)
+                var zoomScales = GisEditor.ActiveMap.ZoomScales;
+                for (int i = 0; i < zoomScales.Count; i++)
                 {
                     string zoomLevelTitle = string.Format(CultureInfo.InvariantCulture, "Level {0:D2}", i + 1);
-                    string zoomLevelScale = string.Format(CultureInfo.InvariantCulture, "Scale 1:{0:N0}", (int)zoomLevelSet.CustomZoomLevels[i].Scale);
+                    string zoomLevelScale = string.Format(CultureInfo.InvariantCulture, "Scale 1:{0:N0}", (int)zoomScales[i]);
                     items.Add(zoomLevelTitle + " - " + zoomLevelScale);
                 }
             }

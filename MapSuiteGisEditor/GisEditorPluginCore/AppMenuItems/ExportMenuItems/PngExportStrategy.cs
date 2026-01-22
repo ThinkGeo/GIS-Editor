@@ -24,9 +24,9 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using Microsoft.Win32;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using MapResizeMode = ThinkGeo.UI.Wpf.MapResizeMode;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

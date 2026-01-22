@@ -25,8 +25,8 @@ using System.Linq;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
 using NetTopologySuite.IO;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -94,7 +94,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         if (f.GetWellKnownBinary() != null)
                         {
                             var newFeature = projection.ConvertToExternalProjection(f);
-                            if (newFeature.CanMakeValid)
+                            if (newFeature.CanMakeValid())
                             {
                                 newFeature = newFeature.MakeValid();
                             }
@@ -184,7 +184,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 ShapeFileFeatureLayer featureLayer = new ShapeFileFeatureLayer(tmpPathFileName.Key);
                 featureLayer.SafeProcess(() =>
                 {
-                    featuresCount = featureLayer.QueryTools.GetCount();
+                    featuresCount = (int)featureLayer.QueryTools.GetCount();
                 });
 
                 return featuresCount;

@@ -20,10 +20,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.IO;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -31,10 +32,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     {
         public static void AddBlankZoomLevels(this FeatureLayer featureLayer)
         {
-            var zoomLevels = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels();
-            for (int i = 0; i < zoomLevels.Count; i++)
+            var zoomScales = GisEditor.ActiveMap?.ZoomScales;
+            if (zoomScales == null) return;
+
+            for (int i = 0; i < zoomScales.Count; i++)
             {
-                featureLayer.ZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(zoomLevels[i].Scale));
+                featureLayer.ZoomLevelSet.CustomZoomLevels.Add(new ZoomLevel(zoomScales[i]));
             }
         }
 
@@ -44,16 +47,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             ShapeFileFeatureLayer shapeFileFeatureLayer = featureLayer as ShapeFileFeatureLayer;
             if (shapeFileFeatureLayer != null)
             {
-                GeoFileReadWriteMode readWriteMode = GeoFileReadWriteMode.Read;
+                FileAccess readWriteMode = FileAccess.Read;
                 switch (layerAccessMode)
                 {
                     case LayerAccessMode.Write:
                     case LayerAccessMode.ReadWrite:
-                        readWriteMode = GeoFileReadWriteMode.ReadWrite;
+                        readWriteMode = FileAccess.ReadWrite;
                         break;
                     case LayerAccessMode.Read:
                     default:
-                        readWriteMode = GeoFileReadWriteMode.Read;
+                        readWriteMode = FileAccess.Read;
                         break;
                 }
                 shapeFileFeatureLayer.ReadWriteMode = readWriteMode;
@@ -88,9 +91,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 if (featureLayer.FeatureSource.IsOpen) featureLayer.FeatureSource.Close();
 
-                if (featureLayer.FeatureSource.Projection != null && featureLayer.FeatureSource.Projection.IsOpen)
+                if (featureLayer.FeatureSource.ProjectionConverter != null && featureLayer.FeatureSource.ProjectionConverter.IsOpen)
                 {
-                    featureLayer.FeatureSource.Projection.Close();
+                    featureLayer.FeatureSource.ProjectionConverter.Close();
                 }
             }
         }
@@ -111,6 +114,28 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (isClosed)
                 {
                     layer.Close();
+                }
+            }
+        }
+
+        public static void SafeProcess(this LayerBase layer, Action processAction)
+        {
+            if (layer == null) return;
+            lock (layer)
+            {
+                bool isClosed = false;
+                var openableLayer = layer as Layer;
+                if (openableLayer != null && !openableLayer.IsOpen)
+                {
+                    openableLayer.Open();
+                    isClosed = true;
+                }
+
+                if (processAction != null) processAction();
+
+                if (isClosed && openableLayer != null)
+                {
+                    openableLayer.Close();
                 }
             }
         }
@@ -157,7 +182,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static Feature MakeValidIfCan(this Feature feature)
         {
-            if (feature.CanMakeValid)
+            if (feature.CanMakeValid())
                 return feature.MakeValid();
             else return feature;
         }

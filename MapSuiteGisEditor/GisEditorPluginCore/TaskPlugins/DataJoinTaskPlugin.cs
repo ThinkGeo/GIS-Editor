@@ -25,8 +25,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -209,7 +209,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 var index = 0;
                 var count = features.Count;
 
-                ShapeFileFeatureLayer newShapeFileFeatureLayer = new ShapeFileFeatureLayer(OutputPath, GeoFileReadWriteMode.ReadWrite);
+                ShapeFileFeatureLayer newShapeFileFeatureLayer = new ShapeFileFeatureLayer(OutputPath, FileAccess.ReadWrite);
                 newShapeFileFeatureLayer.SafeProcess(() =>
                 {
                     newShapeFileFeatureLayer.EditTools.BeginTransaction();

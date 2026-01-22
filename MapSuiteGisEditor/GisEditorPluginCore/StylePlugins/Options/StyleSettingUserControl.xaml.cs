@@ -20,6 +20,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Windows.Documents;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

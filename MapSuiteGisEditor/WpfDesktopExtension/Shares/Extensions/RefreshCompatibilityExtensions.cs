@@ -34,6 +34,18 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         //    if (overlay == null) return;
         //    overlay.Refresh();
         //}
+
+        public static void RefreshWithBufferSettings(this TileOverlay overlay)
+        {
+            if (overlay == null) return;
+            _ = overlay.RefreshAsync();
+        }
+
+        public static void RefreshWithBufferSettings(this LayerOverlay overlay)
+        {
+            if (overlay == null) return;
+            _ = overlay.RefreshAsync();
+        }
     }
 
     /// <summary>

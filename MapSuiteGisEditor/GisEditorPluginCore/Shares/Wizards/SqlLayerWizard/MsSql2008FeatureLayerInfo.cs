@@ -24,12 +24,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Text;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
     [Serializable]
-    public class MsSql2008FeatureLayerInfo : DatabaseLayerInfo<MsSqlFeatureLayer>
+    public class MsSql2008FeatureLayerInfo : DatabaseLayerInfo<SqlServerFeatureLayer>
     {
         private static readonly string selectTableColumnsSqlStatementTemplate = "use {0}; SELECT name FROM sys.columns WHERE (object_id = OBJECT_ID('{1}'))";
         private static readonly string selectTableNamesSqlStatement = "SELECT allTables.name,allSchemas.name as schema_name FROM sys.tables allTables left join sys.schemas allSchemas on allTables.schema_id = allSchemas.schema_id union (SELECT allViews.name,allSchemas.name as schema_name FROM sys.views allViews left join sys.schemas allSchemas on allViews.schema_id = allSchemas.schema_id) order by schema_name,name";
@@ -45,7 +45,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public string SchemaName { get; set; }
 
-        protected override SimpleShapeType GetSimpleShapeTypeCore(MsSqlFeatureLayer layer)
+        protected override SimpleShapeType GetSimpleShapeTypeCore(SqlServerFeatureLayer layer)
         {
             if (!layer.IsOpen) layer.Open();
             var shapeType = layer.GetFirstGeometryType();
@@ -53,7 +53,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return simpleShapeType;
         }
 
-        protected override MsSqlFeatureLayer CreateLayerCore()
+
+        protected override SqlServerFeatureLayer CreateLayerCore()
         {
             string tempTableName = TableName;
             if (tempTableName.IndexOf('.') != -1)
@@ -62,7 +63,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 SchemaName = pattens.First();
                 tempTableName = pattens.ToList()[1];
             }
-            var layer = new MsSqlFeatureLayer(GetToDatabaseConnectionString(DatabaseName), tempTableName, FeatureIDColumnName);
+            var layer = new SqlServerFeatureLayer(GetToDatabaseConnectionString(DatabaseName), tempTableName, FeatureIDColumnName);
             layer.SchemaName = SchemaName;
             return layer;
         }

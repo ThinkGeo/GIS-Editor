@@ -25,10 +25,9 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -151,7 +150,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
 
             //For adjusting the world extent of the map to the ratio of the drawing area.
-            RectangleShape adjustedWorldExtent = ExtentHelper.GetDrawingExtent(MapExtent, (float)currentBoundingBox.Width, (float)currentBoundingBox.Height);
+            RectangleShape adjustedWorldExtent = MapUtil.GetDrawingExtent(MapExtent, (float)currentBoundingBox.Width, (float)currentBoundingBox.Height);
             RectangleShape boundingBox = GetBoundingBox();
             PointShape ajustedWorldCenter = adjustedWorldExtent.GetCenterPoint();
             PageGeoCanvas pageGeoCanvas = new PageGeoCanvas(new RectangleShape(0, boundingBox.Height, boundingBox.Width, 0), currentBoundingBox);
@@ -266,8 +265,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void DrawDescriptionText(PageGeoCanvas pageGeoCanvas)
         {
-            pageGeoCanvas.DrawTextWithScreenCoordinate("Map", new GeoFont("Arial", 22), new GeoSolidBrush(GeoColor.StandardColors.Black), (float)(pageGeoCanvas.Width * 0.5), (float)(pageGeoCanvas.Height * 0.5 - 15), DrawingLevel.LabelLevel);
-            pageGeoCanvas.DrawTextWithScreenCoordinate(GisEditor.LanguageManager.GetStringResource("RightClickToSetExtentText"), new GeoFont("Arial", 18), new GeoSolidBrush(GeoColor.StandardColors.Black), (float)(pageGeoCanvas.Width * 0.5), (float)(pageGeoCanvas.Height * 0.5) + 15, DrawingLevel.LabelLevel);
+            pageGeoCanvas.DrawTextWithScreenCoordinate("Map", new GeoFont("Arial", 22), new GeoSolidBrush(GeoColors.Black), (float)(pageGeoCanvas.Width * 0.5), (float)(pageGeoCanvas.Height * 0.5 - 15), DrawingLevel.LabelLevel);
+            pageGeoCanvas.DrawTextWithScreenCoordinate(GisEditor.LanguageManager.GetStringResource("RightClickToSetExtentText"), new GeoFont("Arial", 18), new GeoSolidBrush(GeoColors.Black), (float)(pageGeoCanvas.Width * 0.5), (float)(pageGeoCanvas.Height * 0.5) + 15, DrawingLevel.LabelLevel);
         }
 
         private GeoImage GetCacheImage(PageGeoCanvas pageGeoCanvas, GeographyUnit geographyUnit, RectangleShape adjustedWorldExtent, Collection<SimpleCandidate> labelsInAllLayers, double width, double height)
@@ -317,3 +316,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

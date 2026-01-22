@@ -21,7 +21,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using ThinkGeo.Core;
-using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -45,7 +44,6 @@ namespace ThinkGeo.MapSuite.GisEditor
         private static DataRepositoryPluginManager dataRepositoryManager;
         private static LayerListManager layerListManager;
         private static GeoSerializer serializer;
-        private static bool isReadOnly;
 
         static GisEditor()
         {

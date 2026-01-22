@@ -17,9 +17,9 @@
 */
 
 
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -35,8 +35,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override void LoadFromActiveMapCore(PrinterLayer printerlayer)
         {
-            LegendPrinterLayer legendPrinterLayer = null;
-            if (legendAdornmentLayer != null && (legendPrinterLayer = printerlayer as LegendPrinterLayer) != null)
+            LegendPrinterLayer1 legendPrinterLayer = null;
+            if (legendAdornmentLayer != null && (legendPrinterLayer = printerlayer as LegendPrinterLayer1) != null)
             {
                 SetPropertiesInGeneral(legendAdornmentLayer, legendPrinterLayer);
             }
@@ -46,7 +46,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             if (legendAdornmentLayer != null)
             {
-                LegendPrinterLayer printerLayer = new GisEditorLegendPrinterLayer();
+                var printerLayer = new GisEditorLegendPrinterLayer();
                 double width = 0;
                 double height = 0;
                 SetPropertiesInGeneral(legendAdornmentLayer, printerLayer);
@@ -62,7 +62,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             else return null;
         }
 
-        private void SetPropertiesInGeneral(LegendAdornmentLayer legendLayer, LegendPrinterLayer legendPrinterLayer)
+        private void SetPropertiesInGeneral(LegendAdornmentLayer legendLayer, LegendPrinterLayer1 legendPrinterLayer)
         {
             legendPrinterLayer.LegendItems.Clear();
             foreach (var item in legendLayer.LegendItems)

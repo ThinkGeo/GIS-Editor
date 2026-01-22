@@ -22,9 +22,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -63,10 +62,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Y1 = pageBoundingBox.UpperRightPoint.Y;
             Y2 = pageBoundingBox.LowerLeftPoint.Y;
 
-            Xp1 = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.UpperLeftPoint, (float)canvas.Width, (float)canvas.Height).X;
-            Xp2 = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.LowerRightPoint, (float)canvas.Width, (float)canvas.Height).X;
-            Yp1 = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.LowerRightPoint, (float)canvas.Width, (float)canvas.Height).Y;
-            Yp2 = ExtentHelper.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.UpperLeftPoint, (float)canvas.Width, (float)canvas.Height).Y;
+            Xp1 = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.UpperLeftPoint, (float)canvas.Width, (float)canvas.Height).X;
+            Xp2 = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.LowerRightPoint, (float)canvas.Width, (float)canvas.Height).X;
+            Yp1 = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.LowerRightPoint, (float)canvas.Width, (float)canvas.Height).Y;
+            Yp2 = MapUtil.ToScreenCoordinate(canvas.CurrentWorldExtent, printBoundingBox.UpperLeftPoint, (float)canvas.Width, (float)canvas.Height).Y;
         }
 
         protected override void DrawAreaCore(IEnumerable<ScreenPointF[]> screenPoints, GeoPen outlinePen, GeoBrush fillBrush, DrawingLevel drawingLevel, float xOffset, float yOffset, PenBrushDrawingOrder penBrushDrawingOrder)
@@ -121,7 +120,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             DrawScreenImageCore(image, centerXInScreen, centerYInScreen, image.GetWidth(), image.GetHeight(), drawingLevel, xOffset, yOffset, rotateAngle);
         }
 
-        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, float rotateAngle, DrawingTextAlignment drawingTextAlignment)
+        protected override void DrawTextCore(string text, GeoFont font, GeoBrush fillBrush, GeoPen haloPen, IEnumerable<ScreenPointF> textPathInScreen, DrawingLevel drawingLevel, float xOffset, float yOffset, DrawingTextAlignment drawingTextAlignment, float rotateAngle)
         {
             List<ScreenPointF> screenPoints = new List<ScreenPointF>();
 
@@ -132,7 +131,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             GeoFont scaledFont = GetScaledFont(font);
 
-            canvas.DrawText(text, scaledFont, fillBrush, haloPen, screenPoints, drawingLevel, xOffset, yOffset, rotateAngle);
+            canvas.DrawText(text, scaledFont, fillBrush, haloPen, screenPoints, drawingLevel, xOffset, yOffset, drawingTextAlignment, rotateAngle);
         }
 
         protected override DrawingRectangleF MeasureTextCore(string text, GeoFont font)
@@ -169,14 +168,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return drawingRectangleF;
         }
 
-        protected override GeoImage ToGeoImageCore(object nativeImage)
+        protected override void DrawArcCore(GeoPen outlinePen, float x, float y, float width, float height, float startAngle, float sweepAngle, DrawingLevel drawingLevel)
         {
-            return canvas.ToGeoImage(nativeImage);
-        }
-
-        protected override object ToNativeImageCore(GeoImage image)
-        {
-            return canvas.ToNativeImage(image);
+            var screenPoint = GetScreenPoint(new ScreenPointF(x, y));
+            GeoPen scaledPen = GetScaledPen(outlinePen);
+            float scaledWidth = (float)GetScaledLength(width);
+            float scaledHeight = (float)GetScaledLength(height);
+            canvas.DrawArc(scaledPen, screenPoint.X, screenPoint.Y, scaledWidth, scaledHeight, startAngle, sweepAngle, drawingLevel);
         }
 
         protected override void FlushCore()
@@ -184,19 +182,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             canvas.Flush();
         }
 
-        protected override float GetCanvasHeightCore(object nativeImage)
+        protected override void EndDrawingCore()
+        {
+            canvas.EndDrawing();
+        }
+
+        protected override float GetCanvasHeightCore()
         {
             return (float)pageBoundingBox.Height;
         }
 
-        protected override float GetCanvasWidthCore(object nativeImage)
+        protected override float GetCanvasWidthCore()
         {
             return (float)pageBoundingBox.Width;
-        }
-
-        public override Stream GetStreamFromGeoImage(GeoImage image)
-        {
-            return canvas.GetStreamFromGeoImage(image);
         }
 
         private static Font GetGdiPlusFontFromGeoFont(GeoFont font)

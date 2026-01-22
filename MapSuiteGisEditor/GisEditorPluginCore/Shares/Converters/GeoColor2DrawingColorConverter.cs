@@ -20,7 +20,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Data;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -45,7 +45,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static Color Convert(GeoColor drawingColor)
         {
-            return Color.FromArgb(drawingColor.AlphaComponent, drawingColor.RedComponent, drawingColor.GreenComponent, drawingColor.BlueComponent);
+            return Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
 
         public static GeoColor ConvertBack(Color mediaColor)

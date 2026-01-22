@@ -23,7 +23,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using ThinkGeo.Core;
-using ThinkGeo.Core;
 
 using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;

@@ -20,7 +20,8 @@
 using System;
 using System.Reflection;
 using GalaSoft.MvvmLight;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

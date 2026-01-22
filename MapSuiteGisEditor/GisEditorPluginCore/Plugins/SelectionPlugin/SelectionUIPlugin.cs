@@ -31,11 +31,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using Microsoft.Windows.Controls.Ribbon;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Serialize;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -105,7 +104,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             wpfMap.SelectionOverlay.HighlightFeatureLayer.InternalFeatures.Clear();
             wpfMap.SelectionOverlay.HighlightFeatureLayer.BuildIndex();
-            wpfMap.SelectionOverlay.Refresh();
+            wpfMap.SelectionOverlay.RefreshAsync();
             wpfMap.SelectionOverlay.FeatureSelected -= new EventHandler<EventArgs>(SelectionOverlay_FeatureSelected);
             wpfMap.SelectionOverlay.HighlightFeatureLayer.InternalFeatures.CollectionChanged -= new NotifyCollectionChangedEventHandler(InternalFeatures_CollectionChanged);
         }

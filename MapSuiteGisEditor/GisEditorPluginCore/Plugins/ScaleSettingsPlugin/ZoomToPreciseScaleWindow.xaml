@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:tgshapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+        xmlns:tgshapes="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         Title="{DynamicResource ResourceKey=ZoomToPreciseScaleWindowTitleText}"
         d:DesignHeight="300"
         d:DesignWidth="300"

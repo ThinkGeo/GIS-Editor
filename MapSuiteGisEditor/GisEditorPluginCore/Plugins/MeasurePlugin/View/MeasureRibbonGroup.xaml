@@ -6,7 +6,7 @@
                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
                xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                xmlns:t="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
-               xmlns:tgshapes="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+               xmlns:tgshapes="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
                CanAddToQuickAccessToolBarDirectly="False"
                Header="{DynamicResource MeasureRibbonGroupRibbonGroupHeader}"
                x:ClassModifier="public">

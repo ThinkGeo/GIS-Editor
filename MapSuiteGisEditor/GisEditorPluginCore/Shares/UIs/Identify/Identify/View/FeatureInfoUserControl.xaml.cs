@@ -18,6 +18,7 @@
 
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -31,10 +32,10 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -77,7 +78,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         overlay.StandOutHighlightFeatureLayer.InternalFeatures.Add(entity.Feature);
                     }
-                    GisEditor.ActiveMap.Refresh(overlay);
+                    GisEditor.ActiveMap.RefreshAsync(overlay);
                 }
             }
             else
@@ -105,7 +106,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (entity != null)
                 {
                     GisEditor.ActiveMap.CurrentExtent = entity.Feature.GetBoundingBox();
-                    GisEditor.ActiveMap.Refresh();
+                    GisEditor.ActiveMap.RefreshAsync();
                 }
             }
         }
@@ -225,7 +226,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             {
                                 overlay.Close();
                             }
-                            ViewModel.ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode.ReadWrite, selectedFeatureLayer);
+                            ViewModel.ChangeCurrentLayerReadWriteMode(FileAccess.ReadWrite, selectedFeatureLayer);
                             selectedFeatureLayer.SafeProcess(() =>
                             {
                                 List<string> excludedIds = new List<string>();
@@ -322,7 +323,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (GisEditor.ActiveMap.FeatureLayerEditOverlay != null)
                 {
-                    ViewModel.ChangeCurrentLayerReadWriteMode(GeoFileReadWriteMode.Read, GisEditor.ActiveMap.FeatureLayerEditOverlay.EditTargetLayer);
+                    ViewModel.ChangeCurrentLayerReadWriteMode(FileAccess.Read, GisEditor.ActiveMap.FeatureLayerEditOverlay.EditTargetLayer);
                 }
                 featureInforGrid.IsReadOnly = true;
                 isEditing = false;
@@ -448,7 +449,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         ViewModel.SelectedEntity = null;
                         overlay.HighlightFeatureLayer.BuildIndex();
 
-                        GisEditor.ActiveMap.Refresh(overlay);
+                        GisEditor.ActiveMap.RefreshAsync(overlay);
 
                         Dictionary<FeatureLayer, Collection<Feature>> featureGroup = new Dictionary<FeatureLayer, Collection<Feature>>();
 
@@ -567,7 +568,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 styleArguments.AvailableStyleCategories = StylePluginHelper.GetStyleCategoriesByFeatureLayer(styleArguments.FeatureLayer);
                 styleArguments.FromZoomLevelIndex = 1;
-                styleArguments.ToZoomLevelIndex = GisEditor.ActiveMap.ZoomLevelSet.CustomZoomLevels.Count(z => z.GetType() == typeof(ZoomLevel));
+                styleArguments.ToZoomLevelIndex = GisEditor.ActiveMap.ZoomScales.Count;
                 styleArguments.FillRequiredColumnNames();
                 styleArguments.AppliedCallback = styleResults =>
                 {
@@ -666,3 +667,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

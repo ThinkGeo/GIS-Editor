@@ -24,8 +24,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -143,7 +143,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             lock (featureLayer)
             {
                 if (!featureLayer.IsOpen) featureLayer.Open();
-                Collection<Feature> results = featureLayer.FeatureSource.GetFeaturesOutsideBoundingBox(ExtentHelper.GetBoundingBoxOfItems(clippingFeatures), featureLayer.GetDistinctColumnNames());
+                Collection<Feature> results = featureLayer.FeatureSource.GetFeaturesOutsideBoundingBox(MapUtil.GetBoundingBoxOfItems(clippingFeatures), featureLayer.GetDistinctColumnNames());
                 Collection<Feature> sourceFeatures = new Collection<Feature>();
                 SimpleShapeType simpleShapeType = GisEditor.LayerManager.GetFeatureSimpleShapeType(featureLayer);
                 int index = 1;
@@ -180,14 +180,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             projectionInfo.Close();
                             isOpen = true;
                         }
-                        featureLayer.FeatureSource.Projection = null;
+                        featureLayer.FeatureSource.ProjectionConverter = null;
                     }
                     featureLayer.Open();
                     featureLayer.FeatureSource.GetFeaturesInsideBoundingBox(areaBaseShape.GetBoundingBox(), featureLayer.GetDistinctColumnNames()).ForEach(f => { if (!areaBaseShape.Contains(f)) { sourceFeatures.Add(f); } });
                     int count = sourceFeatures.Count;
                     if (projectionInfo != null)
                     {
-                        featureLayer.FeatureSource.Projection = projectionInfo.Projection;
+                        featureLayer.FeatureSource.ProjectionConverter = projectionInfo.Projection;
                         if (isOpen) { featureLayer.Open(); }
                     }
                     if (featureLayer.IsOpen) featureLayer.Close();
@@ -256,14 +256,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             if (projectionInfo != null) projectionInfo.Close();
                             isOpen = true;
                         }
-                        featureLayer.FeatureSource.Projection = null;
+                        featureLayer.FeatureSource.ProjectionConverter = null;
                     }
                     if (!featureLayer.IsOpen) featureLayer.Open();
                     featureLayer.FeatureSource.GetFeaturesInsideBoundingBox(areaBaseShape.GetBoundingBox(), featureLayer.GetDistinctColumnNames()).ForEach(f => sourceFeatures.Add(f));
                     if (featureLayer.IsOpen) featureLayer.Close();
                     if (projectionInfo != null)
                     {
-                        featureLayer.FeatureSource.Projection = projectionInfo.Projection;
+                        featureLayer.FeatureSource.ProjectionConverter = projectionInfo.Projection;
                         if (isOpen) { featureLayer.Open(); }
                     }
 
@@ -399,7 +399,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         projectionInfo.Close();
                         isOpen = true;
                     }
-                    featureLayer.FeatureSource.Projection = null;
+                    featureLayer.FeatureSource.ProjectionConverter = null;
                 }
 
                 #endregion replace project to null
@@ -420,12 +420,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
 
                 if (!featureLayer.IsOpen) featureLayer.Open();
-                List<Feature> tmpSourceFeatures = featureLayer.FeatureSource.GetFeaturesInsideBoundingBox(ExtentHelper.GetBoundingBoxOfItems(tmpFeatures), featureLayer.GetDistinctColumnNames()).Select(f => f.MakeValidIfCan()).ToList();
+                List<Feature> tmpSourceFeatures = featureLayer.FeatureSource.GetFeaturesInsideBoundingBox(MapUtil.GetBoundingBoxOfItems(tmpFeatures), featureLayer.GetDistinctColumnNames()).Select(f => f.MakeValidIfCan()).ToList();
 
                 Collection<Feature> sourceFeatures = new Collection<Feature>(tmpSourceFeatures);
                 if (projectionInfo != null)
                 {
-                    featureLayer.FeatureSource.Projection = projectionInfo.Projection;
+                    featureLayer.FeatureSource.ProjectionConverter = projectionInfo.Projection;
                     if (isOpen)
                     {
                         featureLayer.Open();

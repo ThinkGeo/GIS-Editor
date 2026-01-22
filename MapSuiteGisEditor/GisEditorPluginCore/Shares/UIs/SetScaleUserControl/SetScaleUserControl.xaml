@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:tg="clr-namespace:ThinkGeo.MapSuite.Shapes;assembly=ThinkGeo.MapSuite"
+             xmlns:tg="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">

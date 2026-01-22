@@ -21,12 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Windows;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using CoreZoomSnapDirection = ThinkGeo.Core.ZoomSnapDirection;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -50,7 +51,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private bool highQuality;
         private DefaultBaseMap defaultBaseMapOption;
         private AltitudeMode altitudeMode;
-        private ZoomSnapDirection zoomSnapDirection;
+        private CoreZoomSnapDirection zoomSnapDirection;
         private bool disableGlobeButton;
 
         public ContentSetting()
@@ -69,7 +70,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             AltitudeMode = AltitudeMode.ClampToGround;
             Height = 0;
-            ZoomSnapDirection = ZoomSnapDirection.UpperScale;
+            ZoomSnapDirection = CoreZoomSnapDirection.UpperScale;
         }
 
         [DataMember]
@@ -273,7 +274,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
 
         [DataMember]
-        public ZoomSnapDirection ZoomSnapDirection
+        public CoreZoomSnapDirection ZoomSnapDirection
         {
             get { return zoomSnapDirection; }
             set
@@ -283,7 +284,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     foreach (ExtentInteractiveOverlay overlay in map.InteractiveOverlays.OfType<ExtentInteractiveOverlay>())
                     {
-                        overlay.ZoomSnapDirection = value;
+                        var prop = overlay.GetType().GetProperty("ZoomSnapDirection", BindingFlags.Instance | BindingFlags.Public);
+                        if (prop != null && prop.CanWrite)
+                        {
+                            object converted = value;
+                            if (prop.PropertyType.IsEnum && prop.PropertyType != typeof(CoreZoomSnapDirection))
+                            {
+                                converted = Enum.Parse(prop.PropertyType, value.ToString());
+                            }
+                            prop.SetValue(overlay, converted, null);
+                        }
                     }
                 }
             }
@@ -335,7 +345,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             PluginHelper.RestoreInteger(state, "PlaceSearchMaxResultCount", v => PlaceSearchMaxValue = (decimal)v);
             PluginHelper.RestoreInteger(state, "AltitudeMode", v => AltitudeMode = (AltitudeMode)v);
             PluginHelper.RestoreInteger(state, "Height", v => Height = v);
-            PluginHelper.RestoreInteger(state, "ZoomSnapDirection", v => ZoomSnapDirection = (ZoomSnapDirection)v);
+            PluginHelper.RestoreInteger(state, "ZoomSnapDirection", v => ZoomSnapDirection = (CoreZoomSnapDirection)v);
             PluginHelper.RestoreBoolean(state, "DisableGlobeButton", v => DisableGlobeButton = v);
             PluginHelper.RestoreInteger(state, "OverlayRefreshDelayInterval", v => OverlayRefreshDelayInterval = v);
         }

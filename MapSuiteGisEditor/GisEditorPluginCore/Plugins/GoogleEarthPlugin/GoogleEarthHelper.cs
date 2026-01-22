@@ -28,11 +28,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.GisEditor.Plugins.Properties;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -107,18 +106,18 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (item.Value.Count > 0)
                 {
                     InMemoryFeatureLayer layer = new InMemoryFeatureLayer();
-                    if (item.Key.FeatureSource.Projection != null)
+                    if (item.Key.FeatureSource.ProjectionConverter != null)
                     {
                         bool isClosed = false;
-                        if (item.Key.FeatureSource.Projection.IsOpen)
+                        if (item.Key.FeatureSource.ProjectionConverter.IsOpen)
                         {
-                            item.Key.FeatureSource.Projection.Close();
+                            item.Key.FeatureSource.ProjectionConverter.Close();
                             isClosed = true;
                         }
-                        layer.FeatureSource.Projection = item.Key.FeatureSource.Projection.CloneDeep();
+                        layer.FeatureSource.ProjectionConverter = item.Key.FeatureSource.ProjectionConverter.CloneDeep();
                         if (isClosed)
                         {
-                            item.Key.FeatureSource.Projection.Open();
+                            item.Key.FeatureSource.ProjectionConverter.Open();
                         }
                     }
                     else
@@ -126,7 +125,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         Proj4Projection proj4 = new Proj4Projection();
                         proj4.ExternalProjectionParametersString = Proj4Projection.GetDecimalDegreesParametersString();
                         proj4.ExternalProjectionParametersString = Proj4Projection.GetDecimalDegreesParametersString();
-                        layer.FeatureSource.Projection = proj4;
+                        layer.FeatureSource.ProjectionConverter = proj4;
                     }
                     foreach (var zoomLevel in item.Key.ZoomLevelSet.CustomZoomLevels)
                     {
@@ -312,8 +311,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             MessageBoxResult result = MessageBox.Show(string.Format(GisEditor.LanguageManager.GetStringResource("GoogleEarthAnyFeaturesSelected")), GisEditor.LanguageManager.GetStringResource("GeneralMessageBoxInfoCaption"), MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                GisEditor.ActiveMap.CurrentExtent = ExtentHelper.GetBoundingBoxOfItems(features);
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.CurrentExtent = MapUtil.GetBoundingBoxOfItems(features);
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -456,7 +455,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             return Path.GetDirectoryName(files[0]);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }
@@ -487,7 +486,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             return Path.GetDirectoryName(files[0]);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }
@@ -612,3 +611,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         #endregion KML stuff
     }
 }
+

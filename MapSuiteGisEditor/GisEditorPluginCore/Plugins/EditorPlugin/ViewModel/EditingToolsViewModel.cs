@@ -24,15 +24,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -376,7 +377,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                                         //    if (overlay != null)
                                         //    {
                                         //        overlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
-                                        //        overlay.Refresh();
+                                        //        overlay.RefreshAsync();
                                         //    }
                                         //}
                                     }
@@ -879,7 +880,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     switcherPanZoomBar.SwitcherMode = SwitcherMode.Pan;
                     GisEditor.ActiveMap.ExtentOverlay.PanMode = MapPanMode.Default;
-                    GisEditor.ActiveMap.ExtentOverlay.LeftClickDragKey = System.Windows.Forms.Keys.ShiftKey;
+                    GisEditor.ActiveMap.ExtentOverlay.TrackZoomInKey = Key.LeftShift;
                     GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
                 }
             }
@@ -1056,7 +1057,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     editOverlay.ReshapeControlPointsLayer.InternalFeatures.Count > 0))
                 {
                     editOverlay.ClearVertexControlPoints();
-                    editOverlay.Refresh();
+                    editOverlay.RefreshAsync();
                 }
             }
             else
@@ -1121,7 +1122,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 BaseShape trackShape = e.TrackShape;
                 trackOverlay.TrackShapeLayer.InternalFeatures.Clear();
-                trackOverlay.Refresh();
+                trackOverlay.RefreshAsync();
                 if (EditOverlay != null)
                 {
                     var trackResultProcessMode = EditOverlay.TrackResultProcessMode;
@@ -1206,7 +1207,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 EditOverlay.TakeSnapshot();
                 EditOverlay.EditShapesLayer.BuildIndex();
-                EditOverlay.Refresh();
+                EditOverlay.RefreshAsync();
             }
 
             trackOverlay.TrackMode = TrackMode.None;
@@ -1296,7 +1297,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                         EditOverlay.TakeSnapshot();
                         EditOverlay.EditShapesLayer.BuildIndex();
-                        EditOverlay.Refresh();
+                        EditOverlay.RefreshAsync();
                     }
                 }
 
@@ -1459,11 +1460,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             // Add new features to edit overlay
             editOverlay.EditShapesLayer.InternalFeatures.Add(feature.Id, feature);
             editOverlay.EditShapesLayer.BuildIndex();
-            editOverlay.Refresh();
+            editOverlay.RefreshAsync();
             editOverlay.TakeSnapshot();
 
             GisEditor.ActiveMap.TrackOverlay.TrackShapeLayer.InternalFeatures.Clear();
-            GisEditor.ActiveMap.TrackOverlay.Refresh();
+            GisEditor.ActiveMap.TrackOverlay.RefreshAsync();
 
             // Edit new feature's attribute
             Dictionary<FeatureLayer, Collection<Feature>> features = new Dictionary<FeatureLayer, Collection<Feature>>();
@@ -1790,7 +1791,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var targetOverlay = sender as Overlay;
             if (targetOverlay != null)
             {
-                editOverlay.Refresh();
+                editOverlay.RefreshAsync();
                 targetOverlay.Drawn -= TargetOverlay_Drawn;
             }
         }
@@ -2057,7 +2058,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Application.Current.Dispatcher.BeginInvoke(obj =>
             {
                 RefreshOverlayContainsActiveFeatureLayer((FeatureLayer)obj);
-                editOverlay.Refresh();
+                editOverlay.RefreshAsync();
             }, editOverlay.EditTargetLayer, DispatcherPriority.Background);
         }
 
@@ -2156,7 +2157,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 editOverlay.CalculateAssociateControlPoints();
             }
 
-            editOverlay.Refresh();
+            editOverlay.RefreshAsync();
             SelectedDrawingTool = null;
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.SetEditOverlayModeDescription));
         }
@@ -2290,7 +2291,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 if (targetFeatureLayer is ShapeFileFeatureLayer)
                 {
-                    ((ShapeFileFeatureSource)((ShapeFileFeatureLayer)targetFeatureLayer).FeatureSource).ReadWriteMode = GeoFileReadWriteMode.ReadWrite;
+                    ((ShapeFileFeatureSource)((ShapeFileFeatureLayer)targetFeatureLayer).FeatureSource).ReadWriteMode = FileAccess.ReadWrite;
                 }
 
                 if (!targetFeatureLayer.IsOpen) targetFeatureLayer.Open();
@@ -2422,7 +2423,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             targetFeatureLayer.Close();
                         }
                     }
-                    ((ShapeFileFeatureSource)((ShapeFileFeatureLayer)targetFeatureLayer).FeatureSource).ReadWriteMode = GeoFileReadWriteMode.Read;
+                    ((ShapeFileFeatureSource)((ShapeFileFeatureLayer)targetFeatureLayer).FeatureSource).ReadWriteMode = FileAccess.Read;
                 }
                 targetFeatureLayer.ReOpen();
 
@@ -2432,7 +2433,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     if (overlay != null)
                     {
                         overlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
-                        overlay.Refresh();
+                        overlay.RefreshAsync();
                     }
                 }
 
@@ -2499,3 +2500,5 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+

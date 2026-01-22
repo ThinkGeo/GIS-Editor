@@ -30,9 +30,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -41,7 +40,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     public class NavigateUIPlugin : UIPlugin
     {
         private static readonly string searchEntriesKey = "SearchEntries";
-
+        
         private Point originPosition;
         private bool isHighPriorityMouseOperation;
         private Point mouseDownCoordinate;
@@ -389,8 +388,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         currentPopupOverlay.Popups.Remove(popup);
                     }
 
-                    GisEditor.ActiveMap.Refresh(currentMarkerOverlay);
-                    GisEditor.ActiveMap.Refresh(currentPopupOverlay);
+                    GisEditor.ActiveMap.RefreshAsync(currentMarkerOverlay);
+                    GisEditor.ActiveMap.RefreshAsync(currentPopupOverlay);
                     e.Handled = true;
                 };
                 menuItems.Add(clearPlottedMarkersMenuItem);
@@ -477,7 +476,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var maps = GisEditor.GetMaps();
             foreach (var overlay in maps.SelectMany(m => m.Overlays))
             {
-                overlay.Close();
+                if (overlay is LayerOverlay layerOverlay)
+                {
+                    layerOverlay.Close();
+                }
             }
 
             Collection<string> physicalPaths = new Collection<string>();
@@ -552,7 +554,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             GisEditorWpfMapExtension.ReprojectMap(sender as GisEditorWpfMap, e.OldProjectionParameters, e.NewProjectionParameters);
         }
 
-        private void WpfMap_ZoomLevelSetChanged(object sender, ZoomLevelSetChangedWpfMapEventArgs e)
+        private void WpfMap_ZoomLevelSetChanged(object sender, ZoomLevelSetChangedMapViewEventArgs e)
         {
             navigateGroup.ViewModel.SysnchCurrentZoomLevels(sender as GisEditorWpfMap);
         }
@@ -603,7 +605,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         previousCursors.Remove(extendedMap);
                     }
 
-                    GisEditor.ActiveMap.Refresh(GisEditor.SelectionManager.GetSelectionOverlay());
+                    GisEditor.ActiveMap.RefreshAsync(GisEditor.SelectionManager.GetSelectionOverlay());
                     EndHighPriorityMouseOperation();
                 }
             }
@@ -677,7 +679,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (popupOverlay != null)
                 {
                     popupOverlay.Popups.Clear();
-                    popupOverlay.Refresh();
+                    popupOverlay.RefreshAsync();
                 }
             }
         }
@@ -715,7 +717,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     RectangleShape extent = proj4.ConvertToExternalProjection(e.Result.BoundingBox);
                     GisEditor.ActiveMap.CurrentExtent = extent;
-                    GisEditor.ActiveMap.Refresh();
+                    GisEditor.ActiveMap.RefreshAsync();
                 }
                 else if (pointShape != null)
                 {
@@ -725,18 +727,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private void Map_CurrentScaleChanged(object sender, CurrentScaleChangedWpfMapEventArgs e)
+        private void Map_CurrentScaleChanged(object sender, CurrentScaleChangedMapViewEventArgs e)
         {
             WpfMap currentMap = (WpfMap)sender;
             double currentScale = currentMap.CurrentScale;
-            var zoomLevels = currentMap.ZoomLevelSet.GetZoomLevels();
+            var zoomScales = currentMap.ZoomScales;
             foreach (ZoomLevelItemViewModel levelEntity in navigateGroup.ViewModel.CurrentZoomLevels)
             {
-                if (levelEntity.ScaleIndex < zoomLevels.Count)
+                if (levelEntity.ScaleIndex < zoomScales.Count)
                 {
-                    //if (Math.Abs(zoomLevels[levelEntity.ScaleIndex].Scale - currentScale) < 1) levelEntity.IsChecked = true;
-                    if (!(zoomLevels[levelEntity.ScaleIndex] is PreciseZoomLevel) && zoomLevels[levelEntity.ScaleIndex].Scale == currentScale) levelEntity.IsChecked = true;
-                    else levelEntity.IsChecked = false;
+                    var scale = zoomScales[levelEntity.ScaleIndex];
+                    levelEntity.IsChecked = Math.Abs(scale - currentScale) < 1;
                 }
             }
         }
@@ -788,27 +789,27 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
 
             var oldPanMode = extentOverlay.PanMode;
-            var oldLeftClickDragKey = extentOverlay.LeftClickDragKey;
+            var oldLeftClickDragKey = extentOverlay.TrackZoomInKey;
             var newCursor = GisEditorCursors.Normal;
             switch (e.NewSwitcherMode)
             {
                 case SwitcherMode.TrackZoom:
                     extentOverlay.PanMode = MapPanMode.Default;
-                    extentOverlay.LeftClickDragKey = System.Windows.Forms.Keys.None;
+                    extentOverlay.TrackZoomInKey = Key.None;
                     newCursor = GisEditorCursors.TrackZoom;
                     GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
                     break;
 
                 case SwitcherMode.Identify:
                     extentOverlay.PanMode = MapPanMode.Disabled;
-                    extentOverlay.LeftClickDragKey = System.Windows.Forms.Keys.ShiftKey;
+                    extentOverlay.TrackZoomInKey = Key.LeftShift;
                     newCursor = GisEditorCursors.Identify;
                     GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
                     break;
 
                 case SwitcherMode.None:
                     extentOverlay.PanMode = MapPanMode.Disabled;
-                    extentOverlay.LeftClickDragKey = System.Windows.Forms.Keys.None;
+                    extentOverlay.TrackZoomInKey = Key.None;
                     newCursor = GisEditorCursors.Normal;
                     GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = false;
                     break;
@@ -816,14 +817,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 case SwitcherMode.Pan:
                 default:
                     extentOverlay.PanMode = MapPanMode.Default;
-                    extentOverlay.LeftClickDragKey = System.Windows.Forms.Keys.ShiftKey;
+                    extentOverlay.TrackZoomInKey = Key.LeftShift;
                     GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
                     newCursor = GisEditorCursors.Pan;
                     break;
             }
 
             GisEditor.ActiveMap.Cursor = newCursor;
-            if (oldPanMode != extentOverlay.PanMode || oldLeftClickDragKey != extentOverlay.LeftClickDragKey)
+            if (oldPanMode != extentOverlay.PanMode || oldLeftClickDragKey != extentOverlay.TrackZoomInKey)
             {
                 GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.PanZoomSwitcherModeChangedDescription));
             }
@@ -934,8 +935,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void PanZoom_GlobeButtonClick(object sender, GlobeButtonClickPanZoomBarMapToolEventArgs e)
         {
+            var map = GisEditor.ActiveMap;
             Collection<RectangleShape> rectangles = new Collection<RectangleShape>();
-            foreach (var overlay in GisEditor.ActiveMap.Overlays)
+            foreach (var overlay in map.Overlays)
             {
                 if (overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay)
                 {
@@ -947,18 +949,27 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     rectangles.Add(rectangleShape);
                 }
             }
+            RectangleShape targetExtent;
             if (rectangles.Count > 0)
             {
-                e.NewExtent = ExtentHelper.GetBoundingBoxOfItems(rectangles);
+                targetExtent = MapUtil.GetBoundingBoxOfItems(rectangles);
             }
             else
             {
-                Overlay baseOverlay = GisEditor.ActiveMap.Overlays.FirstOrDefault(overlay => overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay);
-                if (baseOverlay != null)
-                    e.NewExtent = baseOverlay.GetBoundingBox();
-                else
-                    e.NewExtent = GisEditor.ActiveMap.MaxExtent;
+                Overlay baseOverlay = map.Overlays.FirstOrDefault(overlay => overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay);
+                targetExtent = baseOverlay != null ? baseOverlay.GetBoundingBox() : map.GetMaxExtent();
             }
+
+            if (targetExtent == null)
+            {
+                return;
+            }
+
+            var width = Math.Max(map.ActualWidth, 1);
+            var height = Math.Max(map.ActualHeight, 1);
+            e.GlobeCenterPoint = targetExtent.GetCenterPoint();
+            e.GlobeScale = MapUtil.GetScale(map.MapUnit, targetExtent, width, height, 96f);
+            e.GlobeRotationAngle = 0;
         }
 
         private void IdentifyInteractiveOverlay_MapMouseUp(object sender, MapMouseUpInteractiveOverlayEventArgs e)
@@ -1021,7 +1032,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
                 }
 
-                GisEditor.ActiveMap.SelectionOverlay.Refresh();
+                GisEditor.ActiveMap.SelectionOverlay.RefreshAsync();
             }
         }
 
@@ -1032,7 +1043,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (isHighPriorityMouseOperation)
             {
                 isHighPriorityMouseOperation = false;
-                GisEditor.ActiveMap.Refresh(GisEditor.ActiveMap.InteractiveOverlays);
+                    GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -1052,7 +1063,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     if (result.NewCurrentExtent != null)
                     {
                         currentMap.CurrentExtent = result.NewCurrentExtent;
-                        currentMap.Refresh();
+                        currentMap.RefreshAsync();
                     }
                 }
             }
@@ -1074,11 +1085,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                 else
                 {
-                    double currentResolution = GisEditor.ActiveMap.CurrentResolution;
                     double offsetScreenX = currentPosition.X - originPosition.X;
                     double offsetScreenY = currentPosition.Y - originPosition.Y;
-
-                    GisEditor.ActiveMap.Pan(-offsetScreenX, offsetScreenY);
+                    var mapExtent = GisEditor.ActiveMap.CurrentExtent;
+                    var originWorld = MapUtil.ToWorldCoordinate(mapExtent, 0, 0, (float)GisEditor.ActiveMap.ActualWidth, (float)GisEditor.ActiveMap.ActualHeight);
+                    var offsetWorld = MapUtil.ToWorldCoordinate(mapExtent, (float)offsetScreenX, (float)offsetScreenY, (float)GisEditor.ActiveMap.ActualWidth, (float)GisEditor.ActiveMap.ActualHeight);
+                    var deltaX = originWorld.X - offsetWorld.X;
+                    var deltaY = originWorld.Y - offsetWorld.Y;
+                    mapExtent.TranslateByOffset(deltaX, deltaY);
+                    GisEditor.ActiveMap.CurrentExtent = mapExtent;
+                    GisEditor.ActiveMap.RefreshAsync();
                     GisEditor.ActiveMap.Cursor = GisEditorCursors.Grab;
                     originPosition = currentPosition;
                     e.Handled = true;
@@ -1124,3 +1140,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         #endregion drag events
     }
 }
+
+
+
+
+

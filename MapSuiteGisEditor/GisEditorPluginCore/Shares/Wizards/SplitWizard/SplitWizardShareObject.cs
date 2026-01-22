@@ -27,9 +27,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -252,7 +252,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (featureSource.IsOpen)
             {
                 featureSource.Close();
-                if (featureSource.Projection != null) featureSource.Projection.Close();
             }
 
             Dictionary<string, string> exportConfigs = new Dictionary<string, string>();
@@ -355,9 +354,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         lock (layer)
                         {
                             layer.Close();
-                            if (layer.FeatureSource.Projection != null)
+                            if (layer.FeatureSource.ProjectionConverter != null)
                             {
-                                layer.FeatureSource.Projection.Close();
+                                layer.FeatureSource.ProjectionConverter.Close();
                             }
                         }
                         if (!OverlaysToRefresh.Contains(overlay))
@@ -410,7 +409,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     if (tmpShapeFileFeatureLayer != null)
                     {
                         string dbfPath = Path.ChangeExtension(tmpShapeFileFeatureLayer.ShapePathFilename, ".dbf");
-                        GeoDbf geoDbf = new GeoDbf(dbfPath, GeoFileReadWriteMode.Read, tmpShapeFileFeatureLayer.Encoding);
+                        GeoDbf geoDbf = new GeoDbf(dbfPath, FileAccess.Read, tmpShapeFileFeatureLayer.Encoding);
                         geoDbf.Open();
 
                         for (int i = 1; i <= geoDbf.RecordCount; i++)

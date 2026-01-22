@@ -19,11 +19,12 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -120,15 +121,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 FilterStyle filterStyle = (FilterStyle)layerListItem.ConcreteObject;
                 foreach (var condition in filterStyle.Conditions)
                 {
-                    resultFeatures = condition.GetMatchingFeatures(resultFeatures);
+                    resultFeatures = new Collection<Feature>(condition.GetMatchingFeatures(resultFeatures).ToList());
                 }
                 if (resultFeatures.Count > 0)
                 {
-                    RectangleShape boundingBox = ExtentHelper.GetBoundingBoxOfItems(resultFeatures);
+                    RectangleShape boundingBox = MapUtil.GetBoundingBoxOfItems(resultFeatures);
                     GisEditor.ActiveMap.CurrentExtent = boundingBox;
-                    GisEditor.ActiveMap.Refresh();
+                    GisEditor.ActiveMap.RefreshAsync();
                 }
             }
         }
     }
 }
+

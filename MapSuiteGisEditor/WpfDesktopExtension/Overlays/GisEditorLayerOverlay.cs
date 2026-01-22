@@ -63,6 +63,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             DrawingQuality = DrawingQuality.HighQuality;
         }
 
+        // Legacy property kept for GIS Editor compatibility.
+        public LockLayerMode LockLayerMode { get; set; }
+
         private void GisEditorLayerOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
         {
             e.Cancel = true;
@@ -81,7 +84,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         /// <summary>
         /// Requests a refresh using a short debounce so multiple rapid refresh requests collapse into a single draw.
         /// </summary>
-        public new void Refresh()
+        public void Refresh()
         {
             RequestDelayedRefresh();
         }
@@ -89,7 +92,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         /// <summary>
         /// Requests a refresh asynchronously using a short debounce so multiple rapid refresh requests collapse into a single draw.
         /// </summary>
-        public new Task RefreshAsync()
+        public Task RefreshAsync()
         {
             RequestDelayedRefresh();
             return Task.CompletedTask;

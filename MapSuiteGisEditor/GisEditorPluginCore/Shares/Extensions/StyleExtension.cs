@@ -22,8 +22,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Styles;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -46,17 +47,21 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static IconTextStyle EditStyles(this StylePluginManager styleManager, StyleBuilderArguments styleArguments, IconTextStyle textStyle)
         {
-            TextStyle resultTextStyle = EditStyles<TextStyle>(styleManager, styleArguments, textStyle, s => s.CustomTextStyles);
-            if (resultTextStyle == null) return null;
+            CompositeStyle compositeStyle = new CompositeStyle { Name = textStyle.Name };
+            compositeStyle.Styles.Add(textStyle);
 
-            IconTextStyle iconTextStyle = new IconTextStyle();
-            iconTextStyle.Name = resultTextStyle.Name;
-            foreach (var tmpStyle in resultTextStyle.CustomTextStyles)
+            styleArguments.StyleToEdit = compositeStyle;
+            var result = styleManager.EditStyle(styleArguments);
+            if (result.Canceled) return null;
+
+            var edited = compositeStyle.Styles.OfType<IconTextStyle>().FirstOrDefault();
+            if (edited == null)
             {
-                iconTextStyle.CustomTextStyles.Add(tmpStyle);
+                edited = new IconTextStyle();
             }
 
-            return iconTextStyle;
+            edited.Name = compositeStyle.Name;
+            return edited;
         }
 
         private static T EditStyles<T>(StylePluginManager styleManager, StyleBuilderArguments styleArguments, T editingStyle, Func<T, Collection<T>> fetchInnerStyles) where T : Style, new()
@@ -118,9 +123,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             if (areaStyle != null)
             {
-                isStyleValid &= (!areaStyle.FillSolidBrush.Color.IsTransparent
-                    || !areaStyle.OutlinePen.Color.IsTransparent
-                    || areaStyle.Advanced.FillCustomBrush != null);
+                var fillBrush = areaStyle.FillBrush;
+                var solidBrush = fillBrush as GeoSolidBrush;
+                bool hasFill = fillBrush != null && !(solidBrush != null && solidBrush.Color.IsTransparent);
+                bool hasOutline = areaStyle.OutlinePen != null && !areaStyle.OutlinePen.Color.IsTransparent;
+
+                isStyleValid &= (hasFill || hasOutline);
             }
             else if (lineStyle != null)
             {
@@ -130,23 +138,27 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else if (pointStyle != null)
             {
+                var fillBrush = pointStyle.FillBrush;
+                var solidBrush = fillBrush as GeoSolidBrush;
+                bool hasFill = fillBrush != null && !(solidBrush != null && solidBrush.Color.IsTransparent);
+                bool hasOutline = pointStyle.OutlinePen != null && !pointStyle.OutlinePen.Color.IsTransparent;
+
                 switch (pointStyle.PointType)
                 {
                     case PointType.Symbol:
-                        isStyleValid &= (!pointStyle.SymbolPen.Color.IsTransparent
+                        isStyleValid &= (hasOutline
                             || pointStyle.Image != null
-                            || !pointStyle.SymbolSolidBrush.Color.IsTransparent
-                            || pointStyle.Advanced.CustomBrush != null);
+                            || hasFill);
                         break;
 
-                    case PointType.Bitmap:
+                    case PointType.Image:
                         isStyleValid &= pointStyle.Image != null;
                         break;
 
-                    case PointType.Character:
-                        isStyleValid &= pointStyle.CharacterFont != null
-                            && (!pointStyle.CharacterSolidBrush.Color.IsTransparent
-                            || pointStyle.Advanced.CustomBrush != null);
+                    case PointType.Glyph:
+                        isStyleValid &= pointStyle.GlyphFont != null
+                            && !string.IsNullOrEmpty(pointStyle.GlyphContent)
+                            && hasFill;
                         break;
                     default:
                         break;
@@ -154,10 +166,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else if (textStyle != null)
             {
+                var textBrush = textStyle.TextBrush;
+                var solidBrush = textBrush as GeoSolidBrush;
+                bool hasText = textBrush != null && !(solidBrush != null && solidBrush.Color.IsTransparent);
+                bool hasHalo = textStyle.HaloPen != null && !textStyle.HaloPen.Color.IsTransparent;
+
                 isStyleValid &= !string.IsNullOrEmpty(textStyle.TextColumnName)
-                    && (!textStyle.HaloPen.Color.IsTransparent
-                    || !textStyle.TextSolidBrush.Color.IsTransparent
-                    || textStyle.Advanced.TextCustomBrush != null);
+                    && (hasHalo || hasText);
             }
             else if (dotDensityStyle != null)
             {

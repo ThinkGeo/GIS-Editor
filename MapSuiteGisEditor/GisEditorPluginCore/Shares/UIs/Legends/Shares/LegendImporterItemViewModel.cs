@@ -33,7 +33,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private int level;
         private Visibility checkBoxVisibility = Visibility.Collapsed;
         private int leftPaddingLevel;
-        private Styles.Style style;
+        private ThinkGeo.Core.Style style;
         private bool allowToAdd;
 
         public LegendImporterItemViewModel()
@@ -134,7 +134,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        public Styles.Style Style
+        public ThinkGeo.Core.Style Style
         {
             get
             {
@@ -173,3 +173,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

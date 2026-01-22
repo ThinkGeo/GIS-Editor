@@ -20,7 +20,7 @@
 using System;
 using System.IO;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -37,19 +37,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             LargeIcon = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/dataformats_mrsid.png", UriKind.RelativeOrAbsolute));
             Index = LayerPluginOrder.MrSidRasterFileLayerPlugin;
 
-            DataSourceResolveToolCore = new FileDataSourceResolveTool<MrSidRasterLayer>(ExtensionFilter,
-                l => l.PathFilename,
-                (l, newPathFilename) => l.PathFilename = newPathFilename);
+            DataSourceResolveToolCore = new FileDataSourceResolveTool<MrSidGdalRasterLayer>(ExtensionFilter,
+                l => l.ImagePath,
+                (l, newPathFilename) => l.ImagePath = newPathFilename);
         }
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(MrSidRasterLayer);
+            return typeof(MrSidGdalRasterLayer);
         }
 
         protected override Uri GetUriCore(Layer layer)
         {
-            return new Uri(layer.Cast<MrSidRasterLayer>().PathFilename);
+            return new Uri(layer.Cast<MrSidGdalRasterLayer>().ImagePath);
         }
 
         [Obsolete("This method is obsoleted, please call DataSourceResolver.IsDataSourceAvailable(Layer) instead.")]
@@ -66,7 +66,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override RasterLayer GetRasterLayer(Uri uri)
         {
-            RasterLayer layer = new MrSidRasterLayer(uri.LocalPath);
+            RasterLayer layer = new MrSidGdalRasterLayer(uri.LocalPath);
 
             //layer.SafeProcess(() =>
             //{

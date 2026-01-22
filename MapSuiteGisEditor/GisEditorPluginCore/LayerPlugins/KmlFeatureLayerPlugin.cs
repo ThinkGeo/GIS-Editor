@@ -21,7 +21,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -37,20 +37,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             ExtensionFilterCore = "Kml File(s) *.kml|*.kml";
             Index = LayerPluginOrder.KMLFeatureLayerPlugin;
 
-            DataSourceResolveToolCore = new FileDataSourceResolveTool<KmlFeatureLayer>(ExtensionFilter,
-                l => l.KmlPathFilename,
-                (l, newPathFilename) => l.KmlPathFilename = newPathFilename);
+            DataSourceResolveToolCore = new FileDataSourceResolveTool<KmlGdalFeatureLayer>(ExtensionFilter,
+                l => l.PathName,
+                (l, newPathFilename) => l.PathName = newPathFilename);
 
         }
 
         protected override Uri GetUriCore(Layer layer)
         {
-            return new Uri(layer.Cast<KmlFeatureLayer>().KmlPathFilename);
+            return new Uri(layer.Cast<KmlGdalFeatureLayer>().PathName);
         }
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(KmlFeatureLayer);
+            return typeof(KmlGdalFeatureLayer);
         }
 
         protected override void OnGottenLayers(GottenLayersLayerPluginEventArgs e)
@@ -76,7 +76,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Collection<Layer> resultLayers = base.GetLayersCore(getLayersParameters);
             foreach (var fileName in getLayersParameters.LayerUris.Select(u => u.LocalPath))
             {
-                KmlFeatureLayer layer = new KmlFeatureLayer(fileName);
+                KmlGdalFeatureLayer layer = new KmlGdalFeatureLayer(fileName);
                 layer.Name = Path.GetFileNameWithoutExtension(fileName);
                 resultLayers.Add(layer);
             }

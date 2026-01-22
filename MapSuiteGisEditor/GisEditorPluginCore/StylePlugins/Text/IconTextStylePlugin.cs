@@ -19,8 +19,8 @@
 
 using System;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -47,7 +47,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var textStyle = new IconTextStyle()
             {
                 Font = new GeoFont("Arial", 9),
-                TextSolidBrush = new GeoSolidBrush(GeoColor.SimpleColors.Black),
+                TextBrush = new GeoSolidBrush(GeoColors.Black),
                 XOffsetInPixel = 0,
                 YOffsetInPixel = 0,
                 RotationAngle = 0,
@@ -61,7 +61,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 LabelAllPolygonParts = true,
                 TextLineSegmentRatio = 1.5,
                 IconImageScale = 1,
-                MaskMargin = 3,
+                MaskMargin = new DrawingMargin(3, 3, 3, 3),
                 PolygonLabelingLocationMode = PolygonLabelingLocationMode.BoundingBoxCenter
             };
 

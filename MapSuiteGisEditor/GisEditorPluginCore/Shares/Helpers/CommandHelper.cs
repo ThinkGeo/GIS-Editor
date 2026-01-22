@@ -31,11 +31,10 @@ using Microsoft.Win32;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using System.Windows.Documents;
 using System.Diagnostics;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -220,7 +219,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         GisEditor.ActiveMap.Overlays.Clear();
                         GisEditor.ActiveMap.ActiveLayer = null;
                         GisEditor.ActiveMap.ActiveOverlay = null;
-                        GisEditor.ActiveMap.Refresh();
+                        GisEditor.ActiveMap.RefreshAsync();
                         GisEditor.UIManager.RefreshPlugins();
                     }, () => CheckMapIsNotNull() && GisEditor.ActiveMap.Overlays.Count > 0);
                 }
@@ -303,7 +302,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             styleArguments.StyleToEdit = componentStyle;
                             styleArguments.FeatureLayer = featureLayer;
                             styleArguments.FromZoomLevelIndex = 1;
-                            styleArguments.ToZoomLevelIndex = GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels().Count;
+                            styleArguments.ToZoomLevelIndex = GisEditor.ActiveMap?.ZoomScales?.Count ?? 0;
                             styleArguments.AppliedCallback = new Action<StyleBuilderResult>((styleResult) =>
                             {
                                 if (!styleResult.Canceled)
@@ -387,7 +386,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         {
                             File.SetAttributes(dbfPath, FileAttributes.Normal);
 
-                            using (GeoDbf geoDbf = new GeoDbf(dbfPath, GeoFileReadWriteMode.ReadWrite))
+                            using (GeoDbf geoDbf = new GeoDbf(dbfPath, FileAccess.ReadWrite))
                             {
                                 geoDbf.Open();
                                 int columnNumber = -1;
@@ -525,7 +524,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         double right = double.MinValue;
                         double top = double.MinValue;
                         double bottom = double.MaxValue;
-                        RectangleShape fullExtent = GisEditor.ActiveMap.MaxExtent;
+                        RectangleShape fullExtent = GisEditor.ActiveMap.GetMaxExtent();
 
                         foreach (Overlay overlay in GisEditor.ActiveMap.Overlays)
                         {
@@ -555,7 +554,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         }
 
                         GisEditor.ActiveMap.CurrentExtent = fullExtent;
-                        GisEditor.ActiveMap.Refresh();
+                        GisEditor.ActiveMap.RefreshAsync();
                     }, CheckMapIsNotNull);
                 }
                 return zoomToFullExtentCommand;
@@ -570,9 +569,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     zoomToSelectFeaturesCommand = new ObservedCommand(() =>
                     {
-                        RectangleShape extent = ExtentHelper.GetBoundingBoxOfItems(GisEditor.SelectionManager.GetSelectionOverlay().HighlightFeatureLayer.InternalFeatures);
+                        RectangleShape extent = MapUtil.GetBoundingBoxOfItems(GisEditor.SelectionManager.GetSelectionOverlay().HighlightFeatureLayer.InternalFeatures);
                         GisEditor.ActiveMap.CurrentExtent = extent;
-                        GisEditor.ActiveMap.Refresh();
+                        GisEditor.ActiveMap.RefreshAsync();
                     }, () => GisEditor.SelectionManager.GetSelectionOverlay() != null && GisEditor.SelectionManager.GetSelectionOverlay().HighlightFeatureLayer.InternalFeatures.Count > 0);
                 }
                 return zoomToSelectFeaturesCommand;
@@ -729,10 +728,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     {
                         LayerOverlay emptyLayerOverlay = new GisEditorLayerOverlay
                         {
-                            LockLayerMode = LockLayerMode.Lock,
+                            LockLayerMode = ThinkGeo.MapSuite.WpfDesktop.Extension.LockLayerMode.Lock,
                             Name = GetLayerOverlayName(),
                             TileBuffer = 1,
-                            TileType = TileType.HybridTile,
+                            TileType = TileType.PreloadDataMultiTile,
                             DrawingExceptionMode = DrawingExceptionMode.DrawException,
                             TileWidth = Singleton<ContentSetting>.Instance.TileSize,
                             TileHeight = Singleton<ContentSetting>.Instance.TileSize,
@@ -751,7 +750,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             }
                             else GisEditor.ActiveMap.Overlays.Add(emptyLayerOverlay);
                             GisEditor.ActiveMap.ActiveOverlay = emptyLayerOverlay;
-                            GisEditor.ActiveMap.Refresh(emptyLayerOverlay);
+                            GisEditor.ActiveMap.RefreshAsync(emptyLayerOverlay);
                             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(GisEditor.ActiveMap, RefreshArgsDescription.AddLayerGroupCommandDescription));
                         }
                     }, CommandHelper.CheckMapIsNotNull);
@@ -884,14 +883,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void ChangeAllLayersZoomLevelSet(GisEditorWpfMap map, IEnumerable<ZoomLevel> zoomLevels)
         {
-            var zoomLevelSet = new ZoomLevelSet();
-            map.ZoomLevelSet.CustomZoomLevels.Clear();
+            map.ZoomScales.Clear();
             foreach (var item in zoomLevels)
             {
-                zoomLevelSet.CustomZoomLevels.Add(item);
+                map.ZoomScales.Add(item.Scale);
             }
-            map.ZoomLevelSet = zoomLevelSet;
-            map.MinimumScale = map.ZoomLevelSet.CustomZoomLevels.LastOrDefault().Scale;
+            map.MinimumScale = map.ZoomScales.LastOrDefault();
             var allFeatureLayers = map.GetFeatureLayers();
             foreach (var featureLayer in allFeatureLayers)
             {
@@ -927,7 +924,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (layerOverlay.MapArguments != null)
                 {
-                    // layerOverlay.Refresh();
+                    // layerOverlay.RefreshAsync();
                     layerOverlay.RefreshWithBufferSettings();
                 }
             }
@@ -947,7 +944,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (panZoomBar != null) panZoomBar.OnApplyTemplate();
             }
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(GisEditor.DockWindowManager.DocumentWindows, RefreshArgsDescription.ApplyNewZoomLevelSetDescription));
-            GisEditor.ActiveMap.Refresh();
+            GisEditor.ActiveMap.RefreshAsync();
         }
 
         private static void SetLayersVisible(bool isVisible)
@@ -962,3 +959,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+
+
+
+

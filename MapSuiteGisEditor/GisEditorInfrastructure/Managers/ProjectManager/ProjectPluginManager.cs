@@ -809,7 +809,7 @@ namespace ThinkGeo.MapSuite.GisEditor
         /// </summary>
         protected void CloseProjectCore()
         {
-            ResetProjectState();
+            var _ = ResetProjectState();
             CleanTempFiles();
 
             savePassword = string.Empty;
@@ -1852,7 +1852,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
                 string mapFileName = Path.Combine(tempProjectFolder, String.Format(CultureInfo.InvariantCulture, @"{0}.tgmap", wpfMap.Name));
                 SaveDocumentState(documentsElement, fileName, item);
-                SaveMapState(item, mapFileName);
+                var _ = SaveMapState(item, mapFileName);
                 CollectDataPathFileNames(currentDataPathFileNames, wpfMap);
             }
 

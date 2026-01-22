@@ -20,9 +20,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
+using ThinkGeo.Core;
+
+
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -58,9 +58,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             GisEditor.LayerManager.FeatureIdColumnNames[noaaWeatherStationFeatureLayer.FeatureSource.Id] = "StationId";
 
             CompositeStyle compositeStyle = new CompositeStyle(new NoaaWeatherStationStyle());
-            foreach (ZoomLevel zoomLevel in GisEditor.ActiveMap.ZoomLevelSet.GetZoomLevels())
+            foreach (var scale in GisEditor.ActiveMap.ZoomScales)
             {
-                ZoomLevel newZoomLevel = new ZoomLevel(zoomLevel.Scale);
+                ZoomLevel newZoomLevel = new ZoomLevel(scale);
                 newZoomLevel.CustomStyles.Add(compositeStyle);
                 noaaWeatherStationFeatureLayer.ZoomLevelSet.CustomZoomLevels.Add(newZoomLevel);
             }
@@ -70,7 +70,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override string GetInternalProj4ProjectionParametersCore(FeatureLayer featureLayer)
         {
-            return Proj4Projection.GetDecimalDegreesParametersString();
+            return Projection.GetDecimalDegreesProjString();
         }
 
         protected override SimpleShapeType GetFeatureSimpleShapeTypeCore(FeatureLayer featureLayer)

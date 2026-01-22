@@ -173,7 +173,10 @@ namespace ThinkGeo.MapSuite.GisEditor
                         }
                     }
                 }
-                if (needRefresh) GisEditor.UIManager.InvokeRefreshPlugins(new RefreshArgs(selectedItem, RefreshArgsDescriptions.MoveItemDescription));
+                if (needRefresh)
+                {
+                    GisEditor.UIManager.InvokeRefreshPlugins(new RefreshArgs(selectedItem, RefreshArgsDescriptions.MoveItemDescription));
+                }
             }
         }
 

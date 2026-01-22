@@ -28,7 +28,7 @@ using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Command;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

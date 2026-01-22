@@ -19,9 +19,9 @@
 
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -48,7 +48,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         extents.Add(tmpOverlay.GetBoundingBox());
                     }
                 }
-                resultExtent = ExtentHelper.GetBoundingBoxOfItems(extents);
+                resultExtent = MapUtil.GetBoundingBoxOfItems(extents);
             }
             else if (GisEditor.LayerListManager.SelectedLayerListItems.Count > 0)
             {
@@ -64,7 +64,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         });
                     }
                 }
-                resultExtent = ExtentHelper.GetBoundingBoxOfItems(extents);
+                resultExtent = MapUtil.GetBoundingBoxOfItems(extents);
             }
             else if (GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject is Overlay)
             {
@@ -85,8 +85,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (resultExtent != null)
             {
                 GisEditor.ActiveMap.CurrentExtent = resultExtent;
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
     }
 }
+

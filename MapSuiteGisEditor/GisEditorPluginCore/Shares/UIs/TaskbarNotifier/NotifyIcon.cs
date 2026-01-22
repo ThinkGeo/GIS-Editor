@@ -39,10 +39,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     {
         #region Events
 
-        public static readonly RoutedEvent MouseDownEvent = EventManager.RegisterRoutedEvent(
+        public new static readonly RoutedEvent MouseDownEvent = EventManager.RegisterRoutedEvent(
             "MouseDown", RoutingStrategy.Bubble, typeof(MouseButtonEventHandler), typeof(NotifyIcon));
 
-        public static readonly RoutedEvent MouseUpEvent = EventManager.RegisterRoutedEvent(
+        public new static readonly RoutedEvent MouseUpEvent = EventManager.RegisterRoutedEvent(
             "MouseUp", RoutingStrategy.Bubble, typeof(MouseButtonEventHandler), typeof(NotifyIcon));
 
         public static readonly RoutedEvent MouseClickEvent = EventManager.RegisterRoutedEvent(
@@ -221,13 +221,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             remove { RemoveHandler(MouseDoubleClickEvent, value); }
         }
 
-        public event MouseButtonEventHandler MouseDown
+        public new event MouseButtonEventHandler MouseDown
         {
             add { AddHandler(MouseDownEvent, value); }
             remove { RemoveHandler(MouseDownEvent, value); }
         }
 
-        public event MouseButtonEventHandler MouseUp
+        public new event MouseButtonEventHandler MouseUp
         {
             add { AddHandler(MouseUpEvent, value); }
             remove { RemoveHandler(MouseUpEvent, value); }

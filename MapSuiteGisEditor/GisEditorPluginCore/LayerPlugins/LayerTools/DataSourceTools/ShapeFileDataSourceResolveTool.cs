@@ -20,7 +20,7 @@
 using Microsoft.Win32;
 using System.IO;
 using System.Windows;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -35,7 +35,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get { return true; }
         }
 
-        protected override bool IsDataSourceAvailableCore(Layer layer)
+        protected override bool IsDataSourceAvailableCore(LayerBase layer)
         {
             ShapeFileFeatureLayer shapeFileLayer = layer as ShapeFileFeatureLayer;
             bool isDataSourceAvailable = true;

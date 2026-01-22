@@ -29,11 +29,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ThinkGeo.MapSuite.Drawing;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -77,18 +76,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             spatialQueryModeEntities = InitSpatialQueryModeEntities();
             layers = new ObservableCollection<CheckableItemViewModel<FeatureLayer>>();
 
-            AreaStyle selectionAreaStyle = new AreaStyle(new GeoPen(GeoColor.StandardColors.Yellow, 3));
+            AreaStyle selectionAreaStyle = new AreaStyle(new GeoPen(GeoColors.Yellow, 3));
             selectionAreaStyle.Name = "Selected Area Style";
-            LineStyle selectionLineStyle = new LineStyle(new GeoPen(GeoColor.StandardColors.Yellow, 5));
+            LineStyle selectionLineStyle = new LineStyle(new GeoPen(GeoColors.Yellow, 5));
             selectionLineStyle.Name = "Selected Line Style";
             PointStyle selectionPointStyle = new PointStyle();
             selectionPointStyle.Name = "Selected Point Style";
-            selectionPointStyle.SymbolPen = new GeoPen(GeoColor.StandardColors.Yellow, 3);
+            selectionPointStyle.OutlinePen = new GeoPen(GeoColors.Yellow, 3);
             IconTextStyle selectionTextStyle = new IconTextStyle();
             selectionTextStyle.TextColumnName = SelectionUIPlugin.FeatureIdColumnName;
-            selectionTextStyle.TextSolidBrush = new GeoSolidBrush(GeoColor.StandardColors.Yellow);
+            selectionTextStyle.TextBrush = new GeoSolidBrush(GeoColors.Yellow);
             selectionTextStyle.Font = new GeoFont("Arial", 7, DrawingFontStyles.Regular);
-            selectionTextStyle.CustomTextStyles.Add(new TextStyle(SelectionUIPlugin.FeatureIdColumnName, new GeoFont("Arial", 7, DrawingFontStyles.Regular), new GeoSolidBrush(GeoColor.StandardColors.Yellow)));
             selectionTextStyle.Name = "Selected Text Style";
 
             selectionCompositeStyle = new CompositeStyle();
@@ -225,14 +223,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             styleArguments.AppliedCallback = (result) =>
                             {
                                 SelectionCompositeStyle = result.CompositeStyle;
-                                this.SelectionOverlay.Refresh();
+                                this.SelectionOverlay.RefreshAsync();
                             };
 
                             var resultStyle = GisEditor.StyleManager.EditStyle(styleArguments);
                             if (resultStyle != null && resultStyle.CompositeStyle != null)
                             {
                                 SelectionCompositeStyle = resultStyle.CompositeStyle;
-                                this.SelectionOverlay.Refresh();
+                                this.SelectionOverlay.RefreshAsync();
                             }
                         }
                     }, () => GisEditor.ActiveMap != null);
@@ -557,11 +555,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return spatialQueryModeEntities;
         }
 
-        private void UpdateStyleSelectionPreview(Styles.Style style)
+        private void UpdateStyleSelectionPreview(ThinkGeo.Core.Style style)
         {
             Task.Factory.StartNew(obj =>
             {
-                var targetStyle = (Styles.Style)obj;
+                var targetStyle = (ThinkGeo.Core.Style)obj;
                 var imageBuffer = StyleHelper.GetImageBufferFromStyle(targetStyle);
                 if (Application.Current != null)
                 {
@@ -638,3 +636,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+
+
+

@@ -25,7 +25,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using System.Collections.Generic;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {

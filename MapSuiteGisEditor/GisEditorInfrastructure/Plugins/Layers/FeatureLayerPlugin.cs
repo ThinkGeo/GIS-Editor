@@ -30,8 +30,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using ThinkGeo.Core;
-using ThinkGeo.Core;
-using ThinkGeo.Core;
 
 
 using ThinkGeo.UI.Wpf;
@@ -1123,11 +1121,11 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 if (layerListItem.ConcreteObject is FeatureLayer && editOverlay.EditTargetLayer == layerListItem.ConcreteObject)
                 {
-                    ClearEditOverlay(editOverlay);
+                    var _ = ClearEditOverlay(editOverlay);
                 }
                 else if (layerListItem.ConcreteObject is LayerOverlay && ((LayerOverlay)layerListItem.ConcreteObject).Layers.Contains((Layer)editOverlay.EditTargetLayer))
                 {
-                    ClearEditOverlay(editOverlay);
+                    var _ = ClearEditOverlay(editOverlay);
                 }
             }
 

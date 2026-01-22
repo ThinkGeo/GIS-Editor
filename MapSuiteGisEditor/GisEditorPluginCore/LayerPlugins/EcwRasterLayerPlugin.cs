@@ -20,7 +20,7 @@
 using System;
 using System.IO;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -38,19 +38,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             LargeIcon = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/dataformats_ecw.png", UriKind.RelativeOrAbsolute));
             Index = LayerPluginOrder.EcwRasterFileLayerPlugin;
 
-            DataSourceResolveToolCore = new FileDataSourceResolveTool<EcwRasterLayer>(ExtensionFilter,
-                l => l.PathFilename,
-                (l, newPathFilename) => l.PathFilename = newPathFilename);
+            DataSourceResolveToolCore = new FileDataSourceResolveTool<EcwGdalRasterLayer>(ExtensionFilter,
+                l => l.ImagePath,
+                (l, newPathFilename) => l.ImagePath = newPathFilename);
         }
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(EcwRasterLayer);
+            return typeof(EcwGdalRasterLayer);
         }
 
         protected override Uri GetUriCore(Layer layer)
         {
-            return new Uri(layer.Cast<EcwRasterLayer>().PathFilename);
+            return new Uri(layer.Cast<EcwGdalRasterLayer>().ImagePath);
         }
 
         [Obsolete("This method is obsoleted, please call DataSourceResolver.IsDataSourceAvailable(Layer) instead.")]
@@ -67,8 +67,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override RasterLayer GetRasterLayer(Uri uri)
         {
-            EcwRasterLayer layer = null;
-            layer = new EcwRasterLayer(uri.LocalPath);
+            EcwGdalRasterLayer layer = null;
+            layer = new EcwGdalRasterLayer(uri.LocalPath);
 
             return layer;
         }
@@ -84,14 +84,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //        string dirName = Path.GetDirectoryName(fileName);
         //        string worldFileName = Path.Combine(dirName, fileNameWithoutExtension + ".eww");
 
-        //        EcwRasterLayer layer = null;
+        //        EcwGdalRasterLayer layer = null;
         //        if (File.Exists(worldFileName))
         //        {
-        //            layer = new EcwRasterLayer(fileName, worldFileName);
+        //            layer = new EcwGdalRasterLayer(fileName, worldFileName);
         //        }
         //        else
         //        {
-        //            layer = new EcwRasterLayer(fileName);
+        //            layer = new EcwGdalRasterLayer(fileName);
         //        }
 
         //        layer.UpperThreshold = double.MaxValue;
@@ -107,7 +107,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //    }
 
         //    IEnumerable<RasterLayerInfo> rasterLayerInfos = resultLayers.Select(layer
-        //        => new RasterLayerInfo((EcwRasterLayer)layer, Path.ChangeExtension(((EcwRasterLayer)layer).PathFilename, ".prj")));
+        //        => new RasterLayerInfo((EcwGdalRasterLayer)layer, Path.ChangeExtension(((EcwGdalRasterLayer)layer).PathFilename, ".prj")));
 
         //    LayerPluginHelper.SetInternalProjectionForRasterLayers(rasterLayerInfos);
         //    return resultLayers;

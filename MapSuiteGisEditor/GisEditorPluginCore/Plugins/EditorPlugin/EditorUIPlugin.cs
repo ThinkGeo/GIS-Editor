@@ -29,9 +29,9 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using ThinkGeo.MapSuite.Layers;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Wpf;
+using ThinkGeo.Core;
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -285,7 +285,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     settings.ProjectSettings["CalculatedColumns"] = root.ToString();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return settings;
@@ -588,7 +588,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     editOverlay.EditShapesLayer.InternalFeatures.Add(feature);
                 }
                 editOverlay.TakeSnapshot();
-                editOverlay.Refresh();
+                editOverlay.RefreshAsync();
             }
         }
 
@@ -632,7 +632,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     GisEditor.ActiveMap.FeatureLayerEditOverlay.EditShapesLayer.InternalFeatures.Remove(tempfeature);
                     GisEditor.ActiveMap.FeatureLayerEditOverlay.EditShapesLayer.InternalFeatures.Add(tempfeature.Id, new Feature(areaShape, tempfeature.ColumnValues));
                     GisEditor.ActiveMap.FeatureLayerEditOverlay.TakeSnapshot();
-                    GisEditor.ActiveMap.FeatureLayerEditOverlay.Refresh();
+                    GisEditor.ActiveMap.FeatureLayerEditOverlay.RefreshAsync();
                 }
             }
         }
@@ -644,7 +644,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 editOverlay.AddVertex(cursorWorldPoint);
                 editOverlay.CalculateVertexControlPoints();
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -655,7 +655,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 editOverlay.RemoveVertex(cursorWorldPoint);
                 editOverlay.CalculateVertexControlPoints();
-                GisEditor.ActiveMap.Refresh();
+                GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -674,7 +674,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 editOverlay.ClearVertexControlPoints();
                 editOverlay.TakeSnapshot();
-                editOverlay.Refresh();
+                editOverlay.RefreshAsync();
             }
         }
 
@@ -696,7 +696,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (trackOverlay != null && trackOverlay.TrackMode != TrackMode.None && trackOverlay.TrackShapeLayer.InternalFeatures.Count > 0)
             {
                 trackOverlay.TrackShapeLayer.InternalFeatures.RemoveAt(trackOverlay.TrackShapeLayer.InternalFeatures.Count - 1);
-                trackOverlay.Refresh();
+                trackOverlay.RefreshAsync();
                 if (trackOverlay.TrackMode == TrackMode.Polygon ||
                     trackOverlay.TrackMode == TrackMode.Line)
                 {
@@ -797,3 +797,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

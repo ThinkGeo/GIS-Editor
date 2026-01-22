@@ -21,11 +21,13 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
-using ThinkGeo.MapSuite.Layers;
+using ThinkGeo.Core;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using KbCsv = Kent.Boogaart.KBCsv;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -38,18 +40,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (File.Exists(filePath))
             {
                 DataTable dataTable = new DataTable();
-                Kent.Boogaart.KBCsv.CsvReader csvReader = new Kent.Boogaart.KBCsv.CsvReader(filePath);
+                KbCsv.CsvReader csvReader = new KbCsv.CsvReader(filePath);
                 csvReader.ValueSeparator = customParameter[0];
-                foreach (string column in csvReader.ReadHeaderRecord().Values)
+                csvReader.ReadHeaderRecord();
+                var headerRecord = csvReader.HeaderRecord;
+                foreach (string column in (headerRecord != null ? headerRecord.Values : Enumerable.Empty<string>()))
                 {
                     dataTable.Columns.Add(column);
                 }
                 Collection<int> rowsNumber = new Collection<int>();
                 int i = 1;
-                foreach (Kent.Boogaart.KBCsv.DataRecord dt in csvReader.ReadDataRecords())
+                foreach (KbCsv.DataRecord dt in csvReader.ReadDataRecords())
                 {
                     DataRow dr = dataTable.NewRow();
-                    if (dt.Values.Count == dt.HeaderRecord.Values.Count)
+                    if (dt.HeaderRecord != null && dt.Values.Count == dt.HeaderRecord.Values.Count)
                     {
                         foreach (string column in dt.HeaderRecord.Values)
                         {

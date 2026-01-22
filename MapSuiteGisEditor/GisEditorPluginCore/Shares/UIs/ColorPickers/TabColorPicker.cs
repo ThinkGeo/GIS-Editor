@@ -33,13 +33,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using Microsoft.Win32;
-using ThinkGeo.MapSuite.Drawing;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
     public class TabColorPicker : Control
     {
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register("SelectedBrush", typeof(GeoBrush), typeof(TabColorPicker), new PropertyMetadata(new GeoSolidBrush(GeoColor.StandardColors.White), new PropertyChangedCallback(OnSelectedBrushPropertyChanged)));
+        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register("SelectedBrush", typeof(GeoBrush), typeof(TabColorPicker), new PropertyMetadata(new GeoSolidBrush(GeoColors.White), new PropertyChangedCallback(OnSelectedBrushPropertyChanged)));
 
         private static string accessDeniedPattern = "(?<=Access to the path ')(.|\n)+?(?=' is denied)";
         private static string accessDeniedMessageFormat = GisEditor.LanguageManager.GetStringResource("TabColorPickerDonotHavePermissionText") + Environment.NewLine + GisEditor.LanguageManager.GetStringResource("TabColorPickerRestartToFinishText");

@@ -580,19 +580,19 @@ namespace ThinkGeo.MapSuite.GisEditor
         }
 
         //http://stackoverflow.com/questions/974598/find-all-controls-in-wpf-window-by-type
-        public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
+        public static IEnumerable<TChild> FindLogicalChildren<TChild>(DependencyObject depObj) where TChild : DependencyObject
         {
             if (depObj != null)
             {
                 foreach (object obj in LogicalTreeHelper.GetChildren(depObj))
                 {
                     DependencyObject child = obj as DependencyObject;
-                    if (child != null && child is T)
+                    if (child != null && child is TChild)
                     {
-                        yield return (T)child;
+                        yield return (TChild)child;
                     }
                     if (child != null)
-                        foreach (T childOfChild in FindLogicalChildren<T>(child))
+                        foreach (TChild childOfChild in FindLogicalChildren<TChild>(child))
                         {
                             yield return childOfChild;
                         }

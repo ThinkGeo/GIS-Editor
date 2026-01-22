@@ -24,10 +24,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThinkGeo.MapSuite.Shapes;
-using ThinkGeo.MapSuite.Styles;
-using ThinkGeo.MapSuite.Wpf;
+
+
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -264,7 +265,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             if (!measureOverlay.IsVisible) measureOverlay.IsVisible = true;
                             measureOverlay.ShapeLayer.MapShapes.Clear();
                             measureOverlay.History.Clear();
-                            measureOverlay.Refresh();
+                            measureOverlay.RefreshAsync();
                             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.ClearCommandDescription));
                         }
                     }, () =>
@@ -445,3 +446,4 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
     }
 }
+

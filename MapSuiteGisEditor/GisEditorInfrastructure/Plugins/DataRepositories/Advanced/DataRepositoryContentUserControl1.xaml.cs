@@ -385,7 +385,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 foreach (MenuItem item in menuItems)
                 {
                     Button button = new Button();
-                    if (item.Header == GisEditor.LanguageManager.GetStringResource("DataRepositoryItemPlaceMapHeader") && placeOnMapCommand != null)
+                    if (string.Equals(item.Header as string, GisEditor.LanguageManager.GetStringResource("DataRepositoryItemPlaceMapHeader"), StringComparison.Ordinal) && placeOnMapCommand != null)
                     {
                         button.Command = placeOnMapCommand;
                     }
