@@ -20,10 +20,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -32,13 +34,13 @@ namespace ThinkGeo.MapSuite.GisEditor
     {
         private string searchPattern;
         private Collection<string> directories;
-        private Collection<DirectoryCatalog> directoryCatalogs;
+        private Collection<ComposablePartCatalog> catalogs;
 
         public MultiDirectoryCatalog(IEnumerable<string> directories, string searchPattern = "*.dll")
         {
             this.searchPattern = searchPattern;
             this.directories = new ObservableCollection<string>();
-            directoryCatalogs = new Collection<DirectoryCatalog>();
+            catalogs = new Collection<ComposablePartCatalog>();
 
             foreach (string directory in directories)
             {
@@ -51,10 +53,26 @@ namespace ThinkGeo.MapSuite.GisEditor
 
             foreach (var directory in directoriesToScan)
             {
-                if (Directory.Exists(directory) && Directory.GetFiles(directory, "*.dll").Length > 0)
+                if (!Directory.Exists(directory)) continue;
+
+                foreach (var file in Directory.GetFiles(directory, searchPattern))
                 {
-                    DirectoryCatalog catalog = new DirectoryCatalog(directory, searchPattern);
-                    directoryCatalogs.Add(catalog);
+                    if (!IsManagedAssembly(file)) continue;
+
+                    if (file.Contains("FileGDBAPI"))
+                        continue;
+                    try
+                    {
+                        catalogs.Add(new AssemblyCatalog(file));
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        // Skip native or incompatible assemblies.
+                    }
+                    catch (FileLoadException)
+                    {
+                        // Skip assemblies that cannot be loaded in this process.
+                    }
                 }
             }
         }
@@ -73,13 +91,30 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             get
             {
-                return directoryCatalogs.SelectMany(catalog => catalog.Parts).AsQueryable();
+                var parts = new List<ComposablePartDefinition>();
+                foreach (var catalog in catalogs)
+                {
+                    try
+                    {
+                        parts.AddRange(catalog.Parts);
+                    }
+                    catch (ReflectionTypeLoadException)
+                    {
+                        // Skip catalogs that fail to load due to missing dependencies or bitness.
+                    }
+                    catch (CompositionException)
+                    {
+                        // Skip catalogs that cannot be composed.
+                    }
+                }
+
+                return parts.AsQueryable();
             }
         }
 
         public void Refresh()
         {
-            foreach (DirectoryCatalog catalog in directoryCatalogs)
+            foreach (var catalog in catalogs.OfType<DirectoryCatalog>())
             {
                 catalog.Refresh();
             }
@@ -89,12 +124,25 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             if (disposing)
             {
-                foreach (DirectoryCatalog catalog in directoryCatalogs)
+                foreach (var catalog in catalogs)
                 {
                     catalog.Dispose();
                 }
 
                 base.Dispose(disposing);
+            }
+        }
+
+        private static bool IsManagedAssembly(string path)
+        {
+            try
+            {
+                AssemblyName.GetAssemblyName(path);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

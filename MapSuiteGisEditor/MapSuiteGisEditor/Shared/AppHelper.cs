@@ -202,29 +202,29 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         private static void FixStyles(string documentFolder)
         {
-            string[] files = Directory.GetFiles(documentFolder, "*.tgsty", SearchOption.AllDirectories);
+            //string[] files = Directory.GetFiles(documentFolder, "*.tgsty", SearchOption.AllDirectories);
 
-            Stream fixResourceStream = typeof(GeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
-            System.Xml.Linq.XElement fixElement = System.Xml.Linq.XElement.Load(fixResourceStream);
+            //Stream fixResourceStream = typeof(GeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
+            //System.Xml.Linq.XElement fixElement = System.Xml.Linq.XElement.Load(fixResourceStream);
 
-            foreach (var file in files)
-            {
-                string content = File.ReadAllText(file);
-                bool needSave = false;
-                foreach (var item in fixElement.Descendants("Pair"))
-                {
-                    string oldContent = item.Element("Old").Value;
-                    string newContent = item.Element("New").Value;
+            //foreach (var file in files)
+            //{
+            //    string content = File.ReadAllText(file);
+            //    bool needSave = false;
+            //    foreach (var item in fixElement.Descendants("Pair"))
+            //    {
+            //        string oldContent = item.Element("Old").Value;
+            //        string newContent = item.Element("New").Value;
 
-                    if (content.Contains(oldContent))
-                    {
-                        content = content.Replace(oldContent, newContent);
-                        needSave = true;
-                    }
-                }
+            //        if (content.Contains(oldContent))
+            //        {
+            //            content = content.Replace(oldContent, newContent);
+            //            needSave = true;
+            //        }
+            //    }
 
-                if (needSave) File.WriteAllText(file, content);
-            }
+            //    if (needSave) File.WriteAllText(file, content);
+            //}
         }
 
         private static void ParseArguments(string[] arguments, ref string startupProjectPath, ref string startupConfigurationPath)

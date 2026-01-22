@@ -54,7 +54,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public static byte[] GetPreviewBinary(this Style style, int width = 23, int height = 23)
         {
-            using (var bitmap = new Bitmap(width, height))
+            using (var bitmap = new GeoImage(width, height))
             {
                 var canvas = new SkiaGeoCanvas();
                 canvas.BeginDrawing(bitmap, new RectangleShape(-10, 10, 10, -10), GeographyUnit.DecimalDegree);
@@ -62,7 +62,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 canvas.EndDrawing();
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    bitmap.Save(memoryStream, ImageFormat.Png);
+                    bitmap.Save(memoryStream, GeoImageFormat.Png);
                     return memoryStream.ToArray();
                 }
             }

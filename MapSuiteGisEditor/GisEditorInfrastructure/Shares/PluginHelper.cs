@@ -93,14 +93,36 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         internal static void FillExportedPlugins<T>(ExportProvider exportProvider, Collection<T> plugins)
         {
-            var pluginExports = exportProvider.GetExports<T>();
-            foreach (var pluginExport in pluginExports)
+            try
             {
-                try { plugins.Add(pluginExport.Value); }
-                catch (Exception e)
+                var pluginExports = exportProvider.GetExports<T>();
+                foreach (var pluginExport in pluginExports)
                 {
-                    GisEditor.LoggerManager.Log(LoggerLevel.Debug, e.Message, new ExceptionInfo(e));
+                    try { plugins.Add(pluginExport.Value); }
+                    catch (Exception e)
+                    {
+                        GisEditor.LoggerManager.Log(LoggerLevel.Debug, e.Message, new ExceptionInfo(e));
+                    }
                 }
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                LogTypeLoadException(e);
+            }
+            catch (Exception e)
+            {
+                GisEditor.LoggerManager.Log(LoggerLevel.Debug, e.Message, new ExceptionInfo(e));
+            }
+        }
+
+        private static void LogTypeLoadException(ReflectionTypeLoadException e)
+        {
+            GisEditor.LoggerManager.Log(LoggerLevel.Debug, e.Message, new ExceptionInfo(e));
+            if (e.LoaderExceptions == null) return;
+            foreach (var loaderException in e.LoaderExceptions)
+            {
+                if (loaderException == null) continue;
+                GisEditor.LoggerManager.Log(LoggerLevel.Debug, loaderException.Message, new ExceptionInfo(loaderException));
             }
         }
 

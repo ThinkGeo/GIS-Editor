@@ -1043,6 +1043,9 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private static int GetDrawingProgress(TileOverlay tileOverlay)
         {
+            if (tileOverlay.Children.Count == 0)
+                return 100;
+
             Canvas drawingCanvas = ((Canvas)tileOverlay.Children[0]);
             int total = drawingCanvas.Children.Count;
             int drawn = 0;
