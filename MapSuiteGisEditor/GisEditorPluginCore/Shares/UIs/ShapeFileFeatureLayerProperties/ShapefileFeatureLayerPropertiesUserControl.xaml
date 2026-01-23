@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Custom="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+             xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GisEditorToolkits"
              xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              Background="#f0f0f0"
@@ -120,3 +120,7 @@
         </StackPanel>
     </Grid>
 </UserControl>
+
+
+
+

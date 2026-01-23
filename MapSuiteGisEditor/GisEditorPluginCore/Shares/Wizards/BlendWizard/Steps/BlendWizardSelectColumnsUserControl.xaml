@@ -18,3 +18,5 @@
         <local:DualList Grid.Row="1" />
     </Grid>
 </UserControl>
+
+

@@ -56,7 +56,18 @@ namespace ThinkGeo.MapSuite.GisEditor
         protected PluginManager()
         {
             pluginDirectories = new Collection<string>();
-            pluginDirectories.Add(defaultPluginPath);
+            foreach (var directory in GetPluginDirectories(PluginHelper.GetEntryPath()))
+            {
+                pluginDirectories.Add(directory);
+            }
+
+            foreach (var directory in GetPluginDirectories(AppContext.BaseDirectory))
+            {
+                if (!pluginDirectories.Contains(directory))
+                {
+                    pluginDirectories.Add(directory);
+                }
+            }
         }
 
         internal static string DefaultPluginPathFileName { get { return defaultPluginPathFileName; } }
@@ -203,6 +214,26 @@ namespace ThinkGeo.MapSuite.GisEditor
             #endregion
 
             return plugins;
+        }
+
+        private static Collection<string> GetPluginDirectories(string basePath)
+        {
+            var result = new Collection<string>();
+            string current = basePath;
+            for (int i = 0; i < 4 && !string.IsNullOrEmpty(current); i++)
+            {
+                string pluginsDirectory = Path.Combine(current, "Plugins");
+                if (Directory.Exists(pluginsDirectory))
+                {
+                    result.Add(pluginsDirectory);
+                    break;
+                }
+
+                var parent = Directory.GetParent(current);
+                current = parent == null ? null : parent.FullName;
+            }
+
+            return result;
         }
     }
 }

@@ -3,22 +3,26 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
-               xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+               xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GisEditorToolkits"
                xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                xmlns:tg="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop.Extension"
                xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
                Header="{DynamicResource BookmarkRibbonGroupHeader}">
     <r:RibbonGroup.GroupSizeDefinitions>
         <r:RibbonGroupSizeDefinition>
+<r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <r:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </r:RibbonGroupSizeDefinition>
+        </r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</r:RibbonGroupSizeDefinition>
         <r:RibbonGroupSizeDefinition>
+<r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </r:RibbonGroupSizeDefinition>
+        </r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</r:RibbonGroupSizeDefinition>
     </r:RibbonGroup.GroupSizeDefinitions>
 
     <r:RibbonMenuButton x:Name="bookmarkList"
@@ -58,3 +62,7 @@
                     SmallImageSource="/GisEditorPluginCore;component/Images/managebookmarks.png"
                     ToolTip="{DynamicResource ResourceKey=BookmarkRibbonGroupDscManageexistingbookmarksDscToolTip}" />
 </r:RibbonGroup>
+
+
+
+

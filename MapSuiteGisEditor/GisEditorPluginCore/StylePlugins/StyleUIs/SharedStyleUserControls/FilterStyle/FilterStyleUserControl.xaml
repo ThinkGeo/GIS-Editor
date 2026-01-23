@@ -1,4 +1,4 @@
-﻿<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FilterStyleUserControl"
+<styleuc:StyleUserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.FilterStyleUserControl"
                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                           xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
@@ -267,3 +267,5 @@
 
     </Grid>
 </styleuc:StyleUserControl>
+
+

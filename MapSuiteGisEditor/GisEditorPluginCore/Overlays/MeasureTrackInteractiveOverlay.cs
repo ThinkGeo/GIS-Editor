@@ -414,7 +414,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private MapShape GetMapShape(Feature lastTrackingFeature)
         {
             var mapShape = new MapShape(lastTrackingFeature);
-            foreach (var item in MeasurementStyle.Styles)
+            var measurementStyle = GetMeasurementStyleSafe();
+            foreach (var item in measurementStyle.Styles)
             {
                 mapShape.ZoomLevels.ZoomLevel01.CustomStyles.Add(item);
             }
@@ -424,15 +425,33 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void SetStylesForInMemoryFeatureLayer(InMemoryFeatureLayer featureLayer)
         {
+            if (featureLayer == null) return;
+            if (featureLayer.ZoomLevelSet == null)
+            {
+                featureLayer.ZoomLevelSet = new ZoomLevelSet();
+            }
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultAreaStyle = null;
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle = null;
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = null;
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultTextStyle = null;
-            foreach (var item in MeasurementStyle.Styles)
+            var measurementStyle = GetMeasurementStyleSafe();
+            foreach (var item in measurementStyle.Styles)
             {
                 featureLayer.ZoomLevelSet.ZoomLevel01.CustomStyles.Add(item);
             }
             featureLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
+        }
+
+        private CompositeStyle GetMeasurementStyleSafe()
+        {
+            var measurementStyle = MeasurementStyle;
+            if (measurementStyle == null)
+            {
+                measurementStyle = GetInitialCompositeStyle();
+                MeasurementStyle = measurementStyle;
+            }
+
+            return measurementStyle;
         }
 
         private void InitializeColumns(InMemoryFeatureLayer featureLayer, bool trackMeasureResult = true)

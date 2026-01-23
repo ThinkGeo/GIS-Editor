@@ -12,3 +12,5 @@
         <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/Controls/SolidColorPicker/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
+
+

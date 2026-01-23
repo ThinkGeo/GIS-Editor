@@ -22,6 +22,7 @@
     </rb:RibbonGroup.Resources>
     <rb:RibbonGroup.GroupSizeDefinitions>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
@@ -42,8 +43,10 @@
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
@@ -64,7 +67,8 @@
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
     </rb:RibbonGroup.GroupSizeDefinitions>
 
     <rb:RibbonGroup.Items>
@@ -368,3 +372,6 @@
         </local:NonTopMostPopup>-->
     </rb:RibbonGroup.Items>
 </rb:RibbonGroup>
+
+
+

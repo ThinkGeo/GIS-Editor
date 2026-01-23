@@ -189,11 +189,30 @@ namespace ThinkGeo.MapSuite.GisEditor
 #if GISEditorUnitTest
             entryPath = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 #else
-                entryPath = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath);
+                string basePath = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath);
+                entryPath = FindEntryPathWithPlugins(basePath);
 #endif
             }
 
             return entryPath;
+        }
+
+        private static string FindEntryPathWithPlugins(string basePath)
+        {
+            string current = basePath;
+            for (int i = 0; i < 4 && !string.IsNullOrEmpty(current); i++)
+            {
+                string pluginsDirectory = Path.Combine(current, "Plugins");
+                if (Directory.Exists(pluginsDirectory))
+                {
+                    return current;
+                }
+
+                var parent = Directory.GetParent(current);
+                current = parent == null ? null : parent.FullName;
+            }
+
+            return basePath;
         }
 
         internal static T GetDataContext<T>(this object sender) where T : class

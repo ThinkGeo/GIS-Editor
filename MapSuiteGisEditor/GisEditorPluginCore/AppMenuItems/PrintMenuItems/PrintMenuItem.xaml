@@ -1,4 +1,4 @@
-﻿<r:RibbonApplicationMenuItem x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.PrintMenuItem"
+<r:RibbonApplicationMenuItem x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.PrintMenuItem"
                              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                              xmlns:gisToolkit="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorToolkits"
@@ -11,3 +11,5 @@
                              QuickAccessToolBarId="Print"
                              ToolTipDescription="{DynamicResource ResourceKey=PrintMenuItemDscPrintthecurrentDscToolTipDescription}"
                              ToolTipTitle="{DynamicResource PrintToolTipTitle}" />
+
+

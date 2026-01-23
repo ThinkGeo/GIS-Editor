@@ -12,6 +12,7 @@
                 mc:Ignorable="d">
     <rb:RibbonGroup.GroupSizeDefinitions>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
@@ -21,7 +22,8 @@
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
     </rb:RibbonGroup.GroupSizeDefinitions>
 
     <rb:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
@@ -104,3 +106,6 @@
                      ToolTipTitle="Uncombine"
                      ToolTipDescription="Uncombine" />
 </rb:RibbonGroup>
+
+
+

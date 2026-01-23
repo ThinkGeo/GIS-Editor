@@ -11,3 +11,5 @@
         <CheckBox IsChecked="{Binding NeedReportUnhandledError, Mode=TwoWay}" Content="{DynamicResource ErrorReportOptionUserControlContentLabel}" />
     </Grid>
 </ThinkGeo:SettingUserControl>
+
+

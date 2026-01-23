@@ -1,4 +1,4 @@
-﻿<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.KmlConfigureWindow"
+<Window x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.KmlConfigureWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -79,3 +79,6 @@
         </StackPanel>
     </Grid>
 </Window>
+
+
+

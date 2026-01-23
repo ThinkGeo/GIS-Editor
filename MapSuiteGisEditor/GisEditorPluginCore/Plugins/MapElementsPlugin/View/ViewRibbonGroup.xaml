@@ -12,15 +12,19 @@
     </rb:RibbonGroup.DataContext>
     <rb:RibbonGroup.GroupSizeDefinitions>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Small" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
     </rb:RibbonGroup.GroupSizeDefinitions>
 
     <rb:RibbonButton Command="{x:Static local:CommandHelper.ReprojectionCommand}"
@@ -97,3 +101,7 @@
                                                       Mode=TwoWay}" />
     </local:NonTopMostPopup>
 </rb:RibbonGroup>
+
+
+
+

@@ -57,6 +57,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
                 foreach (var file in Directory.GetFiles(directory, searchPattern))
                 {
+                    if (IsMismatchedArchitecture(file)) continue;
                     if (!IsManagedAssembly(file)) continue;
 
                     if (file.Contains("FileGDBAPI"))
@@ -144,6 +145,48 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 return false;
             }
+        }
+
+        private static bool IsMismatchedArchitecture(string path)
+        {
+            if (Environment.Is64BitProcess)
+            {
+                if (path.IndexOf("Windows-X86", StringComparison.OrdinalIgnoreCase) >= 0
+                    || path.IndexOf("win-x86", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (path.IndexOf("Windows-X64", StringComparison.OrdinalIgnoreCase) >= 0
+                    || path.IndexOf("win-x64", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+
+            try
+            {
+                if (!File.Exists(path))
+                    return false;
+
+                var name = AssemblyName.GetAssemblyName(path);
+                if (Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.X86)
+                {
+                    return true;
+                }
+                if (!Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.Amd64)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                // Ignore non-managed assemblies; IsManagedAssembly handles them.
+            }
+
+            return false;
         }
     }
 }

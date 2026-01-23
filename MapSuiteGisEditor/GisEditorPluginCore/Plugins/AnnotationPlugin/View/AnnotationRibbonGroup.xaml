@@ -6,6 +6,7 @@
                Header="{DynamicResource AnnotationRibbonGroupHeader}">
     <R:RibbonGroup.GroupSizeDefinitions>
         <R:RibbonGroupSizeDefinition>
+<R:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
@@ -22,7 +23,8 @@
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
-        </R:RibbonGroupSizeDefinition>
+        </R:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</R:RibbonGroupSizeDefinition>
     </R:RibbonGroup.GroupSizeDefinitions>
 
     <R:RibbonToggleButton Command="{Binding SelectMoveCommand}"
@@ -132,3 +134,6 @@
                         SmallImageSource="/GisEditorPluginCore;component/Images/convertToAnnotation.png"
                         ToolTipTitle="Convert labels to Annotations." ToolTipDescription="Convert all labels on the map to annotations." />
 </R:RibbonGroup>
+
+
+

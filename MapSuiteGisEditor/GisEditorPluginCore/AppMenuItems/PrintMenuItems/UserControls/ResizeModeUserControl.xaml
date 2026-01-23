@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ResizeModeUserControl"
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ResizeModeUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converter="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
@@ -46,3 +46,5 @@
         </ListBox>
     </GroupBox>
 </UserControl>
+
+

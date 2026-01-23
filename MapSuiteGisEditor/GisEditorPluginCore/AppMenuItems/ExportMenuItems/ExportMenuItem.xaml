@@ -1,4 +1,4 @@
-﻿<r:RibbonApplicationMenuItem x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ExportMenuItem"
+<r:RibbonApplicationMenuItem x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ExportMenuItem"
                              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                              xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
@@ -9,3 +9,5 @@
                              QuickAccessToolBarId="Export"
                              ToolTipDescription="{DynamicResource ResourceKey=ExportMenuItemDscExportthecurrentDscToolTipDescription}"
                              ToolTipTitle="{DynamicResource ExportToolTipTitle}" />
+
+

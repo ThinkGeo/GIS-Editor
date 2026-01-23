@@ -16,6 +16,7 @@
     </rb:RibbonGroup.DataContext>
     <rb:RibbonGroup.GroupSizeDefinitions>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
@@ -23,7 +24,8 @@
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
     </rb:RibbonGroup.GroupSizeDefinitions>
     <rb:RibbonButton
         Command="{Binding ShowManageLegends}"
@@ -74,3 +76,6 @@
         ToolTipDescription="{DynamicResource AdornmentRibbonGroupScaleBarsToolTipDescription}"
         ToolTipTitle="{DynamicResource AdornmentRibbonGroupScaleBarsToolTip}" />
 </rb:RibbonGroup>
+
+
+

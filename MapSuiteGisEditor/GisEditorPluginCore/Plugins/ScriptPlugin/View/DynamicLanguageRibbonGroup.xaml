@@ -9,20 +9,26 @@
                     Header="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupHeader}">
     <Ribbon:RibbonGroup.GroupSizeDefinitions>
         <Ribbon:RibbonGroupSizeDefinition>
+<Ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
-        </Ribbon:RibbonGroupSizeDefinition>
+        </Ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</Ribbon:RibbonGroupSizeDefinition>
         <Ribbon:RibbonGroupSizeDefinition>
+<Ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </Ribbon:RibbonGroupSizeDefinition>
+        </Ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</Ribbon:RibbonGroupSizeDefinition>
         <Ribbon:RibbonGroupSizeDefinition>
+<Ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <Ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
             <Ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
-        </Ribbon:RibbonGroupSizeDefinition>
+        </Ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</Ribbon:RibbonGroupSizeDefinition>
     </Ribbon:RibbonGroup.GroupSizeDefinitions>
     <Ribbon:RibbonGroup.Resources>
         <ResourceDictionary>
@@ -59,3 +65,7 @@
                          ToolTipDescription="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupCsToolTipDescription}"
                          ToolTipTitle="{DynamicResource ResourceKey=DynamicLanguageRibbonGroupCsToolTipTitle}" />
 </Ribbon:RibbonGroup>
+
+
+
+

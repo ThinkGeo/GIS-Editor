@@ -23,6 +23,7 @@
     </r:RibbonGroup.Resources>
     <r:RibbonGroup.GroupSizeDefinitions>
         <r:RibbonGroupSizeDefinition>
+<r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
@@ -36,8 +37,10 @@
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
-        </r:RibbonGroupSizeDefinition>
+        </r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</r:RibbonGroupSizeDefinition>
         <r:RibbonGroupSizeDefinition>
+<r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
@@ -51,7 +54,8 @@
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
-        </r:RibbonGroupSizeDefinition>
+        </r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</r:RibbonGroupSizeDefinition>
     </r:RibbonGroup.GroupSizeDefinitions>
     <r:RibbonGroup.Items>
         <r:RibbonRadioButton Name="selectMeasure"
@@ -288,3 +292,7 @@
                         ToolTipTitle="{DynamicResource MeasureRibbonGroupExportUnitToolTip}" />
     </r:RibbonGroup.Items>
 </r:RibbonGroup>
+
+
+
+

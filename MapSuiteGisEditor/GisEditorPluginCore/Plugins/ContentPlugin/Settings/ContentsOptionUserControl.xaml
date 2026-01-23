@@ -1,4 +1,4 @@
-﻿<ThinkGeo:SettingUserControl
+<ThinkGeo:SettingUserControl
     x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.ContentsOptionUserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -255,3 +255,5 @@
         </GroupBox>
     </Grid>
 </ThinkGeo:SettingUserControl>
+
+

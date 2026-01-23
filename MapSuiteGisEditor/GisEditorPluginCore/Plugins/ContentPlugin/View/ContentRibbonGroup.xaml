@@ -3,20 +3,22 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
-               xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+               xmlns:mvvm="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GisEditorToolkits"
                xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                xmlns:ThinkGeo="clr-namespace:ThinkGeo.MapSuite.GisEditor;assembly=GisEditorInfrastructure"
                CanAddToQuickAccessToolBarDirectly="False"
                Header="{DynamicResource ResourceKey=ContentRibbonGroupHeader}">
     <r:RibbonGroup.GroupSizeDefinitions>
         <r:RibbonGroupSizeDefinition>
+<r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Large" />
             <r:RibbonControlSizeDefinition ImageSize="Small" />
             <r:RibbonControlSizeDefinition ImageSize="Small" />
             <r:RibbonControlSizeDefinition ImageSize="Small" />
-        </r:RibbonGroupSizeDefinition>
+        </r:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</r:RibbonGroupSizeDefinition>
     </r:RibbonGroup.GroupSizeDefinitions>
     <r:RibbonGroup.DataContext>
         <local:ContentRibbonGroupViewModel />
@@ -93,3 +95,7 @@
                     ToolTipTitle="{DynamicResource ContentRibbonGroupViewColumnsLabel}"
                     ToolTipDescription="{DynamicResource ContentRibbonGroupViewColumnsDescription}" />
 </r:RibbonGroup>
+
+
+
+

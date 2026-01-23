@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:layers="clr-namespace:ThinkGeo.Core;assembly=ThinkGeo.Core"
         xmlns:Custom="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+        xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GisEditorToolkits"
         xmlns:local="clr-namespace:ThinkGeo.MapSuite.GisEditor.Plugins"
         xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -346,3 +346,7 @@
         </StackPanel>
     </Grid>
 </Window>
+
+
+
+

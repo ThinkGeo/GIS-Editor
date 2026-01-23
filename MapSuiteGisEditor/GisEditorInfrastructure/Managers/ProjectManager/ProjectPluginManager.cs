@@ -626,6 +626,16 @@ namespace ThinkGeo.MapSuite.GisEditor
                 projectInfo = new ProjectStreamInfo(projectUri, null);
             }
 
+            if (currentProjectPlugin == null)
+            {
+                currentProjectPlugin = GetProjectPlugins().OrderBy(p => p.Index).FirstOrDefault();
+            }
+            
+            if (currentProjectPlugin == null)
+            {
+                throw new InvalidOperationException("No project plugin is available to open the project.");
+            }
+
             currentProjectPlugin.LoadProjectStream(projectInfo);
 
             try

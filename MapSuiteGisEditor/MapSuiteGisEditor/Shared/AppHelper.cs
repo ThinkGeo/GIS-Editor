@@ -246,18 +246,143 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             string assemblyName = args.Name.Split(',').FirstOrDefault().Trim() + ".dll";
             string directoryRoot = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string[] pluginPathFileNames = Directory.GetFiles(Path.Combine(directoryRoot, "Plugins"), "*.dll", SearchOption.AllDirectories);
-
-            foreach (string assemblyPath in pluginPathFileNames)
+            foreach (var directory in GetAssemblySearchDirectories(directoryRoot))
             {
-                if (Path.GetFileName(assemblyPath).Equals(assemblyName, StringComparison.OrdinalIgnoreCase))
+                string[] candidateFiles = Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories);
+                foreach (string assemblyPath in candidateFiles)
                 {
-                    Assembly assembly = Assembly.LoadFile(assemblyPath);
-                    return assembly;
+                    if (Path.GetFileName(assemblyPath).Equals(assemblyName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (IsMismatchedArchitecture(assemblyPath) || !IsManagedAssembly(assemblyPath))
+                        {
+                            continue;
+                        }
+                        Assembly assembly;
+                        if (TryLoadAssembly(assemblyPath, out assembly))
+                        {
+                            return assembly;
+                        }
+                    }
                 }
             }
 
             return null;
+        }
+
+        private static bool TryLoadAssembly(string path, out Assembly assembly)
+        {
+            assembly = null;
+            try
+            {
+                assembly = Assembly.LoadFile(path);
+                return true;
+            }
+            catch (BadImageFormatException)
+            {
+                return false;
+            }
+            catch (FileLoadException)
+            {
+                return false;
+            }
+        }
+
+        private static bool IsManagedAssembly(string path)
+        {
+            try
+            {
+                AssemblyName.GetAssemblyName(path);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool IsMismatchedArchitecture(string path)
+        {
+            if (Environment.Is64BitProcess)
+            {
+                if (path.IndexOf("Windows-X86", StringComparison.OrdinalIgnoreCase) >= 0
+                    || path.IndexOf("win-x86", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (path.IndexOf("Windows-X64", StringComparison.OrdinalIgnoreCase) >= 0
+                    || path.IndexOf("win-x64", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+
+            try
+            {
+                var name = AssemblyName.GetAssemblyName(path);
+                if (Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.X86)
+                {
+                    return true;
+                }
+                if (!Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.Amd64)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                // Ignore non-managed assemblies here; IsManagedAssembly handles them.
+            }
+
+            return false;
+        }
+
+        private static Collection<string> GetAssemblySearchDirectories(string baseDirectory)
+        {
+            var result = new Collection<string>();
+
+            foreach (var directory in GetCandidateDirectories(baseDirectory))
+            {
+                if (!result.Contains(directory))
+                {
+                    result.Add(directory);
+                }
+            }
+
+            string current = baseDirectory;
+            for (int i = 0; i < 4 && !string.IsNullOrEmpty(current); i++)
+            {
+                string pluginsDirectory = Path.Combine(current, "Plugins");
+                if (Directory.Exists(pluginsDirectory) && !result.Contains(pluginsDirectory))
+                {
+                    result.Add(pluginsDirectory);
+                }
+
+                var parent = Directory.GetParent(current);
+                current = parent == null ? null : parent.FullName;
+            }
+
+            return result;
+        }
+
+        private static Collection<string> GetCandidateDirectories(string baseDirectory)
+        {
+            var result = new Collection<string>();
+            string current = baseDirectory;
+            for (int i = 0; i < 4 && !string.IsNullOrEmpty(current); i++)
+            {
+                if (Directory.Exists(current) && !result.Contains(current))
+                {
+                    result.Add(current);
+                }
+
+                var parent = Directory.GetParent(current);
+                current = parent == null ? null : parent.FullName;
+            }
+
+            return result;
         }
 
         private static void MergeDefaultThemeResouce()

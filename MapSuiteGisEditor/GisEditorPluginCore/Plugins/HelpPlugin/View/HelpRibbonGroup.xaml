@@ -6,12 +6,14 @@
                Header="{DynamicResource ResourceKey=HelpRibbonGroupHelpResourcesHeader}">
     <R:RibbonGroup.GroupSizeDefinitions>
         <R:RibbonGroupSizeDefinition>
+<R:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <R:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
-        </R:RibbonGroupSizeDefinition>
+        </R:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</R:RibbonGroupSizeDefinition>
     </R:RibbonGroup.GroupSizeDefinitions>
 
     <R:RibbonButton Command="{Binding SearchCommand}"
@@ -54,3 +56,6 @@
                     ToolTipDescription="{DynamicResource HelpsRibbonGroupFindExampleToolTipDescription}"
                     ToolTipTitle="{DynamicResource HelpsRibbonGroupFindExampleToolTip}"/>
 </R:RibbonGroup>
+
+
+

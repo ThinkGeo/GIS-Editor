@@ -85,3 +85,6 @@
         <local:GeoPenUserControl Grid.Row="1" DataContext="{Binding OuterPen}" />
     </Grid>
 </styleuc:StyleUserControl>
+
+
+

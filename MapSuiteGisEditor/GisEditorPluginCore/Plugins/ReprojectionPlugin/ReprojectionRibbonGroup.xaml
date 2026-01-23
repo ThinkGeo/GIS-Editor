@@ -10,9 +10,11 @@
                     Header="{DynamicResource PluginRibbonGroupHeader}">
     <ribbon:RibbonGroup.GroupSizeDefinitions>
         <ribbon:RibbonGroupSizeDefinition>
+<ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
-        </ribbon:RibbonGroupSizeDefinition>
+        </ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</ribbon:RibbonGroupSizeDefinition>
     </ribbon:RibbonGroup.GroupSizeDefinitions>
 
     <ribbon:RibbonButton Command="{Binding Source={x:Static local:GeoProcessingViewModel.Instance},
@@ -24,3 +26,6 @@
                          ToolTipDescription="{DynamicResource PluginRibbonGroupReprojectionWizardDescription}"
                          ToolTipTitle="{DynamicResource PluginRibbonGroupReprojectionWizardLabel}" />
 </ribbon:RibbonGroup>
+
+
+

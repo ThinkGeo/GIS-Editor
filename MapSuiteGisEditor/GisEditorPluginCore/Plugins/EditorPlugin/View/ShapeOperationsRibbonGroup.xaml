@@ -15,21 +15,25 @@
     </rb:RibbonGroup.DataContext>
     <rb:RibbonGroup.GroupSizeDefinitions>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
         <rb:RibbonGroupSizeDefinition>
+<rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <rb:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </rb:RibbonGroupSizeDefinition>
+        </rb:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</rb:RibbonGroupSizeDefinition>
     </rb:RibbonGroup.GroupSizeDefinitions>
 
     <rb:RibbonGroup.Items>
@@ -89,3 +93,6 @@
     </rb:RibbonGroup.Items>
 
 </rb:RibbonGroup>
+
+
+

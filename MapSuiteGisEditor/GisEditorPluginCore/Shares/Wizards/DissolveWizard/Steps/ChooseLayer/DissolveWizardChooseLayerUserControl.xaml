@@ -28,3 +28,5 @@
         <CheckBox IsChecked="{Binding DissolveSelectedFeaturesOnly,Mode=TwoWay}" IsEnabled="{Binding HasFeatureSelected}" Content="{DynamicResource ToolsDissolveWizardStepOneOnlyDissolveSelected}"/>
     </StackPanel>
 </UserControl>
+
+

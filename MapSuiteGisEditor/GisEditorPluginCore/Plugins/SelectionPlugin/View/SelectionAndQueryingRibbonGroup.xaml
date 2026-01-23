@@ -37,6 +37,7 @@
 
     <ribbon:RibbonGroup.GroupSizeDefinitions>
         <ribbon:RibbonGroupSizeDefinition>
+<ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
@@ -51,8 +52,10 @@
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Large" />
-        </ribbon:RibbonGroupSizeDefinition>
+        </ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</ribbon:RibbonGroupSizeDefinition>
         <ribbon:RibbonGroupSizeDefinition>
+<ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
@@ -66,7 +69,8 @@
             <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
             <ribbon:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="False" />
-        </ribbon:RibbonGroupSizeDefinition>
+        </ribbon:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</ribbon:RibbonGroupSizeDefinition>
     </ribbon:RibbonGroup.GroupSizeDefinitions>
 
     <StackPanel Width="116">
@@ -235,3 +239,7 @@
         </ribbon:RibbonSplitButton.Items>
     </ribbon:RibbonSplitButton>
 </ribbon:RibbonGroup>
+
+
+
+

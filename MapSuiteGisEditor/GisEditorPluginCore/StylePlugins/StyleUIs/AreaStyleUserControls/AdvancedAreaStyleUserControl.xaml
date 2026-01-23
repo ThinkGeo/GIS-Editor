@@ -91,3 +91,5 @@
         <local:GeoPenUserControl DataContext="{Binding OutlinePen}" />
     </StackPanel>
 </styleuc:StyleUserControl>
+
+

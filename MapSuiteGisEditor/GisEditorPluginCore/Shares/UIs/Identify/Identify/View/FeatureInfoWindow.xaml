@@ -34,3 +34,5 @@
         </ContentControl>
     </contract:DockWindow.Content>
 </contract:DockWindow>
+
+

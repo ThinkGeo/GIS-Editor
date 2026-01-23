@@ -278,6 +278,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             private set;
         }
 
+        public double Priority
+        {
+            get { return 0; }
+        }
+
         public void Complete(TextArea textArea, ISegment completionSegment,
             EventArgs insertionRequestEventArgs)
         {

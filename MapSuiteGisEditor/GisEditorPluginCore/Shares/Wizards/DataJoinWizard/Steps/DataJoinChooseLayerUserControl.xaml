@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DataJoinChooseLayerUserControl"
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DataJoinChooseLayerUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -62,3 +62,6 @@
                   IsEnabled="{Binding HasSelectedFeatures}" />
     </Grid>
 </UserControl>
+
+
+

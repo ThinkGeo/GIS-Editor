@@ -26,3 +26,5 @@
         <local:OutputUserControl Grid.Row="1"/>
     </Grid>
 </UserControl>
+
+

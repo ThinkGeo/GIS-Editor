@@ -25,13 +25,15 @@
     </ms:RibbonGroup.Resources>
     <ms:RibbonGroup.GroupSizeDefinitions>
         <ms:RibbonGroupSizeDefinition>
+<ms:RibbonGroupSizeDefinition.ControlSizeDefinitions>
             <ms:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <ms:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <ms:RibbonControlSizeDefinition ImageSize="Large" IsLabelVisible="True" />
             <ms:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <ms:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
             <ms:RibbonControlSizeDefinition ImageSize="Small" IsLabelVisible="True" />
-        </ms:RibbonGroupSizeDefinition>
+        </ms:RibbonGroupSizeDefinition.ControlSizeDefinitions>
+</ms:RibbonGroupSizeDefinition>
     </ms:RibbonGroup.GroupSizeDefinitions>
     <Grid>
         <Grid.RowDefinitions>
@@ -105,3 +107,6 @@
         </ms:RibbonComboBox>
     </Grid>
 </ms:RibbonGroup>
+
+
+

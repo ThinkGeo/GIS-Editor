@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DebugOutputUserControl"
+<UserControl x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.DebugOutputUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -176,3 +176,6 @@
         </ListView>
     </Grid>
 </UserControl>
+
+
+

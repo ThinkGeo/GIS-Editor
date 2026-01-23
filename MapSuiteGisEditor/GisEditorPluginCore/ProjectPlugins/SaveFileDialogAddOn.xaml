@@ -1,4 +1,4 @@
-﻿<WpfCustomFileDialog:WindowAddOnBase x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SaveFileDialogAddOn"
+<WpfCustomFileDialog:WindowAddOnBase x:Class="ThinkGeo.MapSuite.GisEditor.Plugins.SaveFileDialogAddOn"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,3 +14,6 @@
         <CheckBox Name="keepPassword"  Content="{DynamicResource KeepPasswordLable}" Foreground="Gray"  IsChecked="true" Margin ="0 8 0 0" IsEnabled="false" />
     </StackPanel>
 </WpfCustomFileDialog:WindowAddOnBase>
+
+
+

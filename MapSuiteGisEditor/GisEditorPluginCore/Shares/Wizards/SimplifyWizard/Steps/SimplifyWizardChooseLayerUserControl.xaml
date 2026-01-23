@@ -49,3 +49,5 @@
                   IsEnabled="{Binding CurrentLayerHasSelectedFeatures}"></CheckBox>
     </Grid>
 </UserControl>
+
+

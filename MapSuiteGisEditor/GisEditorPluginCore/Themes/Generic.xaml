@@ -8,3 +8,5 @@
         <ResourceDictionary Source="/GisEditorPluginCore;component/Shares/UIs/Controls/Themes/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
+
+
