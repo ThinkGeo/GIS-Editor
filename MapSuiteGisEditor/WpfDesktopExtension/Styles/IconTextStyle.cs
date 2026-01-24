@@ -120,6 +120,161 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             }
         }
 
+        protected override Style CloneDeepCore()
+        {
+            var style = new IconTextStyle();
+
+            style.Name = Name;
+            style.IsActive = IsActive;
+            style.DrawingLevel = DrawingLevel;
+
+            style.TextColumnName = TextColumnName;
+            style.TextContent = TextContent;
+            style.TextFormat = TextFormat;
+            style.TextPlacement = TextPlacement;
+            style.Alignment = Alignment;
+            style.Font = CloneGeoFont(Font);
+            style.TextBrush = CloneGeoBrush(TextBrush);
+            style.HaloPen = HaloPen == null ? null : HaloPen.CloneDeep();
+            style.Mask = Mask == null ? null : (AreaStyle)Mask.CloneDeep();
+            style.MaskMargin = MaskMargin;
+            style.MaskType = MaskType;
+            style.IsHaloEnabled = IsHaloEnabled;
+            style.IsMaskEnabled = IsMaskEnabled;
+            style.EnableHalo = EnableHalo;
+            style.EnableMask = EnableMask;
+
+            //style.BasePoint = BasePoint == null ? null : (PointStyle)BasePoint.CloneDeep();
+            style.IconImage = CloneGeoImage(IconImage);
+            if (IconPathFilename != null)
+                style.IconPathFilename = IconPathFilename;
+            style.IconImageScale = IconImageScale;
+
+            style.RotationAngle = RotationAngle;
+            style.XOffsetInPixel = XOffsetInPixel;
+            style.YOffsetInPixel = YOffsetInPixel;
+            //style.Spacing = Spacing;
+            style.WrapWidth = WrapWidth;
+            style.TextLineSegmentRatio = TextLineSegmentRatio;
+
+            style.AllowLabelNudging = AllowLabelNudging;
+            style.NudgingIntervalInPixel = NudgingIntervalInPixel;
+            style.MaxNudgingInPixel = MaxNudgingInPixel;
+            style.MinDistance = MinDistance;
+            style.OverlappingRule = OverlappingRule;
+            style.DuplicateRule = DuplicateRule;
+            style.GridSize = GridSize;
+
+            style.AllowLineCarriage = AllowLineCarriage;
+            style.ForceLineCarriage = ForceLineCarriage;
+            style.ForceHorizontalLabelForLine = ForceHorizontalLabelForLine;
+            style.LabelAllLineParts = LabelAllLineParts;
+            style.LabelAllPolygonParts = LabelAllPolygonParts;
+            style.PolygonLabelingLocationMode = PolygonLabelingLocationMode;
+            style.FittingPolygon = FittingPolygon;
+            style.FittingPolygonInScreen = FittingPolygonInScreen;
+            style.FittingPolygonFactor = FittingPolygonFactor;
+            style.FittingLineInScreen = FittingLineInScreen;
+
+            style.LeaderLineRule = LeaderLineRule;
+            style.LeaderLineStyle = LeaderLineStyle == null ? null : (LineStyle)LeaderLineStyle.CloneDeep();
+            style.LeaderLineMinimumLengthInPixels = LeaderLineMinimumLengthInPixels;
+
+            style.NumericFormat = NumericFormat;
+            style.DateFormat = DateFormat;
+            style.LetterCase = LetterCase;
+            style.SplineType = SplineType;
+
+            style.IsLabelFunctionEnabled = IsLabelFunctionEnabled;
+            style.LabelFunctionsScript = LabelFunctionsScript;
+
+            style.BestPlacementSymbolWidth = BestPlacementSymbolWidth;
+            style.BestPlacementSymbolHeight = BestPlacementSymbolHeight;
+            style.BestPlacement = BestPlacement;
+
+            style.SuppressPartialLabels = SuppressPartialLabels;
+
+            if (AbbreviationDictionary != null)
+            {
+                style.AbbreviationDictionary = new Dictionary<string, string>(AbbreviationDictionary);
+            }
+
+            if (Filters != null)
+            {
+                foreach (var filter in Filters)
+                {
+                    style.Filters.Add(filter);
+                }
+            }
+
+            //if (CustomTextStyles != null)
+            //{
+            //    foreach (var textStyle in CustomTextStyles)
+            //    {
+            //        if (textStyle != null)
+            //        {
+            //            style.CustomTextStyles.Add((TextStyle)textStyle.CloneDeep());
+            //        }
+            //    }
+            //}
+
+            if (LabelFunctionColumnNames != null)
+            {
+                foreach (var item in LabelFunctionColumnNames)
+                {
+                    style.LabelFunctionColumnNames[item.Key] = item.Value;
+                }
+            }
+
+            //if (LabelPositions != null)
+            //{
+            //    foreach (var item in LabelPositions)
+            //    {
+            //        style.LabelPositions[item.Key] = item.Value;
+            //    }
+            //}
+
+            return style;
+        }
+
+        private static GeoBrush CloneGeoBrush(GeoBrush brush)
+        {
+            if (brush == null) return null;
+            var solidBrush = brush as GeoSolidBrush;
+            if (solidBrush != null)
+            {
+                return new GeoSolidBrush(solidBrush.Color);
+            }
+            return brush;
+        }
+
+        private static GeoFont CloneGeoFont(GeoFont font)
+        {
+            if (font == null) return null;
+            return new GeoFont(font.FontName, font.Size, font.Style, font.Unit);
+        }
+
+        private static GeoImage CloneGeoImage(GeoImage image)
+        {
+            if (image == null) return null;
+
+            if (!string.IsNullOrEmpty(image.PathFilename))
+            {
+                var cloned = new GeoImage(image.PathFilename);
+                cloned.Opacity = image.Opacity;
+                return cloned;
+            }
+
+            if (image.NativeImage != null)
+            {
+                var cloned = new GeoImage(image.NativeImage);
+                cloned.Opacity = image.Opacity;
+                return cloned;
+            }
+
+            return image;
+        }
+
         protected override void DrawSampleCore(GeoCanvas canvas, DrawingRectangleF drawingRectangleF)
         {
             RectangleShape rectangle = ToWorldCoordinate(canvas, drawingRectangleF);
@@ -127,7 +282,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             Feature feature = new Feature(rectangle.GetCenterPoint());
             feature.ColumnValues.Add(TextColumnName, "A");
             Feature[] features = new Feature[1] { feature };
-            IconTextStyle style = (IconTextStyle)CloneDeep();
+            var a = CloneDeep();
+            IconTextStyle style = (IconTextStyle)a;
             style.SuppressPartialLabels = false;
             style.TextPlacement = TextPlacement.Center;
             style.IsLabelFunctionEnabled = false;

@@ -150,26 +150,11 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         private void ApplyNetworkSettings()
         {
-            // Apply proxy/timeout on a best-effort basis.
-            // The underlying overlay and its tile source may expose these members
-            // under slightly different names across ThinkGeo versions.
-            try
+            // Apply proxy/timeout directly to the base overlay.
+            base.WebProxy = webProxy;
+            if (timeoutInSeconds > 0)
             {
-                var proxyProp = GetType().GetProperty("Proxy") ?? GetType().GetProperty("WebProxy");
-                if (proxyProp != null && proxyProp.CanWrite)
-                {
-                    proxyProp.SetValue(this, webProxy, null);
-                }
-
-                var timeoutProp = GetType().GetProperty("TimeoutInSeconds") ?? GetType().GetProperty("TimeoutInSecond");
-                if (timeoutProp != null && timeoutProp.CanWrite && timeoutInSeconds > 0)
-                {
-                    timeoutProp.SetValue(this, timeoutInSeconds, null);
-                }
-            }
-            catch
-            {
-                // Ignore.
+                base.TimeoutInSeconds = timeoutInSeconds;
             }
         }
 

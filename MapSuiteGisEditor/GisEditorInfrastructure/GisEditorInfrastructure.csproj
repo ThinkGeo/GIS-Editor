@@ -263,9 +263,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+  
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dock\DocumentWindow.cs" />

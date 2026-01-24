@@ -57,8 +57,8 @@ namespace ThinkGeo.MapSuite.GisEditor
 
                 foreach (var file in Directory.GetFiles(directory, searchPattern))
                 {
-                    if (IsMismatchedArchitecture(file)) continue;
                     if (!IsManagedAssembly(file)) continue;
+                    if (IsMismatchedArchitecture(file)) continue;
 
                     if (file.Contains("FileGDBAPI"))
                         continue;
@@ -136,15 +136,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         private static bool IsManagedAssembly(string path)
         {
-            try
-            {
-                AssemblyName.GetAssemblyName(path);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return IsManagedPeFile(path);
         }
 
         private static bool IsMismatchedArchitecture(string path)
@@ -166,27 +158,124 @@ namespace ThinkGeo.MapSuite.GisEditor
                 }
             }
 
-            try
+            if (!TryGetAssemblyName(path, out var name))
             {
-                if (!File.Exists(path))
-                    return false;
-
-                var name = AssemblyName.GetAssemblyName(path);
-                if (Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.X86)
-                {
-                    return true;
-                }
-                if (!Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.Amd64)
-                {
-                    return true;
-                }
+                return false;
             }
-            catch
+
+            if (Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.X86)
             {
-                // Ignore non-managed assemblies; IsManagedAssembly handles them.
+                return true;
+            }
+            if (!Environment.Is64BitProcess && name.ProcessorArchitecture == ProcessorArchitecture.Amd64)
+            {
+                return true;
             }
 
             return false;
+        }
+
+        private static bool TryGetAssemblyName(string path, out AssemblyName name)
+        {
+            name = null;
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+
+            try
+            {
+                if (!IsManagedPeFile(path))
+                {
+                    return false;
+                }
+
+                name = AssemblyName.GetAssemblyName(path);
+                return true;
+            }
+            catch (BadImageFormatException)
+            {
+                return false;
+            }
+            catch (FileLoadException)
+            {
+                return false;
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
+        }
+
+        private static bool IsManagedPeFile(string path)
+        {
+            try
+            {
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var reader = new BinaryReader(stream))
+                {
+                    if (stream.Length < 0x40)
+                    {
+                        return false;
+                    }
+
+                    // DOS header "MZ"
+                    if (reader.ReadUInt16() != 0x5A4D)
+                    {
+                        return false;
+                    }
+
+                    stream.Seek(0x3C, SeekOrigin.Begin);
+                    int peOffset = reader.ReadInt32();
+                    if (peOffset <= 0 || peOffset > stream.Length - 4)
+                    {
+                        return false;
+                    }
+
+                    stream.Seek(peOffset, SeekOrigin.Begin);
+                    if (reader.ReadUInt32() != 0x00004550) // "PE\0\0"
+                    {
+                        return false;
+                    }
+
+                    // Skip COFF header (20 bytes)
+                    stream.Seek(20, SeekOrigin.Current);
+                    long optionalHeaderStart = stream.Position;
+                    ushort magic = reader.ReadUInt16();
+
+                    // PE32 = 0x10B, PE32+ = 0x20B
+                    int dataDirectoryOffset;
+                    if (magic == 0x10B)
+                    {
+                        dataDirectoryOffset = 96;
+                    }
+                    else if (magic == 0x20B)
+                    {
+                        dataDirectoryOffset = 112;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                    stream.Seek(optionalHeaderStart + dataDirectoryOffset, SeekOrigin.Begin);
+
+                    // DataDirectory[14] = CLI header
+                    stream.Seek(14 * 8, SeekOrigin.Current);
+                    uint cliRva = reader.ReadUInt32();
+                    uint cliSize = reader.ReadUInt32();
+
+                    return cliRva != 0 && cliSize != 0;
+                }
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
         }
     }
 }
