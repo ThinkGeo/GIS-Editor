@@ -2,10 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-        Title="{DynamicResource ResourceKey=ExportCodeWindowExportcodeTitle}"
+        Title="Export Code"
         MinWidth="640"
         MinHeight="480"
-        Style="{StaticResource WindowStyle}" x:ClassModifier="internal">
+        x:ClassModifier="internal">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -17,6 +17,6 @@
         <Button Grid.Row="1"
                 HorizontalAlignment="Right"
                 Click="Button_Click"
-                Content="{DynamicResource ResourceKey=ExportCodeWindowCopytoclipboardContent}" />
+                Content="Copy to clipboard" />
     </Grid>
 </Window>

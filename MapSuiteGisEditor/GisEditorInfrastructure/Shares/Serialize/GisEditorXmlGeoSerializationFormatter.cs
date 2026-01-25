@@ -59,16 +59,16 @@ namespace ThinkGeo.MapSuite.GisEditor
                     dic.Add(guid, newContent);
                 }
 
-                Stream fixResourceStream = typeof(GeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
-                XElement fixElement = XElement.Load(fixResourceStream);
-                foreach (var item in fixElement.Descendants("Pair"))
-                {
-                    string oldContent = item.Element("Old").Value;
-                    string newContent = item.Element("New").Value;
+                //Stream fixResourceStream = typeof(GeoSerializationFormatter).Assembly.GetManifestResourceStream("ThinkGeo.MapSuite.Serialize.Serializer.ResolveSerializedIssue.xml");
+                //XElement fixElement = XElement.Load(fixResourceStream);
+                //foreach (var item in fixElement.Descendants("Pair"))
+                //{
+                //    string oldContent = item.Element("Old").Value;
+                //    string newContent = item.Element("New").Value;
 
-                    content = FixSymbolPointStyleTypeIssue(content, oldContent);
-                    content = content.Replace(oldContent, newContent);
-                }
+                //    content = FixSymbolPointStyleTypeIssue(content, oldContent);
+                //    content = content.Replace(oldContent, newContent);
+                //}
 
                 foreach (var item in dic)
                 {

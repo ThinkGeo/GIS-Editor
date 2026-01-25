@@ -27,6 +27,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 using System.Windows.Data;
 using ThinkGeo.Core;
+using System.Collections.Generic;
 
 namespace ThinkGeo.MapSuite.GisEditor
 {
@@ -35,6 +36,8 @@ namespace ThinkGeo.MapSuite.GisEditor
         private static readonly string defaultThemeResource = "/MapSuiteGisEditor;component/Resources/General.xaml";
         private static GisEditorSplashScreen splashScreen;
         private static Collection<string> defaultHelpResources;
+        [ThreadStatic]
+        private static HashSet<string> resolvingAssemblyNames;
 
         public static Window WindowOwner
         {
@@ -244,37 +247,72 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            string assemblyName = args.Name.Split(',').FirstOrDefault().Trim() + ".dll";
-            string directoryRoot = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            foreach (var directory in GetAssemblySearchDirectories(directoryRoot))
+            if (args == null || string.IsNullOrWhiteSpace(args.Name))
             {
-                string[] candidateFiles = Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories);
-                foreach (string assemblyPath in candidateFiles)
+                return null;
+            }
+
+            string simpleName = new AssemblyName(args.Name).Name;
+            if (string.IsNullOrWhiteSpace(simpleName))
+            {
+                return null;
+            }
+
+            var loaded = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(a => string.Equals(a.GetName().Name, simpleName, StringComparison.OrdinalIgnoreCase));
+            if (loaded != null)
+            {
+                return loaded;
+            }
+
+            if (resolvingAssemblyNames == null)
+            {
+                resolvingAssemblyNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+
+            if (!resolvingAssemblyNames.Add(simpleName))
+            {
+                return null;
+            }
+
+            string assemblyName = simpleName + ".dll";
+            string directoryRoot = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            try
+            {
+                foreach (var directory in GetAssemblySearchDirectories(directoryRoot))
                 {
-                    if (Path.GetFileName(assemblyPath).Equals(assemblyName, StringComparison.OrdinalIgnoreCase))
+                    string[] candidateFiles = Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories);
+                    foreach (string assemblyPath in candidateFiles)
                     {
-                        if (IsMismatchedArchitecture(assemblyPath) || !IsManagedAssembly(assemblyPath))
+                        if (Path.GetFileName(assemblyPath).Equals(assemblyName, StringComparison.OrdinalIgnoreCase))
                         {
-                            continue;
-                        }
-                        Assembly assembly;
-                        if (TryLoadAssembly(assemblyPath, out assembly))
-                        {
-                            return assembly;
+                            if (IsMismatchedArchitecture(assemblyPath) || !IsManagedAssembly(assemblyPath))
+                            {
+                                continue;
+                            }
+                            Assembly assembly;
+                            if (TryLoadAssembly(assemblyPath, out assembly))
+                            {
+                                return assembly;
+                            }
                         }
                     }
                 }
-            }
 
-            return null;
+                return null;
+            }
+            finally
+            {
+                resolvingAssemblyNames.Remove(simpleName);
+            }
         }
 
-        private static bool TryLoadAssembly(string path, out Assembly assembly)
+        private static bool TryLoadAssembly(string path, out Assembly assembly) 
         {
             assembly = null;
             try
             {
-                assembly = Assembly.LoadFile(path);
+                assembly = Assembly.LoadFrom(path);
                 return true;
             }
             catch (BadImageFormatException)

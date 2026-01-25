@@ -233,7 +233,75 @@ namespace ThinkGeo.MapSuite.GisEditor
                 current = parent == null ? null : parent.FullName;
             }
 
+            if (result.Count == 0)
+            {
+                foreach (var directory in FindPluginDirectoriesBelow(basePath, 3))
+                {
+                    if (!result.Contains(directory))
+                    {
+                        result.Add(directory);
+                    }
+                }
+            }
+
             return result;
+        }
+
+        private static IEnumerable<string> FindPluginDirectoriesBelow(string basePath, int maxDepth)
+        {
+            if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
+            {
+                yield break;
+            }
+
+            var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { basePath };
+            var queue = new Queue<(string Path, int Depth)>();
+            queue.Enqueue((basePath, 0));
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                string pluginsDirectory = Path.Combine(current.Path, "Plugins");
+                if (Directory.Exists(pluginsDirectory))
+                {
+                    yield return pluginsDirectory;
+                }
+
+                if (current.Depth >= maxDepth)
+                {
+                    continue;
+                }
+
+                IEnumerable<string> subDirectories;
+                try
+                {
+                    subDirectories = Directory.EnumerateDirectories(current.Path);
+                }
+                catch (IOException)
+                {
+                    continue;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    continue;
+                }
+
+                foreach (var subDirectory in subDirectories)
+                {
+                    string name = Path.GetFileName(subDirectory);
+                    if (string.Equals(name, "obj", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(name, ".git", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(name, ".vs", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (visited.Add(subDirectory))
+                    {
+                        queue.Enqueue((subDirectory, current.Depth + 1));
+                    }
+                }
+            }
         }
     }
 }

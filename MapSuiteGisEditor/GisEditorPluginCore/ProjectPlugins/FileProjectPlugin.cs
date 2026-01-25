@@ -25,7 +25,7 @@ using System.Threading;
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
     [Serializable]
-    [InheritedExport(typeof(FileProjectPlugin))]
+    [Export(typeof(ProjectPlugin))]
     public class FileProjectPlugin : ProjectPlugin
     {
         private static readonly string protectedFileFilter = "Protected Project File (*.tgproj) | *.tgproj";

@@ -59,6 +59,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     if (!IsManagedAssembly(file)) continue;
                     if (IsMismatchedArchitecture(file)) continue;
+                    if (!IsLikelyPluginAssembly(file)) continue;
 
                     if (file.Contains("FileGDBAPI"))
                         continue;
@@ -99,9 +100,21 @@ namespace ThinkGeo.MapSuite.GisEditor
                     {
                         parts.AddRange(catalog.Parts);
                     }
-                    catch (ReflectionTypeLoadException)
+                    catch (ReflectionTypeLoadException ex)
                     {
-                        // Skip catalogs that fail to load due to missing dependencies or bitness.
+                        // Fall back to the types that did load so core plugins still compose.
+                        var safeTypes = ex.Types == null ? Array.Empty<Type>() : ex.Types.Where(t => t != null).ToArray();
+                        if (safeTypes.Length > 0)
+                        {
+                            try
+                            {
+                                parts.AddRange(new TypeCatalog(safeTypes).Parts);
+                            }
+                            catch (CompositionException)
+                            {
+                                // Skip catalogs that still cannot be composed.
+                            }
+                        }
                     }
                     catch (CompositionException)
                     {
@@ -139,27 +152,41 @@ namespace ThinkGeo.MapSuite.GisEditor
             return IsManagedPeFile(path);
         }
 
-        private static bool IsMismatchedArchitecture(string path)
+        private static bool IsLikelyPluginAssembly(string path)
         {
-            if (Environment.Is64BitProcess)
+            var fileName = Path.GetFileName(path);
+            if (string.IsNullOrEmpty(fileName))
             {
-                if (path.IndexOf("Windows-X86", StringComparison.OrdinalIgnoreCase) >= 0
-                    || path.IndexOf("win-x86", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if (path.IndexOf("Windows-X64", StringComparison.OrdinalIgnoreCase) >= 0
-                    || path.IndexOf("win-x64", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return true;
-                }
+                return false;
             }
 
+            // Limit MEF scanning to probable plugin assemblies to avoid reflecting over
+            // large dependency graphs and native/3rd-party libraries.
+            return fileName.IndexOf("Plugin", StringComparison.OrdinalIgnoreCase) >= 0
+                || fileName.IndexOf("GisEditor", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsMismatchedArchitecture(string path)
+        {
             if (!TryGetAssemblyName(path, out var name))
             {
+                if (Environment.Is64BitProcess)
+                {
+                    if (path.IndexOf("Windows-X86", StringComparison.OrdinalIgnoreCase) >= 0
+                        || path.IndexOf("win-x86", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (path.IndexOf("Windows-X64", StringComparison.OrdinalIgnoreCase) >= 0
+                        || path.IndexOf("win-x64", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        return true;
+                    }
+                }
+
                 return false;
             }
 

@@ -1,0 +1,57 @@
+<Window x:Class="ThinkGeo.SmokeHost.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tg="clr-namespace:ThinkGeo.MapSuite.WpfDesktop.Extension;assembly=ThinkGeo.MapSuite.WpfDesktop.Extension"
+        Title="ThinkGeo v14 Smoke Host" Height="720" Width="1180"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ToolBarTray Grid.Row="0">
+            <ToolBar>
+                <Button Content="Init / Reset" Click="Init_Click"/>
+                <Separator/>
+                <Button Content="Zoom to Data" Click="ZoomToData_Click"/>
+                <Button Content="Zoom In" Click="ZoomIn_Click"/>
+                <Button Content="Zoom Out" Click="ZoomOut_Click"/>
+                <Separator/>
+                <Button Content="Move Point" Click="MovePoint_Click"/>
+                <Button Content="Refresh Overlay" Click="RefreshOverlay_Click"/>
+                <Button Content="Refresh Map" Click="RefreshMap_Click"/>
+                <Button Content="Refresh Legacy" Click="RefreshLegacy_Click"/>
+                <Separator/>
+                <Button Content="Clear Log" Click="ClearLog_Click"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Margin="6" BorderThickness="1" BorderBrush="Gray">
+                <tg:GisEditorWpfMap x:Name="Map" />
+            </Border>
+
+            <DockPanel Grid.Column="1" Margin="6">
+                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,6">
+                    <TextBlock Text="Status" FontWeight="Bold" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="StatusText" TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <TextBox x:Name="LogTextBox"
+                         FontFamily="Consolas"
+                         FontSize="12"
+                         IsReadOnly="True"
+                         TextWrapping="NoWrap"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto"
+                         AcceptsReturn="True"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

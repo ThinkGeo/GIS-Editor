@@ -17,13 +17,13 @@
 */
 
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
@@ -40,13 +40,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             return await GetResponseAsync(webRequest, stream =>
             {
-                JsonSerializer serializer = new JsonSerializer();
-                using (var sr = new StreamReader(stream))
-                {
-                    JsonTextReader reader = new JsonTextReader(sr);
-                    Collection<OpenStreetGeocodeMatch> addresses = serializer.Deserialize<Collection<OpenStreetGeocodeMatch>>(reader);
-                    return addresses;
-                }
+                var serializer = new DataContractJsonSerializer(typeof(Collection<OpenStreetGeocodeMatch>));
+                return (Collection<OpenStreetGeocodeMatch>)serializer.ReadObject(stream);
             });
         }
 
@@ -58,13 +53,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             return await GetResponseAsync(webRequest, stream =>
             {
-                JsonSerializer serializer = new JsonSerializer();
-                using (var sr = new StreamReader(stream))
-                {
-                    JsonTextReader reader = new JsonTextReader(sr);
-                    OpenStreetGeocodeMatch addresses = serializer.Deserialize<OpenStreetGeocodeMatch>(reader);
-                    return addresses;
-                }
+                var serializer = new DataContractJsonSerializer(typeof(OpenStreetGeocodeMatch));
+                return (OpenStreetGeocodeMatch)serializer.ReadObject(stream);
             });
         }
 

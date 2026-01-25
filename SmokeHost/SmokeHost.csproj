@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Direct references keep the smoke host self-contained and make IntelliSense happy. -->
+    <PackageReference Include="ThinkGeo.Core" Version="14.4.3" />
+    <PackageReference Include="ThinkGeo.UI.Wpf" Version="14.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MapSuiteGisEditor\WpfDesktopExtension\WpfDesktopExtension.csproj" />
+  </ItemGroup>
+
+</Project>

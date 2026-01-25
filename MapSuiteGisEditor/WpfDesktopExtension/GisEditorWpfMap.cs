@@ -1046,7 +1046,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (tileOverlay.Children.Count == 0)
                 return 100;
 
-            Canvas drawingCanvas = ((Canvas)tileOverlay.Children[0]);
+            Canvas drawingCanvas = ((Canvas)tileOverlay);
             int total = drawingCanvas.Children.Count;
             int drawn = 0;
             foreach (UIElement child in drawingCanvas.Children)

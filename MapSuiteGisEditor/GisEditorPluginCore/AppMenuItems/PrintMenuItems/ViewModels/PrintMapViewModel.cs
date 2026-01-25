@@ -1159,33 +1159,33 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return pagePrinterLayer.GetPosition(unit);
         }
 
-        public PageSize GetPdfPageSize(PrinterPageSize pageSize)
-        {
-            PageSize pdfPageSize = PageSize.Letter;
-            switch (pageSize)
-            {
-                case PrinterPageSize.AnsiA:
-                    pdfPageSize = PageSize.Letter;
-                    break;
-                case PrinterPageSize.AnsiB:
-                    pdfPageSize = PageSize.Ledger;
-                    break;
-                case PrinterPageSize.AnsiC:
-                    pdfPageSize = PageSize.A2;
-                    break;
-                case PrinterPageSize.AnsiD:
-                    pdfPageSize = PageSize.A1;
-                    break;
-                case PrinterPageSize.AnsiE:
-                    pdfPageSize = PageSize.A0;
-                    break;
-                case PrinterPageSize.Custom:
-                    throw new NotSupportedException();
-                default:
-                    throw new NotSupportedException();
-            }
-            return pdfPageSize;
-        }
+        //public PageSize GetPdfPageSize(PrinterPageSize pageSize)
+        //{
+        //    PageSize pdfPageSize = PageSize.Letter;
+        //    switch (pageSize)
+        //    {
+        //        case PrinterPageSize.AnsiA:
+        //            pdfPageSize = PageSize.Letter;
+        //            break;
+        //        case PrinterPageSize.AnsiB:
+        //            pdfPageSize = PageSize.Ledger;
+        //            break;
+        //        case PrinterPageSize.AnsiC:
+        //            pdfPageSize = PageSize.A2;
+        //            break;
+        //        case PrinterPageSize.AnsiD:
+        //            pdfPageSize = PageSize.A1;
+        //            break;
+        //        case PrinterPageSize.AnsiE:
+        //            pdfPageSize = PageSize.A0;
+        //            break;
+        //        case PrinterPageSize.Custom:
+        //            throw new NotSupportedException();
+        //        default:
+        //            throw new NotSupportedException();
+        //    }
+        //    return pdfPageSize;
+        //}
 
         public void ClearAllPrinterLayers()
         {

@@ -2,5 +2,9 @@
   <PropertyGroup>
     <ImportFrameworkWinFXTargets>true</ImportFrameworkWinFXTargets>
     <MSBuildFrameworkToolsPath Condition="'$(MSBuildFrameworkToolsPath)' == ''">$(SystemRoot)\Microsoft.NET\Framework\v4.0.30319\</MSBuildFrameworkToolsPath>
+    <ReferencePath>$(MSBuildThisFileDirectory)..\Dependencies\ICSharpCode.AvalonEdit.dll;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
+  <ItemGroup>
+    <ReferencePath Include="$(MSBuildThisFileDirectory)..\Dependencies\ICSharpCode.AvalonEdit.dll" />
+  </ItemGroup>
 </Project>

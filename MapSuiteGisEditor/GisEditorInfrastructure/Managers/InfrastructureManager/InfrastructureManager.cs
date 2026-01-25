@@ -17,7 +17,6 @@
 */
 
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +24,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -426,7 +426,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             public StorableSettings GetSettings()
             {
                 StorableSettings settings = new StorableSettings();
-                settings.GlobalSettings["Items"] = JsonConvert.SerializeObject(GetSettingsCore());
+                var xml = GetSettingsCore().ToString(SaveOptions.DisableFormatting);
+                settings.GlobalSettings["Items"] = JsonSerializer.Serialize(xml);
                 return settings;
             }
 
@@ -434,7 +435,36 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 if (storableSettings != null && storableSettings.GlobalSettings.ContainsKey("Items"))
                 {
-                    ApplySettingsCore(JsonConvert.DeserializeObject<XElement>(storableSettings.GlobalSettings["Items"]));
+                    var raw = storableSettings.GlobalSettings["Items"];
+                    XElement element = null;
+                    if (!string.IsNullOrWhiteSpace(raw))
+                    {
+                        var trimmed = raw.TrimStart();
+                        if (trimmed.StartsWith("<", StringComparison.Ordinal))
+                        {
+                            element = XElement.Parse(raw);
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var xml = JsonSerializer.Deserialize<string>(raw);
+                                if (!string.IsNullOrEmpty(xml))
+                                {
+                                    element = XElement.Parse(xml);
+                                }
+                            }
+                            catch (JsonException)
+                            {
+                                // Ignore and fall through.
+                            }
+                        }
+                    }
+
+                    if (element != null)
+                    {
+                        ApplySettingsCore(element);
+                    }
                 }
             }
 

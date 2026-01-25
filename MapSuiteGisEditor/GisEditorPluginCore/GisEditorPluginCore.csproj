@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <Import Project="..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.props" Condition="Exists('..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -29,6 +28,7 @@
     </NuGetPackageImportStamp>
     <TaskVersion>4.0.0.0</TaskVersion>
     <TaskKeyToken>31bf3856ad364e35</TaskKeyToken>
+    <ReferencePath>$(MSBuildProjectDirectory)\..\..\Dependencies\ICSharpCode.AvalonEdit.dll;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,26 +77,12 @@
       <HintPath>..\..\Dependencies\AvalonDock.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Ciloci.Flee, Version=0.9.26.0, Culture=neutral, PublicKeyToken=c8526a021ef298ed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-CilociFlee.10.6.1\lib\net45\Ciloci.Flee.dll</HintPath>
-    </Reference>
-    <Reference Include="gdalconst_csharp, Version=3.11.3.0, Culture=neutral, PublicKeyToken=db5a52b08dc5b321">
-      <HintPath>..\..\packages\GDAL.3.11.3\lib\netstandard2.0\gdalconst_csharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="gdal_csharp, Version=3.11.3.0, Culture=neutral, PublicKeyToken=db5a52b08dc5b321">
-      <HintPath>..\..\packages\GDAL.3.11.3\lib\netstandard2.0\gdal_csharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-GeoAPI.10.6.0\lib\net45\GeoAPI.dll</HintPath>
-    </Reference>
     <Reference Include="GeocodeServerSdk">
       <HintPath>..\..\Dependencies\GeocodeServerSdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=6.3.1.120, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AvalonEdit.6.3.1.120\lib\net462\ICSharpCode.AvalonEdit.dll</HintPath>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\..\Dependencies\ICSharpCode.AvalonEdit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="IronPython">
@@ -107,41 +93,10 @@
       <HintPath>..\..\Dependencies\IronRuby.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Sqlite, Version=10.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-      <HintPath>..\..\packages\Microsoft.Data.Sqlite.Core.10.0.2\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Scripting">
       <HintPath>..\..\Dependencies\Microsoft.Scripting.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NewtonsoftJson.10.6.0\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Npgsql, Version=3.0.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-Npgsql.10.6.0\lib\net45\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="ogr_csharp, Version=3.11.3.0, Culture=neutral, PublicKeyToken=db5a52b08dc5b321">
-      <HintPath>..\..\packages\GDAL.3.11.3\lib\netstandard2.0\ogr_csharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="osr_csharp, Version=3.11.3.0, Culture=neutral, PublicKeyToken=db5a52b08dc5b321">
-      <HintPath>..\..\packages\GDAL.3.11.3\lib\netstandard2.0\osr_csharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.6.0\lib\net20\PdfSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-PDFsharp.10.6.0\lib\net20\PdfSharp.Charting.dll</HintPath>
-    </Reference>
-    <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-NetTopologySuite.10.6.0\lib\net45\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -152,78 +107,15 @@
       <HintPath>..\..\Dependencies\RibbonControlsLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SkiaSharp, Version=3.119.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
-      <HintPath>..\..\packages\SkiaSharp.3.119.1\lib\net462\SkiaSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.batteries_v2, Version=3.0.2.2801, Culture=neutral, PublicKeyToken=8226ea5df37bcae9">
-      <HintPath>..\..\packages\SQLitePCLRaw.config.e_sqlite3.3.0.2\lib\net471\SQLitePCLRaw.batteries_v2.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.core, Version=3.0.2.2801, Culture=neutral, PublicKeyToken=1488e028ca7ab535">
-      <HintPath>..\..\packages\SQLitePCLRaw.core.3.0.2\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.provider.dynamic_cdecl, Version=3.0.2.2801, Culture=neutral, PublicKeyToken=b68184102cba0b3b">
-      <HintPath>..\..\packages\SQLitePCLRaw.provider.dynamic_cdecl.3.0.2\lib\netstandard2.0\SQLitePCLRaw.provider.dynamic_cdecl.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=3.0.2.2801, Culture=neutral, PublicKeyToken=9c301db686d0bd12">
-      <HintPath>..\..\packages\SQLitePCLRaw.provider.e_sqlite3.3.0.2\lib\net471\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.SqlClient, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\packages\System.Data.SqlClient.4.9.0\lib\net462\System.Data.SqlClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\lib\net451\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.Drawing.Common.10.0.2\lib\net462\System.Drawing.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.Pipelines, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.IO.Pipelines.10.0.2\lib\net462\System.IO.Pipelines.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Printing" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Text.Encodings.Web, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.Text.Encodings.Web.10.0.2\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.Text.Json.10.0.2\lib\net462\System.Text.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\System.Windows.Controls.Input.Toolkit.dll</HintPath>
@@ -1102,13 +994,13 @@
       <DependentUpon>PrintPreviewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppMenuItems\PrintMenuItems\Shares\PrintLayersSerializeProxy.cs" />
-    <Compile Include="AppMenuItems\PrintMenuItems\UserControls\DragModeUserControl.xaml.cs">
+    <Compile Include="AppMenuItems\PrintMenuItems\Shares\UserControls\DragModeUserControl.xaml.cs">
       <DependentUpon>DragModeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppMenuItems\PrintMenuItems\UserControls\FontUserControl.xaml.cs">
+    <Compile Include="AppMenuItems\PrintMenuItems\Shares\UserControls\FontUserControl.xaml.cs">
       <DependentUpon>FontUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppMenuItems\PrintMenuItems\UserControls\ResizeModeUserControl.xaml.cs">
+    <Compile Include="AppMenuItems\PrintMenuItems\Shares\UserControls\ResizeModeUserControl.xaml.cs">
       <DependentUpon>ResizeModeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppMenuItems\PrintMenuItems\ViewModels\DataGridViewModel.cs" />
@@ -1776,17 +1668,17 @@
     <ProjectReference Include="..\GISEditorInfrastructure\GisEditorInfrastructure.csproj">
       <Project>{81A7C8A8-E64A-4242-8D86-2FD79D3549F5}</Project>
       <Name>GisEditorInfrastructure</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\GisEditorToolKits\GisEditorToolkits\GisEditorToolkits.csproj">
       <Project>{99b4b46d-b52d-4eaf-98ee-c7b398575d90}</Project>
       <Name>GisEditorToolkits</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\WpfDesktopExtension\WpfDesktopExtension.csproj">
       <Project>{EB308EA3-ADF8-2ABB-F68F-D428B0EF08D2}</Project>
       <Name>WpfDesktopExtension</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -2266,15 +2158,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AppMenuItems\PrintMenuItems\UserControls\DragModeUserControl.xaml">
+    <Page Include="AppMenuItems\PrintMenuItems\Shares\UserControls\DragModeUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AppMenuItems\PrintMenuItems\UserControls\FontUserControl.xaml">
+    <Page Include="AppMenuItems\PrintMenuItems\Shares\UserControls\FontUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AppMenuItems\PrintMenuItems\UserControls\ResizeModeUserControl.xaml">
+    <Page Include="AppMenuItems\PrintMenuItems\Shares\UserControls\ResizeModeUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -5231,40 +5123,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="Build\Microsoft.WinFX.targets" Condition="Exists('Build\\Microsoft.WinFX.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets" Condition="Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-EsriFileGeoDatabase.10.6.0\build\net45\MapSuiteDependency-EsriFileGeoDatabase.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets'))" />
-    <Error Condition="!Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.MapSuite.10.6.5\build\net45\ThinkGeo.MapSuite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.MapSuite.10.6.5\build\net45\ThinkGeo.MapSuite.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.14.0.0\build\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.14.0.0\build\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.Gdal.Dependency.Windows.14.0.1\build\net462\ThinkGeo.Gdal.Dependency.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.Gdal.Dependency.Windows.14.0.1\build\net462\ThinkGeo.Gdal.Dependency.Windows.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ThinkGeo.Dependency.FileGeoDatabase.14.0.0\build\net462\ThinkGeo.Dependency.FileGeoDatabase.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ThinkGeo.Dependency.FileGeoDatabase.14.0.0\build\net462\ThinkGeo.Dependency.FileGeoDatabase.targets'))" />
-    <Error Condition="!Exists('..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.props'))" />
-    <Error Condition="!Exists('..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.targets'))" />
-    <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.1\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.1\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
-    <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.1\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.1\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
-    <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.1\build\net462\SkiaSharp.NativeAssets.Linux.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.1\build\net462\SkiaSharp.NativeAssets.Linux.targets'))" />
-    <Error Condition="!Exists('..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
   </Target>
   <ItemGroup>
+    <PackageReference Include="GeoAPI" Version="1.7.5" />
+    <PackageReference Include="PdfSharp" Version="1.50.5147" />
     <PackageReference Include="log4net" Version="3.2.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     <PackageReference Include="ThinkGeo.FileGeoDatabase" Version="14.4.3" />
@@ -5272,23 +5140,25 @@
     <PackageReference Include="ThinkGeo.Printers" Version="14.4.3" />
     <PackageReference Include="ThinkGeo.SqlServer" Version="14.4.3" />
     <PackageReference Include="ThinkGeo.UI.Wpf" Version="14.4.3" />
+    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.2" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
+    <PackageReference Include="SQLitePCLRaw.config.e_sqlite3" Version="3.0.2" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="3.0.2" />
+    <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="3.0.2" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.2" />
+    <PackageReference Include="System.Buffers" Version="4.6.1" />
+    <PackageReference Include="System.IO.Pipelines" Version="10.0.2" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="10.0.2" />
+    <PackageReference Include="System.Text.Json" Version="10.0.2" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+    <PackageReference Include="System.ValueTuple" Version="4.6.1" />
   </ItemGroup>
-  <Import Project="..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets" Condition="Exists('..\..\packages\MapSuiteDependency-GdalS57.10.6.0\build\net45\MapSuiteDependency-GdalS57.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets" Condition="Exists('..\..\packages\MapSuiteDependency-HexagonGeospatialEcw.10.6.0\build\net45\MapSuiteDependency-HexagonGeospatialEcw.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LibGeoTiff.10.6.0\build\net45\MapSuiteDependency-LibGeoTiff.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets" Condition="Exists('..\..\packages\MapSuiteDependency-LizardTechMrSid.10.6.0\build\net45\MapSuiteDependency-LizardTechMrSid.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SkiaSharp.10.6.0\build\net45\MapSuiteDependency-SkiaSharp.targets')" />
-  <Import Project="..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets" Condition="Exists('..\..\packages\MapSuiteDependency-SQLiteCore.10.6.0\build\net451\MapSuiteDependency-SQLiteCore.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Ecw.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Ecw.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.FileGeoDatabase.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.FileGeoDatabase.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.GeoTiff.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.GeoTiff.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.Jpeg2000.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.Jpeg2000.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.MrSid.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.MrSid.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.Layers.NauticalCharts.10.6.0\build\net45\ThinkGeo.MapSuite.Layers.NauticalCharts.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.MapSuite.10.6.5\build\net45\ThinkGeo.MapSuite.targets" Condition="Exists('..\..\packages\ThinkGeo.MapSuite.10.6.5\build\net45\ThinkGeo.MapSuite.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets" Condition="Exists('..\..\packages\ThinkGeo.Core.14.4.3\build\net462\ThinkGeo.Core.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.14.0.0\build\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.targets" Condition="Exists('..\..\packages\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.14.0.0\build\ThinkGeo.Dependency.MicrosoftVisualCRunTime140.targets')" />
-  <Import Project="..\..\packages\ThinkGeo.Gdal.Dependency.Windows.14.0.1\build\net462\ThinkGeo.Gdal.Dependency.Windows.targets" Condition="Exists('..\..\packages\ThinkGeo.Gdal.Dependency.Windows.14.0.1\build\net462\ThinkGeo.Gdal.Dependency.Windows.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -5296,10 +5166,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="..\..\packages\ThinkGeo.Dependency.FileGeoDatabase.14.0.0\build\net462\ThinkGeo.Dependency.FileGeoDatabase.targets" Condition="Exists('..\..\packages\ThinkGeo.Dependency.FileGeoDatabase.14.0.0\build\net462\ThinkGeo.Dependency.FileGeoDatabase.targets')" />
-  <Import Project="..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.targets" Condition="Exists('..\..\packages\SourceGear.sqlite3.3.50.4.5\build\net471\SourceGear.sqlite3.targets')" />
-  <Import Project="..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.1\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.macOS.3.119.1\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />
-  <Import Project="..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.1\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.Win32.3.119.1\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
-  <Import Project="..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.1\build\net462\SkiaSharp.NativeAssets.Linux.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.Linux.3.119.1\build\net462\SkiaSharp.NativeAssets.Linux.targets')" />
-  <Import Project="..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+  <ItemGroup>
+    <ReferencePath Include="$(MSBuildProjectDirectory)\..\\..\\Dependencies\\ICSharpCode.AvalonEdit.dll" />
+  </ItemGroup>
 </Project>
