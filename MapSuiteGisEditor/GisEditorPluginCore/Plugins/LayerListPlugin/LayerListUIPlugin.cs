@@ -394,7 +394,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetRenameMenuItem());
                 overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetRemoveOverlayMenuItem());
                 overlayListItem.ContextMenuItems.Add(new MenuItem() { Header = "--" });
-                if (concreteObject is LayerOverlay)
+                bool isWorldMapsOverlay = BaseMapsHelper.IsWorldMapsOverlay(overlay);
+                if (concreteObject is LayerOverlay && !isWorldMapsOverlay)
                 {
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetAddLayerMenuItem());
                     MenuItem newLayerItem = LayerListMenuItemHelper.GetNewLayerMenuItem();
@@ -413,13 +414,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 //overlayListItem.ContextMenuItems.Add(new MenuItem() { Header = "--" });
                 //overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetSetExceptionModeMenuItem());
 
-                if (overlayListItem.ConcreteObject is BingMapsOverlay)
+                if (overlayListItem.ConcreteObject is ThinkGeoCloudRasterMapsOverlay)
                 {
                     //e.LayerListItem.Icon = new Image { Source = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/BingMaps.png", UriKind.Relative)) };
                     overlayListItem.SideImage = new Image { Source = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/dr_base_maps.png", UriKind.Relative)), Width = 16, Height = 16 };
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetBingMapStyleMenuItem());
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetBaseMapsCacheMenuItem());
-                    overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetTransparencyMenuItem(((BingMapsOverlay)overlayListItem.ConcreteObject).OverlayCanvas.Opacity));
+                    overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetTransparencyMenuItem(((ThinkGeoCloudRasterMapsOverlay)overlayListItem.ConcreteObject).OverlayCanvas.Opacity));
                 }
                 else if (overlayListItem.ConcreteObject is OpenStreetMapOverlay)
                 {
@@ -428,14 +429,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetBaseMapsCacheMenuItem());
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetTransparencyMenuItem(((OpenStreetMapOverlay)overlayListItem.ConcreteObject).OverlayCanvas.Opacity));
                 }
-                else if (overlayListItem.ConcreteObject is WorldMapKitMapOverlay)
+                else if (isWorldMapsOverlay)
                 {
                     overlayListItem.SideImage = new Image { Source = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/dr_base_maps.png", UriKind.Relative)), Width = 16, Height = 16 };
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetWorldMapKitStyleMenuItem());
                     overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetBaseMapsCacheMenuItem());
 
                     //e.LayerListItem.Icon = new Image { Source = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/WMKOverlay.png", UriKind.Relative)) };
-                    overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetTransparencyMenuItem(((WorldMapKitMapOverlay)overlayListItem.ConcreteObject).OverlayCanvas.Opacity));
+                    overlayListItem.ContextMenuItems.Add(LayerListMenuItemHelper.GetTransparencyMenuItem(overlay.OverlayCanvas.Opacity));
                 }
                 else if (overlayListItem.ConcreteObject is DynamicLayerOverlay)
                 {

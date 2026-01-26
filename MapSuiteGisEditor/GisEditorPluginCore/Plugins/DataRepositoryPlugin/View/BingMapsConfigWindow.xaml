@@ -19,7 +19,7 @@
             MethodName="GetValues"
             ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="core:BingMapsMapType" />
+                <x:Type TypeName="core:ThinkGeoCloudRasterMapsMapType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
@@ -48,6 +48,7 @@
             VerticalAlignment="Center"
             Text="{DynamicResource BingMapsConfigWindowStyleLabel}" />
         <TextBox
+            x:Name="AppIDTextBox"
             Grid.Row="0"
             Grid.Column="1"
             Margin="0,0,0,5"
@@ -78,14 +79,6 @@
             Visibility="{Binding ShowMapTypeOptions, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="ComboBoxItem">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding}" Value="BirdseyeWithLabels">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding}" Value="Birdseye">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
                 </Style>
             </ComboBox.ItemContainerStyle>
             <ComboBox.ItemTemplate>

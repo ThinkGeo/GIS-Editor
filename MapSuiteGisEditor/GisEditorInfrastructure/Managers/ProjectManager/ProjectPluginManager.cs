@@ -2090,8 +2090,10 @@ namespace ThinkGeo.MapSuite.GisEditor
                     foreach (var directory in directories)
                     {
                         if (directory.EndsWith("BingMap")
+                            || directory.EndsWith("ThinkGeoCloudRasterMaps")
                             || directory.EndsWith("OpenStreetMap")
-                            || directory.EndsWith("WorldMapKit"))
+                            || directory.EndsWith("WorldMapKit")
+                            || directory.EndsWith("ThinkGeoVectorMaps"))
                             continue;
 
                         if (Directory.Exists(directory))

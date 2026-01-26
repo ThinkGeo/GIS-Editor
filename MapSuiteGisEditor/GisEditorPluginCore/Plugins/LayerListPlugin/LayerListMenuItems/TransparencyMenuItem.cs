@@ -18,8 +18,8 @@
 
 
 using System.Windows.Controls;
-using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using System;
+using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using ThinkGeo.UI.Wpf;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -61,25 +61,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 var transparency = Convert.ToDouble(selectedMenuItem.Tag);
                 if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
 
-
-                BingMapsOverlay bingMapsOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as BingMapsOverlay;
-                OpenStreetMapOverlay openStreetMapOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as OpenStreetMapOverlay;
-                WorldMapKitMapOverlay worldMapKitMapOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as WorldMapKitMapOverlay;
-
-                if (bingMapsOverlay != null && bingMapsOverlay.OverlayCanvas.Opacity != transparency)
+                var overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Overlay;
+                if (overlay != null && overlay.OverlayCanvas != null && overlay.OverlayCanvas.Opacity != transparency)
                 {
-                    bingMapsOverlay.OverlayCanvas.Opacity = transparency;
-                    bingMapsOverlay.Invalidate();
-                }
-                else if (openStreetMapOverlay != null && openStreetMapOverlay.OverlayCanvas.Opacity != transparency)
-                {
-                    openStreetMapOverlay.OverlayCanvas.Opacity = transparency;
-                    openStreetMapOverlay.Invalidate();
-                }
-                else if (worldMapKitMapOverlay != null && worldMapKitMapOverlay.OverlayCanvas.Opacity != transparency)
-                {
-                    worldMapKitMapOverlay.OverlayCanvas.Opacity = transparency;
-                    worldMapKitMapOverlay.Invalidate();
+                    overlay.OverlayCanvas.Opacity = transparency;
+                    overlay.RefreshWithBufferSettings();
                 }
 
 

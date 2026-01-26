@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.SqlServer.Types" Version="170.1000.7" />
   </ItemGroup>
 
-  <!-- Legacy WorldMapKit implementation relied on a retired service. The GIS Editor now maps that overlay to OSM. -->
+  <!-- Legacy WorldMapKit implementation relied on a retired service. The GIS Editor now maps that overlay to ThinkGeo Cloud vector maps. -->
   <ItemGroup>
     <Compile Remove="Layers\FastWorldMapKitRasterLayer.cs" />
   </ItemGroup>

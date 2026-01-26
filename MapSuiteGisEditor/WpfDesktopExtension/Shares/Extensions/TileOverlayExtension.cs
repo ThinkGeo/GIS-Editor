@@ -96,8 +96,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public static void RefreshCache(this TileOverlay overlay, bool enabled)
         {
-            BingMapsOverlay bingOverlay = overlay as BingMapsOverlay;
-            WorldMapKitMapOverlay wmkOverlay = overlay as WorldMapKitMapOverlay;
+            ThinkGeoCloudRasterMapsOverlay rasterOverlay = overlay as ThinkGeoCloudRasterMapsOverlay;
             OpenStreetMapOverlay osmOverlay = overlay as OpenStreetMapOverlay;
 
             string cacheId = string.Empty;
@@ -105,27 +104,15 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             bool needRefresh = overlay.TileCache == null;
             FileRasterTileCache tileCache = null;
 
-            if (bingOverlay != null)
+            if (rasterOverlay != null)
             {
-                cacheId = bingOverlay.MapType.ToString();
-                cacheFolder = Path.Combine(TemporaryPath, "BingMap");
-                bingOverlay.TileCache = null;
+                cacheId = rasterOverlay.MapType.ToString();
+                cacheFolder = Path.Combine(TemporaryPath, "ThinkGeoCloudRasterMaps");
+                rasterOverlay.TileCache = null;
                 needRefresh = true;
 
                 if (enabled) tileCache = GetTileCache(overlay, cacheFolder, cacheId);
-                bingOverlay.TileCache = tileCache;
-                overlay.TileCache = tileCache;
-            }
-            else if (wmkOverlay != null)
-            {
-                // ThinkGeo v14+: this project maps the legacy WorldMapKit overlay to
-                // OpenStreetMapOverlay for compatibility. We therefore cache it the same
-                // way we cache OSM tiles.
-                cacheId = "SphereMercator";
-                cacheFolder = Path.Combine(TemporaryPath, "WorldMapKit");
-                needRefresh = true;
-
-                if (enabled) tileCache = GetTileCache(overlay, cacheFolder, cacheId);
+                rasterOverlay.TileCache = tileCache;
                 overlay.TileCache = tileCache;
             }
             else if (osmOverlay != null)

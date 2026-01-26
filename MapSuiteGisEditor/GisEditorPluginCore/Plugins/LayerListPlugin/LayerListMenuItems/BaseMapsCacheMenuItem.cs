@@ -18,11 +18,11 @@
 
 
 using System;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
-using ThinkGeo.Core;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -44,10 +44,23 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
 
-                    TileOverlay overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as TileOverlay;
-                    if (overlay != null)
+                    var overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Overlay;
+                    if (overlay == null) return;
+
+                    if (BaseMapsHelper.TryGetWorldMapsLayer(overlay, out var worldMapsLayer))
                     {
-                        overlay.OpenCacheDirectory();
+                        var cache = worldMapsLayer.VectorTileCache;
+                        if (cache != null && Directory.Exists(cache.CacheDirectory))
+                        {
+                            ProcessUtils.OpenPath(cache.CacheDirectory);
+                        }
+                        return;
+                    }
+
+                    var tileOverlay = overlay as TileOverlay;
+                    if (tileOverlay != null)
+                    {
+                        tileOverlay.OpenCacheDirectory();
                     }
                 };
 
@@ -58,10 +71,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
 
-                    TileOverlay overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as TileOverlay;
-                    if (overlay != null)
+                    var overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Overlay;
+                    if (overlay == null) return;
+
+                    if (BaseMapsHelper.TryGetWorldMapsLayer(overlay, out var worldMapsLayer))
                     {
-                        overlay.ClearCaches();
+                        var cache = worldMapsLayer.VectorTileCache;
+                        cache?.ClearCache();
+                        return;
+                    }
+
+                    var tileOverlay = overlay as TileOverlay;
+                    if (tileOverlay != null)
+                    {
+                        tileOverlay.ClearCaches();
                     }
                 };
 

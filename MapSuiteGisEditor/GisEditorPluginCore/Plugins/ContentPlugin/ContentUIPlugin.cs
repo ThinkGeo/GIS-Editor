@@ -153,7 +153,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             break;
 
                         case DefaultBaseMap.BingMaps:
-                            BaseMapsHelper.AddBingMapsOverlay(currentMap);
+                            BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlay(currentMap);
                             GisEditor.UIManager.BeginRefreshPlugins();
                             break;
 
@@ -196,22 +196,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private void FixBaseMapsCacheIssue(GisEditorWpfMap wpfMap)
         {
-            Type[] baseOverlayTypes = new Type[]
-            {
-                typeof(WorldMapKitMapOverlay),
-                typeof(BingMapsOverlay),
-                typeof(OpenStreetMapOverlay)
-            };
-
             wpfMap.Overlays.ForEach(o =>
             {
-                if (o is WorldMapKitMapOverlay)
+                if (BaseMapsHelper.IsWorldMapsOverlay(o))
                 {
-                    ((WorldMapKitMapOverlay)o).RefreshCache();
+                    var layerOverlay = o as LayerOverlay;
+                    BaseMapsHelper.ConfigureWorldMapsOverlay(layerOverlay, wpfMap, wpfMap.DisplayProjectionParameters);
                 }
-                else if (o is BingMapsOverlay)
+                else if (o is ThinkGeoCloudRasterMapsOverlay)
                 {
-                    ((BingMapsOverlay)o).RefreshCache();
+                    ((ThinkGeoCloudRasterMapsOverlay)o).RefreshCache();
                 }
                 else if (o is OpenStreetMapOverlay)
                 {
@@ -255,10 +249,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             currentMap.Drop += Map_Drop;
             currentMap.AddingLayersToActiveOverlay -= CurrentMap_AddingLayersToActiveOverlay;
             currentMap.AddingLayersToActiveOverlay += CurrentMap_AddingLayersToActiveOverlay;
-            foreach (var worldMapKitOverlay in currentMap.Overlays.OfType<WorldMapKitMapOverlay>())
+            foreach (var worldMapKitOverlay in currentMap.Overlays.OfType<LayerOverlay>().Where(BaseMapsHelper.IsWorldMapsOverlay))
             {
-                worldMapKitOverlay.ClientId = BaseMapsHelper.WmkClientId;
-                worldMapKitOverlay.PrivateKey = BaseMapsHelper.WmkPrivateKey;
+                BaseMapsHelper.ConfigureWorldMapsOverlay(worldMapKitOverlay, currentMap, currentMap.DisplayProjectionParameters);
             }
             initializedMaps.Add(currentMap);
         }

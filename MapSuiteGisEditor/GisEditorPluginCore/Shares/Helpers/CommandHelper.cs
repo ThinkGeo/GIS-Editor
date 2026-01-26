@@ -528,7 +528,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                         foreach (Overlay overlay in GisEditor.ActiveMap.Overlays)
                         {
-                            if (overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay)
+                            if (BaseMapsHelper.IsWorldMapsOverlay(overlay) || overlay is OpenStreetMapOverlay || overlay is ThinkGeoCloudRasterMapsOverlay)
                             {
                                 continue;
                             }
@@ -548,9 +548,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         }
                         else
                         {
-                            Overlay baseOverlay = GisEditor.ActiveMap.Overlays.FirstOrDefault(overlay => overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay);
+                            Overlay baseOverlay = GisEditor.ActiveMap.Overlays.FirstOrDefault(overlay => BaseMapsHelper.IsWorldMapsOverlay(overlay) || overlay is OpenStreetMapOverlay || overlay is ThinkGeoCloudRasterMapsOverlay);
                             if (baseOverlay != null)
-                                fullExtent = baseOverlay.GetBoundingBox();
+                            {
+                                fullExtent = BaseMapsHelper.IsWorldMapsOverlay(baseOverlay)
+                                    ? BaseMapsHelper.GetThinkGeoMapsExtent(GisEditor.ActiveMap)
+                                    : baseOverlay.GetBoundingBox();
+                            }
                         }
 
                         GisEditor.ActiveMap.CurrentExtent = fullExtent;

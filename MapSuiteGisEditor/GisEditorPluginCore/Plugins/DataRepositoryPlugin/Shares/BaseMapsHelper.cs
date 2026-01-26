@@ -19,85 +19,151 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using ThinkGeo.Core;
 
 using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
     public static class BaseMapsHelper
     {
-        internal static readonly string WmkClientId = string.Empty;
-        internal static readonly string WmkPrivateKey = string.Empty;
+        private const string DefaultThinkGeoClientId = "AOf22-EmFgIEeK4qkdx5HhwbkBjiRCmIDbIYuP8jWbc~";
+        private const string DefaultThinkGeoClientSecret = "xK0pbuywjaZx4sqauaga8DMlzZprz0qQSjLTow90EhBx5D8gFd2krw~~";
+        private const string DefaultWorldMapsStyleUri = "https://tiles.preludemaps.com/styles/WorldStreets_Light/style.json";
+        internal const string WorldMapsOverlayTag = "WorldMapKitOverlay";
+
+        internal static string ThinkGeoCloudClientId
+        {
+            get
+            {
+                var value = GetSettingValue("ThinkGeoCloudClientId", "WorldMapKitClientId");
+                return string.IsNullOrWhiteSpace(value) ? DefaultThinkGeoClientId : value;
+            }
+        }
+
+        internal static string ThinkGeoCloudClientSecret
+        {
+            get
+            {
+                var value = GetSettingValue("ThinkGeoCloudClientSecret", "WorldMapKitPrivateKey", "WorldMapKitSecret");
+                return string.IsNullOrWhiteSpace(value) ? DefaultThinkGeoClientSecret : value;
+            }
+        }
+
+        internal static string WmkClientId => ThinkGeoCloudClientId;
+
+        internal static string WmkPrivateKey => ThinkGeoCloudClientSecret;
         internal static readonly string ConnectionFailed = "{0} service connection\r\nfailed or timeout.";
 
-        public static WorldMapKitMapOverlay AddWorldMapKitOverlay(GisEditorWpfMap map)
+        internal sealed class WorldMapsStyleOption
         {
-            var wmkOverlay = new WorldMapKitMapOverlay(WmkClientId, WmkPrivateKey);
-            wmkOverlay.TileType = TileType.PreloadDataMultiTile;
-            wmkOverlay.Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName");
-            wmkOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-            wmkOverlay.TileBuffer = 2;
-            wmkOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(WmkOverlay_DrawingException);
+            public WorldMapsStyleOption(string name, string styleJsonUri)
+            {
+                Name = name;
+                StyleJsonUri = styleJsonUri;
+            }
+
+            public string Name { get; }
+
+            public string StyleJsonUri { get; }
+        }
+
+        internal static IReadOnlyList<WorldMapsStyleOption> WorldMapsStyleOptions => new[]
+        {
+            new WorldMapsStyleOption("Default", ResolveWorldMapsStyleUri(DefaultWorldMapsStyleUri, "ThinkGeoVectorMapsStyleDefault", "WorldMapKitStyleDefault")),
+            new WorldMapsStyleOption("Light", ResolveWorldMapsStyleUri(DefaultWorldMapsStyleUri, "ThinkGeoVectorMapsStyleLight", "WorldMapKitStyleLight")),
+            new WorldMapsStyleOption("Dark", ResolveWorldMapsStyleUri(DefaultWorldMapsStyleUri, "ThinkGeoVectorMapsStyleDark", "WorldMapKitStyleDark")),
+            new WorldMapsStyleOption("Transparent", ResolveWorldMapsStyleUri(DefaultWorldMapsStyleUri, "ThinkGeoVectorMapsStyleTransparent", "WorldMapKitStyleTransparent"))
+        };
+
+        public static async Task<LayerOverlay> AddWorldMapKitOverlay(GisEditorWpfMap map)
+        {
+            if (map == null) return null;
 
             if (string.IsNullOrEmpty(map.DisplayProjectionParameters))
             {
-                wmkOverlay.Projection = WorldMapKitProjection.DecimalDegrees;
                 map.DisplayProjectionParameters = Proj4Projection.GetEpsgParametersString(4326);
             }
-            else
-            {
-                wmkOverlay.Projection = map.MapUnit == GeographyUnit.DecimalDegree ? WorldMapKitProjection.DecimalDegrees : WorldMapKitProjection.SphericalMercator;
-            }
-            wmkOverlay.RefreshCache();
+
+            var wmkOverlay = CreateWorldMapsOverlay();
+            ConfigureWorldMapsOverlay(wmkOverlay, map, map.DisplayProjectionParameters);
+
             if (map.MapUnit == GeographyUnit.Meter || map.MapUnit == GeographyUnit.DecimalDegree)
             {
                 BaseMapsHelper.RemoveAllBaseOverlays(map);
                 map.Overlays.Insert(0, wmkOverlay);
-                SetExtent(map);
+                await SetExtent(map);
                 map.Refresh(wmkOverlay);
             }
             else
             {
-                AddOverlayInGoogleProjection(wmkOverlay, map);
+                await AddOverlayInGoogleProjection(wmkOverlay, map);
             }
             return wmkOverlay;
         }
 
-        public static BingMapsOverlay AddBingMapsOverlay(GisEditorWpfMap map)
+        private static string GetSettingValue(params string[] keys)
+        {
+            foreach (var key in keys)
+            {
+                if (string.IsNullOrWhiteSpace(key)) continue;
+
+                var envValue = Environment.GetEnvironmentVariable(key);
+                if (!string.IsNullOrWhiteSpace(envValue))
+                {
+                    return envValue.Trim();
+                }
+
+                var appValue = ConfigurationManager.AppSettings[key];
+                if (!string.IsNullOrWhiteSpace(appValue))
+                {
+                    return appValue.Trim();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static ThinkGeoCloudRasterMapsOverlay AddThinkGeoCloudRasterMapsOverlay(GisEditorWpfMap map)
         {
             BingMapsConfigWindow configWindow = new BingMapsConfigWindow();
-            BingMapsOverlay bingOverlay = null;
-            if (!string.IsNullOrEmpty(configWindow.BingMapsKey))
+            ThinkGeoCloudRasterMapsOverlay rasterOverlay = null;
+            if (!string.IsNullOrEmpty(configWindow.BingMapsKey) && !string.IsNullOrEmpty(configWindow.ClientSecret))
             {
                 if (((BingMapsConfigViewModel)configWindow.DataContext).Validate())
                 {
-                    bingOverlay = AddBingMapOverlayToMap(map, configWindow, bingOverlay);
+                    rasterOverlay = AddThinkGeoCloudRasterMapsOverlayToMap(map, configWindow, rasterOverlay);
                 }
             }
             else
             {
                 if (configWindow.ShowDialog().GetValueOrDefault())
                 {
-                    bingOverlay = AddBingMapOverlayToMap(map, configWindow, bingOverlay);
+                    rasterOverlay = AddThinkGeoCloudRasterMapsOverlayToMap(map, configWindow, rasterOverlay);
                 }
             }
-            return bingOverlay;
+            return rasterOverlay;
         }
 
-        private static BingMapsOverlay AddBingMapOverlayToMap(GisEditorWpfMap map, BingMapsConfigWindow configWindow, BingMapsOverlay bingOverlay)
+        private static ThinkGeoCloudRasterMapsOverlay AddThinkGeoCloudRasterMapsOverlayToMap(GisEditorWpfMap map, BingMapsConfigWindow configWindow, ThinkGeoCloudRasterMapsOverlay rasterOverlay)
         {
-            bingOverlay = new BingMapsOverlay(configWindow.BingMapsKey, (BingMapsMapType)configWindow.BingMapsStyle);//new BingMapsOverlay(configWindow.BingMapsKey);
-            bingOverlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
-            bingOverlay.TileType = TileType.PreloadDataMultiTile;
-            bingOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-            bingOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(BingOverlay_DrawingException);
-            bingOverlay.RefreshCache();
-            BaseMapsHelper.AddOverlayInGoogleProjection(bingOverlay, map);
-            return bingOverlay;
+            var clientId = string.IsNullOrWhiteSpace(configWindow.BingMapsKey) ? ThinkGeoCloudClientId : configWindow.BingMapsKey;
+            var clientSecret = string.IsNullOrWhiteSpace(configWindow.ClientSecret) ? ThinkGeoCloudClientSecret : configWindow.ClientSecret;
+            rasterOverlay = new ThinkGeoCloudRasterMapsOverlay(clientId, clientSecret, configWindow.BingMapsStyle);
+            rasterOverlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
+            rasterOverlay.TileType = TileType.PreloadDataMultiTile;
+            rasterOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
+            rasterOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(ThinkGeoCloudRasterOverlay_DrawingException);
+            rasterOverlay.RefreshCache();
+            BaseMapsHelper.AddOverlayInGoogleProjection(rasterOverlay, map);
+            return rasterOverlay;
         }
 
         public static OpenStreetMapOverlay AddOpenStreetMapOverlay(GisEditorWpfMap map)
@@ -146,14 +212,15 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             map.MinimumScale = map.ZoomScales.LastOrDefault();
         }
 
-        private static void SetExtent(GisEditorWpfMap map)
+        private static async Task SetExtent(GisEditorWpfMap map)
         {
             if (map.Overlays.Count == 1)
             {
+                await map.Overlays[0].OpenAsync();
                 RectangleShape extent = map.Overlays[0].GetBoundingBox();
-                if (map.Overlays[0] is WorldMapKitMapOverlay)
+                if (IsWorldMapsOverlay(map.Overlays[0]))
                 {
-                    extent = new RectangleShape(-152.941811131969, 73.3011270968869, -63.395569383504, 4.88674180823698);
+                    extent = GetThinkGeoMapsExtent(map);
                 }
                 if (extent == null)
                 {
@@ -215,16 +282,197 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void RemoveAllBaseOverlays(GisEditorWpfMap map)
         {
-            var baseOverlays = map.Overlays.Where(o => o is WorldMapKitMapOverlay ||
-                                                                     o is OpenStreetMapOverlay ||
-                                                                     o is BingMapsOverlay).ToArray();
+            var baseOverlays = map.Overlays.Where(o => IsWorldMapsOverlay(o) ||
+                                                      o is OpenStreetMapOverlay ||
+                                                      o is ThinkGeoCloudRasterMapsOverlay).ToArray();
             foreach (var overlay in baseOverlays)
             {
                 map.Overlays.Remove(overlay);
             }
         }
 
-        private static void AddOverlayInGoogleProjection(TileOverlay baseOverlay, GisEditorWpfMap map)
+        internal static RectangleShape GetThinkGeoMapsExtent(GisEditorWpfMap map)
+        {
+            RectangleShape extent = MaxExtents.ThinkGeoMaps;
+            if (map == null) return extent;
+
+            var targetProj4 = map.DisplayProjectionParameters;
+            if (string.IsNullOrWhiteSpace(targetProj4))
+            {
+                return extent;
+            }
+
+            var sourceProj4 = Proj4Projection.GetGoogleMapParametersString();
+            if (Proj4StringsEqual(sourceProj4, targetProj4))
+            {
+                return extent;
+            }
+
+            var projection = new Proj4Projection();
+            projection.InternalProjectionParametersString = sourceProj4;
+            projection.ExternalProjectionParametersString = targetProj4;
+            projection.SyncProjectionParametersString();
+            if (projection.CanProject())
+            {
+                try
+                {
+                    projection.Open();
+                    extent = projection.ConvertToExternalProjection(extent);
+                }
+                catch (Exception ex)
+                {
+                    GisEditor.LoggerManager.Log(LoggerLevel.Debug, ex.Message, new ExceptionInfo(ex));
+                }
+                finally
+                {
+                    projection.Close();
+                }
+            }
+
+            return extent;
+        }
+
+        internal static bool IsWorldMapsOverlay(Overlay overlay)
+        {
+            if (overlay == null) return false;
+
+            var layerOverlay = overlay as LayerOverlay;
+            if (layerOverlay == null) return false;
+
+            if (layerOverlay.Tag is string tag && tag.Equals(WorldMapsOverlayTag, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return layerOverlay.Layers.OfType<MvtTilesAsyncLayer>().Any();
+        }
+
+        internal static bool TryGetWorldMapsLayer(Overlay overlay, out MvtTilesAsyncLayer worldMapsLayer)
+        {
+            worldMapsLayer = null;
+            var layerOverlay = overlay as LayerOverlay;
+            if (layerOverlay == null) return false;
+
+            worldMapsLayer = layerOverlay.Layers.OfType<MvtTilesAsyncLayer>().FirstOrDefault();
+            return worldMapsLayer != null;
+        }
+
+        internal static void ConfigureWorldMapsOverlay(LayerOverlay overlay, GisEditorWpfMap map, string targetProj4, GeographyUnit? targetUnitOverride = null)
+        {
+            if (overlay == null || map == null) return;
+            if (!TryGetWorldMapsLayer(overlay, out var worldMapsLayer)) return;
+
+            ConfigureWorldMapsLayer(worldMapsLayer, map, targetProj4, targetUnitOverride);
+        }
+
+        internal static void ConfigureWorldMapsLayer(MvtTilesAsyncLayer worldMapsLayer, GisEditorWpfMap map, string targetProj4, GeographyUnit? targetUnitOverride = null)
+        {
+            if (worldMapsLayer == null || map == null) return;
+
+            if (string.IsNullOrWhiteSpace(worldMapsLayer.StyleJsonUri))
+            {
+                worldMapsLayer.StyleJsonUri = WorldMapsStyleOptions.FirstOrDefault()?.StyleJsonUri ?? DefaultWorldMapsStyleUri;
+            }
+
+            var targetUnit = targetUnitOverride ?? map.MapUnit;
+            ApplyWorldMapsProjection(worldMapsLayer, targetProj4, targetUnit);
+            worldMapsLayer.MapUnit = targetUnit;
+            ApplyWorldMapsCache(worldMapsLayer);
+        }
+
+        private static void ApplyWorldMapsProjection(MvtTilesAsyncLayer layer, string targetProj4, GeographyUnit mapUnit)
+        {
+            if (layer == null) return;
+            if (string.IsNullOrWhiteSpace(targetProj4)) return;
+
+            var googleProj4 = Proj4Projection.GetGoogleMapParametersString();
+            if (Proj4StringsEqual(googleProj4, targetProj4))
+            {
+                layer.ProjectionConverter = null;
+                return;
+            }
+
+            if (mapUnit == GeographyUnit.DecimalDegree)
+            {
+                layer.ProjectionConverter = new ProjectionConverter(3857, 4326);
+            }
+            else
+            {
+                layer.ProjectionConverter = new ProjectionConverter(3857, targetProj4);
+            }
+        }
+
+        private static LayerOverlay CreateWorldMapsOverlay()
+        {
+            var styleUri = WorldMapsStyleOptions.FirstOrDefault()?.StyleJsonUri ?? DefaultWorldMapsStyleUri;
+            var worldMapsLayer = new MvtTilesAsyncLayer(styleUri)
+            {
+                Name = "ThinkGeo Maps",
+                DrawingExceptionMode = DrawingExceptionMode.DrawException
+            };
+            worldMapsLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(WorldMapsLayer_DrawingException);
+
+            var overlay = new LayerOverlay
+            {
+                TileType = TileType.SingleTile,
+                Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName"),
+                DrawingExceptionMode = DrawingExceptionMode.DrawException,
+                IsBase = true,
+                Tag = WorldMapsOverlayTag
+            };
+            overlay.Layers.Add(worldMapsLayer);
+
+            ApplyWorldMapsCache(worldMapsLayer);
+            return overlay;
+        }
+
+        private static void ApplyWorldMapsCache(MvtTilesAsyncLayer worldMapsLayer)
+        {
+            if (worldMapsLayer == null) return;
+            if (string.IsNullOrWhiteSpace(TileOverlayExtension.TemporaryPath)) return;
+
+            string cacheKey = GetStyleCacheKey(worldMapsLayer.StyleJsonUri);
+            string cacheFolder = Path.Combine(TileOverlayExtension.TemporaryPath, "ThinkGeoVectorMaps", cacheKey);
+            worldMapsLayer.VectorTileCache = new FileTileCache(cacheFolder);
+        }
+
+        private static string GetStyleCacheKey(string styleJsonUri)
+        {
+            if (string.IsNullOrWhiteSpace(styleJsonUri)) return "default";
+
+            if (Uri.TryCreate(styleJsonUri, UriKind.Absolute, out var uri))
+            {
+                if (uri.Segments.Length >= 2)
+                {
+                    var segment = uri.Segments[uri.Segments.Length - 2].Trim('/').Trim();
+                    if (!string.IsNullOrWhiteSpace(segment))
+                    {
+                        return SanitizePathSegment(segment);
+                    }
+                }
+            }
+
+            return SanitizePathSegment(styleJsonUri);
+        }
+
+        private static string SanitizePathSegment(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return "default";
+
+            foreach (var invalidChar in Path.GetInvalidFileNameChars())
+            {
+                value = value.Replace(invalidChar, '_');
+            }
+            return value;
+        }
+
+        private static string ResolveWorldMapsStyleUri(string fallback, params string[] keys)
+        {
+            var value = GetSettingValue(keys);
+            return string.IsNullOrWhiteSpace(value) ? fallback : value;
+        }
+
+        private static async Task AddOverlayInGoogleProjection(Overlay baseOverlay, GisEditorWpfMap map)
         {
             var extendedMap = map;
             string targetProj4 = Proj4Projection.GetGoogleMapParametersString();
@@ -242,10 +490,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 extendedMap.DisplayProjectionParameters = targetProj4;
 
                 //extendedMap.ReprojectMap(targetProj4);
-                SetExtent(map);
+                await SetExtent(map);
                 if (map.MapUnit != GeographyUnit.Meter)
                 {
                     map.MapUnit = GeographyUnit.Meter;
+                }
+                if (IsWorldMapsOverlay(baseOverlay))
+                {
+                    ConfigureWorldMapsOverlay(baseOverlay as LayerOverlay, map, targetProj4, GeographyUnit.Meter);
                 }
                 extendedMap.Refresh(new Overlay[] { baseOverlay, extendedMap.ExtentOverlay });
             }
@@ -314,14 +566,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             RaiseDrawingException<OpenStreetMapOverlay>("OpenStreetMap", sender, e);
         }
 
-        private static void WmkOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
+        private static void WorldMapsLayer_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
         {
-            RaiseDrawingException<WorldMapKitMapOverlay>("WorldMapKit", sender, e);
+            RaiseDrawingException<MvtTilesAsyncLayer>("ThinkGeo Maps", sender, e);
         }
 
-        private static void BingOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
+        private static void ThinkGeoCloudRasterOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
         {
-            RaiseDrawingException<BingMapsOverlay>("Bing Maps", sender, e);
+            RaiseDrawingException<ThinkGeoCloudRasterMapsOverlay>("ThinkGeo Cloud Raster Maps", sender, e);
         }
 
         internal static void RaiseDrawingException<T>(string name, object sender, EventArgs e)

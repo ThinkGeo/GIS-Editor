@@ -21,7 +21,7 @@ using System;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ThinkGeo.Core;
+using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -37,29 +37,44 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void CreateWorldMapKitSubItems(MenuItem menuItem)
         {
-            var enumNames = Enum.GetNames(typeof(WorldMapKitMapType)).ToArray();
+            var styleOptions = BaseMapsHelper.WorldMapsStyleOptions;
+            var currentOverlay = GisEditor.LayerListManager.SelectedLayerListItem?.ConcreteObject as Overlay;
+            BaseMapsHelper.TryGetWorldMapsLayer(currentOverlay, out var currentLayer);
+            var currentStyleUri = currentLayer?.StyleJsonUri;
 
-            for (int i = 0; i < enumNames.Length; i++)
+            foreach (var styleOption in styleOptions)
             {
+                var styleName = styleOption.Name;
                 var subEntity = new MenuItem
                 {
-                    Header = enumNames[i],
-                    IsChecked = GisEditor.ActiveMap.Overlays.OfType<WorldMapKitMapOverlay>().First().MapType.ToString() == enumNames[i]
+                    Header = styleName,
+                    IsChecked = !string.IsNullOrWhiteSpace(currentStyleUri)
+                        && currentStyleUri.Equals(styleOption.StyleJsonUri, StringComparison.OrdinalIgnoreCase)
                 };
 
-                string enumName = enumNames[i];
+                var selectedStyle = styleOption;
                 subEntity.Click += (s, e) =>
                 {
                     if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
-                    var worldMapKitMapOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as WorldMapKitMapOverlay;
-                    if (worldMapKitMapOverlay != null)
+                    var overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Overlay;
+                    if (overlay == null) return;
+
+                    if (BaseMapsHelper.TryGetWorldMapsLayer(overlay, out var worldMapsLayer))
                     {
-                        worldMapKitMapOverlay.MapType = (WorldMapKitMapType)Enum.Parse(typeof(WorldMapKitMapType), enumName);
-                        worldMapKitMapOverlay.Invalidate();
+                        if (!selectedStyle.StyleJsonUri.Equals(worldMapsLayer.StyleJsonUri, StringComparison.OrdinalIgnoreCase))
+                        {
+                            worldMapsLayer.StyleJsonUri = selectedStyle.StyleJsonUri;
+                            if (GisEditor.ActiveMap != null)
+                            {
+                                BaseMapsHelper.ConfigureWorldMapsLayer(worldMapsLayer, GisEditor.ActiveMap, GisEditor.ActiveMap.DisplayProjectionParameters);
+                            }
+                        }
+
+                        overlay.RefreshWithBufferSettings();
 
                         menuItem.Items.OfType<MenuItem>().ForEach(item =>
                         {
-                            item.IsChecked = item.Header.Equals(enumName);
+                            item.IsChecked = item.Header.Equals(styleName);
                         });
                     }
                 };

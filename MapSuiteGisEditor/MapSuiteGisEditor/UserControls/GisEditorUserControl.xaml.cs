@@ -1905,8 +1905,8 @@ namespace ThinkGeo.MapSuite.GisEditor
             bool isOnlyOneWorldMapKitOverlay = documentWindows.Count == 1
                 && documentWindows[0].Content != null
                 && (documentWindows[0].Content as GisEditorWpfMap).Overlays.Count == 1
-                && ((documentWindows[0].Content as GisEditorWpfMap).Overlays[0] is WorldMapKitMapOverlay
-                    || (documentWindows[0].Content as GisEditorWpfMap).Overlays[0] is BingMapsOverlay
+                && (IsWorldMapsOverlay((documentWindows[0].Content as GisEditorWpfMap).Overlays[0])
+                    || (documentWindows[0].Content as GisEditorWpfMap).Overlays[0] is ThinkGeoCloudRasterMapsOverlay
                     || (documentWindows[0].Content as GisEditorWpfMap).Overlays[0] is OpenStreetMapOverlay);
 
             if (isMapStateMatched || isCloseSilently || isOnlyOneWorldMapKitOverlay)
@@ -1957,6 +1957,18 @@ namespace ThinkGeo.MapSuite.GisEditor
         {
             var allMapNames = GisEditor.DockWindowManager.DocumentWindows.Select(document => document.Title);
             return Regex.IsMatch(mapName, mapNamePattern) && !allMapNames.Contains(mapName) && !mapName.Contains("__");
+        }
+
+        private static bool IsWorldMapsOverlay(Overlay overlay)
+        {
+            var layerOverlay = overlay as LayerOverlay;
+            if (layerOverlay == null) return false;
+            if (layerOverlay.Tag is string tag && tag.Equals("WorldMapKitOverlay", StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return layerOverlay.Layers.OfType<MvtTilesAsyncLayer>().Any();
         }
 
         private void Launch()

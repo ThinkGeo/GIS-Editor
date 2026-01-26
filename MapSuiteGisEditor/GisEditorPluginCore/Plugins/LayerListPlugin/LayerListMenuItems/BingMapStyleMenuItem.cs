@@ -38,25 +38,27 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void CreateSubItems(MenuItem menuItem)
         {
-            var enumNames = Enum.GetNames(typeof(BingMapsMapType)).Where(name => !name.Contains("Birdseye")).ToArray();
+            var enumNames = Enum.GetNames(typeof(ThinkGeoCloudRasterMapsMapType))
+                .Where(name => name.IndexOf("_V", StringComparison.OrdinalIgnoreCase) < 0)
+                .ToArray();
 
             for (int i = 0; i < enumNames.Length; i++)
             {
                 var subEntity = new MenuItem
                 {
                     Header = enumNames[i],
-                    IsChecked = GisEditor.ActiveMap.Overlays.OfType<BingMapsOverlay>().First().MapType.ToString() == enumNames[i]
+                    IsChecked = GisEditor.ActiveMap.Overlays.OfType<ThinkGeoCloudRasterMapsOverlay>().First().MapType.ToString() == enumNames[i]
                 };
 
                 string enumName = enumNames[i];
                 subEntity.Click += (s, e) =>
                 {
                     if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
-                    var bingOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as BingMapsOverlay;
-                    if (bingOverlay != null)
+                    var rasterOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as ThinkGeoCloudRasterMapsOverlay;
+                    if (rasterOverlay != null)
                     {
-                        bingOverlay.MapType = (BingMapsMapType)Enum.Parse(typeof(BingMapsMapType), enumName);
-                        bingOverlay.Invalidate();
+                        rasterOverlay.MapType = (ThinkGeoCloudRasterMapsMapType)Enum.Parse(typeof(ThinkGeoCloudRasterMapsMapType), enumName);
+                        rasterOverlay.Invalidate();
 
                         menuItem.Items.OfType<MenuItem>().ForEach(item =>
                         {

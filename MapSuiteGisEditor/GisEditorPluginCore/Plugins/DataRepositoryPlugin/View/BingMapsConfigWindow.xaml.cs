@@ -49,7 +49,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get { return bingMapsConfigViewModel.BingMapsKey; }
         }
 
-        public BingMapsMapType BingMapsStyle
+        public string ClientSecret
+        {
+            get { return bingMapsConfigViewModel.ClientSecret; }
+        }
+
+        public ThinkGeoCloudRasterMapsMapType BingMapsStyle
         {
             get { return bingMapsConfigViewModel.MapType; }
         }

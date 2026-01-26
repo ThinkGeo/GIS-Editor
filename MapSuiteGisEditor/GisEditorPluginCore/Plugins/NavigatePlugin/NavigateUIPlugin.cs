@@ -939,7 +939,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Collection<RectangleShape> rectangles = new Collection<RectangleShape>();
             foreach (var overlay in map.Overlays)
             {
-                if (overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay)
+                if (BaseMapsHelper.IsWorldMapsOverlay(overlay) || overlay is OpenStreetMapOverlay || overlay is ThinkGeoCloudRasterMapsOverlay)
                 {
                     continue;
                 }
@@ -956,8 +956,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             else
             {
-                Overlay baseOverlay = map.Overlays.FirstOrDefault(overlay => overlay is WorldMapKitMapOverlay || overlay is OpenStreetMapOverlay || overlay is BingMapsOverlay);
-                targetExtent = baseOverlay != null ? baseOverlay.GetBoundingBox() : map.GetMaxExtent();
+                Overlay baseOverlay = map.Overlays.FirstOrDefault(overlay => BaseMapsHelper.IsWorldMapsOverlay(overlay) || overlay is OpenStreetMapOverlay || overlay is ThinkGeoCloudRasterMapsOverlay);
+                if (baseOverlay != null)
+                {
+                    targetExtent = BaseMapsHelper.IsWorldMapsOverlay(baseOverlay)
+                        ? BaseMapsHelper.GetThinkGeoMapsExtent(map)
+                        : baseOverlay.GetBoundingBox();
+                }
+                else
+                {
+                    targetExtent = map.GetMaxExtent();
+                }
             }
 
             if (targetExtent == null)

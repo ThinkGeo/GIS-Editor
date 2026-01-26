@@ -32,14 +32,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     [Serializable]
     public class BingMapDataRepositoryItem : DataRepositoryItem, IStorableSettings
     {
-        private string bingMapsKey;
-        private BingMapsMapType bingMapType;
+        private string clientId;
+        private string clientSecret;
+        private ThinkGeoCloudRasterMapsMapType mapType;
 
         public BingMapDataRepositoryItem()
         {
             Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
             Icon = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/BingMaps.PNG", UriKind.RelativeOrAbsolute));
-            bingMapsKey = string.Empty;
+            clientId = BaseMapsHelper.ThinkGeoCloudClientId;
+            clientSecret = BaseMapsHelper.ThinkGeoCloudClientSecret;
+            mapType = ThinkGeoCloudRasterMapsMapType.Light;
             GisEditor.ProjectManager.Opened += ProjectManager_Opened;
 
             if (IsLoadable)
@@ -71,19 +74,25 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         internal string BingMapsKey
         {
-            get { return bingMapsKey; }
-            set { bingMapsKey = value; }
+            get { return clientId; }
+            set { clientId = value; }
         }
 
-        internal BingMapsMapType BingMapType
+        internal string ThinkGeoCloudClientSecret
         {
-            get { return bingMapType; }
-            set { bingMapType = value; }
+            get { return clientSecret; }
+            set { clientSecret = value; }
+        }
+
+        internal ThinkGeoCloudRasterMapsMapType ThinkGeoCloudMapType
+        {
+            get { return mapType; }
+            set { mapType = value; }
         }
 
         protected override void LoadCore()
         {
-            BaseMapsHelper.AddBingMapsOverlay(GisEditor.ActiveMap);
+            BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlay(GisEditor.ActiveMap);
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadCoreDescription));
         }
 
@@ -102,16 +111,35 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         public StorableSettings GetSettings()
         {
             var settings = new StorableSettings();
-            settings.GlobalSettings["BingMapsKey"] = BingMapsKey;
-            settings.GlobalSettings["BingMapType"] = BingMapType.ToString();
+            settings.GlobalSettings["ThinkGeoCloudClientId"] = BingMapsKey;
+            settings.GlobalSettings["ThinkGeoCloudClientSecret"] = ThinkGeoCloudClientSecret;
+            settings.GlobalSettings["ThinkGeoCloudRasterMapType"] = ThinkGeoCloudMapType.ToString();
             return settings;
         }
 
         public void ApplySettings(StorableSettings settings)
         {
-            if (settings.GlobalSettings.ContainsKey("BingMapType"))
+            if (settings.GlobalSettings.ContainsKey("ThinkGeoCloudClientId"))
             {
-                bingMapType = (BingMapsMapType)Enum.Parse(typeof(BingMapsMapType), settings.GlobalSettings["BingMapType"]);
+                clientId = settings.GlobalSettings["ThinkGeoCloudClientId"];
+            }
+            else if (settings.GlobalSettings.ContainsKey("BingMapsKey"))
+            {
+                clientId = settings.GlobalSettings["BingMapsKey"];
+            }
+
+            if (settings.GlobalSettings.ContainsKey("ThinkGeoCloudClientSecret"))
+            {
+                clientSecret = settings.GlobalSettings["ThinkGeoCloudClientSecret"];
+            }
+
+            if (settings.GlobalSettings.ContainsKey("ThinkGeoCloudRasterMapType"))
+            {
+                mapType = (ThinkGeoCloudRasterMapsMapType)Enum.Parse(typeof(ThinkGeoCloudRasterMapsMapType), settings.GlobalSettings["ThinkGeoCloudRasterMapType"]);
+            }
+            else if (settings.GlobalSettings.ContainsKey("BingMapType"))
+            {
+                mapType = ConvertLegacyBingMapType(settings.GlobalSettings["BingMapType"]);
             }
         }
 
@@ -126,48 +154,76 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (projectManager != null)
             {
                 var maps = projectManager.GetDeserializedMaps();
-                var mapsWithBings = maps.Select(m => new { Map = m, BingOverlays = m.Overlays.OfType<BingMapsOverlay>().ToList() })
-                    .Where(o => o.BingOverlays.Count > 0).ToList();
+                var mapsWithRasters = maps.Select(m => new { Map = m, RasterOverlays = m.Overlays.OfType<ThinkGeoCloudRasterMapsOverlay>().ToList() })
+                    .Where(o => o.RasterOverlays.Count > 0).ToList();
 
-                var hasKey = !String.IsNullOrEmpty(BingMapsKey);
+                var hasCredentials = !String.IsNullOrEmpty(BingMapsKey) && !String.IsNullOrEmpty(ThinkGeoCloudClientSecret);
                 var needAskForKey = false;
-                foreach (var mapWithBings in mapsWithBings)
+                foreach (var mapWithRasters in mapsWithRasters)
                 {
-                    foreach (var bing in mapWithBings.BingOverlays)
+                    foreach (var rasterOverlay in mapWithRasters.RasterOverlays)
                     {
-                        if (hasKey) bing.ApplicationId = BingMapsKey;
-                        else if (mapWithBings.Map.Overlays.Contains(bing))
+                        if (hasCredentials)
+                        {
+                            rasterOverlay.ClientId = BingMapsKey;
+                            rasterOverlay.ClientSecret = ThinkGeoCloudClientSecret;
+                        }
+                        else if (mapWithRasters.Map.Overlays.Contains(rasterOverlay))
                         {
                             needAskForKey = true;
-                            mapWithBings.Map.Overlays.Remove(bing);
+                            mapWithRasters.Map.Overlays.Remove(rasterOverlay);
                         }
                     }
                 }
 
-                if (needAskForKey && mapsWithBings.Count > 0)
+                if (needAskForKey && mapsWithRasters.Count > 0)
                 {
                     BingMapsConfigWindow configWindow = new BingMapsConfigWindow();
                     if (configWindow.ShowDialog().GetValueOrDefault())
                     {
-                        foreach (var mapWithBings in mapsWithBings)
+                        foreach (var mapWithRasters in mapsWithRasters)
                         {
-                            foreach (var bing in mapWithBings.BingOverlays)
+                            foreach (var rasterOverlay in mapWithRasters.RasterOverlays)
                             {
-                                if (!mapWithBings.Map.Overlays.Contains(bing))
+                                if (!mapWithRasters.Map.Overlays.Contains(rasterOverlay))
                                 {
-                                    bing.ApplicationId = BingMapsKey;
-                                    mapWithBings.Map.Overlays.Insert(0, bing);
+                                    rasterOverlay.ClientId = configWindow.BingMapsKey;
+                                    rasterOverlay.ClientSecret = configWindow.ClientSecret;
+                                    mapWithRasters.Map.Overlays.Insert(0, rasterOverlay);
                                 }
                             }
 
-                            if (mapWithBings.Map.ActualWidth != 0 || mapWithBings.Map.ActualHeight != 0)
+                            if (mapWithRasters.Map.ActualWidth != 0 || mapWithRasters.Map.ActualHeight != 0)
                             {
-                                mapWithBings.Map.RefreshAsync();
+                                mapWithRasters.Map.RefreshAsync();
                             }
                         }
                     }
                 }
             }
+        }
+
+        private static ThinkGeoCloudRasterMapsMapType ConvertLegacyBingMapType(string legacyType)
+        {
+            if (String.IsNullOrWhiteSpace(legacyType)) return ThinkGeoCloudRasterMapsMapType.Default;
+
+            if (Enum.TryParse(legacyType, true, out BingMapsMapType bingType))
+            {
+                switch (bingType)
+                {
+                    case BingMapsMapType.Aerial:
+                        return ThinkGeoCloudRasterMapsMapType.Aerial;
+                    case BingMapsMapType.AerialWithLabels:
+                        return ThinkGeoCloudRasterMapsMapType.Hybrid;
+                    case BingMapsMapType.CanvasDark:
+                        return ThinkGeoCloudRasterMapsMapType.Dark;
+                    case BingMapsMapType.Road:
+                    default:
+                        return ThinkGeoCloudRasterMapsMapType.Light;
+                }
+            }
+
+            return ThinkGeoCloudRasterMapsMapType.Default;
         }
     }
 }

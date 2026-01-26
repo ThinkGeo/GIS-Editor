@@ -558,9 +558,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (overlay is LayerOverlay) map.DrawOverlay((LayerOverlay)overlay, geoCanvas);
                 else if (overlay is OpenStreetMapOverlay) map.DrawOverlay((OpenStreetMapOverlay)overlay, geoCanvas);
-                else if (overlay is WorldMapKitMapOverlay) map.DrawOverlay((WorldMapKitMapOverlay)overlay, geoCanvas);
                 else if (overlay is WmsOverlay) map.DrawOverlay((WmsOverlay)overlay, geoCanvas, map.ActualWidth, map.ActualHeight);
-                else if (overlay is BingMapsOverlay) map.DrawOverlay((BingMapsOverlay)overlay, geoCanvas);
+                else if (overlay is ThinkGeoCloudRasterMapsOverlay) map.DrawOverlay((ThinkGeoCloudRasterMapsOverlay)overlay, geoCanvas);
             }
 
             geoCanvas.EndDrawing();
@@ -616,33 +615,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        public static void DrawOverlay(this GisEditorWpfMap map, BingMapsOverlay bingOverlay, GeoCanvas geoCanvas)
+        public static void DrawOverlay(this GisEditorWpfMap map, ThinkGeoCloudRasterMapsOverlay rasterOverlay, GeoCanvas geoCanvas)
         {
-            BingMapsLayer bingLayer = new BingMapsLayer(bingOverlay.ApplicationId, (BingMapsMapType)bingOverlay.MapType);
-            bingLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-            bingLayer.Proxy = bingOverlay.WebProxy;
-            bingLayer.ProjectionFromSphericalMercator = bingOverlay.ProjectionConverterFromServerProjection ?? bingOverlay.ProjectionConverter;
-            bingLayer.TimeoutInSeconds = bingOverlay.TimeoutInSeconds;
-            bingLayer.SafeProcess(() =>
+            ThinkGeoRasterMapsAsyncLayer rasterLayer = new ThinkGeoRasterMapsAsyncLayer(rasterOverlay.ClientId, rasterOverlay.ClientSecret, rasterOverlay.MapType);
+            rasterLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
+            rasterLayer.WebProxy = rasterOverlay.WebProxy;
+            rasterLayer.ProjectionConverterFromServerProjection = rasterOverlay.ProjectionConverterFromServerProjection ?? rasterOverlay.ProjectionConverter;
+            rasterLayer.TimeoutInSeconds = rasterOverlay.TimeoutInSeconds;
+            rasterLayer.SafeProcess(() =>
             {
-                bingLayer.Draw(geoCanvas, new Collection<SimpleCandidate>());
-            });
-        }
-
-        public static void DrawOverlay(this GisEditorWpfMap map, WorldMapKitMapOverlay worldMapKitWmsWpfOverlay, GeoCanvas geoCanvas)
-        {
-            WorldMapKitLayer wmkLayer = new WorldMapKitLayer(worldMapKitWmsWpfOverlay.ClientId, worldMapKitWmsWpfOverlay.PrivateKey);
-
-            wmkLayer.DrawingExceptionMode = worldMapKitWmsWpfOverlay.DrawingExceptionMode;
-            wmkLayer.LowerScale = 1;
-            wmkLayer.UpperScale = double.MaxValue;
-            wmkLayer.WebProxy = worldMapKitWmsWpfOverlay.WebProxy;
-            wmkLayer.Projection = worldMapKitWmsWpfOverlay.Projection;
-            wmkLayer.TimeoutInSecond = worldMapKitWmsWpfOverlay.TimeoutInSeconds;
-            wmkLayer.MapType = worldMapKitWmsWpfOverlay.MapType;
-            wmkLayer.SafeProcess(() =>
-            {
-                wmkLayer.Draw(geoCanvas, new Collection<SimpleCandidate>());
+                rasterLayer.DrawAsync(geoCanvas, new Collection<SimpleCandidate>());
             });
         }
 
@@ -1085,26 +1067,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void ReprojectWMKOverlays(WpfMap map, string oldParameters, string newParameters)
         {
-            var wmk = (from overlay in map.Overlays.OfType<WorldMapKitMapOverlay>()
-                       select overlay).FirstOrDefault();
-            if (wmk != null)
+            var editorMap = map as GisEditorWpfMap;
+            if (editorMap == null) return;
+
+            var worldMapsOverlays = editorMap.Overlays.OfType<LayerOverlay>().Where(BaseMapsHelper.IsWorldMapsOverlay);
+            var targetUnit = GisEditorWpfMap.GetGeographyUnit(newParameters);
+            foreach (var overlay in worldMapsOverlays)
             {
-                GeographyUnit unit = GisEditorWpfMap.GetGeographyUnit(newParameters);
-                switch (unit)
-                {
-                    case GeographyUnit.DecimalDegree:
-                        if (wmk.Projection != WorldMapKitProjection.DecimalDegrees)
-                            wmk.Projection = WorldMapKitProjection.DecimalDegrees;
-                        break;
-
-                    case GeographyUnit.Meter:
-                        if (wmk.Projection != WorldMapKitProjection.SphericalMercator)
-                            wmk.Projection = WorldMapKitProjection.SphericalMercator;
-                        break;
-                }
-                wmk.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-
-                wmk.RefreshCache();
+                BaseMapsHelper.ConfigureWorldMapsOverlay(overlay, editorMap, newParameters, targetUnit);
             }
         }
 

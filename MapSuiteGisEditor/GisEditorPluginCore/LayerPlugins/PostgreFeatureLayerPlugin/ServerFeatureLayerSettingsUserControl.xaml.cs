@@ -17,10 +17,18 @@
 */
 
 
+using System;
+using System.Globalization;
+using System.Windows.Controls;
+
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
     public partial class ServerFeatureLayerSettingsUserControl : SettingUserControl
     {
+        private const int MinTimeout = 1;
+        private const int MaxTimeout = 1000;
+        private const int DefaultTimeout = 20;
+
         public ServerFeatureLayerSettingsUserControl()
         {
             Title = "Server";
@@ -29,14 +37,34 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public int PostgreTimeoutInSecond
         {
-            get { return (int)TimeoutTextBox.Value; }
-            set { TimeoutTextBox.Value = value; }
+            get { return GetTimeoutValue(TimeoutTextBox); }
+            set { SetTimeoutValue(TimeoutTextBox, value); }
         }
 
         public int SQLTimeoutInSecond
         {
-            get { return (int)SQLTimeoutTextBox.Value; }
-            set { SQLTimeoutTextBox.Value = value; }
+            get { return GetTimeoutValue(SQLTimeoutTextBox); }
+            set { SetTimeoutValue(SQLTimeoutTextBox, value); }
+        }
+
+        private static int GetTimeoutValue(TextBox textBox)
+        {
+            if (textBox == null) return DefaultTimeout;
+
+            if (!int.TryParse(textBox.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+            {
+                return DefaultTimeout;
+            }
+
+            return Math.Max(MinTimeout, Math.Min(MaxTimeout, value));
+        }
+
+        private static void SetTimeoutValue(TextBox textBox, int value)
+        {
+            if (textBox == null) return;
+
+            value = Math.Max(MinTimeout, Math.Min(MaxTimeout, value));
+            textBox.Text = value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

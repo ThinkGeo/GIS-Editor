@@ -133,7 +133,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private string name;
 
         [NonSerialized]
-        private Dictionary<BingMapsOverlay, string> bingMapsApplicationIds;
+        private Dictionary<ThinkGeoCloudRasterMapsOverlay, Tuple<string, string>> cloudRasterMapsCredentials;
 
         [NonSerialized]
         private Collection<RectangleShape> mapNextExtents;
@@ -175,7 +175,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             ResetMapVersion();
             mapNextExtents = new Collection<RectangleShape>();
-            bingMapsApplicationIds = new Dictionary<BingMapsOverlay, string>();
+            cloudRasterMapsCredentials = new Dictionary<ThinkGeoCloudRasterMapsOverlay, Tuple<string, string>>();
             //ZoomLevelSet = new GoogleMapsZoomLevelSet();
             //foreach (var item in ZoomLevelSet.GetZoomLevels())
             //{
@@ -201,7 +201,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             ExtentOverlay.MapMouseDown += new EventHandler<MapMouseDownInteractiveOverlayEventArgs>(ExtentOverlay_MapMouseDown);
             ExtentOverlay.MapMouseUp += new EventHandler<MapMouseUpInteractiveOverlayEventArgs>(ExtentOverlay_MapMouseUp);
             TrackOverlay = new GisEditorTrackInteractiveOverlay();
-            DisplayProjectionParameters = Proj4Projection.GetEpsgParametersString(4326);
+            DisplayProjectionParameters = Proj4Projection.GetEpsgParametersString(3857);
 
             MapTools.PanZoomBar.IsEnabled = false;
             MapTools.Logo.IsEnabled = false;
@@ -721,7 +721,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     else
                     {
                         FeatureLayer featureLayer = l as FeatureLayer;
-                        if (featureLayer != null && featureLayer.FeatureSource.CanGetCountQuickly()) return featureLayer.QueryTools.GetCount() > 0;
+                        if (featureLayer != null && featureLayer.IsOpen && featureLayer.FeatureSource.CanGetCountQuickly()) return featureLayer.QueryTools.GetCount() > 0;
                         else return true;
                     }
                 }))
@@ -750,6 +750,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         private RectangleShape GetVisibleBoundingBox(Layer layer)
         {
             if (layer == null) return null;
+
+            layer.Open();
 
             FeatureLayer featureLayer = layer as FeatureLayer;
             RectangleShape extent = new RectangleShape(-180, 90, 180, -90); ;
@@ -1390,14 +1392,17 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         {
             extentOverlay = ExtentOverlay;
             name = Name;
-            var bingMapsOverlays = Overlays.OfType<BingMapsOverlay>().Where(o => !string.IsNullOrEmpty(o.ApplicationId)).ToList();
-            if (bingMapsOverlays.Count > 0)
+            var rasterOverlays = Overlays.OfType<ThinkGeoCloudRasterMapsOverlay>()
+                .Where(o => !string.IsNullOrEmpty(o.ClientId) || !string.IsNullOrEmpty(o.ClientSecret))
+                .ToList();
+            if (rasterOverlays.Count > 0)
             {
-                bingMapsApplicationIds.Clear();
-                foreach (var bingMapsOverlay in bingMapsOverlays)
+                cloudRasterMapsCredentials.Clear();
+                foreach (var rasterOverlay in rasterOverlays)
                 {
-                    bingMapsApplicationIds.Add(bingMapsOverlay, bingMapsOverlay.ApplicationId);
-                    bingMapsOverlay.ApplicationId = string.Empty;
+                    cloudRasterMapsCredentials.Add(rasterOverlay, Tuple.Create(rasterOverlay.ClientId, rasterOverlay.ClientSecret));
+                    rasterOverlay.ClientId = string.Empty;
+                    rasterOverlay.ClientSecret = string.Empty;
                 }
             }
         }
@@ -1405,16 +1410,16 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         [OnGeoserialized]
         private void OnSerializedInternal()
         {
-            var bingMapsOverlays = Overlays.OfType<BingMapsOverlay>().ToArray();
-            foreach (var bingMapsOverlay in bingMapsOverlays)
+            var rasterOverlays = Overlays.OfType<ThinkGeoCloudRasterMapsOverlay>().ToArray();
+            foreach (var rasterOverlay in rasterOverlays)
             {
-                string applicationId = string.Empty;
-                if (bingMapsApplicationIds.ContainsKey(bingMapsOverlay))
-                { applicationId = bingMapsApplicationIds[bingMapsOverlay]; }
-
-                bingMapsOverlay.ApplicationId = applicationId;
+                if (cloudRasterMapsCredentials.TryGetValue(rasterOverlay, out var credentials))
+                {
+                    rasterOverlay.ClientId = credentials.Item1;
+                    rasterOverlay.ClientSecret = credentials.Item2;
+                }
             }
-            bingMapsApplicationIds.Clear();
+            cloudRasterMapsCredentials.Clear();
         }
 
         [OnGeodeserialized]

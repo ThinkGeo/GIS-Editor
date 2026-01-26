@@ -272,28 +272,37 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 mapPrinterLayer.Layers.Add(osmLayer);
             }
 
-            var bingOverlay = map.Overlays.OfType<BingMapsOverlay>().FirstOrDefault();
-            if (bingOverlay != null && bingOverlay.IsVisible)
+            var rasterOverlay = map.Overlays.OfType<ThinkGeoCloudRasterMapsOverlay>().FirstOrDefault();
+            if (rasterOverlay != null && rasterOverlay.IsVisible)
             {
-                BingMapsLayer bingMapsLayer = new BingMapsLayer(bingOverlay.ApplicationId, (BingMapsMapType)bingOverlay.MapType);
-                bingMapsLayer.TileCache = null;
-                bingMapsLayer.TimeoutInSeconds = 5;
-                bingMapsLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-                bingMapsLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(BingMapsLayer_DrawingException);
-                mapPrinterLayer.Layers.Add(bingMapsLayer);
+                ThinkGeoRasterMapsAsyncLayer rasterLayer = new ThinkGeoRasterMapsAsyncLayer(rasterOverlay.ClientId, rasterOverlay.ClientSecret, rasterOverlay.MapType);
+                rasterLayer.TileCache = null;
+                rasterLayer.TimeoutInSeconds = 5;
+                rasterLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
+                rasterLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(ThinkGeoCloudRasterMapsLayer_DrawingException);
+                mapPrinterLayer.Layers.Add(rasterLayer);
             }
 
-            var wmlkOverlay = map.Overlays.OfType<WorldMapKitMapOverlay>().FirstOrDefault();
-            if (wmlkOverlay != null && wmlkOverlay.IsVisible)
+            var worldMapsOverlay = map.Overlays.OfType<LayerOverlay>().FirstOrDefault(BaseMapsHelper.IsWorldMapsOverlay);
+            if (worldMapsOverlay != null && worldMapsOverlay.IsVisible && BaseMapsHelper.TryGetWorldMapsLayer(worldMapsOverlay, out var sourceWorldMapsLayer))
             {
-                WorldMapKitLayer worldMapKitLayer = new WorldMapKitLayer(wmlkOverlay.ClientId, wmlkOverlay.PrivateKey);
-                worldMapKitLayer.TimeoutInSecond = 5;
-                worldMapKitLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
-                worldMapKitLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(WorldMapKitLayer_DrawingException);
-                worldMapKitLayer.TileCache = null;
-                worldMapKitLayer.Projection = wmlkOverlay.Projection;
-                worldMapKitLayer.MapType = wmlkOverlay.MapType;
-                mapPrinterLayer.Layers.Add(worldMapKitLayer);
+                var styleUri = sourceWorldMapsLayer.StyleJsonUri;
+                if (string.IsNullOrWhiteSpace(styleUri))
+                {
+                    styleUri = BaseMapsHelper.WorldMapsStyleOptions.FirstOrDefault()?.StyleJsonUri;
+                }
+
+                MvtTilesAsyncLayer worldMapsLayer = new MvtTilesAsyncLayer(styleUri);
+                worldMapsLayer.TimeoutInSeconds = 5;
+                worldMapsLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
+                worldMapsLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(ThinkGeoMapsLayer_DrawingException);
+                worldMapsLayer.VectorTileCache = null;
+                worldMapsLayer.MapUnit = map.MapUnit;
+                if (sourceWorldMapsLayer.ProjectionConverter != null)
+                {
+                    worldMapsLayer.ProjectionConverter = sourceWorldMapsLayer.ProjectionConverter.CloneDeep();
+                }
+                mapPrinterLayer.Layers.Add(worldMapsLayer);
             }
         }
 
@@ -330,14 +339,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return result;
         }
 
-        private static void WorldMapKitLayer_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
+        private static void ThinkGeoMapsLayer_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
         {
-            BaseMapsHelper.RaiseDrawingException<WorldMapKitLayer>("World Map Kit", sender, e);
+            BaseMapsHelper.RaiseDrawingException<MvtTilesAsyncLayer>("ThinkGeo Maps", sender, e);
         }
 
-        private static void BingMapsLayer_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
+        private static void ThinkGeoCloudRasterMapsLayer_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
         {
-            BaseMapsHelper.RaiseDrawingException<BingMapsLayer>("Bing Map", sender, e);
+            BaseMapsHelper.RaiseDrawingException<ThinkGeoRasterMapsAsyncLayer>("ThinkGeo Cloud Raster Maps", sender, e);
         }
 
         private static void osmLayer_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
