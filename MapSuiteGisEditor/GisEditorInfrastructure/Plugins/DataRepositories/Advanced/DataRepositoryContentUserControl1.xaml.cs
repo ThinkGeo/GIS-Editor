@@ -243,7 +243,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             {
                 hookedMaps.Add(GisEditor.ActiveMap);
 
-                GisEditor.ActiveMap.Drop += (s, arg) =>
+                GisEditor.ActiveMap.Drop += async (s, arg) =>
                 {
                     var draggedItems = arg.Data.GetData(typeof(DataRepositoryItem[])) as DataRepositoryItem[];
                     if (draggedItems != null && draggedItems.Count() > 0)
@@ -256,7 +256,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         }
                         if (dataRepositoryItem.SourcePlugin != null && dataRepositoryItem.SourcePlugin.CanDropOnMap)
                         {
-                            dataRepositoryItem.SourcePlugin.DropOnMap(draggedItems);
+                            await dataRepositoryItem.SourcePlugin.DropOnMapAsync(draggedItems);
                         }
                     }
 

@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
@@ -46,7 +47,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override void LoadCore()
         {
-            BaseMapsHelper.AddOpenStreetMapOverlay(GisEditor.ActiveMap);
+            _ = LoadCoreAsync();
+        }
+
+        private async Task LoadCoreAsync()
+        {
+            await BaseMapsHelper.AddOpenStreetMapOverlayAsync(GisEditor.ActiveMap);
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadCoreDescription));
         }
 

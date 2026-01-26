@@ -74,7 +74,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (addLayerCommand == null)
                 {
-                    addLayerCommand = new ObservedCommand<string>(layerGeneratorName =>
+                    addLayerCommand = new ObservedCommand<string>(async layerGeneratorName =>
                     {
                         LayerPlugin layerGenerator = SupportedLayerProviders.FirstOrDefault(l => l.Name == layerGeneratorName);
                         if (layerGenerator != null)
@@ -108,7 +108,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                                             CommandHelper.AddToDataRepository(uri.LocalPath);
                                     }
 
-                                    GisEditor.ActiveMap.AddLayersBySettings(newLayers, true);
+                                    await GisEditor.ActiveMap.AddLayersBySettings(newLayers, true);
                                     GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.AddLayerCommandDescription));
                                 }
                             }

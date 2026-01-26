@@ -202,13 +202,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 hookedMaps.Add(GisEditor.ActiveMap);
 
-                GisEditor.ActiveMap.Drop += (s, arg) =>
+                GisEditor.ActiveMap.Drop += async (s, arg) =>
                 {
                     var draggedItems = arg.Data.GetData(typeof(DataRepositoryItem[])) as DataRepositoryItem[];
                     if (draggedItems != null)
                     {
                         var selectedFileItems = draggedItems.OfType<FileDataRepositoryItem>().ToList();
-                        DataRepositoryHelper.PlaceFilesOnMap(selectedFileItems);
+                        await DataRepositoryHelper.PlaceFilesOnMapAsync(selectedFileItems);
                     }
 
                     arg.Handled = true;

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
 using ThinkGeo.Core;
@@ -381,7 +382,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             plugin.GridDefinition = GridDefinition;
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             ///var gridPlugin = GisEditor.LayerManager.GetSortedPlugins<GridLayerPlugin>().FirstOrDefault();
             var getLayersParameters = new GetLayersParameters();
@@ -389,7 +390,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var layers = GisEditor.LayerManager.GetLayers<GridFeatureLayer>(getLayersParameters);
 
             //var layers = gridPlugin.GetLayers(getLayersParameters);
-            GisEditor.ActiveMap.AddLayersBySettings(layers);
+            await GisEditor.ActiveMap.AddLayersBySettings(layers);
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadToMapCoreDescription));
         }
 

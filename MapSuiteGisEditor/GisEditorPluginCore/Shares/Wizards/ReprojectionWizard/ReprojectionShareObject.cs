@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using ThinkGeo.Core;
 
@@ -109,7 +110,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             var layerPathFileNames = SourceFiles.Select(s => Path.Combine(OutputFolder, s.ShortName));
             //var shapeFileLayerPlugin = GisEditor.LayerManager.GetSortedPlugins<ShapeFileFeatureLayerPlugin>().FirstOrDefault();
@@ -122,11 +123,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                // var layers = shapeFileLayerPlugin.GetLayers(getLayersParameters);
                 var layers = GisEditor.LayerManager.GetLayers<ShapeFileFeatureLayer>(getLayersParameters);
-                GisEditor.ActiveMap.Dispatcher.BeginInvoke(new Action(() =>
+                var dispatcherOperation = GisEditor.ActiveMap.Dispatcher.InvokeAsync(async () =>
                 {
-                    GisEditor.ActiveMap.AddLayersBySettings(layers);
+                    await GisEditor.ActiveMap.AddLayersBySettings(layers);
                     GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadToMapCoreDescription));
-                }));
+                });
+                var innerTask = await dispatcherOperation.Task;
+                await innerTask;
             }
         }
 

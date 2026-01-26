@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Command;
@@ -92,7 +93,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override void LoadCore()
         {
-            BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlay(GisEditor.ActiveMap);
+            _ = LoadCoreAsync();
+        }
+
+        private async Task LoadCoreAsync()
+        {
+            var overlay = await BaseMapsHelper.AddWorldMapKitOverlayAsync(GisEditor.ActiveMap);
+            if (overlay != null)
+            {
+                overlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
+            }
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadCoreDescription));
         }
 

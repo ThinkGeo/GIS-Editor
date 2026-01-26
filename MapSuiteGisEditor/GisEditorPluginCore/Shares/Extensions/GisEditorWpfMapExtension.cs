@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
@@ -856,7 +857,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return addedStyle;
         }
 
-        public static void AddLayersBySettings(this GisEditorWpfMap map, IEnumerable<Layer> layers
+        public static async Task AddLayersBySettings(this GisEditorWpfMap map, IEnumerable<Layer> layers
             , bool useStyleWizard = false)
         {
             AddLayersParameters parameters = new AddLayersParameters();
@@ -885,7 +886,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             parameters.Proj4ProjectionParameters = proj4ProjectionParameters;
 
-            GisEditor.ActiveMap.AddLayersToActiveOverlay(parameters);
+            if (map != null)
+            {
+                await map.AddLayersToActiveOverlay(parameters);
+            }
         }
 
         public static Collection<FeatureLayer> GetFeatureLayers(this GisEditorWpfMap map, SimpleShapeType shapeType)

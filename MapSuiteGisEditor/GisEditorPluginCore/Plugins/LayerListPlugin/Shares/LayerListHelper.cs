@@ -25,6 +25,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -42,7 +43,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private static readonly string upIconPackUri = "/GisEditorPluginCore;component/Images/up.png";
         private static bool stopRefresh;
 
-        public static Collection<Layer> AddDropFilesToActiveMap(DragEventArgs e, bool refreshPlugins = true)
+        public static async Task<Collection<Layer>> AddDropFilesToActiveMap(DragEventArgs e, bool refreshPlugins = true)
         {
             Collection<Layer> layersToAdd = new Collection<Layer>();
             var dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -89,7 +90,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 if (layersToAdd.Count > 0 && GisEditor.ActiveMap != null)
                 {
-                    GisEditor.ActiveMap.AddLayersBySettings(layersToAdd, true);
+                    await GisEditor.ActiveMap.AddLayersBySettings(layersToAdd, true);
                     if (refreshPlugins)
                     {
                         GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(null, RefreshArgsDescription.MapDropDescription));

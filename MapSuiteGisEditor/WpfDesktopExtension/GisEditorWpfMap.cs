@@ -202,6 +202,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             ExtentOverlay.MapMouseUp += new EventHandler<MapMouseUpInteractiveOverlayEventArgs>(ExtentOverlay_MapMouseUp);
             TrackOverlay = new GisEditorTrackInteractiveOverlay();
             DisplayProjectionParameters = Proj4Projection.GetEpsgParametersString(3857);
+            MapUnit = GeographyUnit.Meter;
 
             MapTools.PanZoomBar.IsEnabled = false;
             MapTools.Logo.IsEnabled = false;

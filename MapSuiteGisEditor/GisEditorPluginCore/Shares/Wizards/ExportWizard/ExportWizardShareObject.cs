@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using ThinkGeo.Core;
 
 using ThinkGeo.UI.Wpf;
@@ -187,14 +188,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return exportTaskPlugin;
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             var getLayersParameters = new GetLayersParameters();
             getLayersParameters.LayerUris.Add(new Uri(OutputPathFileName));
             var layers = GisEditor.LayerManager.GetLayers<ShapeFileFeatureLayer>(getLayersParameters);
             if (layers != null)
             {
-                GisEditor.ActiveMap.AddLayersBySettings(layers);
+                await GisEditor.ActiveMap.AddLayersBySettings(layers);
                 GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadToMapCoreDescription));
             }
         }

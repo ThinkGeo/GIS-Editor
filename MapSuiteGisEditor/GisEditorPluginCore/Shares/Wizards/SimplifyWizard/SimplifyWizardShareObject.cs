@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Threading.Tasks;
 using ThinkGeo.Core;
 
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
@@ -240,28 +241,38 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             plugin.DisplayProjectionParameters = Proj4Projection.ConvertProj4ToPrj(GisEditor.ActiveMap.DisplayProjectionParameters);
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             if (File.Exists(OutputPathFileName))
             {
-                AddSimplifiedFileToMap();
+                await AddSimplifiedFileToMap();
             }
 
             ShapeFileFeatureLayerExtension.RemoveShapeFiles(tempFilePath);
         }
 
-        private void AddSimplifiedFileToMap()
+        private async Task AddSimplifiedFileToMap()
         {
             var getLayersParameters = new GetLayersParameters();
             getLayersParameters.LayerUris.Add(new Uri(OutputPathFileName));
             var layers = GisEditor.LayerManager.GetLayers<ShapeFileFeatureLayer>(getLayersParameters);
             if (layers != null)
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                if (Application.Current != null)
                 {
-                    GisEditor.ActiveMap.AddLayersBySettings(layers);
+                    var dispatcherOperation = Application.Current.Dispatcher.InvokeAsync(async () =>
+                    {
+                        await GisEditor.ActiveMap.AddLayersBySettings(layers);
+                        GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.AddSimplifiedFileToMapDescription));
+                    });
+                    var innerTask = await dispatcherOperation.Task;
+                    await innerTask;
+                }
+                else
+                {
+                    await GisEditor.ActiveMap.AddLayersBySettings(layers);
                     GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.AddSimplifiedFileToMapDescription));
-                }));
+                }
             }
         }
 

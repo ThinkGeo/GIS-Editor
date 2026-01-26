@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using ThinkGeo.Core;
 
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
@@ -133,10 +134,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             ShapeFileFeatureLayerExtension.RemoveShapeFiles(tempFilePath);
-            AddToMap();
+            await AddToMap();
         }
 
         private Collection<Feature> GetFeaturesToDissolve()
@@ -189,18 +190,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return columns;
         }
 
-        private void AddToMap()
+        private async Task AddToMap()
         {
             if (NeedAddToMap)
             {
                 var getLayersParameters = new GetLayersParameters();
                 getLayersParameters.LayerUris.Add(new Uri(OutputPathFileName));
                 var newLayers = GisEditor.LayerManager.GetLayers<ShapeFileFeatureLayer>(getLayersParameters);
-                GisEditor.ActiveMap.Dispatcher.BeginInvoke(new Action(() =>
+                var dispatcherOperation = GisEditor.ActiveMap.Dispatcher.InvokeAsync(async () =>
                 {
-                    GisEditor.ActiveMap.AddLayersBySettings(newLayers);
+                    await GisEditor.ActiveMap.AddLayersBySettings(newLayers);
                     GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.AddToMapDescription));
-                }));
+                });
+                var innerTask = await dispatcherOperation.Task;
+                await innerTask;
             }
         }
     }

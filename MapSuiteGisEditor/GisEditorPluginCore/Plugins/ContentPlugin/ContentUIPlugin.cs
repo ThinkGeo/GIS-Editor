@@ -21,6 +21,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Management;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -124,47 +125,71 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 GisEditorWpfMap gisEditorWpfMap = e.NewItems.OfType<DocumentWindow>().Select(d => d.Content).FirstOrDefault() as GisEditorWpfMap;
                 if (gisEditorWpfMap != null)
                 {
-                    gisEditorWpfMap.Loaded -= GisEditorWpfMap_Loaded;
-                    gisEditorWpfMap.Loaded += GisEditorWpfMap_Loaded;
+                    gisEditorWpfMap.Loaded -= GisEditorWpfMap_LoadedAsync;
+                    gisEditorWpfMap.Loaded += GisEditorWpfMap_LoadedAsync;
                 }
             }
         }
 
-        private void GisEditorWpfMap_Loaded(object sender, RoutedEventArgs e)
+        private async void GisEditorWpfMap_LoadedAsync(object sender, RoutedEventArgs e)
         {
             GisEditorWpfMap currentMap = (GisEditorWpfMap)sender;
             if (CheckForInternetAvailability())
             {
-                DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Background);
-                timer.Interval = TimeSpan.FromMilliseconds(200);
-                timer.Tick += (s, e1) =>
+                await WaitForMapReadyAsync(currentMap).ConfigureAwait(true);
+                switch (Singleton<ContentSetting>.Instance.DefaultBaseMapOption)
                 {
-                    timer.Stop();
-                    switch (Singleton<ContentSetting>.Instance.DefaultBaseMapOption)
-                    {
-                        case DefaultBaseMap.WorldMapKit:
-                            BaseMapsHelper.AddWorldMapKitOverlay(currentMap);
-                            GisEditor.UIManager.BeginRefreshPlugins();
-                            break;
+                    case DefaultBaseMap.WorldMapKit:
+                        {
+                            var overlay = await BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlayAsync(currentMap);
+                            if (overlay != null)
+                            {
+                                overlay.Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName");
+                            }
+                        }
+                        GisEditor.UIManager.BeginRefreshPlugins();
+                        break;
 
-                        case DefaultBaseMap.OpenStreetMaps:
-                            BaseMapsHelper.AddOpenStreetMapOverlay(currentMap);
-                            GisEditor.UIManager.BeginRefreshPlugins();
-                            break;
+                    case DefaultBaseMap.OpenStreetMaps:
+                        await BaseMapsHelper.AddOpenStreetMapOverlayAsync(currentMap);
+                        GisEditor.UIManager.BeginRefreshPlugins();
+                        break;
 
-                        case DefaultBaseMap.BingMaps:
-                            BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlay(currentMap);
-                            GisEditor.UIManager.BeginRefreshPlugins();
-                            break;
+                    case DefaultBaseMap.BingMaps:
+                        {
+                            var overlay = await BaseMapsHelper.AddWorldMapKitOverlayAsync(currentMap);
+                            if (overlay != null)
+                            {
+                                overlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
+                            }
+                        }
+                        GisEditor.UIManager.BeginRefreshPlugins();
+                        break;
 
-                        case DefaultBaseMap.None:
-                        default:
-                            break;
-                    }
-                };
-                timer.Start();
+                    case DefaultBaseMap.None:
+                    default:
+                        break;
+                }
             }
-            currentMap.Loaded -= GisEditorWpfMap_Loaded;
+            currentMap.Loaded -= GisEditorWpfMap_LoadedAsync;
+        }
+
+        private static async Task WaitForMapReadyAsync(GisEditorWpfMap map)
+        {
+            if (map == null) return;
+
+            // Ensure layout has produced a valid size before adding base overlays.
+            var attempts = 0;
+            while (attempts < 20 && (map.ActualWidth <= 0 || map.ActualHeight <= 0))
+            {
+                await Task.Delay(50).ConfigureAwait(true);
+                attempts++;
+            }
+
+            if (map.Dispatcher != null)
+            {
+                await map.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.Background);
+            }
         }
 
         protected override void UnloadCore()
@@ -219,7 +244,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             base.DetachMapCore(wpfMap);
             if (initializedMaps.Contains(wpfMap))
             {
-                wpfMap.Drop -= Map_Drop;
+                wpfMap.Drop -= Map_DropAsync;
                 initializedMaps.Remove(wpfMap);
             }
 
@@ -245,8 +270,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void InitializeMap(GisEditorWpfMap currentMap)
         {
             currentMap.AllowDrop = true;
-            currentMap.Drop -= Map_Drop;
-            currentMap.Drop += Map_Drop;
+            currentMap.Drop -= Map_DropAsync;
+            currentMap.Drop += Map_DropAsync;
             currentMap.AddingLayersToActiveOverlay -= CurrentMap_AddingLayersToActiveOverlay;
             currentMap.AddingLayersToActiveOverlay += CurrentMap_AddingLayersToActiveOverlay;
             foreach (var worldMapKitOverlay in currentMap.Overlays.OfType<LayerOverlay>().Where(BaseMapsHelper.IsWorldMapsOverlay))
@@ -267,9 +292,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             e.AddLayersParameters.DrawingQuality = Singleton<ContentSetting>.Instance.HighQuality ? DrawingQuality.HighQuality : DrawingQuality.HighSpeed;
         }
 
-        private void Map_Drop(object sender, DragEventArgs e)
+        private async void Map_DropAsync(object sender, DragEventArgs e)
         {
-            LayerListHelper.AddDropFilesToActiveMap(e);
+            await LayerListHelper.AddDropFilesToActiveMap(e);
         }
 
         internal void OnLayerPluginDropDownOpened(ObservableCollection<LayerPlugin> availableLayerPlugins)

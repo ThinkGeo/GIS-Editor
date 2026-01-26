@@ -296,17 +296,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             plugin.OverwriteOutputFiles = OverwriteOutputFiles;
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             if (ExportConfiguration.Count(tmpConfig => tmpConfig.NeedsToExport) > 0)
             {
                 Collection<ShapeFileFeatureLayer> layers = GetShapeFileLayers(OutputShapeFileNames);
-                GisEditor.ActiveMap.AddLayersBySettings(layers);
+                await GisEditor.ActiveMap.AddLayersBySettings(layers);
                 GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadToMapCoreDescription));
 
                 foreach (var overlay in OverlaysToRefresh)
                 {
-                    overlay.Invalidate();
+                    await overlay.Invalidate();
                 }
             }
         }

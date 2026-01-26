@@ -83,7 +83,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             new WorldMapsStyleOption("Transparent", ResolveWorldMapsStyleUri(DefaultWorldMapsStyleUri, "ThinkGeoVectorMapsStyleTransparent", "WorldMapKitStyleTransparent"))
         };
 
-        public static async Task<LayerOverlay> AddWorldMapKitOverlay(GisEditorWpfMap map)
+        public static async Task<LayerOverlay> AddWorldMapKitOverlayAsync(GisEditorWpfMap map)
         {
             if (map == null) return null;
 
@@ -99,12 +99,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 BaseMapsHelper.RemoveAllBaseOverlays(map);
                 map.Overlays.Insert(0, wmkOverlay);
-                await SetExtent(map);
-                map.Refresh(wmkOverlay);
+                await SetExtentAsync(map);
+                await map.RefreshAsync(wmkOverlay);
             }
             else
             {
-                await AddOverlayInGoogleProjection(wmkOverlay, map);
+                await AddOverlayInGoogleProjectionAsync(wmkOverlay, map);
             }
             return wmkOverlay;
         }
@@ -131,7 +131,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return string.Empty;
         }
 
-        public static ThinkGeoCloudRasterMapsOverlay AddThinkGeoCloudRasterMapsOverlay(GisEditorWpfMap map)
+        public static async Task<ThinkGeoCloudRasterMapsOverlay> AddThinkGeoCloudRasterMapsOverlayAsync(GisEditorWpfMap map)
         {
             BingMapsConfigWindow configWindow = new BingMapsConfigWindow();
             ThinkGeoCloudRasterMapsOverlay rasterOverlay = null;
@@ -139,20 +139,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (((BingMapsConfigViewModel)configWindow.DataContext).Validate())
                 {
-                    rasterOverlay = AddThinkGeoCloudRasterMapsOverlayToMap(map, configWindow, rasterOverlay);
+                    rasterOverlay = await AddThinkGeoCloudRasterMapsOverlayToMapAsync(map, configWindow, rasterOverlay);
                 }
             }
             else
             {
                 if (configWindow.ShowDialog().GetValueOrDefault())
                 {
-                    rasterOverlay = AddThinkGeoCloudRasterMapsOverlayToMap(map, configWindow, rasterOverlay);
+                    rasterOverlay = await AddThinkGeoCloudRasterMapsOverlayToMapAsync(map, configWindow, rasterOverlay);
                 }
             }
             return rasterOverlay;
         }
 
-        private static ThinkGeoCloudRasterMapsOverlay AddThinkGeoCloudRasterMapsOverlayToMap(GisEditorWpfMap map, BingMapsConfigWindow configWindow, ThinkGeoCloudRasterMapsOverlay rasterOverlay)
+        private static async Task<ThinkGeoCloudRasterMapsOverlay> AddThinkGeoCloudRasterMapsOverlayToMapAsync(GisEditorWpfMap map, BingMapsConfigWindow configWindow, ThinkGeoCloudRasterMapsOverlay rasterOverlay)
         {
             var clientId = string.IsNullOrWhiteSpace(configWindow.BingMapsKey) ? ThinkGeoCloudClientId : configWindow.BingMapsKey;
             var clientSecret = string.IsNullOrWhiteSpace(configWindow.ClientSecret) ? ThinkGeoCloudClientSecret : configWindow.ClientSecret;
@@ -162,11 +162,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             rasterOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             rasterOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(ThinkGeoCloudRasterOverlay_DrawingException);
             rasterOverlay.RefreshCache();
-            BaseMapsHelper.AddOverlayInGoogleProjection(rasterOverlay, map);
+            await BaseMapsHelper.AddOverlayInGoogleProjectionAsync(rasterOverlay, map);
             return rasterOverlay;
         }
 
-        public static OpenStreetMapOverlay AddOpenStreetMapOverlay(GisEditorWpfMap map)
+        public static async Task<OpenStreetMapOverlay> AddOpenStreetMapOverlayAsync(GisEditorWpfMap map)
         {
             OpenStreetMapOverlay osmOverlay = new OpenStreetMapOverlay();
             osmOverlay.TileType = TileType.PreloadDataMultiTile;
@@ -174,7 +174,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             osmOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             osmOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(OsmOverlay_DrawingException);
             osmOverlay.RefreshCache();
-            BaseMapsHelper.AddOverlayInGoogleProjection(osmOverlay, map);
+            await BaseMapsHelper.AddOverlayInGoogleProjectionAsync(osmOverlay, map);
             return osmOverlay;
         }
 
@@ -212,13 +212,24 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             map.MinimumScale = map.ZoomScales.LastOrDefault();
         }
 
-        private static async Task SetExtent(GisEditorWpfMap map)
+        private static async Task SetExtentAsync(GisEditorWpfMap map)
         {
-            if (map.Overlays.Count == 1)
+            if (map == null) return;
+
+            if ((map.Overlays.Count <= 1 || IsPlaceholderExtent(map.CurrentExtent))
+                && TryGetStoredExtent(map, out var storedExtent))
+            {
+                map.CurrentExtent = storedExtent;
+                return;
+            }
+
+            if (map.Overlays.Count > 0 && (map.Overlays.Count == 1 || IsPlaceholderExtent(map.CurrentExtent)))
             {
                 await map.Overlays[0].OpenAsync();
                 RectangleShape extent = map.Overlays[0].GetBoundingBox();
-                if (IsWorldMapsOverlay(map.Overlays[0]))
+                if (IsWorldMapsOverlay(map.Overlays[0])
+                    || map.Overlays[0] is OpenStreetMapOverlay
+                    || map.Overlays[0] is ThinkGeoCloudRasterMapsOverlay)
                 {
                     extent = GetThinkGeoMapsExtent(map);
                 }
@@ -234,50 +245,73 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                 map.CurrentExtent = extent;
             }
+        }
 
-            if (map.Overlays.Count <= 1
-                && System.Windows.Application.Current != null
-                && System.Windows.Application.Current.MainWindow.Tag is Dictionary<string, string>)
+        private static bool TryGetStoredExtent(GisEditorWpfMap map, out RectangleShape extent)
+        {
+            extent = null;
+            if (System.Windows.Application.Current == null || System.Windows.Application.Current.MainWindow == null)
             {
-                var tmpSettings = System.Windows.Application.Current.MainWindow.Tag as Dictionary<string, string>;
-                var currentExtentStrings = tmpSettings["CurrentExtent"].Split(',');
+                return false;
+            }
 
-                if (currentExtentStrings.Length > 3)
+            if (!(System.Windows.Application.Current.MainWindow.Tag is Dictionary<string, string> tmpSettings))
+            {
+                return false;
+            }
+
+            if (!tmpSettings.TryGetValue("CurrentExtent", out var extentText) || string.IsNullOrWhiteSpace(extentText))
+            {
+                return false;
+            }
+
+            var currentExtentStrings = extentText.Split(',');
+            if (currentExtentStrings.Length <= 3) return false;
+
+            double minX;
+            double maxY;
+            double maxX;
+            double minY;
+
+            if (!double.TryParse(currentExtentStrings[0], out minX)
+                || !double.TryParse(currentExtentStrings[1], out maxY)
+                || !double.TryParse(currentExtentStrings[2], out maxX)
+                || !double.TryParse(currentExtentStrings[3], out minY))
+            {
+                return false;
+            }
+
+            extent = new RectangleShape(minX, maxY, maxX, minY);
+            Proj4Projection projection = new Proj4Projection(Proj4Projection.GetWgs84ParametersString(), map.DisplayProjectionParameters);
+            projection.SyncProjectionParametersString();
+            if (projection.CanProject())
+            {
+                try
                 {
-                    double minX = double.NaN;
-                    double maxY = double.NaN;
-                    double maxX = double.NaN;
-                    double minY = double.NaN;
-
-                    if (double.TryParse(currentExtentStrings[0], out minX)
-                        && double.TryParse(currentExtentStrings[1], out maxY)
-                        && double.TryParse(currentExtentStrings[2], out maxX)
-                        && double.TryParse(currentExtentStrings[3], out minY))
-                    {
-                        RectangleShape extent = new RectangleShape(minX, maxY, maxX, minY);
-                        Proj4Projection projection = new Proj4Projection(Proj4Projection.GetWgs84ParametersString(), map.DisplayProjectionParameters);
-                        projection.SyncProjectionParametersString();
-                        if (projection.CanProject())
-                        {
-                            try
-                            {
-                                projection.Open();
-                                extent = projection.ConvertToExternalProjection(extent);
-                            }
-                            catch (Exception ex)
-                            {
-                                GisEditor.LoggerManager.Log(LoggerLevel.Debug, ex.Message, new ExceptionInfo(ex));
-                            }
-                            finally
-                            {
-                                projection.Close();
-                            }
-                        }
-
-                        map.CurrentExtent = extent;
-                    }
+                    projection.Open();
+                    extent = projection.ConvertToExternalProjection(extent);
+                }
+                catch (Exception ex)
+                {
+                    GisEditor.LoggerManager.Log(LoggerLevel.Debug, ex.Message, new ExceptionInfo(ex));
+                }
+                finally
+                {
+                    projection.Close();
                 }
             }
+
+            return true;
+        }
+
+        private static bool IsPlaceholderExtent(RectangleShape extent)
+        {
+            if (extent == null) return true;
+            const double epsilon = 1e-9;
+            return Math.Abs(extent.UpperLeftPoint.X) < epsilon
+                && Math.Abs(extent.UpperLeftPoint.Y - 1) < epsilon
+                && Math.Abs(extent.LowerRightPoint.X - 1) < epsilon
+                && Math.Abs(extent.LowerRightPoint.Y) < epsilon;
         }
 
         private static void RemoveAllBaseOverlays(GisEditorWpfMap map)
@@ -472,7 +506,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return string.IsNullOrWhiteSpace(value) ? fallback : value;
         }
 
-        private static async Task AddOverlayInGoogleProjection(Overlay baseOverlay, GisEditorWpfMap map)
+        private static async Task AddOverlayInGoogleProjectionAsync(Overlay baseOverlay, GisEditorWpfMap map)
         {
             var extendedMap = map;
             string targetProj4 = Proj4Projection.GetGoogleMapParametersString();
@@ -490,7 +524,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 extendedMap.DisplayProjectionParameters = targetProj4;
 
                 //extendedMap.ReprojectMap(targetProj4);
-                await SetExtent(map);
+                await SetExtentAsync(map);
                 if (map.MapUnit != GeographyUnit.Meter)
                 {
                     map.MapUnit = GeographyUnit.Meter;
@@ -499,7 +533,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     ConfigureWorldMapsOverlay(baseOverlay as LayerOverlay, map, targetProj4, GeographyUnit.Meter);
                 }
-                extendedMap.Refresh(new Overlay[] { baseOverlay, extendedMap.ExtentOverlay });
+                await extendedMap.RefreshAsync();
             }
         }
 

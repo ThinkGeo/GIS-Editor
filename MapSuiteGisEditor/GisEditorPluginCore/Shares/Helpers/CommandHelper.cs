@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
@@ -162,7 +163,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (createNewLayerCommand == null)
                 {
-                    createNewLayerCommand = new ObservedCommand<string>(pluginName =>
+                    createNewLayerCommand = new ObservedCommand<string>(async pluginName =>
                     {
                         FeatureLayerPlugin layerPlugin = GisEditor.LayerManager.GetActiveLayerPlugins<FeatureLayerPlugin>()
                             .FirstOrDefault(p => p.Name.Equals(pluginName));
@@ -196,7 +197,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                                         {
                                             EditorUIPlugin.UpdateCalculatedRecords((FeatureLayer)layers[0], parameters.AddedColumns.Concat(parameters.UpdatedColumns.Values), false);
                                         }
-                                        GisEditor.ActiveMap.AddLayersBySettings(layers);
+                                        await GisEditor.ActiveMap.AddLayersBySettings(layers);
                                         GisEditor.UIManager.BeginRefreshPlugins();
                                     }
                                 }
@@ -239,7 +240,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 if (addNewLayersCommand == null)
                 {
-                    addNewLayersCommand = new ObservedCommand<bool>((multiselect) =>
+                    addNewLayersCommand = new ObservedCommand<bool>(async (multiselect) =>
                     {
                         ObservableCollection<LayerPlugin> supportedLayerProviders = new ObservableCollection<LayerPlugin>();
 
@@ -259,7 +260,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         if (contentUIPlugin != null)
                             contentUIPlugin.OnLayerPluginDropDownOpened(supportedLayerProviders);
 
-                        AddNewLayers(supportedLayerProviders, multiselect);
+                        await AddNewLayers(supportedLayerProviders, multiselect);
                     }, CheckMapIsNotNull);
                 }
                 return addNewLayersCommand;
@@ -780,7 +781,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private static void AddNewLayers(IEnumerable<LayerPlugin> fileLayerPlugins, bool multiselect)
+        private static async Task AddNewLayers(IEnumerable<LayerPlugin> fileLayerPlugins, bool multiselect)
         {
             if (fileLayerPlugins.Count() > 0)
             {
@@ -812,7 +813,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     try
                     {
                         AddToDataRepository(openFileDialog.FileNames[0]);
-                        DataRepositoryHelper.PlaceFilesOnMap(openFileDialog.FileNames);
+                        await DataRepositoryHelper.PlaceFilesOnMapAsync(openFileDialog.FileNames);
                     }
                     catch (Exception ex)
                     {

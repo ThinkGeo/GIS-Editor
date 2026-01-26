@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -88,19 +89,19 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public static RelayCommand GetPlaceMultipleFilesCommand(IEnumerable<DataRepositoryItem> selectedItems)
         {
-            var newCommand = new RelayCommand(() =>
+            var newCommand = new RelayCommand(async () =>
             {
                 DataRepositoryItem dataRepositoryItem = selectedItems.FirstOrDefault();
                 if (dataRepositoryItem != null)
                 {
                     DataRepositoryItem rootItem = dataRepositoryItem.GetRootDataRepositoryItem();
-                    rootItem.SourcePlugin.DropOnMap(selectedItems);
+                    await rootItem.SourcePlugin.DropOnMapAsync(selectedItems);
                 }
             });
             return newCommand;
         }
 
-        internal static void PlaceFilesOnMap(IEnumerable<string> allFiles)
+        internal static async Task PlaceFilesOnMapAsync(IEnumerable<string> allFiles)
         {
             List<Layer> resultsLayers = new List<Layer>();
             var groupedFileDataItems = allFiles.GroupBy(item => Path.GetExtension(item));
@@ -127,20 +128,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
             if (resultsLayers.Count > 0)
             {
-                GisEditor.ActiveMap.AddLayersBySettings(resultsLayers, true);
+                await GisEditor.ActiveMap.AddLayersBySettings(resultsLayers, true);
                 GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(resultsLayers, RefreshArgsDescription.PlaceFilesOnMapDescription));
             }
         }
 
-        internal static void PlaceFilesOnMap(FileDataRepositoryItem fileDataItem)
+        internal static Task PlaceFilesOnMapAsync(FileDataRepositoryItem fileDataItem)
         {
-            PlaceFilesOnMap(new string[] { fileDataItem.FileInfo.FullName });
+            return PlaceFilesOnMapAsync(new string[] { fileDataItem.FileInfo.FullName });
         }
 
-        internal static void PlaceFilesOnMap(IEnumerable<FileDataRepositoryItem> allFileDataItems)
+        internal static Task PlaceFilesOnMapAsync(IEnumerable<FileDataRepositoryItem> allFileDataItems)
         {
             var allFiles = allFileDataItems.Select(item => item.FileInfo.FullName);
-            PlaceFilesOnMap(allFiles);
+            return PlaceFilesOnMapAsync(allFiles);
         }
     }
 }

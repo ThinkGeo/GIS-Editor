@@ -36,6 +36,7 @@ using ThinkGeo.Core;
 using ThinkGeo.UI.Wpf;
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
 using Style = ThinkGeo.Core.Style;
+using System.Threading.Tasks;
 
 namespace ThinkGeo.MapSuite.GisEditor.Plugins
 {
@@ -784,14 +785,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
 
         [Obfuscation]
-        private void LayerGroup_Drop(object sender, System.Windows.DragEventArgs e)
+        private async void LayerGroup_Drop(object sender, System.Windows.DragEventArgs e)
         {
             e.Handled = true;
             string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
             LayerListItem targetEntity = sender.GetDataContext<LayerListItem>();
             if (dropFiles != null && dropFiles.Length > 0)
             {
-                Collection<Layer> layers = LayerListHelper.AddDropFilesToActiveMap(e, false);
+                Collection<Layer> layers = await LayerListHelper.AddDropFilesToActiveMap(e, false);
                 if (targetEntity != null && layers.Count > 0)
                 {
                     LayerOverlay targetLayerOverlay = LayerListHelper.FindMapElementInLayerList<LayerOverlay>(targetEntity);
@@ -803,14 +804,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             {
                                 if (overlay.Layers.Contains(item)) overlay.Layers.Remove(item);
                             }
-                            overlay.Invalidate();
+                            await overlay.Invalidate();
                         }
 
                         foreach (var item in layers)
                         {
                             targetLayerOverlay.Layers.Add(item);
                         }
-                        targetLayerOverlay.Invalidate();
+                        await targetLayerOverlay.Invalidate();
                     }
                     GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(null, RefreshArgsDescription.MapDropDescription));
                 }
@@ -824,7 +825,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     if (targetEntity.Parent == draggedEntity.Parent)
                     {
-                        ExchangeElement(targetEntity, draggedEntity, showLowerLine);
+                        await ExchangeElement(targetEntity, draggedEntity, showLowerLine);
                         UpdateLayout();
                     }
                     else if (draggedEntity.Parent != null && targetEntity.Parent.ConcreteObject is LayerOverlay
@@ -862,8 +863,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                             lock (draggedOverlay.Layers) draggedOverlay.Layers.Remove(draggedLayer);
 
-                            targetOverlay.Invalidate();
-                            draggedOverlay.Invalidate();
+                            await targetOverlay.Invalidate();
+                            await draggedOverlay.Invalidate();
                         }
 
                         draggedEntity.Parent = targetEntity.Parent;
@@ -901,8 +902,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             layerOverlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
                             targetOverlay.RefreshCache(RefreshCacheMode.ApplyNewCache);
 
-                            layerOverlay.RefreshAsync();
-                            targetOverlay.RefreshAsync();
+                            await layerOverlay.RefreshAsync();
+                            await targetOverlay.RefreshAsync();
                         }
                         draggedEntity.Parent = targetEntity;
                         UpdateLayout();
@@ -911,7 +912,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private void ExchangeElement(LayerListItem target, LayerListItem source, bool insertLower)
+        private async Task ExchangeElement(LayerListItem target, LayerListItem source, bool insertLower)
         {
             var parentEntity = target.Parent;
             int targetIndex = parentEntity.Children.IndexOf(target);
@@ -979,7 +980,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 }
 
-                layerOverlay.Invalidate();
+                await layerOverlay.Invalidate();
             }
             else if (targetOverlay != null && draggedOverlay != null)
             {
@@ -1010,7 +1011,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
                 }
 
-                GisEditor.ActiveMap.RefreshAsync();
+                await GisEditor.ActiveMap.RefreshAsync();
             }
         }
 
@@ -1219,9 +1220,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         }
 
         [Obfuscation]
-        private void LayerListUserControl_Drop(object sender, DragEventArgs e)
+        private async void LayerListUserControl_Drop(object sender, DragEventArgs e)
         {
-            LayerListHelper.AddDropFilesToActiveMap(e);
+            await LayerListHelper.AddDropFilesToActiveMap(e);
         }
 
         private int GetShapeFileFeatureCount(ShapeFileFeatureLayer shapeFileFeatureLayer)

@@ -21,6 +21,7 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -85,13 +86,13 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         public static RelayCommand GetPlaceMultipleFilesCommand(IEnumerable<DataRepositoryItem> selectedItems)
         {
-            var newCommand = new RelayCommand(() =>
+            var newCommand = new RelayCommand(async () =>
             {
                 DataRepositoryItem dataRepositoryItem = selectedItems.FirstOrDefault();
                 if (dataRepositoryItem != null)
                 {
                     DataRepositoryItem rootItem = dataRepositoryItem.GetRootDataRepositoryItem();
-                    rootItem.SourcePlugin.DropOnMap(selectedItems);
+                    await rootItem.SourcePlugin.DropOnMapAsync(selectedItems);
                 }
             });
             return newCommand;

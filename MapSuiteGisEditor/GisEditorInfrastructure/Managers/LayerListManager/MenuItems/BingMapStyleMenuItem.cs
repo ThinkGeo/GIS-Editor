@@ -51,14 +51,14 @@ namespace ThinkGeo.MapSuite.GisEditor
                 };
 
                 string enumName = enumNames[i];
-                subEntity.Click += (s, e) =>
+                subEntity.Click += async (s, e) =>
                 {
                     if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
                     var rasterOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as ThinkGeoCloudRasterMapsOverlay;
                     if (rasterOverlay != null)
                     {
                         rasterOverlay.MapType = (ThinkGeoCloudRasterMapsMapType)Enum.Parse(typeof(ThinkGeoCloudRasterMapsMapType), enumName);
-                        rasterOverlay.Invalidate();
+                        await rasterOverlay.Invalidate();
 
                         menuItem.Items.OfType<MenuItem>().ForEach(item =>
                         {

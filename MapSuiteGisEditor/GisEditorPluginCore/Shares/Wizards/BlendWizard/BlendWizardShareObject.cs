@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using ThinkGeo.Core;
 
 using ThinkGeo.MapSuite.WpfDesktop.Extension;
@@ -228,7 +229,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             if (File.Exists(OutputPathFileName))
             {
@@ -237,11 +238,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 var layers = GisEditor.LayerManager.GetLayers<ShapeFileFeatureLayer>(getLayersParameters);
                 if (layers != null)
                 {
-                    GisEditor.ActiveMap.Dispatcher.BeginInvoke(new Action(() =>
+                    var dispatcherOperation = GisEditor.ActiveMap.Dispatcher.InvokeAsync(async () =>
                     {
-                        GisEditor.ActiveMap.AddLayersBySettings(layers);
+                        await GisEditor.ActiveMap.AddLayersBySettings(layers);
                         GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadToMapCoreDescription));
-                    }));
+                    });
+                    var innerTask = await dispatcherOperation.Task;
+                    await innerTask;
                 }
             }
         }

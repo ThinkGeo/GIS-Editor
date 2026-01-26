@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace ThinkGeo.MapSuite.GisEditor
@@ -127,16 +128,17 @@ namespace ThinkGeo.MapSuite.GisEditor
             return null;
         }
 
-        public void DropOnMap(IEnumerable<DataRepositoryItem> dataRepositoryItems)
+        public async Task DropOnMapAsync(IEnumerable<DataRepositoryItem> dataRepositoryItems)
         {
             if (CanDropOnMap)
             {
-                DropOnMapCore(dataRepositoryItems);
+                await DropOnMapCoreAsync(dataRepositoryItems);
             }
         }
 
-        protected virtual void DropOnMapCore(IEnumerable<DataRepositoryItem> dataRepositoryItems)
+        protected virtual Task DropOnMapCoreAsync(IEnumerable<DataRepositoryItem> dataRepositoryItems)
         {
+            return Task.CompletedTask;
         }
     }
 }

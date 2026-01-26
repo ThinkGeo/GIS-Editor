@@ -23,6 +23,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -53,9 +54,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get { return true; }
         }
 
-        protected override void DropOnMapCore(IEnumerable<DataRepositoryItem> dataRepositoryItems)
+        protected override async Task DropOnMapCoreAsync(IEnumerable<DataRepositoryItem> dataRepositoryItems)
         {
-            DataRepositoryHelper.PlaceFilesOnMap(dataRepositoryItems.OfType<FileDataRepositoryItem>());
+            await DataRepositoryHelper.PlaceFilesOnMapAsync(dataRepositoryItems.OfType<FileDataRepositoryItem>());
         }
 
         protected override StorableSettings GetSettingsCore()

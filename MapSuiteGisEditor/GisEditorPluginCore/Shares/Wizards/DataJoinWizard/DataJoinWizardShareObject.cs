@@ -360,14 +360,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return plugin;
         }
 
-        protected override void LoadToMapCore()
+        protected override async void LoadToMapCore()
         {
             var getLayersParameters = new GetLayersParameters();
             getLayersParameters.LayerUris.Add(new Uri(OutputPathFileName));
             var layers = GisEditor.LayerManager.GetLayers<ShapeFileFeatureLayer>(getLayersParameters);
             if (layers.Count > 0)
             {
-                GisEditor.ActiveMap.AddLayersBySettings(layers);
+                await GisEditor.ActiveMap.AddLayersBySettings(layers);
                 GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadToMapCoreDescription));
             }
         }

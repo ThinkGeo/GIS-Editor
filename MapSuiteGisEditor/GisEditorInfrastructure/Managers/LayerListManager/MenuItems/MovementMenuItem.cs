@@ -78,7 +78,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                     if (parentOverlay is LayerOverlay)
                     {
                         LayerOverlay layerOverlay = (LayerOverlay)parentOverlay;
-                        needRefresh = MoveLayerInLayerOverlay(layer, layerOverlay, movementAction);
+                        needRefresh = await MoveLayerInLayerOverlay(layer, layerOverlay, movementAction);
                     }
                 }
                 else if (overlay != null)
@@ -110,7 +110,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         }
                         if (from < to)
                         {
-                            needRefresh = MoveStyle(styleItem, featureLayer, from, to, movementAction);
+                            needRefresh = await MoveStyle(styleItem, featureLayer, from, to, movementAction);
                         }
                     }
                     else
@@ -169,7 +169,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         var tileOverlay = LayerListHelper.FindMapElementInTree<TileOverlay>(GisEditor.LayerListManager.SelectedLayerListItem);
                         if (tileOverlay != null && tileOverlay.MapArguments != null)
                         {
-                            tileOverlay.Invalidate();
+                            await tileOverlay.Invalidate();
                         }
                     }
                 }
@@ -180,7 +180,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private static bool MoveStyle(Style style, FeatureLayer featureLayer, int from, int to, MovementAction movementAction)
+        private static async Task<bool> MoveStyle(Style style, FeatureLayer featureLayer, int from, int to, MovementAction movementAction)
         {
             var customZoomLevels = featureLayer.ZoomLevelSet.CustomZoomLevels;
             bool needRefresh = false;
@@ -235,7 +235,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 TileOverlay overlay = LayerListHelper.FindMapElementInTree<TileOverlay>(GisEditor.LayerListManager.SelectedLayerListItem);
                 if (overlay != null)
                 {
-                    overlay.Invalidate();
+                   await overlay.Invalidate();
                 }
             }
             return needRefresh;
@@ -271,7 +271,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             return needRefresh;
         }
 
-        private static bool MoveLayerInLayerOverlay(Layer layer, LayerOverlay layerOverlay, MovementAction movementAction)
+        private static async Task<bool> MoveLayerInLayerOverlay(Layer layer, LayerOverlay layerOverlay, MovementAction movementAction)
         {
             var originalIndex = layerOverlay.Layers.IndexOf(layer);
             switch (movementAction)
@@ -298,7 +298,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             var needReresh = currentIndex != originalIndex;
             if (needReresh)
             {
-                layerOverlay.Invalidate();
+                await layerOverlay.Invalidate();
             }
             return needReresh;
         }

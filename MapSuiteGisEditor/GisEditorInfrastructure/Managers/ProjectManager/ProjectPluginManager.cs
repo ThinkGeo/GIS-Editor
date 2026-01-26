@@ -756,7 +756,7 @@ namespace ThinkGeo.MapSuite.GisEditor
             }
         }
 
-        private static void FixMissingDataFileInMap(Collection<string> repairDatafiles)
+        private static async Task FixMissingDataFileInMap(Collection<string> repairDatafiles)
         {
             if (repairDatafiles.Count > 0)
             {
@@ -789,7 +789,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
                     if (GisEditor.ActiveMap != null && repairLayers.Count > 0)
                     {
-                        GisEditor.ActiveMap.AddLayersToActiveOverlay(repairLayers);
+                        await GisEditor.ActiveMap.AddLayersToActiveOverlay(repairLayers);
                         GisEditor.UIManager.RefreshPlugins();
                     }
                 }

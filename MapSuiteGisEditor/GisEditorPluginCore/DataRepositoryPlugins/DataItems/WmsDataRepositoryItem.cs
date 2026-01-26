@@ -94,14 +94,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         //    return children;
         //}
 
-        protected override void LoadCore()
+        protected override async void LoadCore()
         {
             WmsAsyncLayer layer = new WmsAsyncLayer(new Uri(Url)) { Name = Name };
             layer.ActiveLayerNames.Add(Name);
             layer.InitializeProj4Projection(GisEditor.ActiveMap.DisplayProjectionParameters);
 
             var layers = new Layer[] { new WmsAsyncLayerAdapter(layer) };
-            GisEditor.ActiveMap.AddLayersBySettings(layers);
+            await GisEditor.ActiveMap.AddLayersBySettings(layers);
             GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadCoreDescription));
         }
 

@@ -80,7 +80,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get { return true; }
         }
 
-        protected override void LoadCore()
+        protected override async void LoadCore()
         {
             if (matchingLayerPlugin == null || !matchingLayerPlugin.IsActive)
             {
@@ -96,7 +96,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     var layers = matchingLayerPlugin.GetLayers(getLayersParameters);
                     if (layers.Count > 0)
                     {
-                        GisEditor.ActiveMap.AddLayersBySettings(layers, true);
+                        await GisEditor.ActiveMap.AddLayersBySettings(layers, true);
                         GisEditor.UIManager.BeginRefreshPlugins(new RefreshArgs(this, RefreshArgsDescription.LoadCoreDescription));
                     }
                 }
