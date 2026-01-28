@@ -164,7 +164,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 else if (simpleShapeType == SimpleShapeType.Line)
                 {
                     bool isOpen = false;
-                    Proj4ProjectionInfo projectionInfo = featureLayer.GetProj4ProjectionInfo();
+                    Proj4ProjectionInfo projectionInfo = ((Layer)featureLayer).GetProj4ProjectionInfo();
                     //MultipolygonShape areaBaseShape = AreaBaseShape.Union(GetValidFeatures(clippingFeatures));
                     List<AreaBaseShape> clippingAreaShapes = GetValidFeatures(clippingFeatures)
                         .Select(f => f.GetShape())
@@ -247,7 +247,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     MultipolygonShape areaBaseShape = ConvertSqlQueryResultToMultiPolygonShape(unionResultShape);
 
                     bool isOpen = false;
-                    Proj4ProjectionInfo projectionInfo = featureLayer.GetProj4ProjectionInfo();
+                    Proj4ProjectionInfo projectionInfo = ((Layer)featureLayer).GetProj4ProjectionInfo();
                     if (projectionInfo != null && projectionInfo.CanProject)
                     {
                         if (featureLayer.IsOpen)
@@ -390,7 +390,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 #region replace project to null
 
                 bool isOpen = false;
-                Proj4ProjectionInfo projectionInfo = featureLayer.GetProj4ProjectionInfo();
+                Proj4ProjectionInfo projectionInfo = ((Layer)featureLayer).GetProj4ProjectionInfo();
                 if (projectionInfo != null && projectionInfo.CanProject)
                 {
                     if (featureLayer.IsOpen)

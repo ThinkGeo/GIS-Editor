@@ -141,7 +141,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     case DefaultBaseMap.WorldMapKit:
                         {
-                            var overlay = await BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlayAsync(currentMap);
+                            var overlay = await BaseMapsHelper.AddWorldMapKitOverlayAsync(currentMap);
                             if (overlay != null)
                             {
                                 overlay.Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName");
@@ -157,7 +157,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                     case DefaultBaseMap.BingMaps:
                         {
-                            var overlay = await BaseMapsHelper.AddWorldMapKitOverlayAsync(currentMap);
+                            var overlay = await BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlayAsync(currentMap);
                             if (overlay != null)
                             {
                                 overlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");

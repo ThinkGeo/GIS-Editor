@@ -25,7 +25,7 @@ namespace ThinkGeo.Core
         }
     }
 
-    public class BingMapsLayer : BingMapsAsyncLayer
+    public class BingMapsLayer : AzureMapsRasterAsyncLayer
     {
         public BingMapsLayer()
             : base()
@@ -33,18 +33,18 @@ namespace ThinkGeo.Core
         }
 
         public BingMapsLayer(string applicationId)
-            : base(applicationId)
+            : base(applicationId, AzureMapsRasterTileSet.BaseRoad)
         {
         }
 
         public BingMapsLayer(string applicationId, BingMapsMapType mapType)
-            : base(applicationId, mapType)
+            : base(applicationId, ConvertToAzureTileSet(mapType))
         {
         }
 
         public void Draw(GeoCanvas geoCanvas, Collection<SimpleCandidate> candidates)
         {
-            LayerDrawHelper.TryDraw(this, geoCanvas, candidates);
+            DrawAsync(geoCanvas, candidates).GetAwaiter().GetResult();
         }
 
         // Legacy compatibility: Map Suite used Proxy and ProjectionFromSphericalMercator.
@@ -55,6 +55,22 @@ namespace ThinkGeo.Core
         }
 
         public ProjectionConverter ProjectionFromSphericalMercator { get; set; }
+
+        private static AzureMapsRasterTileSet ConvertToAzureTileSet(BingMapsMapType mapType)
+        {
+            switch (mapType)
+            {
+                case BingMapsMapType.Aerial:
+                    return AzureMapsRasterTileSet.Imagery;
+                case BingMapsMapType.AerialWithLabels:
+                    return AzureMapsRasterTileSet.BaseHybridRoad;
+                case BingMapsMapType.CanvasDark:
+                    return AzureMapsRasterTileSet.BaseDarkGrey;
+                case BingMapsMapType.Road:
+                default:
+                    return AzureMapsRasterTileSet.BaseRoad;
+            }
+        }
     }
 
     public static class LineStyles

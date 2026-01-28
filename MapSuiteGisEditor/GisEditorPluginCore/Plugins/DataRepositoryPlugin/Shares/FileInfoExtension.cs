@@ -94,7 +94,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 //that indicartes the path of the corresponding file
                 var otherLayers = layerOverlays.SelectMany(layerOverlay => layerOverlay.Layers.Where(layer =>
                 {
-                    return layer is NativeImageRasterLayer ||
+                    return layer is SkiaRasterLayer ||
                         layer is MrSidGdalRasterLayer ||
                         layer is EcwGdalRasterLayer ||
                         layer is GeoTiffRasterLayer ||

@@ -152,7 +152,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             canvas.BeginDrawing(bitmap, proj.ConvertToExternalProjection(GisEditor.ActiveMap.CurrentExtent), GeographyUnit.DecimalDegree);
             featureLayers.ForEach(l =>
             {
-                Proj4ProjectionInfo projectionInfo = l.GetProj4ProjectionInfo();
+                Proj4ProjectionInfo projectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                 if (projectionInfo != null)
                 {
                     projectionInfo.ExternalProjectionParametersString = Proj4Projection.GetWgs84ParametersString();
@@ -287,7 +287,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             kmlCanvas.BeginDrawing(builder, proj.ConvertToExternalProjection(GisEditor.ActiveMap.CurrentExtent), GeographyUnit.DecimalDegree);
             featureLayers.ForEach(l =>
             {
-                Proj4ProjectionInfo projectionInfo = l.GetProj4ProjectionInfo();
+                Proj4ProjectionInfo projectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                 if (projectionInfo != null)
                 {
                     projectionInfo.ExternalProjectionParametersString = Proj4Projection.GetWgs84ParametersString();
@@ -329,7 +329,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 canvas.BeginDrawing(bitmap, proj.ConvertToExternalProjection(GisEditor.ActiveMap.CurrentExtent), GeographyUnit.DecimalDegree);
                 featureLayers.ForEach(l =>
                 {
-                    Proj4ProjectionInfo projectionInfo = l.GetProj4ProjectionInfo();
+                    Proj4ProjectionInfo projectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                     if (projectionInfo != null)
                     {
                         projectionInfo.ExternalProjectionParametersString = Proj4Projection.GetWgs84ParametersString();
@@ -621,7 +621,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             ThinkGeoRasterMapsAsyncLayer rasterLayer = new ThinkGeoRasterMapsAsyncLayer(rasterOverlay.ClientId, rasterOverlay.ClientSecret, rasterOverlay.MapType);
             rasterLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             rasterLayer.WebProxy = rasterOverlay.WebProxy;
-            rasterLayer.ProjectionConverterFromServerProjection = rasterOverlay.ProjectionConverterFromServerProjection ?? rasterOverlay.ProjectionConverter;
+            rasterLayer.ProjectionConverter = rasterOverlay.ProjectionConverter;
             rasterLayer.TimeoutInSeconds = rasterOverlay.TimeoutInSeconds;
             rasterLayer.SafeProcess(() =>
             {
@@ -690,7 +690,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static void ReprojectRasterLayers(GisEditorWpfMap map, string oldParameters, string newParameters)
         {
-            List<RasterLayer> rasterLayers = map.Overlays.OfType<LayerOverlay>().SelectMany(o => o.Layers).OfType<RasterLayer>().Where(l => !(l is WmsAsyncLayer)).ToList();
+            List<RasterLayer> rasterLayers = map.Overlays.OfType<LayerOverlay>().SelectMany(o => o.Layers).OfType<RasterLayer>().ToList();
             foreach (RasterLayer rasterLayer in rasterLayers)
             {
                 if (rasterLayer.ImageSource.ProjectionConverter == null)

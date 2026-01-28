@@ -29,14 +29,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     [Serializable]
     public class MeasureSetting : Setting
     {
-        private ObservableCollection<DistanceUnit> distanceUnits;
-        private ObservableCollection<AreaUnit> areaUnits;
-        private GeoBrush measureFillColor;
-        private GeoBrush measureOutlineColor;
-        private float measureOutlineThickness;
-        private GeoBrush trackFillColor;
-        private GeoBrush trackOutlineColor;
-        private float trackOutlineThickness;
+        //private ObservableCollection<DistanceUnit> distanceUnits;
+        //private ObservableCollection<AreaUnit> areaUnits;
+        //private GeoBrush measureFillColor;
+        //private GeoBrush measureOutlineColor;
+        //private float measureOutlineThickness;
+        //private GeoBrush trackFillColor;
+        //private GeoBrush trackOutlineColor;
+        //private float trackOutlineThickness;
         private bool allowCollectFixedElements;
         private bool useGdiPlusInsteadOfDrawingVisual;
         private CompositeStyle measurementStyle;

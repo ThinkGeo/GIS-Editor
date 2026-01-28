@@ -297,7 +297,11 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 worldMapsLayer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
                 worldMapsLayer.DrawingException += new EventHandler<DrawingExceptionLayerEventArgs>(ThinkGeoMapsLayer_DrawingException);
                 worldMapsLayer.VectorTileCache = null;
-                worldMapsLayer.MapUnit = map.MapUnit;
+                if (worldMapsLayer.TileMatrixSet != null && worldMapsLayer.TileMatrixSet.TileMatrices.Count > 0)
+                {
+                    var matrix = worldMapsLayer.TileMatrixSet.TileMatrices[0];
+                    worldMapsLayer.TileMatrixSet = TileMatrixSet.CreateTileMatrixSet(matrix.TileWidth, matrix.BoundingBox, map.MapUnit, worldMapsLayer.TileMatrixSet.TileMatrices.Count);
+                }
                 if (sourceWorldMapsLayer.ProjectionConverter != null)
                 {
                     worldMapsLayer.ProjectionConverter = sourceWorldMapsLayer.ProjectionConverter.CloneDeep();

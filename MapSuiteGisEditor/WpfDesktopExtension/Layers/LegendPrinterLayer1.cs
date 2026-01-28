@@ -44,8 +44,8 @@ namespace ThinkGeo.Core
                 Title = legendAdornmentLayer.Title;
                 Footer = legendAdornmentLayer.Footer;
                 BackgroundMask = legendAdornmentLayer.BackgroundMask;
-                Width = legendAdornmentLayer.Width;
-                Height = legendAdornmentLayer.Height;
+                Width = legendAdornmentLayer.GetWidth();
+                Height = legendAdornmentLayer.GetHeight();
                 XOffsetInPixel = legendAdornmentLayer.XOffsetInPixel;
                 YOffsetInPixel = legendAdornmentLayer.YOffsetInPixel;
                 foreach (var item in legendAdornmentLayer.LegendItems)

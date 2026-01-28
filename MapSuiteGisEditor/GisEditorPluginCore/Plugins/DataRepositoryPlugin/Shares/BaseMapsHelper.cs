@@ -152,17 +152,44 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return rasterOverlay;
         }
 
+        public static async Task<ThinkGeoCloudRasterMapsOverlay> AddThinkGeoCloudRasterMapsOverlayAsync(GisEditorWpfMap map, string clientId, string clientSecret, ThinkGeoCloudRasterMapsMapType mapType)
+        {
+            if (map == null) return null;
+
+            var resolvedClientId = string.IsNullOrWhiteSpace(clientId) ? ThinkGeoCloudClientId : clientId;
+            var resolvedClientSecret = string.IsNullOrWhiteSpace(clientSecret) ? ThinkGeoCloudClientSecret : clientSecret;
+
+            if (string.IsNullOrWhiteSpace(resolvedClientId) || string.IsNullOrWhiteSpace(resolvedClientSecret))
+            {
+                return await AddThinkGeoCloudRasterMapsOverlayAsync(map);
+            }
+
+            var rasterOverlay = CreateThinkGeoCloudRasterMapsOverlay(resolvedClientId, resolvedClientSecret, mapType);
+            await BaseMapsHelper.AddOverlayInGoogleProjectionAsync(rasterOverlay, map);
+            return rasterOverlay;
+        }
+
         private static async Task<ThinkGeoCloudRasterMapsOverlay> AddThinkGeoCloudRasterMapsOverlayToMapAsync(GisEditorWpfMap map, BingMapsConfigWindow configWindow, ThinkGeoCloudRasterMapsOverlay rasterOverlay)
         {
             var clientId = string.IsNullOrWhiteSpace(configWindow.BingMapsKey) ? ThinkGeoCloudClientId : configWindow.BingMapsKey;
             var clientSecret = string.IsNullOrWhiteSpace(configWindow.ClientSecret) ? ThinkGeoCloudClientSecret : configWindow.ClientSecret;
-            rasterOverlay = new ThinkGeoCloudRasterMapsOverlay(clientId, clientSecret, configWindow.BingMapsStyle);
-            rasterOverlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
-            rasterOverlay.TileType = TileType.PreloadDataMultiTile;
+            rasterOverlay = CreateThinkGeoCloudRasterMapsOverlay(clientId, clientSecret, configWindow.BingMapsStyle);
+            await BaseMapsHelper.AddOverlayInGoogleProjectionAsync(rasterOverlay, map);
+            return rasterOverlay;
+        }
+
+        private static ThinkGeoCloudRasterMapsOverlay CreateThinkGeoCloudRasterMapsOverlay(string clientId, string clientSecret, ThinkGeoCloudRasterMapsMapType mapType)
+        {
+            var rasterOverlay = new ThinkGeoCloudRasterMapsOverlay(clientId, clientSecret, mapType)
+            {
+                Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle"),
+                TileType = TileType.PreloadDataMultiTile
+            };
+#pragma warning disable CS0618
             rasterOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             rasterOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(ThinkGeoCloudRasterOverlay_DrawingException);
+#pragma warning restore CS0618
             rasterOverlay.RefreshCache();
-            await BaseMapsHelper.AddOverlayInGoogleProjectionAsync(rasterOverlay, map);
             return rasterOverlay;
         }
 
@@ -171,8 +198,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             OpenStreetMapOverlay osmOverlay = new OpenStreetMapOverlay();
             osmOverlay.TileType = TileType.PreloadDataMultiTile;
             osmOverlay.Name = "OpenStreetMap";
+#pragma warning disable CS0618
             osmOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
             osmOverlay.DrawingException += new EventHandler<DrawingExceptionTileOverlayEventArgs>(OsmOverlay_DrawingException);
+#pragma warning restore CS0618
             osmOverlay.RefreshCache();
             await BaseMapsHelper.AddOverlayInGoogleProjectionAsync(osmOverlay, map);
             return osmOverlay;
@@ -410,7 +439,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
             var targetUnit = targetUnitOverride ?? map.MapUnit;
             ApplyWorldMapsProjection(worldMapsLayer, targetProj4, targetUnit);
-            worldMapsLayer.MapUnit = targetUnit;
+            UpdateTileMatrixSet(worldMapsLayer, targetUnit);
             ApplyWorldMapsCache(worldMapsLayer);
         }
 
@@ -450,8 +479,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 TileType = TileType.SingleTile,
                 Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName"),
-                DrawingExceptionMode = DrawingExceptionMode.DrawException,
-                IsBase = true,
                 Tag = WorldMapsOverlayTag
             };
             overlay.Layers.Add(worldMapsLayer);
@@ -595,6 +622,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return parameterDict;
         }
 
+#pragma warning disable CS0618
         private static void OsmOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
         {
             RaiseDrawingException<OpenStreetMapOverlay>("OpenStreetMap", sender, e);
@@ -605,11 +633,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             RaiseDrawingException<MvtTilesAsyncLayer>("ThinkGeo Maps", sender, e);
         }
 
+#pragma warning disable CS0618
         private static void ThinkGeoCloudRasterOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
         {
             RaiseDrawingException<ThinkGeoCloudRasterMapsOverlay>("ThinkGeo Cloud Raster Maps", sender, e);
         }
 
+#pragma warning disable CS0618
         internal static void RaiseDrawingException<T>(string name, object sender, EventArgs e)
         {
             DrawingExceptionLayerEventArgs drawingExceptionLayerEventArgs = e as DrawingExceptionLayerEventArgs;
@@ -652,5 +682,17 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
             }
         }
+
+        private static void UpdateTileMatrixSet(XyzTilesAsyncLayer layer, GeographyUnit mapUnit)
+        {
+            if (layer == null || layer.TileMatrixSet == null || layer.TileMatrixSet.TileMatrices.Count == 0)
+            {
+                return;
+            }
+
+            var matrix = layer.TileMatrixSet.TileMatrices[0];
+            layer.TileMatrixSet = TileMatrixSet.CreateTileMatrixSet(matrix.TileWidth, matrix.BoundingBox, mapUnit, layer.TileMatrixSet.TileMatrices.Count);
+        }
+#pragma warning restore CS0618
     }
 }

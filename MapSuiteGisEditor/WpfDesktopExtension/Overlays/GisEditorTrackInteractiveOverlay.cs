@@ -99,7 +99,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         public GisEditorTrackInteractiveOverlay()
         {
-            PolygonTrackMode = PolygonTrackMode.LineOnly;
+            SetTrackPolygonMode(TrackPolygonMode.LineOnly);
 
             #region Boundary Adjustment
             searchingVertices = new List<Vertex>();
@@ -108,6 +108,31 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             isShiftKeyDown = false;
             needAddVertex = true;
             #endregion
+        }
+
+        private void SetTrackPolygonMode(TrackPolygonMode mode)
+        {
+            ApplyTrackPolygonModeToLayer(TrackShapeLayer, mode);
+            ApplyTrackPolygonModeToLayer(TrackShapesInProcessLayer, mode);
+        }
+
+        private static void ApplyTrackPolygonModeToLayer(InMemoryFeatureLayer layer, TrackPolygonMode mode)
+        {
+            if (layer == null || layer.ZoomLevelSet == null)
+            {
+                return;
+            }
+
+            var zoomLevel = layer.ZoomLevelSet.ZoomLevel01;
+            if (zoomLevel == null || zoomLevel.DefaultAreaStyle == null)
+            {
+                return;
+            }
+
+            if (mode == TrackPolygonMode.LineOnly)
+            {
+                zoomLevel.DefaultAreaStyle.FillBrush = new GeoSolidBrush(GeoColors.Transparent);
+            }
         }
 
         #region Boudary Adjustment

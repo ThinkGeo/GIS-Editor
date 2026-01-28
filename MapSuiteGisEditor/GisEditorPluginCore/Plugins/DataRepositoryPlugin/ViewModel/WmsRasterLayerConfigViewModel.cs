@@ -372,8 +372,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void InitializeWmsRasterLayer()
         {
             wmsRasterLayer = new WmsAsyncLayer(new Uri(wmsServerUrl, UriKind.Absolute));
-            wmsRasterLayer.UpperThreshold = double.MaxValue;
-            wmsRasterLayer.LowerThreshold = double.MinValue;
+            wmsRasterLayer.UpperScale = double.MaxValue;
+            wmsRasterLayer.LowerScale = double.MinValue;
         }
 
         private void AddServerLayer()

@@ -85,7 +85,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     move.IsChecked = true;
                 }
 
-                viewModel.SelectedPolygonTrackMode = measureOverlay.PolygonTrackMode;
+                viewModel.SelectedPolygonTrackMode = measureOverlay.TrackPolygonMode;
                 if (measureOverlay.ShapeLayer.MapShapes.Count > 0 && currentMap.ActualWidth > 0 && currentMap.ActualHeight > 0) _ = currentMap.RefreshAsync();
                 DataContext = null;
                 DataContext = viewModel;

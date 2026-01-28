@@ -52,7 +52,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private async Task LoadCoreAsync()
         {
-            var overlay = await BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlayAsync(GisEditor.ActiveMap);
+            var overlay = await BaseMapsHelper.AddWorldMapKitOverlayAsync(GisEditor.ActiveMap);
             if (overlay != null)
             {
                 overlay.Name = GisEditor.LanguageManager.GetStringResource("WorldMapKitName");

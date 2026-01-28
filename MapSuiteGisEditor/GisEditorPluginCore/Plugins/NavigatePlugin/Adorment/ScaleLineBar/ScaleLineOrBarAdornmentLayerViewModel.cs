@@ -387,13 +387,13 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
 
             newLayer.Name = scaleLayer.Name;
-            newLayer.Width = (int)scaleLayer.Width;
+            newLayer.Width = (int)scaleLayer.GetWidth();
             newLayer.Location = scaleLayer.Location;
             newLayer.OffsetX = (int)scaleLayer.XOffsetInPixel;
             newLayer.OffsetY = (int)scaleLayer.YOffsetInPixel;
 
             newLayer.BackMask = scaleLayer.BackgroundMask;
-            newLayer.Height = (int)scaleLayer.Height;
+            newLayer.Height = (int)scaleLayer.GetHeight();
 
             if (scaleLayer is ScaleBarAdornmentLayer)
             {
@@ -417,8 +417,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void SetCommonProperties(AdornmentLayer layer)
         {
             layer.Name = Name;
+#pragma warning disable CS0618
             layer.Width = width;
             layer.Height = Height;
+#pragma warning restore CS0618
             layer.Location = Location;
             layer.XOffsetInPixel = offsetX;
             layer.YOffsetInPixel = offsetY;

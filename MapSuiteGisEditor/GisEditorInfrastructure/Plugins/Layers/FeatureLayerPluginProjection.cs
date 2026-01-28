@@ -68,7 +68,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
         protected void SaveInternalProj4ProjectionParameters(FeatureLayer featureLayer, string proj4ProjectionParameters)
         {
-            Proj4ProjectionInfo projectionInfo = featureLayer.GetProj4ProjectionInfo();
+            Proj4ProjectionInfo projectionInfo = ((Layer)featureLayer).GetProj4ProjectionInfo();
             if (projectionInfo != null)
             {
                 projectionInfo.InternalProjectionParametersString = proj4ProjectionParameters;

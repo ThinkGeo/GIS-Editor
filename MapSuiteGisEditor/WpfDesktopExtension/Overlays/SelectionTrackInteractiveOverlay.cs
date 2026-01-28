@@ -895,7 +895,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 }
                 else
                 {
-                    trackOverlay.MouseUp(new InteractionArguments());
+                    trackOverlay.ManipulationCompleted(new InteractionArguments());
                 }
             }
         }

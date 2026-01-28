@@ -137,7 +137,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             if (needRefresh)
             {
                 RasterTileCache tempTileCache = overlay.TileCache as RasterTileCache;
-                if (!overlay.IsBase && tempTileCache != null)
+                if (tempTileCache != null)
                 {
                     Task.Factory.StartNew(cache =>
                     {

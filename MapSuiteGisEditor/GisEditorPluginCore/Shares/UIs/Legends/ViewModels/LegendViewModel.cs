@@ -166,8 +166,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     }
                 }
             };
-            this.Width = legendLayer.Width;
-            this.Height = legendLayer.Height;
+            this.Width = legendLayer.GetWidth();
+            this.Height = legendLayer.GetHeight();
             this.BackgroundMask = legendLayer.BackgroundMask;
             this.FixedSymbolWidth = 16;
             this.FixedSymbolHeight = 16;
@@ -293,14 +293,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public float Width
         {
-            get { return coreLayer.Width; }
+            get { return coreLayer.GetWidth(); }
             set
             {
                 if (value <= 2)
                 {
                     throw new ArgumentException("Width");
                 }
+#pragma warning disable CS0618
                 coreLayer.Width = value;
+#pragma warning restore CS0618
                 RaisePropertyChanged(()=>Width);
                 LazyRenderPreview();
             }
@@ -308,14 +310,16 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public float Height
         {
-            get { return coreLayer.Height; }
+            get { return coreLayer.GetHeight(); }
             set
             {
                 if (value <= 2)
                 {
                     throw new ArgumentException("Height");
                 }
+#pragma warning disable CS0618
                 coreLayer.Height = value;
+#pragma warning restore CS0618
                 RaisePropertyChanged(()=>Height);
                 LazyRenderPreview();
             }
@@ -744,10 +748,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             LegendAdornmentLayer legendAdornmentLayer = new LegendAdornmentLayer();
             legendAdornmentLayer.BackgroundMask = BackgroundMask;
+#pragma warning disable CS0618
             legendAdornmentLayer.Height = Height;
             legendAdornmentLayer.Location = Location;
             legendAdornmentLayer.Name = Name;
             legendAdornmentLayer.Width = Width;
+#pragma warning restore CS0618
             legendAdornmentLayer.XOffsetInPixel = XOffsetInPixel;
             legendAdornmentLayer.YOffsetInPixel = YOffsetInPixel;
             legendAdornmentLayer.IsVisible = IsVisible;
@@ -771,8 +777,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
 
             var rect = Measure(new PlatformGeoCanvas());
+#pragma warning disable CS0618
             legendAdornmentLayer.Width = rect.Width + 1;
             legendAdornmentLayer.Height = rect.Height + 1;
+#pragma warning restore CS0618
 
             var tmpItems = new Collection<LegendItem>();
             if (legendAdornmentLayer.Title != null) tmpItems.Add(legendAdornmentLayer.Title);
@@ -898,10 +906,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 };
 
                 LegendAdornmentLayer tmpLegendAdornmentLayer = ToLegendAdornmentLayer();
-                double left = -tmpLegendAdornmentLayer.Width * .5;
-                double top = tmpLegendAdornmentLayer.Height * .5;
-                double right = left + tmpLegendAdornmentLayer.Width;
-                double bottom = top - tmpLegendAdornmentLayer.Height;
+                double left = -tmpLegendAdornmentLayer.GetWidth() * .5;
+                double top = tmpLegendAdornmentLayer.GetHeight() * .5;
+                double right = left + tmpLegendAdornmentLayer.GetWidth();
+                double bottom = top - tmpLegendAdornmentLayer.GetHeight();
 
                 geoCanvas.BeginDrawing(nativeImage, new RectangleShape(left, top, right, bottom), GeographyUnit.Meter);
                 simpleCandidates.Clear();

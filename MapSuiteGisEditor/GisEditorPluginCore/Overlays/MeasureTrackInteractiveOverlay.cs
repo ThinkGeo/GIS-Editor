@@ -75,6 +75,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         [NonSerialized]
         private MeasureCustomeMode measureCustomeMode;
 
+        [NonSerialized]
+        private TrackPolygonMode trackPolygonMode;
+
         public RenderMode RenderMode { get; set; }
 
         public MeasureTrackInteractiveOverlay()
@@ -83,14 +86,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             measureCustomeMode = MeasureCustomeMode.Select;
             shapeLayer = new MapShapeLayer();
             textBlock = new TextBlock { Visibility = Visibility.Collapsed };
-            OverlayCanvas.Children.Add(textBlock);
-            PolygonTrackMode = PolygonTrackMode.LineOnly;
+            Children.Add(textBlock);
+            TrackPolygonMode = TrackPolygonMode.LineOnly;
             RenderMode = RenderMode.DrawingVisual;
             InitializeColumns(TrackShapeLayer);
             InitializeColumns(TrackShapesInProcessLayer, false);
 
-            SetStylesForInMemoryFeatureLayer(TrackShapeLayer);
-            SetStylesForInMemoryFeatureLayer(TrackShapesInProcessLayer);
+            SetStylesForInMemoryFeatureLayer(TrackShapeLayer, TrackPolygonMode);
+            SetStylesForInMemoryFeatureLayer(TrackShapesInProcessLayer, TrackPolygonMode);
             stateController = new StateController<Collection<MapShape>>();
             stateController.Add(new Collection<MapShape>());
         }
@@ -164,6 +167,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             get { return measuringMode; }
             set { measuringMode = value; }
+        }
+
+        public TrackPolygonMode TrackPolygonMode
+        {
+            get { return trackPolygonMode; }
+            set
+            {
+                if (trackPolygonMode != value)
+                {
+                    trackPolygonMode = value;
+                    SetStylesForInMemoryFeatureLayer(TrackShapeLayer, trackPolygonMode);
+                    SetStylesForInMemoryFeatureLayer(TrackShapesInProcessLayer, trackPolygonMode);
+                }
+            }
         }
 
         public MeasureCustomeMode MeasureCustomeMode
@@ -378,7 +395,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Task DrawTileAsyncCore(GeoCanvas geoCanvas)
         {
-            LayerTile layerTile = OverlayCanvas.Children.OfType<LayerTile>().FirstOrDefault(tmpTile
+            LayerTile layerTile = Children.OfType<LayerTile>().FirstOrDefault(tmpTile
                 => tmpTile.GetValue(FrameworkElement.NameProperty).Equals("DefaultLayerTile"));
 
             if (layerTile != null)
@@ -423,7 +440,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             return mapShape;
         }
 
-        private void SetStylesForInMemoryFeatureLayer(InMemoryFeatureLayer featureLayer)
+        private void SetStylesForInMemoryFeatureLayer(InMemoryFeatureLayer featureLayer, TrackPolygonMode polygonMode)
         {
             if (featureLayer == null) return;
             if (featureLayer.ZoomLevelSet == null)
@@ -434,10 +451,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultLineStyle = null;
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultPointStyle = null;
             featureLayer.ZoomLevelSet.ZoomLevel01.DefaultTextStyle = null;
+            featureLayer.ZoomLevelSet.ZoomLevel01.CustomStyles.Clear();
             var measurementStyle = GetMeasurementStyleSafe();
             foreach (var item in measurementStyle.Styles)
             {
-                featureLayer.ZoomLevelSet.ZoomLevel01.CustomStyles.Add(item);
+                var clonedStyle = item.CloneDeep();
+                if (polygonMode == TrackPolygonMode.LineOnly)
+                {
+                    var areaStyle = clonedStyle as AreaStyle;
+                    if (areaStyle != null)
+                    {
+                        areaStyle.FillBrush = new GeoSolidBrush(GeoColors.Transparent);
+                    }
+                }
+                featureLayer.ZoomLevelSet.ZoomLevel01.CustomStyles.Add(clonedStyle);
             }
             featureLayer.ZoomLevelSet.ZoomLevel01.ApplyUntilZoomLevel = ApplyUntilZoomLevel.Level20;
         }
@@ -814,7 +841,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 }
                 else
                 {
-                    MouseUp(new InteractionArguments());
+                 //   ManipulationCompleted(new InteractionArguments());
                 }
             }
         }

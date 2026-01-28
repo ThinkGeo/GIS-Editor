@@ -287,8 +287,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             wpfMap.KeyUp += Map_KeyUp;
             wpfMap.MouseDown -= Map_MouseDown;
             wpfMap.MouseDown += Map_MouseDown;
-            wpfMap.ZoomLevelSetChanged -= WpfMap_ZoomLevelSetChanged;
-            wpfMap.ZoomLevelSetChanged += WpfMap_ZoomLevelSetChanged;
+            navigateGroup?.ViewModel.SysnchCurrentZoomLevels(wpfMap);
 
             if (!wpfMap.MapTools.Any(t => t is NorthArrowMapTool))
             {
@@ -316,7 +315,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             wpfMap.KeyDown -= Map_KeyDown;
             wpfMap.KeyUp -= Map_KeyUp;
             wpfMap.MouseDown -= Map_MouseDown;
-            wpfMap.ZoomLevelSetChanged -= WpfMap_ZoomLevelSetChanged;
 
             NorthArrowMapTool northArrowMapTool = wpfMap.MapTools.OfType<NorthArrowMapTool>().FirstOrDefault();
             if (northArrowMapTool != null)
@@ -554,11 +552,6 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             GisEditorWpfMapExtension.ReprojectMap(sender as GisEditorWpfMap, e.OldProjectionParameters, e.NewProjectionParameters);
         }
 
-        private void WpfMap_ZoomLevelSetChanged(object sender, ZoomLevelSetChangedMapViewEventArgs e)
-        {
-            navigateGroup.ViewModel.SysnchCurrentZoomLevels(sender as GisEditorWpfMap);
-        }
-
         private void IdentifyMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var mouseWorldCoordinate = GisEditor.ActiveMap.ToWorldCoordinate(mouseDownCoordinate);
@@ -596,7 +589,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     WpfMap extendedMap = GisEditor.ActiveMap;
                     if (extendedMap.ExtentOverlay != null && previousExtentOverlayEnabled.ContainsKey(extendedMap))
                     {
-                        extendedMap.ExtentOverlay.OverlayCanvas.IsEnabled = previousExtentOverlayEnabled[extendedMap];
+                        extendedMap.ExtentOverlay.IsEnabled = previousExtentOverlayEnabled[extendedMap];
                     }
 
                     if (previousCursors.ContainsKey(extendedMap))
@@ -653,8 +646,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                         GisEditor.ActiveMap.PreviewMouseUp += new MouseButtonEventHandler(ActiveMapDrag_MouseUp);
 
                         previousCursors[extendedMap] = extendedMap.Cursor;
-                        previousExtentOverlayEnabled[extendedMap] = extendedMap.ExtentOverlay.OverlayCanvas.IsEnabled;
-                        extendedMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
+                        previousExtentOverlayEnabled[extendedMap] = extendedMap.ExtentOverlay.IsEnabled;
+                        extendedMap.ExtentOverlay.IsEnabled = true;
                         extendedMap.Cursor = GisEditorCursors.TrackZoom;
 
                         e.Handled = true;
@@ -732,6 +725,10 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             WpfMap currentMap = (WpfMap)sender;
             double currentScale = currentMap.CurrentScale;
             var zoomScales = currentMap.ZoomScales;
+            if (navigateGroup != null && navigateGroup.ViewModel.CurrentZoomLevels.Count != zoomScales.Count)
+            {
+                navigateGroup.ViewModel.SysnchCurrentZoomLevels(currentMap);
+            }
             foreach (ZoomLevelItemViewModel levelEntity in navigateGroup.ViewModel.CurrentZoomLevels)
             {
                 if (levelEntity.ScaleIndex < zoomScales.Count)
@@ -797,28 +794,28 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     extentOverlay.PanMode = MapPanMode.Default;
                     extentOverlay.TrackZoomInKey = Key.None;
                     newCursor = GisEditorCursors.TrackZoom;
-                    GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
+                    GisEditor.ActiveMap.ExtentOverlay.IsEnabled = true;
                     break;
 
                 case SwitcherMode.Identify:
                     extentOverlay.PanMode = MapPanMode.Disabled;
                     extentOverlay.TrackZoomInKey = Key.LeftShift;
                     newCursor = GisEditorCursors.Identify;
-                    GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
+                    GisEditor.ActiveMap.ExtentOverlay.IsEnabled = true;
                     break;
 
                 case SwitcherMode.None:
                     extentOverlay.PanMode = MapPanMode.Disabled;
                     extentOverlay.TrackZoomInKey = Key.None;
                     newCursor = GisEditorCursors.Normal;
-                    GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = false;
+                    GisEditor.ActiveMap.ExtentOverlay.IsEnabled = false;
                     break;
 
                 case SwitcherMode.Pan:
                 default:
                     extentOverlay.PanMode = MapPanMode.Default;
                     extentOverlay.TrackZoomInKey = Key.LeftShift;
-                    GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
+                    GisEditor.ActiveMap.ExtentOverlay.IsEnabled = true;
                     newCursor = GisEditorCursors.Pan;
                     break;
             }
@@ -1066,14 +1063,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 WpfMap currentMap = (WpfMap)sender;
                 if (currentMap.ExtentOverlay != null)
                 {
-                    Point currentPosition = e.GetPosition(GisEditor.ActiveMap);
-                    InteractionArguments arguments = CollectMouseEventArguments(currentPosition, currentMap);
-                    InteractiveResult result = currentMap.ExtentOverlay.MouseUp(arguments);
-                    if (result.NewCurrentExtent != null)
-                    {
-                        currentMap.CurrentExtent = result.NewCurrentExtent;
-                        currentMap.RefreshAsync();
-                    }
+                    //Point currentPosition = e.GetPosition(GisEditor.ActiveMap);
+                    //InteractionArguments arguments = CollectMouseEventArguments(currentPosition, currentMap);
+                    //InteractiveResult result = currentMap.ExtentOverlay.ManipulationCompleted(arguments);
+                    //if (result.NewCurrentExtent != null)
+                    //{
+                    //    currentMap.CurrentExtent = result.NewCurrentExtent;
+                    //    currentMap.RefreshAsync();
+                    //}
                 }
             }
         }
@@ -1085,12 +1082,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 Point currentPosition = e.GetPosition(GisEditor.ActiveMap);
                 if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
                 {
-                    WpfMap currentMap = (WpfMap)sender;
-                    if (currentMap.ExtentOverlay != null)
-                    {
-                        InteractionArguments arguments = CollectMouseEventArguments(currentPosition, currentMap);
-                        currentMap.ExtentOverlay.MouseMove(arguments);
-                    }
+                    //WpfMap currentMap = (WpfMap)sender;
+                    //if (currentMap.ExtentOverlay != null)
+                    //{
+                    //    InteractionArguments arguments = CollectMouseEventArguments(currentPosition, currentMap);
+                    //    currentMap.ExtentOverlay.ManipulationDelta(arguments);
+                    //}
                 }
                 else
                 {
@@ -1120,12 +1117,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
             {
                 WpfMap currentMap = (WpfMap)sender;
-                if (currentMap.ExtentOverlay != null)
-                {
-                    InteractionArguments arguments = CollectMouseEventArguments(originPosition, currentMap);
-                    arguments.MouseButton = MapMouseButton.Left;
-                    currentMap.ExtentOverlay.MouseDown(arguments);
-                }
+                //if (currentMap.ExtentOverlay != null)
+                //{
+                //    InteractionArguments arguments = CollectMouseEventArguments(originPosition, currentMap);
+                //    arguments.MouseButton = MapMouseButton.Left;
+                //    currentMap.ExtentOverlay.ManipulationStarted(arguments);
+                //}
             }
         }
 

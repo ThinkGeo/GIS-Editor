@@ -1372,7 +1372,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
          //   PrintMap.ZoomLevelSet = new PrinterZoomLevelSet(PrintMap.MapUnit, PrinterHelper.GetPointsPerGeographyUnit(PrintMap.MapUnit));
             PrintMap.BackgroundOverlay.BackgroundBrush = new GeoSolidBrush(GeoColors.LightGray);
 
-            PrinterOverlay = new AdvancedPrinterInteractiveOverlay { DrawingExceptionMode = DrawingExceptionMode.DrawException };
+            PrinterOverlay = new AdvancedPrinterInteractiveOverlay { ThrowingExceptionMode = ThrowingExceptionMode.SuppressException };
 
             var trackOverlay = PrintMap.InteractiveOverlays.OfType<GisEditorTrackInteractiveOverlay>().FirstOrDefault();
             if (trackOverlay != null)

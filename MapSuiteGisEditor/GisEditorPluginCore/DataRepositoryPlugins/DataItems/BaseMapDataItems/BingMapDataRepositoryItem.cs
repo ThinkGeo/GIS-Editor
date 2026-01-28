@@ -43,7 +43,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Icon = new BitmapImage(new Uri("/GisEditorPluginCore;component/Images/BingMaps.PNG", UriKind.RelativeOrAbsolute));
             clientId = BaseMapsHelper.ThinkGeoCloudClientId;
             clientSecret = BaseMapsHelper.ThinkGeoCloudClientSecret;
-            mapType = ThinkGeoCloudRasterMapsMapType.Light;
+            mapType = ThinkGeoCloudRasterMapsMapType.Light_V2_X1;
             GisEditor.ProjectManager.Opened += ProjectManager_Opened;
 
             if (IsLoadable)
@@ -98,7 +98,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private async Task LoadCoreAsync()
         {
-            var overlay = await BaseMapsHelper.AddWorldMapKitOverlayAsync(GisEditor.ActiveMap);
+            var overlay = await BaseMapsHelper.AddThinkGeoCloudRasterMapsOverlayAsync(GisEditor.ActiveMap, BingMapsKey, ThinkGeoCloudClientSecret, ThinkGeoCloudMapType);
             if (overlay != null)
             {
                 overlay.Name = GisEditor.LanguageManager.GetStringResource("BingMapsConfigWindowTitle");
@@ -215,25 +215,25 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         private static ThinkGeoCloudRasterMapsMapType ConvertLegacyBingMapType(string legacyType)
         {
-            if (String.IsNullOrWhiteSpace(legacyType)) return ThinkGeoCloudRasterMapsMapType.Default;
+            if (String.IsNullOrWhiteSpace(legacyType)) return ThinkGeoCloudRasterMapsMapType.Light_V2_X1;
 
             if (Enum.TryParse(legacyType, true, out BingMapsMapType bingType))
             {
                 switch (bingType)
                 {
                     case BingMapsMapType.Aerial:
-                        return ThinkGeoCloudRasterMapsMapType.Aerial;
+                        return ThinkGeoCloudRasterMapsMapType.Aerial_V2_X1;
                     case BingMapsMapType.AerialWithLabels:
-                        return ThinkGeoCloudRasterMapsMapType.Hybrid;
+                        return ThinkGeoCloudRasterMapsMapType.Hybrid_V2_X1;
                     case BingMapsMapType.CanvasDark:
-                        return ThinkGeoCloudRasterMapsMapType.Dark;
+                        return ThinkGeoCloudRasterMapsMapType.Dark_V2_X1;
                     case BingMapsMapType.Road:
                     default:
-                        return ThinkGeoCloudRasterMapsMapType.Light;
+                        return ThinkGeoCloudRasterMapsMapType.Light_V2_X1;
                 }
             }
 
-            return ThinkGeoCloudRasterMapsMapType.Default;
+            return ThinkGeoCloudRasterMapsMapType.Light_V2_X1;
         }
     }
 }

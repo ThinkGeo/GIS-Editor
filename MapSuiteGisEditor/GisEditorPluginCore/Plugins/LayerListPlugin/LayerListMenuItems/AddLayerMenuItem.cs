@@ -197,7 +197,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 {
                     var layerOverlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Overlay;
                     if (layerOverlay != null
-                        && enumItem.Equals(layerOverlay.DrawingExceptionMode.ToString(), StringComparison.OrdinalIgnoreCase))
+                        && enumItem.Equals(GetOverlayDrawingExceptionMode(layerOverlay).ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         item.IsChecked = true;
                     }
@@ -228,10 +228,39 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (overlay != null)
                 {
                     var mode = (DrawingExceptionMode)Enum.Parse(typeof(DrawingExceptionMode), menuItem.Header.ToString());
-                    overlay.DrawingExceptionMode = mode;
+                    ApplyDrawingExceptionMode(overlay, mode);
                     menuItem.IsChecked = true;
                 }
             }
+        }
+
+        private static DrawingExceptionMode GetOverlayDrawingExceptionMode(Overlay overlay)
+        {
+            var layerOverlay = overlay as LayerOverlay;
+            if (layerOverlay != null && layerOverlay.Layers.Count > 0)
+            {
+                return layerOverlay.Layers[0].DrawingExceptionMode;
+            }
+
+            return overlay.ThrowingExceptionMode == ThrowingExceptionMode.ThrowException
+                ? DrawingExceptionMode.ThrowException
+                : DrawingExceptionMode.DrawException;
+        }
+
+        private static void ApplyDrawingExceptionMode(Overlay overlay, DrawingExceptionMode mode)
+        {
+            var layerOverlay = overlay as LayerOverlay;
+            if (layerOverlay != null)
+            {
+                foreach (var layer in layerOverlay.Layers)
+                {
+                    layer.DrawingExceptionMode = mode;
+                }
+            }
+
+            overlay.ThrowingExceptionMode = (mode == DrawingExceptionMode.ThrowException || mode == DrawingExceptionMode.DrawAndThrowException)
+                ? ThrowingExceptionMode.ThrowException
+                : ThrowingExceptionMode.SuppressException;
         }
     }
 }

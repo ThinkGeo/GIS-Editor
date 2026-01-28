@@ -44,7 +44,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 overlay.PanMode = MapPanMode.Disabled;
                 overlay.TrackZoomInKey = Key.LeftShift;
-                overlay.OverlayCanvas.IsEnabled = false;
+                overlay.IsEnabled = false;
                 if (GisEditor.ActiveMap != null)
                 {
                     var switcherPanZoomBar = GisEditor.ActiveMap.MapTools.OfType<SwitcherPanZoomBarMapTool>().FirstOrDefault();
@@ -62,7 +62,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             var overlay = interactiveOverlay as ExtentInteractiveOverlay;
             if (overlay != null)
             {
-                isEnabled = overlay.PanMode != MapPanMode.Disabled && overlay.OverlayCanvas.IsEnabled;
+                isEnabled = overlay.PanMode != MapPanMode.Disabled && overlay.IsEnabled;
             }
 
             return isEnabled;

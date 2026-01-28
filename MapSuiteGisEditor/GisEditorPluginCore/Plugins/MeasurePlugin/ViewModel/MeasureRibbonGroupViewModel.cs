@@ -35,8 +35,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
     [Serializable]
     public class MeasureRibbonGroupViewModel : ViewModelBase
     {
-        private PolygonTrackMode selectedPolygonTrackMode;
-        private Collection<PolygonTrackMode> polygonTrackModes;
+        private TrackPolygonMode selectedPolygonTrackMode;
+        private Collection<TrackPolygonMode> polygonTrackModes;
         private ObservedCommand clearCommand;
         private ObservedCommand undoCommand;
         private ObservedCommand redoCommand;
@@ -58,9 +58,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         public MeasureRibbonGroupViewModel()
         {
-            polygonTrackModes = new Collection<PolygonTrackMode>();
-            polygonTrackModes.Add(PolygonTrackMode.LineWithFill);
-            polygonTrackModes.Add(PolygonTrackMode.LineOnly);
+            polygonTrackModes = new Collection<TrackPolygonMode>();
+            polygonTrackModes.Add(TrackPolygonMode.LineWithFill);
+            polygonTrackModes.Add(TrackPolygonMode.LineOnly);
             selectedPolygonTrackMode = polygonTrackModes.First();
             measuringModes = new Collection<MeasuringInMode>();
             foreach (MeasuringInMode measuringMode in Enum.GetValues(typeof(MeasuringInMode)))
@@ -87,7 +87,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             get { return measuringModes; }
         }
 
-        public PolygonTrackMode SelectedPolygonTrackMode
+        public TrackPolygonMode SelectedPolygonTrackMode
         {
             get { return selectedPolygonTrackMode; }
             set
@@ -97,14 +97,14 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     selectedPolygonTrackMode = value;
                     if (MeasureOverlay != null)
                     {
-                        MeasureOverlay.PolygonTrackMode = value;
+                        MeasureOverlay.TrackPolygonMode = value;
                     }
                     RaisePropertyChanged(() => SelectedPolygonTrackMode);
                 }
             }
         }
 
-        public Collection<PolygonTrackMode> PolygonTrackModes
+        public Collection<TrackPolygonMode> PolygonTrackModes
         {
             get { return polygonTrackModes; }
         }

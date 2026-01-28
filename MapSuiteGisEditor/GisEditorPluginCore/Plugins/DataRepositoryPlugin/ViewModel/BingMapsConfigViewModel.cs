@@ -44,7 +44,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         {
             bingMapsKey = string.Empty;
             clientSecret = BaseMapsHelper.ThinkGeoCloudClientSecret;
-            mapType = ThinkGeoCloudRasterMapsMapType.Light;
+            mapType = ThinkGeoCloudRasterMapsMapType.Light_V2_X1;
             showMapTypeOptions = true;
             var baseMapDataPlugin = GisEditor.DataRepositoryManager.GetPlugins().OfType<BaseMapDataRepositoryPlugin>().FirstOrDefault();
             if (baseMapDataPlugin != null &&

@@ -691,23 +691,23 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             }
         }
 
-        private static void CancelLastestTracking(TrackInteractiveOverlay trackOverlay)
-        {
-            if (trackOverlay != null && trackOverlay.TrackMode != TrackMode.None && trackOverlay.TrackShapeLayer.InternalFeatures.Count > 0)
-            {
-                trackOverlay.TrackShapeLayer.InternalFeatures.RemoveAt(trackOverlay.TrackShapeLayer.InternalFeatures.Count - 1);
-                trackOverlay.RefreshAsync();
-                if (trackOverlay.TrackMode == TrackMode.Polygon ||
-                    trackOverlay.TrackMode == TrackMode.Line)
-                {
-                    trackOverlay.MouseDoubleClick(new InteractionArguments());
-                }
-                else
-                {
-                    trackOverlay.MouseUp(new InteractionArguments());
-                }
-            }
-        }
+        //private static void CancelLastestTracking(TrackInteractiveOverlay trackOverlay)
+        //{
+        //    if (trackOverlay != null && trackOverlay.TrackMode != TrackMode.None && trackOverlay.TrackShapeLayer.InternalFeatures.Count > 0)
+        //    {
+        //        trackOverlay.TrackShapeLayer.InternalFeatures.RemoveAt(trackOverlay.TrackShapeLayer.InternalFeatures.Count - 1);
+        //        trackOverlay.RefreshAsync();
+        //        if (trackOverlay.TrackMode == TrackMode.Polygon ||
+        //            trackOverlay.TrackMode == TrackMode.Line)
+        //        {
+        //            trackOverlay.MouseDoubleClick(new InteractionArguments());
+        //        }
+        //        else
+        //        {
+        //            trackOverlay.ManipulationCompleted(new InteractionArguments());
+        //        }
+        //    }
+        //}
 
         private void UIManager_GottenMapContextMenuItems(object sender, GottenMapContextMenuItemsUIPluginManagerEventArgs e)
         {
@@ -780,9 +780,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             GisEditor.ActiveMap.TrackOverlay.TrackMode = TrackMode.None;
             GisEditor.ActiveMap.TrackOverlay.TrackMode = tmpTrackMode;
 
-            var circle = GisEditor.ActiveMap.TrackOverlay.OverlayCanvas.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
+            var circle = GisEditor.ActiveMap.TrackOverlay.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
             if (circle != null)
-                GisEditor.ActiveMap.TrackOverlay.OverlayCanvas.Children.Remove(circle);
+                GisEditor.ActiveMap.TrackOverlay.Children.Remove(circle);
 
             EditingToolsViewModel.Instance.CancelCommand.Execute(null);
         }

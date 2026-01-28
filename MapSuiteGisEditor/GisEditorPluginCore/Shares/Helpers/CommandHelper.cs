@@ -737,7 +737,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                             Name = GetLayerOverlayName(),
                             TileBuffer = 1,
                             TileType = TileType.PreloadDataMultiTile,
-                            DrawingExceptionMode = DrawingExceptionMode.DrawException,
+                            ThrowingExceptionMode = ThrowingExceptionMode.SuppressException,
                             TileWidth = Singleton<ContentSetting>.Instance.TileSize,
                             TileHeight = Singleton<ContentSetting>.Instance.TileSize,
                             DrawingQuality = Singleton<ContentSetting>.Instance.HighQuality ? DrawingQuality.HighQuality : DrawingQuality.HighSpeed

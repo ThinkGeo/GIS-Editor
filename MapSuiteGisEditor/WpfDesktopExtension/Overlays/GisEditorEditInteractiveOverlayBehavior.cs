@@ -420,7 +420,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             worldY = interactionArguments.WorldY;
             if (RequestMouseDownOneTime)
             {
-                MouseDown(interactionArguments);
+                MouseDownCore(interactionArguments);
                 RequestMouseDownOneTime = false;
             }
 
@@ -755,17 +755,17 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
 
         protected override InteractiveResult ManipulationStartedCore(InteractionArguments interactionArguments)
         {
-            return MouseDown(interactionArguments);
+            return MouseDownCore(interactionArguments);
         }
 
         protected override InteractiveResult ManipulationDeltaCore(InteractionArguments interactionArguments)
         {
-            return MouseMove(interactionArguments);
+            return MouseMoveCore(interactionArguments);
         }
 
         protected override InteractiveResult ManipulationCompletedCore(InteractionArguments interactionArguments)
         {
-            return MouseUp(interactionArguments);
+            return MouseUpCore(interactionArguments);
         }
 
         private void Snap()

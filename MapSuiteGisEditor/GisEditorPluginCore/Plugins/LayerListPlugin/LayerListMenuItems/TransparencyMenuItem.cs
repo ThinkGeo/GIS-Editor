@@ -62,9 +62,9 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 if (GisEditor.LayerListManager.SelectedLayerListItem == null) return;
 
                 var overlay = GisEditor.LayerListManager.SelectedLayerListItem.ConcreteObject as Overlay;
-                if (overlay != null && overlay.OverlayCanvas != null && overlay.OverlayCanvas.Opacity != transparency)
+                if (overlay != null && !overlay.Opacity.Equals(transparency))
                 {
-                    overlay.OverlayCanvas.Opacity = transparency;
+                    overlay.Opacity = transparency;
                     overlay.RefreshWithBufferSettings();
                 }
 

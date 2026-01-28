@@ -339,7 +339,7 @@ namespace ThinkGeo.MapSuite.GisEditor
 
             var resultLayers = layers.Where(l =>
             {
-                Proj4ProjectionInfo proj4ProjectionInfo = l.GetProj4ProjectionInfo();
+                Proj4ProjectionInfo proj4ProjectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                 return proj4ProjectionInfo != null
                     && !string.IsNullOrEmpty(proj4ProjectionInfo.InternalProjectionParametersString)
                     && !string.IsNullOrEmpty(proj4ProjectionInfo.ExternalProjectionParametersString);

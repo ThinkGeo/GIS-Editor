@@ -73,8 +73,9 @@ namespace ThinkGeo.MapSuite.GisEditor
             //drawingContext.DrawRectangle(null, outlinePen, rect);
             drawingContext.DrawRectangle(null, pen, rect);
 
-            var formattedHeight = new FormattedText(string.Format("{0:0}", fe.ActualHeight), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, TypeFace, 10, brush);
-            var formattedWidth = new FormattedText(string.Format("{0:0}", fe.ActualWidth), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, TypeFace, 10, brush);
+            var pixelsPerDip = VisualTreeHelper.GetDpi(fe).PixelsPerDip;
+            var formattedHeight = new FormattedText(string.Format("{0:0}", fe.ActualHeight), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, TypeFace, 10, brush, pixelsPerDip);
+            var formattedWidth = new FormattedText(string.Format("{0:0}", fe.ActualWidth), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, TypeFace, 10, brush, pixelsPerDip);
             //drawingContext.DrawText(formattedHeight, new Point(rect.Width + 5, (rect.Height / 2) - (formattedHeight.Height / 2)));
             //drawingContext.DrawText(formattedWidth, new Point(rect.Width / 2 - formattedWidth.Width / 2, rect.Height + 5));
 

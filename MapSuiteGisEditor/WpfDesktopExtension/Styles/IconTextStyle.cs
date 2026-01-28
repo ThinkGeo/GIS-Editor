@@ -141,8 +141,6 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             style.MaskType = MaskType;
             style.IsHaloEnabled = IsHaloEnabled;
             style.IsMaskEnabled = IsMaskEnabled;
-            style.EnableHalo = EnableHalo;
-            style.EnableMask = EnableMask;
 
             //style.BasePoint = BasePoint == null ? null : (PointStyle)BasePoint.CloneDeep();
             style.IconImage = CloneGeoImage(IconImage);

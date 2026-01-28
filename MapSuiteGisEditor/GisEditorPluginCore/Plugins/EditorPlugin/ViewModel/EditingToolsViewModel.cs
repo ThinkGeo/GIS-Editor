@@ -881,7 +881,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     switcherPanZoomBar.SwitcherMode = SwitcherMode.Pan;
                     GisEditor.ActiveMap.ExtentOverlay.PanMode = MapPanMode.Default;
                     GisEditor.ActiveMap.ExtentOverlay.TrackZoomInKey = Key.LeftShift;
-                    GisEditor.ActiveMap.ExtentOverlay.OverlayCanvas.IsEnabled = true;
+                    GisEditor.ActiveMap.ExtentOverlay.IsEnabled = true;
                 }
             }
         }
@@ -1493,7 +1493,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         private void TrackOverlay_Drawn(object sender, DrawnOverlayEventArgs e)
         {
             var trackOverlay = sender as TrackInteractiveOverlay;
-            var snappingCircle = trackOverlay.OverlayCanvas.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
+            var snappingCircle = trackOverlay.Children.OfType<System.Windows.Shapes.Ellipse>().FirstOrDefault();
             if (snappingCircle != null)
             {
                 var screenPosition = Mouse.GetPosition(GisEditor.ActiveMap);

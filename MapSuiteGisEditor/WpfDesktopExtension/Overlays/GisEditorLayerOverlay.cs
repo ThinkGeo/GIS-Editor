@@ -56,8 +56,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 InvokeBaseRefresh();
             };
 
-            DrawingExceptionMode = DrawingExceptionMode.DrawException;
-            DrawingException += GisEditorLayerOverlay_DrawingException;
+            Layers.Added += Layers_Added;
             Layers.Removing += Layers_Removing;
             Layers.ClearingItems += Layers_ClearingItems;
             DrawingQuality = DrawingQuality.HighQuality;
@@ -66,7 +65,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
         // Legacy property kept for GIS Editor compatibility.
         public LockLayerMode LockLayerMode { get; set; }
 
-        private void GisEditorLayerOverlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
+        private void GisEditorLayerOverlay_DrawingException(object sender, DrawingExceptionLayerEventArgs e)
         {
             e.Cancel = true;
             e.Canvas.Clear(new GeoSolidBrush(GeoColors.Transparent));
@@ -187,13 +186,33 @@ protected override RectangleShape GetBoundingBoxCore()
             else return message;
         }
 
+        private void Layers_Added(object sender, AddedGeoCollectionEventArgs e)
+        {
+            var layer = e.Item as Layer;
+            if (layer != null)
+            {
+                layer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
+                layer.DrawingException -= GisEditorLayerOverlay_DrawingException;
+                layer.DrawingException += GisEditorLayerOverlay_DrawingException;
+            }
+        }
+
         private void Layers_ClearingItems(object sender, ClearingItemsGeoCollectionEventArgs e)
         {
+            foreach (var layer in Layers.OfType<Layer>())
+            {
+                layer.DrawingException -= GisEditorLayerOverlay_DrawingException;
+            }
             _ = CloseAsync();
         }
 
         private void Layers_Removing(object sender, RemovingGeoCollectionEventArgs e)
         {
+            var layer = e.Item as Layer;
+            if (layer != null)
+            {
+                layer.DrawingException -= GisEditorLayerOverlay_DrawingException;
+            }
             _ = CloseAsync();
         }
     }

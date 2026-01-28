@@ -372,7 +372,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Task DrawTileAsyncCore(GeoCanvas geoCanvas)
         {
-            LayerTile layerTile = OverlayCanvas.Children.OfType<LayerTile>().FirstOrDefault(tmpTile
+            LayerTile layerTile = Children.OfType<LayerTile>().FirstOrDefault(tmpTile
                 => tmpTile.GetValue(FrameworkElement.NameProperty).Equals("DefaultLayerTile"));
 
             if (layerTile != null && !layerTile.DrawingLayers.Contains(selectionLayer))

@@ -97,7 +97,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                 {
                     System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.DialogResult.Yes;
                     FeatureLayerPlugin[] layerPlugins = GisEditor.LayerManager.GetLayerPlugins(featureLayer.GetType()).OfType<FeatureLayerPlugin>().ToArray();
-                    if (layerPlugins.Length > 0 && !layerPlugins[0].CanQueryFeaturesEfficiently)
+                    if (layerPlugins.Length > 0 && !layerPlugins[0].CanGetFeaturesByColumnValueEfficiently)
                     {
                         dialogResult = System.Windows.Forms.MessageBox.Show(GisEditor.LanguageManager.GetStringResource("ZoomToExtentWarning"), GisEditor.LanguageManager.GetStringResource("MapElementsListPluginZoomToExtent"), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Information);
                     }

@@ -246,7 +246,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     canvas.BeginDrawing(bitmap, drawingExtent, GeographyUnit.DecimalDegree);
                     featureLayers.ForEach(l =>
                     {
-                        Proj4ProjectionInfo projectionInfo = l.GetProj4ProjectionInfo();
+                        Proj4ProjectionInfo projectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                         if (projectionInfo != null)
                         {
                             projectionInfo.ExternalProjectionParametersString = Proj4Projection.GetWgs84ParametersString();
@@ -559,7 +559,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             kmlCanvas.BeginDrawing(builder, proj.ConvertToExternalProjection(GisEditor.ActiveMap.CurrentExtent), GeographyUnit.DecimalDegree);
             featureLayers.ForEach(l =>
             {
-                Proj4ProjectionInfo projectionInfo = l.GetProj4ProjectionInfo();
+                Proj4ProjectionInfo projectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                 if (projectionInfo != null)
                 {
                     projectionInfo.ExternalProjectionParametersString = Proj4Projection.GetWgs84ParametersString();
@@ -590,7 +590,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             kmlCanvas.BeginDrawing(builder, proj.ConvertToExternalProjection(GisEditor.ActiveMap.CurrentExtent), GeographyUnit.DecimalDegree);
             featureLayers.ForEach(l =>
             {
-                Proj4ProjectionInfo projectionInfo = l.GetProj4ProjectionInfo();
+                Proj4ProjectionInfo projectionInfo = ((Layer)l).GetProj4ProjectionInfo();
                 if (projectionInfo != null)
                 {
                     projectionInfo.ExternalProjectionParametersString = Proj4Projection.GetWgs84ParametersString();

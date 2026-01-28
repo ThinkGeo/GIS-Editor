@@ -419,7 +419,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 //Step 1 Set projection(first time add).
                 foreach (var featureLayer in parameters.LayersToAdd.Where(f => f != null))
                 {
-                    Proj4ProjectionInfo projectionInfo = featureLayer.GetProj4ProjectionInfo();
+                    Proj4ProjectionInfo projectionInfo = ((Layer)featureLayer).GetProj4ProjectionInfo();
                     if (projectionInfo != null)
                     {
                         projectionInfo.ExternalProjectionParametersString = proj4ProjectionParameters;
@@ -546,6 +546,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 if (ActiveOverlay != null && ActiveOverlay is DynamicLayerOverlay)
                 {
                     layerOverlay = (DynamicLayerOverlay)ActiveOverlay;
+                    layer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
                     layerOverlay.Layers.Add(layer);
                 }
                 else
@@ -556,7 +557,8 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                         layerOverlay = new DynamicLayerOverlay();
                         layerOverlay.Name = "Dynamic Layer Group";
                         layerOverlay.DrawingQuality = DrawingQuality.HighQuality;
-                        layerOverlay.DrawingExceptionMode = DrawingExceptionMode.DrawException;
+                        layerOverlay.ThrowingExceptionMode = ThrowingExceptionMode.SuppressException;
+                        layer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
                         layerOverlay.Layers.Add(layer);
                         Overlays.Add(layerOverlay);
                     }
@@ -579,7 +581,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                     //LockLayerMode = LockLayerMode.Lock,
                     TileBuffer = 0,
                     TileType = arguments.TileType,
-                    DrawingExceptionMode = DrawingExceptionMode.DrawException,
+                    ThrowingExceptionMode = ThrowingExceptionMode.SuppressException,
                     TileWidth = arguments.TileSize,
                     TileHeight = arguments.TileSize,
                     DrawingQuality = arguments.DrawingQuality
@@ -656,6 +658,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
                 {
                     lock (layerOverlay.Layers)
                     {
+                        layer.DrawingExceptionMode = DrawingExceptionMode.DrawException;
                         layerOverlay.Layers.Add(layer);
                     }
                 }

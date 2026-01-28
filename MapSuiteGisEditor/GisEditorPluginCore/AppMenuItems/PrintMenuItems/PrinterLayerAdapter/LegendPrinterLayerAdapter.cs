@@ -50,8 +50,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                 double width = 0;
                 double height = 0;
                 SetPropertiesInGeneral(legendAdornmentLayer, printerLayer);
-                width = width > legendAdornmentLayer.Width ? width : legendAdornmentLayer.Width;
-                height += legendAdornmentLayer.Height;
+                width = width > legendAdornmentLayer.GetWidth() ? width : legendAdornmentLayer.GetWidth();
+                height += legendAdornmentLayer.GetHeight();
                 width = PrinterHelper.ConvertLength(width, PrintingUnit.Point, PrintingUnit.Inch);
                 height = PrinterHelper.ConvertLength(height, PrintingUnit.Point, PrintingUnit.Inch);
                 double left = PrinterHelper.ConvertLength(legendAdornmentLayer.XOffsetInPixel, PrintingUnit.Point, PrintingUnit.Inch);
@@ -74,8 +74,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
                     legendPrinterLayer.LegendItems.Add(copiedItem);
                 }
             }
-            legendPrinterLayer.Width = legendLayer.Width;
-            legendPrinterLayer.Height = legendLayer.Height;
+            legendPrinterLayer.Width = legendLayer.GetWidth();
+            legendPrinterLayer.Height = legendLayer.GetHeight();
             legendPrinterLayer.BackgroundMask = PrinterLayerHelper.CloneDeep<AreaStyle>(legendLayer.BackgroundMask);
             legendPrinterLayer.BackgroundMask.SetDrawingLevel();
             legendPrinterLayer.Title = legendLayer.Title;

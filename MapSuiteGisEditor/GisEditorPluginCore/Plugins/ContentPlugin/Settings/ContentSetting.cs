@@ -64,7 +64,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             IsShowAddDataRepositoryDialog = true;
             IsShowPanZoomBar = true;
             HighQuality = true;
-            DefaultBaseMapOption = DefaultBaseMap.WorldMapKit;
+            DefaultBaseMapOption = DefaultBaseMap.BingMaps;
             IsZoomToExtentOfNewLayer = true;
             OverlayRefreshDelayInterval = 200;
 

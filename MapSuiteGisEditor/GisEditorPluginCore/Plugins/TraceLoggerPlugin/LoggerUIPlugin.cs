@@ -61,19 +61,20 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             {
                 foreach (var overlay in map.Overlays.OfType<TileOverlay>())
                 {
-                    overlay.DrawingException -= Overlay_DrawingException;
-                    overlay.DrawingException += Overlay_DrawingException;
+                    overlay.ThrowingException -= Overlay_ThrowingException;
+                    overlay.ThrowingException += Overlay_ThrowingException;
                 }
             }
 
             base.RefreshCore(currentMap, refreshArgs);
         }
 
-        private void Overlay_DrawingException(object sender, DrawingExceptionTileOverlayEventArgs e)
+        private void Overlay_ThrowingException(object sender, ThrowingExceptionOverlayEventArgs e)
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 GisEditor.LoggerManager.Log(LoggerLevel.Warning, e.Exception.Message, e.Exception);
+                e.Handled = true;
             });
         }
     }

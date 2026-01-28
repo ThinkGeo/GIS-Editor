@@ -1427,7 +1427,7 @@ namespace ThinkGeo.MapSuite.GisEditor
                         foreach (var map in documentSource.Select(d => d.Content).OfType<GisEditorWpfMap>())
                         {
                             var tileOverlays = from overlay in map.Overlays.OfType<TileOverlay>()
-                                               where !overlay.IsBase
+                                               where !IsBaseOverlay(overlay)
                                                      && overlay.TileCache != null
                                                select overlay;
 
@@ -1444,6 +1444,16 @@ namespace ThinkGeo.MapSuite.GisEditor
                 }
                 GisEditor.ProjectManager.CloseProject();
             }
+        }
+
+        private static bool IsBaseOverlay(Overlay overlay)
+        {
+            if (overlay is ThinkGeoCloudRasterMapsOverlay || overlay is OpenStreetMapOverlay)
+            {
+                return true;
+            }
+
+            return overlay.Tag is string tag && tag.Equals("WorldMapKitOverlay", StringComparison.Ordinal);
         }
 
         [Obfuscation]

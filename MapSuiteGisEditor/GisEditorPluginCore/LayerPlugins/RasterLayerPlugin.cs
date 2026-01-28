@@ -64,8 +64,8 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
                 if (layer != null)
                 {
-                    layer.UpperThreshold = double.MaxValue;
-                    layer.LowerThreshold = 0d;
+                    layer.UpperScale = double.MaxValue;
+                    layer.LowerScale = 0d;
                     layer.Name = Path.GetFileNameWithoutExtension(uri.LocalPath);
 
                     layer.Open();

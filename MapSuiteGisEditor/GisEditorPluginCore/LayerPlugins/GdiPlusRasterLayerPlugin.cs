@@ -46,7 +46,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
             Index = LayerPluginOrder.GdiPlusRasterFileLayerPlugin;
             RequireWorldFile = true;
 
-            DataSourceResolveToolCore = new FileDataSourceResolveTool<NativeImageRasterLayer>(ExtensionFilter,
+            DataSourceResolveToolCore = new FileDataSourceResolveTool<SkiaRasterLayer>(ExtensionFilter,
                 l => l.ImagePathFilename,
                 (l, newPathFilename) => l.ImagePathFilename = newPathFilename);
 
@@ -54,12 +54,12 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
 
         protected override Type GetLayerTypeCore()
         {
-            return typeof(NativeImageRasterLayer);
+            return typeof(SkiaRasterLayer);
         }
 
         protected override Uri GetUriCore(Layer layer)
         {
-            return new Uri(layer.Cast<NativeImageRasterLayer>().ImagePathFilename);
+            return new Uri(layer.Cast<SkiaRasterLayer>().ImagePathFilename);
         }
 
         [Obsolete("This method is obsoleted, please call DataSourceResolver.IsDataSourceAvailable(Layer) instead.")]
@@ -77,7 +77,7 @@ namespace ThinkGeo.MapSuite.GisEditor.Plugins
         protected override RasterLayer GetRasterLayer(Uri uri)
         {
             RasterLayer layer = null;
-            layer = new NativeImageRasterLayer(uri.LocalPath);
+            layer = new SkiaRasterLayer(uri.LocalPath);
 
             return layer;
         }

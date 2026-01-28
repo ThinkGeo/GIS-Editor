@@ -40,7 +40,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             , IMapArguments mapArguments
             , IEnumerable<InMemoryFeatureLayer> inProcessLayers
             , Collection<SimpleCandidate> simpleCandidates
-            , RenderMode renderMode, PolygonTrackMode polygonTrackMode = PolygonTrackMode.Default, bool refreshAll = false, bool isTrackingPolygon = false)
+            , RenderMode renderMode, TrackPolygonMode polygonTrackMode = TrackPolygonMode.LineWithFill, bool refreshAll = false, bool isTrackingPolygon = false)
         {
             bool isUpdated = false;
             var inProcessLayer = inProcessLayers.FirstOrDefault();
@@ -65,7 +65,7 @@ namespace ThinkGeo.MapSuite.WpfDesktop.Extension
             else if (inProcessLayer != null && inProcessLayer.InternalFeatures.Count > 0)
             {
                 Image defaultImage = GetTileImage(overlay, mapArguments);
-                var outlineDrawMode = polygonTrackMode == PolygonTrackMode.LineOnly ? OutlineDrawMode.Open : OutlineDrawMode.LineWithFill;
+                var outlineDrawMode = polygonTrackMode == TrackPolygonMode.LineOnly ? OutlineDrawMode.Open : OutlineDrawMode.LineWithFill;
                 if (outlineDrawMode == OutlineDrawMode.Open && !isTrackingPolygon) outlineDrawMode = OutlineDrawMode.Sealed;
                 UpdateImageSource(mapArguments, simpleCandidates, renderMode, inProcessLayer, defaultImage, outlineDrawMode);
                 isUpdated = true;
